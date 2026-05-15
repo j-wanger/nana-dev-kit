@@ -1,6 +1,5 @@
-VERSION
+memory_server/requirements.txt
+memory_server/requirements-optional.txt
 tests/test_install.sh
 install.sh
-tests/test_sync_rules.sh
-scripts/sync-rules.sh
-.github/workflows/kit-ci.yml
+templates/.claude/hooks/session-start.sh

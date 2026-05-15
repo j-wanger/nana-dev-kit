@@ -1,0 +1,4 @@
+# Optional: enables vector similarity search (embedding-based dedup + semantic search)
+# Without these, memory_server uses FTS5 full-text search only
+fastembed>=0.4
+sqlite-vec>=0.1.6

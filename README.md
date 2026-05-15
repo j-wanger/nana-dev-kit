@@ -9,7 +9,7 @@ git clone https://github.com/YOUR_USER/nana-dev-kit.git ~/nana-dev-kit
 ~/nana-dev-kit/install.sh
 ```
 
-This copies the `/py-init` skill and Nana identity rule to `~/.claude/`. Run once per machine.
+This copies the `/py-init` skill, Nana identity rule, and memory MCP server to `~/.claude/`. Run once per machine.
 
 ## Upgrading
 
@@ -42,6 +42,12 @@ After scaffolding:
 | 3. Hooks | Claude Code lifecycle hooks (format, block, audit, review, test gate) | `.claude/hooks/`, `.claude/settings.json` |
 | 4. Pre-commit | Commit-time guardrails (ruff, mypy, gitleaks, sync-rules) | `.pre-commit-config.yaml` |
 | 5. CI | GitHub Actions (lint, typecheck, test, security audit) | `.github/workflows/ci.yml` |
+
+## Memory & Dev-Wiki
+
+The kit includes a persistent memory MCP server (registered globally by `install.sh`). Each project can store decisions, conventions, and context in `.memory/` — available to every Claude Code session via the session-start hook.
+
+After scaffolding, run `/dev-init` to set up dev-wiki lifecycle tracking (phases, tasks, decisions). The session-start hook loads dev-wiki state and memory snapshots automatically.
 
 ## Per-Project Sync
 

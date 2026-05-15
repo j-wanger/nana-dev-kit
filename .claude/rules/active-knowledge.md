@@ -4,30 +4,32 @@ The user's email address is wang.jan.tried@gmail.com.
 # currentDate
 Today's date is 2026-05-15.
 
-# Phase 3 Context
+# Phase 4 Context
 
-## install.sh behavior
-- Copies exactly 3 files: py-init/SKILL.md, nana-soul.md, .nana-dev-kit-path
-- Hooks are NOT global (not copied by install.sh)
-- Has asymmetric error handling: `2>/dev/null || true` on SKILL.md copy but not on nana-soul.md copy
-- Task 2 must unify this error handling and add source-file existence checks
+## Memory Server Structure
+- Source: /Users/jwang/nanaclaw/memory_server/ (2,373 lines Python, 12 source files)
+- MCP server runs via stdio: python -m memory_server
+- Key files: server.py (entry point), storage.py (backend), embedding.py (optional fastembed)
+- Required deps: mcp, pydantic, pyyaml, nanoid, httpx
+- Optional deps (try/except guarded): fastembed, sqlite-vec
 
-## sync-rules.sh behavior
-- Exits non-zero on missing AGENTS.md but has no other error handling
-- No writability pre-check on target directory
-- Task 3 must add writability guards and consistent error reporting
+## Frozen-Snapshot Pattern
+- Session-start reads MEMORY.md once at boot (~1500 tokens)
+- Never edit mid-session; read-only frozen snapshot
+- Graceful silent skip when .memory/MEMORY.md or .dev-wiki/_CURRENT_STATE.md missing
 
-## Versioning decisions
-- VERSION file at repo root is single source of truth (decision: v0-versioning-strategy)
-- Git tags (v0.1.0) created from VERSION file
-- install.sh gets NO version-awareness at v0.x -- unconditional overwrite
+## Install.sh Scope Expansion
+- Currently: 3-file copy (py-init SKILL.md, nana-soul.md, .nana-dev-kit-path)
+- Phase 4: adds 4th action (memory_server/ copy + mcpServers JSON merge)
+- DEPENDENCY escape hatch per dev-wiki hooks protocol
+- JSON merge via python3 json module, idempotent (no-op if entry exists)
 
-## CI decisions
-- Kit CI at .github/workflows/kit-ci.yml (decision: kit-ci-separate-from-template)
-- Distinct from templates/.github/workflows/ci.yml (Python CI template for scaffolded projects)
-- shellcheck is CI-only (ubuntu-latest has it); not a local dependency
-- Zero-dependency principle preserved
+## MCP Server Registration
+- settings.json mcpServers is top-level key
+- Format: {"mcpServers": {"memory": {"command": "python3", "args": ["-m", "memory_server"]}}}
+- Three cases: no settings.json, existing without mcpServers, existing with mcpServers
 
-## README constraints
-- Target ~40-50 lines, hard cap 55 lines (current ~54)
-- Task 5 adds upgrade section while trimming to stay within budget
+## Session-Start Sources
+- session-start.sh currently reads: PROJECT_STATE.md, py-session-state.md
+- Phase 4 adds: .dev-wiki/_CURRENT_STATE.md, .memory/MEMORY.md
+- All reads have file-existence guards (silent skip)

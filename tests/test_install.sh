@@ -48,6 +48,37 @@ assert_exit_code 0 diff "$THOME/nana-first" "$THOME/.claude/rules/nana-soul.md"
 test_start "SKILL.md identical after second run"
 assert_exit_code 0 diff "$THOME/skill-first" "$THOME/.claude/skills/py-init/SKILL.md"
 
+# MCP server registration
+test_start "creates memory_server directory"
+assert_file_exists "$THOME/.claude/memory_server/server.py"
+
+test_start "registers mcpServers in settings.json"
+if [ -f "$THOME/.claude/settings.json" ] && python3 -c "import json; d=json.load(open('$THOME/.claude/settings.json')); assert 'mcpServers' in d" 2>/dev/null; then
+  test_pass
+else
+  test_fail "mcpServers not in settings.json"
+fi
+
+test_start "preserves existing settings.json on merge"
+THOME2=$(mktemp -d)
+mkdir -p "$THOME2/.claude"
+echo '{"existingKey": "preserved"}' > "$THOME2/.claude/settings.json"
+env HOME="$THOME2" bash "$PROJECT_ROOT/install.sh" >/dev/null 2>&1
+if python3 -c "import json; d=json.load(open('$THOME2/.claude/settings.json')); assert d.get('existingKey') == 'preserved'" 2>/dev/null; then
+  test_pass
+else
+  test_fail "existing content not preserved"
+fi
+rm -rf "$THOME2"
+
+test_start "MCP registration idempotent"
+env HOME="$THOME" bash "$PROJECT_ROOT/install.sh" >/dev/null 2>&1
+if python3 -c "import json; d=json.load(open('$THOME/.claude/settings.json')); assert 'mcpServers' in d" 2>/dev/null; then
+  test_pass
+else
+  test_fail "mcpServers missing after second run"
+fi
+
 # Edge case: missing SKILL.md source (currently swallowed by || true)
 test_start "exits non-zero when SKILL.md source is missing"
 ETEMP=$(mktemp -d)

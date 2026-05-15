@@ -160,7 +160,9 @@ Read `transform.md` (in this skill directory) and follow its procedure. Uses `so
 For **new projects**, tell the user:
 - "5-layer harness scaffolded. Edit AGENTS.md to customize, then `bash scripts/sync-rules.sh . .` to propagate."
 - "Run `/py-test` after writing code, `/py-lint` to check, `/py-review` before committing."
+- "Run `/dev-init` to set up development lifecycle tracking (phases, tasks, decisions)."
 
 For **existing projects** (after transform), tell the user:
 - "Harness retrofitted. Review the changes, then `bash scripts/sync-rules.sh . .` to propagate."
 - "Run `/py-test`, `/py-lint`, `/py-review` as usual — tools read paths from pyproject.toml."
+- "Run `/dev-init` to set up development lifecycle tracking if not already configured."

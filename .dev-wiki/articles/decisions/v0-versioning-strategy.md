@@ -7,6 +7,7 @@ parents: [phase-03-distribution-and-polish]
 created: 2026-05-15
 updated: 2026-05-15
 source: plan
+status: accepted
 confidence: medium
 ---
 

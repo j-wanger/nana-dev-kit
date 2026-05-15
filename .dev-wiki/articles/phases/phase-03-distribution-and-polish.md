@@ -1,6 +1,6 @@
 ---
 title: "Phase 3: Distribution & Polish"
-status: active
+status: completed
 phase: 3
 created: 2026-05-15T13:03:48
 updated: 2026-05-15
@@ -48,7 +48,9 @@ Add versioning, CI, and edge-case hardening. Make the kit installable and upgrad
 
 ## Exit Criteria
 
-- [ ] Tagged release exists with semantic version
-- [ ] Upgrade path documented (re-running install.sh on existing installs)
-- [ ] CI validates the kit itself (lint scripts, run tests)
-- [ ] Edge cases handled: missing dirs, partial installs, permission errors
+- [x] Tagged release exists with semantic version
+- [x] Upgrade path documented (re-running install.sh on existing installs)
+- [x] CI validates the kit itself (lint scripts, run tests)
+- [x] Edge cases handled: missing dirs, partial installs, permission errors
+
+READY FOR COMPLETION -- all 6 tasks done, all 4 exit criteria met. Pending user confirmation.
