@@ -1,0 +1,6 @@
+.claude/settings.local.json
+.nana/
+.DS_Store
+*.pyc
+__pycache__/
+.venv/

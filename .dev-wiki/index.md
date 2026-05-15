@@ -1,0 +1,48 @@
+# Dev Wiki Index
+
+## By Category
+
+### Phases
+- [[phase-01-foundation-and-packaging|Phase 1: Foundation & Packaging]] — active
+- [[phase-02-automated-testing|Phase 2: Automated Testing]] — not started
+- [[phase-03-distribution-and-polish|Phase 3: Distribution & Polish]] — not started
+
+### Modules
+- [[scripts|scripts/]] — Multi-agent sync utility
+- [[templates-claude-hooks|templates/.claude/hooks/]] — Claude Code lifecycle hook templates
+- [[templates-claude-skills|templates/.claude/skills/]] — Slash command skill definitions
+- [[templates-github|templates/.github/]] — GitHub platform config templates
+
+### Files
+- [[install|install.sh]] — Global installer
+- [[scripts-sync-rules|scripts/sync-rules.sh]] — AGENTS.md sync script
+- [[templates-claude-hooks-audit-log|audit-log.sh]] — PostToolUse audit trail
+- [[templates-claude-hooks-auto-ruff-format|auto-ruff-format.sh]] — PostToolUse auto-format
+- [[templates-claude-hooks-block-dangerous-bash|block-dangerous-bash.sh]] — PreToolUse safety gate
+- [[templates-claude-hooks-check-tests-were-run|check-tests-were-run.sh]] — Stop hook test gate
+- [[templates-claude-hooks-scan-secrets|scan-secrets.sh]] — PostToolUse secret scanner
+- [[templates-claude-hooks-session-start|session-start.sh]] — SessionStart state loader
+
+### Decisions
+- [[install-sh-stays-minimal|install.sh stays minimal]] — high confidence
+- [[readme-concise-format|README concise format]] — high confidence
+- [[commit-dev-wiki-in-initial-commit|Commit .dev-wiki/ in initial commit]] — high confidence
+
+### Journal
+(none yet)
+
+## By Hierarchy
+
+- Living Documents
+  - [[_CURRENT_STATE|Current State]]
+  - [[_ARCHITECTURE|Architecture]]
+  - [[tasks|Tasks]]
+- Configuration
+  - [[schema|Schema]]
+  - [[config|Config]]
+
+## Recent
+
+- 2026-05-15: Phase 1 planned — 5 tasks, 3 decisions
+- 2026-05-15: Code scan — 4 modules, 8 file articles, _ARCHITECTURE.md rewritten
+- 2026-05-15: Dev wiki bootstrapped with 3 phases

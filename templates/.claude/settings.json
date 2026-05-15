@@ -1,0 +1,58 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/block-dangerous-bash.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/auto-ruff-format.sh"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/scan-secrets.sh"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/audit-log.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/check-tests-were-run.sh"
+          },
+          {
+            "type": "prompt",
+            "prompt": ".claude/hooks/py-review-stop-prompt.md"
+          }
+        ]
+      }
+    ]
+  }
+}

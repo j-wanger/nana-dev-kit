@@ -1,0 +1,11 @@
+# Require non-author reviewer on dependency and model changes.
+# Replace @your-team with actual GitHub team/user handles.
+#
+# Rationale (E-23 alignment): functional separation of duties —
+# the person who prompted the AI to write model code cannot also
+# be the sole approver. CODEOWNERS enforces this structurally.
+
+pyproject.toml          @your-team
+uv.lock                 @your-team
+migrations/             @your-team
+src/models/             @your-team

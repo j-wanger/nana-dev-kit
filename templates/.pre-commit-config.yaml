@@ -1,0 +1,54 @@
+# Pre-commit hooks — 5-layer enforcement (Layer 4: commit-time guardrails)
+# Auto-fix mode where possible so AI agents see corrected files, not opaque errors.
+
+repos:
+  # --- Sync AGENTS.md to per-surface copies ---
+  - repo: local
+    hooks:
+      - id: sync-rules
+        name: Sync AGENTS.md to agent surfaces
+        entry: bash -c 'bash scripts/sync-rules.sh . .'
+        language: system
+        files: AGENTS\.md$
+        pass_filenames: false
+
+  # --- Ruff (lint + format) ---
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.13
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  # --- mypy (strict type checking) ---
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.16.0
+    hooks:
+      - id: mypy
+        additional_dependencies: []  # Add project deps here
+        args: [--strict]
+
+  # --- Secret scanning ---
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.3
+    hooks:
+      - id: gitleaks
+
+  # --- Notebook hygiene ---
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.8.1
+    hooks:
+      - id: nbstripout
+
+  - repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.9.1
+    hooks:
+      - id: nbqa-ruff
+        args: [--fix]
+      - id: nbqa-mypy
+
+  # --- pyproject.toml validation ---
+  - repo: https://github.com/abravalheri/validate-pyproject
+    rev: v0.24
+    hooks:
+      - id: validate-pyproject
