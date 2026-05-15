@@ -9,16 +9,16 @@
 - [x] Verify install.sh idempotency: test expected outputs exist (RED), run install.sh in temp HOME verify 3 files created (GREEN), fix error handling issues (REFACTOR) | scope: install.sh | success: THOME=$(mktemp -d) && HOME="$THOME" bash install.sh && test -f "$THOME/.claude/skills/py-init/SKILL.md" && test -f "$THOME/.claude/rules/nana-soul.md" && test -f "$THOME/.claude/.nana-dev-kit-path" && cp "$THOME/.claude/rules/nana-soul.md" /tmp/nana-first && HOME="$THOME" bash install.sh && diff /tmp/nana-first "$THOME/.claude/rules/nana-soul.md" && rm -rf "$THOME" /tmp/nana-first | size: M
 - [x] Verify sync-rules.sh correctness: test outputs in temp dir (RED), run sync-rules.sh verify 4 output files with headers and content (GREEN), fix script issues (REFACTOR) | scope: scripts/sync-rules.sh, Makefile | success: TDIR=$(mktemp -d) && echo '# Test' > "$TDIR/AGENTS.md" && bash scripts/sync-rules.sh "$TDIR" "$TDIR" && grep -q 'AUTO-GENERATED' "$TDIR/CLAUDE.md" && grep -q 'Test' "$TDIR/CLAUDE.md" && grep -q 'AUTO-GENERATED' "$TDIR/GEMINI.md" && test -f "$TDIR/.github/copilot-instructions.md" && test -f "$TDIR/.cursor/rules/main.mdc" && rm -rf "$TDIR" | size: M
 - [x] Write README.md — concise format with install + usage + 5-layer table: test -f README.md fails (RED), write README (GREEN), trim to 40-50 lines (REFACTOR) | scope: README.md | success: test -f README.md && grep -q 'install.sh' README.md && grep -q 'py-init' README.md && grep -qi 'layer' README.md && [ $(wc -l < README.md) -ge 30 ] | size: M
-- [ ] Initial git commit with clean project structure: no commit with all artifacts (RED), stage and commit (GREEN) | scope: * | success: git log --oneline -1 && git diff --quiet && git diff --cached --quiet && git ls-files | grep -q install.sh && git ls-files | grep -q README.md | size: S
+- [x] Initial git commit with clean project structure: no commit with all artifacts (RED), stage and commit (GREEN) | scope: * | success: git log --oneline -1 && git diff --quiet && git diff --cached --quiet && git ls-files | grep -q install.sh && git ls-files | grep -q README.md | size: S
 
 <!-- phase:phase-02-automated-testing -->
 ## Phase 2: Automated Testing
 
-- [ ] make test runs an automated test suite
-- [ ] Tests cover install.sh idempotency (run twice, same result)
-- [ ] Tests cover sync-rules correctness (output files match expected content)
-- [ ] Tests cover template placeholder substitution
-- [ ] All tests pass
+- [x] Create tests/helpers.sh — shared assertion functions (assert_eq, assert_file_exists, assert_contains, assert_exit_code) + test summary reporting: bash -n tests/helpers.sh fails (RED), write helper functions (GREEN) | scope: tests/helpers.sh | success: test -f tests/helpers.sh && bash -n tests/helpers.sh | size: S
+- [x] Create tests/test_install.sh — install.sh idempotency in temp HOME, verify 3 files created, diff between runs, verify kit path content: bash tests/test_install.sh fails (RED), write tests using HOME=$(mktemp -d) pattern (GREEN), clean up edge cases (REFACTOR) | scope: tests/test_install.sh | success: bash tests/test_install.sh && grep -q 'mktemp' tests/test_install.sh | size: M
+- [x] Create tests/test_sync_rules.sh — 4 output files created, AUTO-GENERATED headers, content propagated, Cursor frontmatter, missing AGENTS.md exits non-zero with stderr: bash tests/test_sync_rules.sh fails (RED), write tests in temp dir (GREEN), add error case tests (REFACTOR) | scope: tests/test_sync_rules.sh | success: bash tests/test_sync_rules.sh && grep -q 'AUTO-GENERATED' tests/test_sync_rules.sh | size: M
+- [x] Create tests/test_templates.sh — verify {{PACKAGE_NAME}}, {{PROJECT_DESCRIPTION}}, {{PROJECT_NAME}} placeholders exist in template files: bash tests/test_templates.sh fails (RED), write grep-based placeholder checks (GREEN) | scope: tests/test_templates.sh | success: bash tests/test_templates.sh | size: S
+- [x] Add make test target and verify all tests pass — Makefile test target runs all test scripts fail-fast: make test fails (RED), add test target (GREEN) | scope: Makefile, tests/* | success: make test | size: S
 
 <!-- phase:phase-03-distribution-and-polish -->
 ## Phase 3: Distribution & Polish

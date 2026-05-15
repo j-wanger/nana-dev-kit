@@ -3,8 +3,8 @@
 ## By Category
 
 ### Phases
-- [[phase-01-foundation-and-packaging|Phase 1: Foundation & Packaging]] — active
-- [[phase-02-automated-testing|Phase 2: Automated Testing]] — not started
+- [[phase-01-foundation-and-packaging|Phase 1: Foundation & Packaging]] — completed
+- [[phase-02-automated-testing|Phase 2: Automated Testing]] — active
 - [[phase-03-distribution-and-polish|Phase 3: Distribution & Polish]] — not started
 
 ### Modules
@@ -27,9 +27,14 @@
 - [[install-sh-stays-minimal|install.sh stays minimal]] — high confidence
 - [[readme-concise-format|README concise format]] — high confidence
 - [[commit-dev-wiki-in-initial-commit|Commit .dev-wiki/ in initial commit]] — high confidence
+- [[pure-bash-test-harness|Pure bash test harness]] — high confidence
+- [[structural-placeholder-verification|Structural placeholder verification]] — high confidence
 
 ### Journal
-(none yet)
+- [[2026-05-15-phase-1-foundation-and-packaging-complete|Phase 1 complete]] — 2026-05-15
+
+### Status
+- [[2026-05-15-codebase-snapshot|Codebase Snapshot]] — 2026-05-15
 
 ## By Hierarchy
 
@@ -43,6 +48,8 @@
 
 ## Recent
 
+- 2026-05-15: Phase 2 planned — 5 tasks, 2 decisions
+- 2026-05-15: Phase 1 completed — all 5 tasks done, initial commit created
 - 2026-05-15: Phase 1 planned — 5 tasks, 3 decisions
 - 2026-05-15: Code scan — 4 modules, 8 file articles, _ARCHITECTURE.md rewritten
 - 2026-05-15: Dev wiki bootstrapped with 3 phases

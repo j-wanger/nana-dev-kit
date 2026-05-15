@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-15
 updated: 2026-05-15
 source: plan
-status: active
+status: completed
 scope: [".gitignore", "install.sh", "scripts/sync-rules.sh", "Makefile", "README.md"]
 entry_criteria: "Dev wiki bootstrapped, code scan complete"
 exit_criteria: "install.sh idempotent, sync-rules produces 4 files, README documents 5 layers, clean initial commit"
@@ -30,10 +30,10 @@ Files and modules affected:
 
 ## Exit Criteria
 
-- [ ] `install.sh` runs clean on a fresh machine (no errors, idempotent)
-- [ ] `make sync-rules` produces correct output files (CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md)
-- [ ] README documents all 5 layers, installation steps, and usage workflow
-- [ ] Initial git commit with clean project structure
+- [x] `install.sh` runs clean on a fresh machine (no errors, idempotent)
+- [x] `make sync-rules` produces correct output files (CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md)
+- [x] README documents all 5 layers, installation steps, and usage workflow
+- [x] Initial git commit with clean project structure
 
 ## Notes
 

@@ -59,8 +59,9 @@ No runtime dependencies. Bash only. Hook scripts use `python3` for JSON parsing 
 | Directory | What It Tests | Count |
 |-----------|---------------|-------|
 | self-test.md | Manual smoke tests for all 5 layers | 13 cases (manual) |
+| tests/ | Automated bash test suite | 4 scripts (planned) |
 
-No automated test suite yet.
+Test harness: `tests/helpers.sh` provides assert functions. Each `tests/test_*.sh` sources it. `make test` runs all scripts fail-fast.
 
 ## Known Issues
 

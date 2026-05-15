@@ -1,1 +1,6 @@
 .gitignore
+tests/helpers.sh
+tests/test_install.sh
+tests/test_sync_rules.sh
+tests/test_templates.sh
+Makefile

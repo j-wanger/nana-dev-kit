@@ -1,15 +1,15 @@
 # Active Phase Context
 
-Phase: 1 - Foundation & Packaging
-Objective: Harden existing scripts, add .gitignore + README, clean initial commit.
-Scope: .gitignore, install.sh, scripts/sync-rules.sh, Makefile, README.md
+Phase: 2 - Automated Testing
+Objective: Create `make test` target with automated test suite covering install.sh, sync-rules.sh, and template placeholders.
+Scope: tests/*.sh, Makefile
 Key constraints:
-- install.sh is minimal: py-init skill + nana-soul rule + kit path marker only
-- README ~40-50 lines: install + usage + 5-layer table
-- .dev-wiki/ included in initial commit; settings.local.json excluded
+- Pure bash test harness — no external test frameworks (zero-dependency)
+- Each test script sources tests/helpers.sh for shared assertions
+- Tests must use temp dirs for isolation (mktemp -d), clean up after themselves
+- Template tests are structural (grep for placeholder patterns), not end-to-end
 Exit criteria:
-- install.sh idempotent on fresh machine
-- sync-rules produces CLAUDE.md, GEMINI.md, copilot-instructions.md, .cursor/rules/main.mdc
-- README documents 5 layers, install steps, usage
-- Clean initial git commit
+- `make test` runs automated test suite
+- Tests cover install.sh idempotency, sync-rules correctness, template placeholders
+- All tests pass
 Abort: if blocked >3 attempts on any task, ask user: skip or abort
