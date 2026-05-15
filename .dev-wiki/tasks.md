@@ -1,6 +1,6 @@
 # Tasks
 
-> Last updated: 2026-05-15 by /dev-plan
+> Last updated: 2026-05-15 by /dev-plan (Phase 3)
 
 <!-- phase:phase-01-foundation-and-packaging -->
 ## Phase 1: Foundation & Packaging
@@ -23,7 +23,9 @@
 <!-- phase:phase-03-distribution-and-polish -->
 ## Phase 3: Distribution & Polish
 
-- [ ] Tagged release exists with semantic version
-- [ ] Upgrade path documented (re-running install.sh on existing installs)
-- [ ] CI validates the kit itself (lint scripts, run tests)
-- [ ] Edge cases handled: missing dirs, partial installs, permission errors
+- [x] Create VERSION file with 0.1.0: test -f VERSION fails (RED), create VERSION containing "0.1.0" (GREEN) | scope: VERSION | success: test -f VERSION && grep -qx '0.1.0' VERSION | size: S
+- [x] Harden install.sh edge cases — fix asymmetric error suppression, validate source files exist before copy, report clear errors on failure: add edge-case tests to test_install.sh for missing source file scenario (RED), fix asymmetric 2>/dev/null || true and add source-file existence checks with error messages (GREEN), unify error handling style across all copy operations (REFACTOR) | scope: install.sh, tests/test_install.sh | success: bash tests/test_install.sh | size: M
+- [x] Harden sync-rules.sh edge cases — validate target directory writability, guard against partial writes: add edge-case tests to test_sync_rules.sh for unwritable target scenario (RED), add writability pre-check and consistent error reporting (GREEN), unify error handling style across missing-AGENTS.md and unwritable-dir paths (REFACTOR) | scope: scripts/sync-rules.sh, tests/test_sync_rules.sh | success: bash tests/test_sync_rules.sh | size: M
+- [x] Create .github/workflows/kit-ci.yml — shellcheck all .sh files + make test, triggered on push and PR to main: test -f .github/workflows/kit-ci.yml fails (RED), write GitHub Actions workflow with shellcheck + make test (GREEN) | scope: .github/workflows/kit-ci.yml | success: test -f .github/workflows/kit-ci.yml && grep -q 'shellcheck' .github/workflows/kit-ci.yml && grep -q 'make test' .github/workflows/kit-ci.yml | size: M
+- [x] Update README.md — add "Upgrading" section documenting re-run install.sh (documentation only, no install.sh code change), trim to stay within line budget: README has no upgrade mention (RED), add upgrade section and trim verbose content (GREEN) | scope: README.md | success: grep -qi 'upgrad' README.md && [ $(wc -l < README.md) -le 55 ] | size: S
+- [ ] Tag release v0.1.0 — create local annotated git tag (remote push out of scope until GitHub remote configured): no v0.1.0 tag exists (RED), commit all Phase 3 changes and create annotated tag (GREEN) | scope: VERSION, .github/workflows/kit-ci.yml, install.sh, scripts/sync-rules.sh, README.md | success: git tag -l 'v0.1.0' | grep -q 'v0.1.0' | size: S

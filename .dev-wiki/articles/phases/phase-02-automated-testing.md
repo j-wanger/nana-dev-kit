@@ -1,6 +1,6 @@
 ---
 title: "Phase 2: Automated Testing"
-status: active
+status: completed
 phase: 2
 created: 2026-05-15T13:03:48
 updated: 2026-05-15
@@ -24,11 +24,11 @@ Pure bash test harness with isolated test scripts. Each test creates temp dirs, 
 
 ## Exit Criteria
 
-- [ ] `make test` runs an automated test suite
-- [ ] Tests cover install.sh idempotency (run twice, same result)
-- [ ] Tests cover sync-rules correctness (output files match expected content)
-- [ ] Tests cover template placeholder substitution
-- [ ] All tests pass
+- [x] `make test` runs an automated test suite
+- [x] Tests cover install.sh idempotency (run twice, same result)
+- [x] Tests cover sync-rules correctness (output files match expected content)
+- [x] Tests cover template placeholder substitution
+- [x] All tests pass (30/30)
 
 ## Tasks
 

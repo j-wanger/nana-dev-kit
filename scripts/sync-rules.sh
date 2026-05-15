@@ -24,6 +24,11 @@ if [ ! -f "$AGENTS_MD" ]; then
   exit 1
 fi
 
+if [ ! -w "$TARGET_DIR" ]; then
+  echo "Error: target directory not writable: $TARGET_DIR" >&2
+  exit 1
+fi
+
 CONTENT=$(cat "$AGENTS_MD")
 HEADER="<!-- AUTO-GENERATED from AGENTS.md — do not edit directly. Run: make sync-rules -->"
 

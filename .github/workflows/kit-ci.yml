@@ -1,0 +1,20 @@
+# CI for nana-dev-kit itself (not the Python CI template in templates/)
+name: Kit CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: shellcheck
+        run: find . -name '*.sh' -not -path './templates/*' | xargs shellcheck
+
+      - name: make test
+        run: make test

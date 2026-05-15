@@ -6,15 +6,28 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+SKILL_SRC="$SCRIPT_DIR/templates/.claude/skills/py-init/SKILL.md"
+SOUL_SRC="$SCRIPT_DIR/templates/.claude/rules/nana-soul.md"
+
+# Validate source files before copying
+missing=0
+for src in "$SKILL_SRC" "$SOUL_SRC"; do
+  if [ ! -f "$src" ]; then
+    echo "Error: source file not found: $src" >&2
+    missing=1
+  fi
+done
+[ "$missing" -eq 0 ] || exit 1
+
 echo "Installing Nana Dev Kit..."
 
 # --- Global skill: /py-init ---
 mkdir -p ~/.claude/skills/py-init
-cp "$SCRIPT_DIR/templates/.claude/skills/py-init/SKILL.md" ~/.claude/skills/py-init/SKILL.md 2>/dev/null || true
+cp "$SKILL_SRC" ~/.claude/skills/py-init/SKILL.md
 
 # --- Identity rules (Claude Code global) ---
 mkdir -p ~/.claude/rules
-cp "$SCRIPT_DIR/templates/.claude/rules/nana-soul.md" ~/.claude/rules/nana-soul.md
+cp "$SOUL_SRC" ~/.claude/rules/nana-soul.md
 
 # --- Store kit path for /py-init to find templates ---
 echo "$SCRIPT_DIR" > ~/.claude/.nana-dev-kit-path

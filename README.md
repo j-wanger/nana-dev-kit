@@ -11,6 +11,10 @@ git clone https://github.com/YOUR_USER/nana-dev-kit.git ~/nana-dev-kit
 
 This copies the `/py-init` skill and Nana identity rule to `~/.claude/`. Run once per machine.
 
+## Upgrading
+
+Re-run `~/nana-dev-kit/install.sh` to update. It overwrites existing files with the latest versions.
+
 ## Usage
 
 In any Python project directory, open Claude Code and run:
@@ -21,9 +25,9 @@ In any Python project directory, open Claude Code and run:
 
 **New projects** get the full scaffold: `pyproject.toml`, pre-commit hooks, CI workflow, agent instructions, and Claude Code hooks.
 
-**Existing projects** go through a 10-dimension feasibility scan, then an approval-gated transform that upgrades your toolchain in place.
+**Existing projects** go through a feasibility scan, then an approval-gated transform that upgrades your toolchain in place.
 
-After scaffolding, use these commands in Claude Code:
+After scaffolding:
 
 - `/py-lint` — ruff + mypy
 - `/py-test` — pytest with coverage
@@ -33,7 +37,7 @@ After scaffolding, use these commands in Claude Code:
 
 | Layer | What | Where |
 |-------|------|-------|
-| 1. Instructions | Agent-surface config (AGENTS.md, synced to CLAUDE.md, Copilot, Cursor, Gemini) | `AGENTS.md`, `scripts/sync-rules.sh` |
+| 1. Instructions | Agent-surface config (synced to CLAUDE.md, Copilot, Cursor, Gemini) | `AGENTS.md`, `scripts/sync-rules.sh` |
 | 2. Identity | Development personality and technical posture | `.claude/rules/nana-soul.md` |
 | 3. Hooks | Claude Code lifecycle hooks (format, block, audit, review, test gate) | `.claude/hooks/`, `.claude/settings.json` |
 | 4. Pre-commit | Commit-time guardrails (ruff, mypy, gitleaks, sync-rules) | `.pre-commit-config.yaml` |
@@ -41,14 +45,8 @@ After scaffolding, use these commands in Claude Code:
 
 ## Per-Project Sync
 
-AGENTS.md is the single source of truth for agent instructions. After editing it:
-
-```bash
-make sync-rules
-```
-
-This generates CLAUDE.md, `.github/copilot-instructions.md`, `.cursor/rules/main.mdc`, and GEMINI.md.
+AGENTS.md is the single source of truth. After editing: `make sync-rules`.
 
 ## Testing
 
-See [self-test.md](self-test.md) for the manual smoke test guide (13 test cases covering all 5 layers).
+Run `make test` for the automated suite. See [self-test.md](self-test.md) for manual smoke tests.

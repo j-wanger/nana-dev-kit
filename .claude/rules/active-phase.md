@@ -1,15 +1,20 @@
 # Active Phase Context
 
-Phase: 2 - Automated Testing
-Objective: Create `make test` target with automated test suite covering install.sh, sync-rules.sh, and template placeholders.
-Scope: tests/*.sh, Makefile
+Phase: 3 - Distribution & Polish
+Status: Active, ~0%, 0/6 tasks done, 0/4 exit criteria met
+Objective: Add versioning, CI, edge-case hardening, upgrade docs.
+
+Scope globs: VERSION, .github/workflows/kit-ci.yml, install.sh, scripts/sync-rules.sh, README.md, tests/test_install.sh, tests/test_sync_rules.sh
+
 Key constraints:
-- Pure bash test harness — no external test frameworks (zero-dependency)
-- Each test script sources tests/helpers.sh for shared assertions
-- Tests must use temp dirs for isolation (mktemp -d), clean up after themselves
-- Template tests are structural (grep for placeholder patterns), not end-to-end
+- Zero-dependency (bash only); shellcheck is CI-only, not local
+- install.sh stays minimal (3 files); no version-awareness at v0.x
+- v0.x signals experimental; unconditional overwrite on upgrade
+
 Exit criteria:
-- `make test` runs automated test suite
-- Tests cover install.sh idempotency, sync-rules correctness, template placeholders
-- All tests pass
-Abort: if blocked >3 attempts on any task, ask user: skip or abort
+1. Tagged release (v0.1.0) with VERSION file
+2. Upgrade path documented in README
+3. Kit CI (shellcheck + make test) at .github/workflows/kit-ci.yml
+4. Edge cases hardened in install.sh and sync-rules.sh
+
+Abort: if blocked >3 attempts on any task, ask user: skip or abort phase

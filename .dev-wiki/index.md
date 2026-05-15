@@ -4,8 +4,8 @@
 
 ### Phases
 - [[phase-01-foundation-and-packaging|Phase 1: Foundation & Packaging]] — completed
-- [[phase-02-automated-testing|Phase 2: Automated Testing]] — active
-- [[phase-03-distribution-and-polish|Phase 3: Distribution & Polish]] — not started
+- [[phase-02-automated-testing|Phase 2: Automated Testing]] — completed
+- [[phase-03-distribution-and-polish|Phase 3: Distribution & Polish]] — active
 
 ### Modules
 - [[scripts|scripts/]] — Multi-agent sync utility
@@ -24,6 +24,8 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] — SessionStart state loader
 
 ### Decisions
+- [[v0-versioning-strategy|v0 versioning strategy]] — medium confidence
+- [[kit-ci-separate-from-template|Kit CI separate from template]] — medium confidence
 - [[install-sh-stays-minimal|install.sh stays minimal]] — high confidence
 - [[readme-concise-format|README concise format]] — high confidence
 - [[commit-dev-wiki-in-initial-commit|Commit .dev-wiki/ in initial commit]] — high confidence
@@ -31,6 +33,7 @@
 - [[structural-placeholder-verification|Structural placeholder verification]] — high confidence
 
 ### Journal
+- [[2026-05-15-phase-2-automated-testing-complete|Phase 2 complete]] — 2026-05-15
 - [[2026-05-15-phase-1-foundation-and-packaging-complete|Phase 1 complete]] — 2026-05-15
 
 ### Status
@@ -48,6 +51,8 @@
 
 ## Recent
 
+- 2026-05-15: Phase 3 planned — 6 tasks, 2 decisions
+- 2026-05-15: Phase 2 completed — 30 tests, all pass, make test target working
 - 2026-05-15: Phase 2 planned — 5 tasks, 2 decisions
 - 2026-05-15: Phase 1 completed — all 5 tasks done, initial commit created
 - 2026-05-15: Phase 1 planned — 5 tasks, 3 decisions

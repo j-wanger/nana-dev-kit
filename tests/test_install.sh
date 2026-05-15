@@ -48,4 +48,25 @@ assert_exit_code 0 diff "$THOME/nana-first" "$THOME/.claude/rules/nana-soul.md"
 test_start "SKILL.md identical after second run"
 assert_exit_code 0 diff "$THOME/skill-first" "$THOME/.claude/skills/py-init/SKILL.md"
 
+# Edge case: missing SKILL.md source (currently swallowed by || true)
+test_start "exits non-zero when SKILL.md source is missing"
+ETEMP=$(mktemp -d)
+cp "$PROJECT_ROOT/install.sh" "$ETEMP/"
+mkdir -p "$ETEMP/templates/.claude/rules"
+cp "$PROJECT_ROOT/templates/.claude/rules/nana-soul.md" "$ETEMP/templates/.claude/rules/"
+assert_exit_code 1 env HOME="$THOME" bash "$ETEMP/install.sh"
+rm -rf "$ETEMP"
+
+# Edge case: clear error message when source files missing
+test_start "reports error when source files missing"
+ETEMP=$(mktemp -d)
+cp "$PROJECT_ROOT/install.sh" "$ETEMP/"
+ERR_OUTPUT=$(env HOME="$THOME" bash "$ETEMP/install.sh" 2>&1 || true)
+rm -rf "$ETEMP"
+if echo "$ERR_OUTPUT" | grep -qi 'error'; then
+  test_pass
+else
+  test_fail "no error message in output"
+fi
+
 test_summary "test_install"

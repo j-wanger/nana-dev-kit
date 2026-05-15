@@ -1,6 +1,6 @@
-.gitignore
-tests/helpers.sh
+VERSION
 tests/test_install.sh
+install.sh
 tests/test_sync_rules.sh
-tests/test_templates.sh
-Makefile
+scripts/sync-rules.sh
+.github/workflows/kit-ci.yml
