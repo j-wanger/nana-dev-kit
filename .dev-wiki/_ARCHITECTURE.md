@@ -1,15 +1,15 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-05-19 by /dev-debrief (Phase 6 complete)
+> Last updated: 2026-05-19 by /dev-debrief (Phase 7 complete)
 
 ## Project Shape
 
-Shell/Markdown/Python scaffolding kit (50+ files: 12 .sh, 15 .md, 14 .py, 2 .json, 2 .txt, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3. Scaffolds a 5-layer Python dev harness into new/existing projects via two operational modes: `install.sh` (one-time global, includes memory MCP server with venv bootstrap) and `make sync-rules` (per-project). 40 automated tests via `make test`. v0.2.0 on GitHub.
+Shell/Markdown/Python scaffolding kit (50+ files: 12 .sh, 16 .md, 14 .py, 2 .json, 2 .txt, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3. Scaffolds a 5-layer Python dev harness into new/existing projects via two operational modes: `install.sh` (one-time global, includes memory MCP server with venv bootstrap) and `make sync-rules` (per-project). 48 automated tests via `make test`. v0.2.0 on GitHub.
 
 ## Directory Layout
 
 nana-dev-kit/
-  install.sh                           # Global installer (4 actions: 3 files + memory_server + MCP)
+  install.sh                           # Global installer (4 files + memory_server + MCP + venv)
   Makefile                             # Project targets (sync-rules, test, report, workflow)
   VERSION                              # Semantic version: 0.2.0
   README.md                            # Install + usage + memory/dev-wiki + upgrading
@@ -34,7 +34,7 @@ nana-dev-kit/
     helpers.sh                         # Shared assertions (assert_eq, assert_file_exists, etc.)
     test_install.sh                    # install.sh tests (16: idempotency + MCP registration)
     test_sync_rules.sh                 # sync-rules.sh tests (16)
-    test_templates.sh                  # Template placeholder tests (6)
+    test_templates.sh                  # Protocol assertions + budget regression (14)
   templates/
     AGENTS.md                          # Agent instruction template (single source of truth)
     pyproject.toml                     # Python project config template
@@ -46,14 +46,14 @@ nana-dev-kit/
 
 | Entry Point | Invocation | Purpose |
 |-------------|-----------|---------|
-| install.sh | `bash install.sh` | One-time global install: copies py-init skill + nana-soul rule + memory_server to ~/.claude/, registers MCP server, stores kit path |
+| install.sh | `bash install.sh` | One-time global install: copies py-init skill + nana-soul + nana-personal rules + memory_server to ~/.claude/, registers MCP server, stores kit path |
 | scripts/sync-rules.sh | `make sync-rules` | Per-project: syncs AGENTS.md to CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md |
 
 ## Module Responsibilities
 
 | Module | Purpose | Key Files | Inputs | Outputs |
 |--------|---------|-----------|--------|---------|
-| root | Global installer and project targets | install.sh, Makefile, VERSION | templates/.claude/ | ~/.claude/skills/, ~/.claude/rules/, ~/.claude/memory_server/, ~/.claude/memory_server/.venv/ |
+| root | Global installer and project targets | install.sh, Makefile, VERSION | templates/.claude/ | ~/.claude/skills/, ~/.claude/rules/ (soul + personal), ~/.claude/memory_server/, ~/.claude/memory_server/.venv/ |
 | memory_server/ | Vendored MCP memory server (nanaclaw, 2,373 LOC) | server.py, storage.py, embedding.py, *.py | MCP stdio | Memory CRUD via MCP protocol |
 | .github/workflows/ | Kit CI (shellcheck + make test) | kit-ci.yml | .sh files, Makefile | CI pass/fail |
 | docs/ | Generated reports | report.html, workflow.html | Project files (scanned) | HTML package inventory + workflow breakdown |
@@ -74,7 +74,7 @@ Bash + python3. Hook scripts and install.sh use python3 for JSON parsing. memory
 
 | Module | Reads (data) | Writes (data) | Env Vars | Notes |
 |--------|-------------|---------------|----------|-------|
-| install.sh | templates/.claude/skills/py-init/SKILL.md, templates/.claude/rules/nana-soul.md, memory_server/ | ~/.claude/skills/py-init/SKILL.md, ~/.claude/rules/nana-soul.md, ~/.claude/.nana-dev-kit-path, ~/.claude/memory_server/, ~/.claude/settings.json | -- | One-time global install + MCP registration |
+| install.sh | templates/.claude/skills/py-init/SKILL.md, templates/.claude/rules/nana-soul.md, templates/.claude/rules/nana-personal.md, memory_server/ | ~/.claude/skills/py-init/SKILL.md, ~/.claude/rules/nana-soul.md, ~/.claude/rules/nana-personal.md, ~/.claude/.nana-dev-kit-path, ~/.claude/memory_server/, ~/.claude/settings.json | -- | One-time global install + MCP registration |
 | scripts/sync-rules.sh | AGENTS.md (in target project) | CLAUDE.md, .github/copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md | -- | Run per-project |
 | hooks/audit-log.sh | stdin (JSON from Claude Code) | .nana/audit.jsonl | CLAUDE_MODEL | PostToolUse |
 | hooks/session-start.sh | PROJECT_STATE.md, .claude/rules/py-session-state.md, .dev-wiki/_CURRENT_STATE.md, .memory/MEMORY.md | stdout | -- | SessionStart (4 sources) |
@@ -84,9 +84,9 @@ Bash + python3. Hook scripts and install.sh use python3 for JSON parsing. memory
 | Directory | What It Tests | Count |
 |-----------|---------------|-------|
 | self-test.md | Manual smoke tests for all 5 layers | 13 cases (manual) |
-| tests/ | Automated bash test suite | 4 scripts, 40 tests |
+| tests/ | Automated bash test suite | 4 scripts, 48 tests |
 
-Test harness: `tests/helpers.sh` provides assert functions (assert_eq, assert_file_exists, assert_contains, assert_exit_code) + summary reporting. Each `tests/test_*.sh` sources it. `make test` runs all scripts fail-fast. Tests use temp dirs (mktemp -d) for isolation. Breakdown: test_install.sh (16), test_sync_rules.sh (16), test_templates.sh (6).
+Test harness: `tests/helpers.sh` provides assert functions (assert_eq, assert_file_exists, assert_contains, assert_exit_code) + summary reporting. Each `tests/test_*.sh` sources it. `make test` runs all scripts fail-fast. Tests use temp dirs (mktemp -d) for isolation. Breakdown: test_install.sh (16), test_sync_rules.sh (16), test_templates.sh (14, includes protocol assertions + budget regression).
 
 ## Known Issues
 

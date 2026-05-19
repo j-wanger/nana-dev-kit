@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-19
 updated: 2026-05-19
 source: plan
-status: active
+status: completed
 scope: ["templates/.claude/rules/nana-soul.md", "templates/.claude/rules/nana-personal.md", "templates/AGENTS.md", "templates/.github/instructions/nana.instructions.md", "install.sh", "tests/test_install.sh", "tests/test_templates.sh"]
 entry_criteria: "Phase 6 complete, all templates functional"
 exit_criteria: "Soul has Before acting + Memory discipline sections, personal profile extracted, AGENTS.md renamed, all synced, budget test passing"
@@ -46,11 +46,11 @@ Test: "Would this rule apply in a Rust project with no Python?" If yes → soul.
 
 ## Exit Criteria
 
-- [ ] nana-soul.md has "Before acting" and "Memory discipline" sections
-- [ ] Surgical discipline bullet in "Work habits"
-- [ ] "Review posture" renamed to "Code quality lens"
-- [ ] "Who you're working with" extracted to nana-personal.md
-- [ ] "Verification" renamed to "Pre-commit sequence" in AGENTS.md
-- [ ] nana.instructions.md mirrors soul
-- [ ] Total always-loaded lines ≤ 300
-- [ ] All tests pass
+- [x] nana-soul.md has "Before acting" and "Memory discipline" sections
+- [x] Surgical discipline bullet in "Work habits"
+- [x] "Review posture" renamed to "Code quality lens"
+- [x] "Who you're working with" extracted to nana-personal.md
+- [x] "Verification" renamed to "Pre-commit sequence" in AGENTS.md
+- [x] nana.instructions.md mirrors soul
+- [x] Total always-loaded lines ≤ 300 (191/300)
+- [x] All tests pass (48/48)
