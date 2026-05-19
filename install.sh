@@ -43,11 +43,26 @@ mkdir -p ~/.claude/memory_server
 cp "$MEMORY_SRC"/*.py ~/.claude/memory_server/
 cp "$MEMORY_SRC"/requirements.txt ~/.claude/memory_server/
 
-# Register MCP server in settings.json (idempotent JSON merge)
+# Create venv and install deps (graceful fallback)
+VENV_DIR=~/.claude/memory_server/.venv
+VENV_PYTHON="$VENV_DIR/bin/python3"
+if [ ! -f "$VENV_PYTHON" ]; then
+  if python3 -m venv "$VENV_DIR" 2>/dev/null; then
+    "$VENV_PYTHON" -m pip install --quiet -r ~/.claude/memory_server/requirements.txt 2>/dev/null || \
+      echo "Warning: pip install failed for memory_server deps. Memory MCP may not work." >&2
+  else
+    echo "Warning: python3 venv unavailable. Memory MCP server deps not installed." >&2
+  fi
+else
+  "$VENV_PYTHON" -m pip install --quiet -r ~/.claude/memory_server/requirements.txt 2>/dev/null || true
+fi
+
+# Register MCP server in settings.json (idempotent JSON merge, uses venv Python)
 SETTINGS=~/.claude/settings.json
 python3 -c "
 import json, os
 path = os.path.expanduser('$SETTINGS')
+venv_python = os.path.expanduser('$VENV_DIR/bin/python3')
 data = {}
 if os.path.isfile(path):
     with open(path) as f:
@@ -55,7 +70,7 @@ if os.path.isfile(path):
 if 'mcpServers' not in data:
     data['mcpServers'] = {}
 data['mcpServers']['memory'] = {
-    'command': 'python3',
+    'command': venv_python,
     'args': ['-m', 'memory_server'],
     'cwd': os.path.expanduser('~/.claude/memory_server')
 }

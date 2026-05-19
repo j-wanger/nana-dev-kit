@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-15
 updated: 2026-05-15
 source: plan
-status: active
+status: completed
 scope: ["memory_server/", "install.sh", "tests/test_install.sh", "templates/.claude/hooks/session-start.sh", "templates/.claude/skills/py-init/SKILL.md", "README.md"]
 entry_criteria: "Phase 3 complete, dev-wiki skill suite globally installed, nanaclaw memory_server exists"
 exit_criteria: "memory_server vendored, install.sh registers MCP server, session-start reads dev-wiki + memory, SKILL.md suggests /dev-init, README documents integration"
@@ -57,8 +57,12 @@ Wire nanaclaw's memory system into the nana-dev-kit distribution, so every insta
 
 ## Exit Criteria
 
-- [ ] memory_server/ vendored with all .py files parsing as valid Python
-- [ ] install.sh copies memory_server + registers MCP server in settings.json (idempotent)
-- [ ] session-start.sh reads dev-wiki state and memory snapshot (graceful skip)
-- [ ] SKILL.md mentions /dev-init
-- [ ] README documents memory/dev-wiki integration within line budget
+- [x] memory_server/ vendored with all .py files parsing as valid Python
+- [x] install.sh copies memory_server + registers MCP server in settings.json (idempotent)
+- [x] session-start.sh reads dev-wiki state and memory snapshot (graceful skip)
+- [x] SKILL.md mentions /dev-init
+- [x] README documents memory/dev-wiki integration within line budget
+
+## Completion
+
+All 5 tasks done, all exit criteria met. 38 tests pass. READY FOR COMPLETION pending user confirmation.

@@ -79,6 +79,22 @@ else
   test_fail "mcpServers missing after second run"
 fi
 
+# Memory server venv bootstrap
+test_start "creates memory_server venv"
+assert_file_exists "$THOME/.claude/memory_server/.venv/bin/python3"
+
+test_start "MCP config uses venv Python"
+if python3 -c "
+import json
+d = json.load(open('$THOME/.claude/settings.json'))
+cmd = d['mcpServers']['memory']['command']
+assert '.venv/bin/python3' in cmd, f'expected venv python, got {cmd}'
+" 2>/dev/null; then
+  test_pass
+else
+  test_fail "MCP config does not point to venv Python"
+fi
+
 # Edge case: missing SKILL.md source (currently swallowed by || true)
 test_start "exits non-zero when SKILL.md source is missing"
 ETEMP=$(mktemp -d)
