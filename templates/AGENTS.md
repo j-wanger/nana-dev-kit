@@ -69,7 +69,7 @@
 - API conventions: `docs/api.md`
 - Security checklist: `docs/security.md`
 
-## Verification
+## Pre-commit sequence
 
 Before declaring any task complete, run this sequence:
 
