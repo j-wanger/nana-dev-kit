@@ -1,58 +1,63 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-19 by /dev-plan (Phase 6)
+> Last updated: 2026-05-19 by /dev-plan (Phase 7)
 
 ## Recommended Next Action
 
-Begin Phase 6 implementation. First task: create workflow breakdown generator at scripts/generate-workflow.py.
+Begin Phase 7 implementation. First task: add "Before acting" and "Memory discipline" sections to nana-soul.md.
 
 ## Active Phase
 
-**[[phase-06-ship-and-workflow-assessment|Phase 6: Ship & Workflow Assessment]]** (status: active)
+**[[phase-07-soul-and-instructions-enhancement|Phase 7: Soul & Instructions Enhancement]]** (status: active)
 
-Entry criteria: MET (Phase 5 complete, all 5 prior phases done)
-Exit criteria: 0/3 -- workflow.html, committed+pushed to GitHub, tagged v0.2.0
+Entry criteria: MET (Phase 6 complete, all templates functional)
+Exit criteria: 0/5 -- cognitive protocols, personal extraction, rename, sync, budget test
 
-Progress: ~0% (0/3 tasks done)
+Progress: ~0% (0/5 tasks done)
 
 ## Active Phase Contract
 
-Phase: 6 - Ship & Workflow Assessment
-Tasks: 3 (1M + 2S, see tasks.md)
+Phase: 7 - Soul & Instructions Enhancement
+Tasks: 5 (2M + 3S, see tasks.md)
 Transition: continue this session
-Abort: If GitHub remote issues after 3 attempts, commit locally and escalate
+Abort: If protocol content exceeds 300-line budget after 3 trim attempts, escalate
 
 ## Recent Decisions
 
 | Decision | Confidence | Date |
 |----------|------------|------|
+| [[soul-vs-agents-delineation]] | high | 2026-05-19 |
 | [[venv-isolated-memory-deps]] | medium | 2026-05-15 |
-| [[vendor-memory-server]] | medium | 2026-05-15 |
 | [[install-sh-scope-expansion]] | medium | 2026-05-15 |
 
 ## Blockers and Open Questions
 
-- [resolved] config.py imports yaml at module level -- handled by venv bootstrap in Phase 5
+- [resolved] Soul vs AGENTS.md delineation: soul = cognitive identity (universal), AGENTS.md = operational contract (project-specific). Three-critic review confirmed.
 
 ## Key Artifacts
 
 | Path | Purpose | Last Modified |
 |------|---------|---------------|
-| `install.sh` | Global installer (4 actions: 3 files + memory_server + MCP registration) | 2026-05-15 |
+| `install.sh` | Global installer (venv bootstrap + MCP registration) | 2026-05-19 |
 | `memory_server/` | Vendored MCP memory server (12 .py, 2,373 LOC from nanaclaw) | 2026-05-15 |
 | `scripts/sync-rules.sh` | AGENTS.md to 4 agent surfaces (writability check) | 2026-05-15 |
-| `VERSION` | Semantic version (0.1.0) | 2026-05-15 |
+| `scripts/generate-report.py` | Package inventory HTML generator | 2026-05-19 |
+| `scripts/generate-workflow.py` | Workflow breakdown HTML generator (738 lines) | 2026-05-19 |
+| `VERSION` | Semantic version (0.2.0) | 2026-05-19 |
 | `.github/workflows/kit-ci.yml` | Kit CI: shellcheck + make test | 2026-05-15 |
-| `Makefile` | Project targets (sync-rules, test) | 2026-05-15 |
+| `Makefile` | Project targets (sync-rules, test, report, workflow) | 2026-05-19 |
 | `tests/helpers.sh` | Shared test assertions + summary | 2026-05-15 |
-| `tests/test_install.sh` | Install idempotency + MCP registration tests (16) | 2026-05-15 |
+| `tests/test_install.sh` | Install + venv + MCP tests | 2026-05-19 |
 | `tests/test_sync_rules.sh` | Sync correctness + edge-case tests (16) | 2026-05-15 |
 | `tests/test_templates.sh` | Template placeholder tests (6) | 2026-05-15 |
 | `templates/` | 5-layer scaffolding templates (27 files) | 2026-05-15 |
-| `README.md` | Install + usage + memory/dev-wiki + upgrading (58 lines) | 2026-05-15 |
+| `docs/report.html` | Generated package inventory (v0.2.0) | 2026-05-19 |
+| `docs/workflow.html` | Generated workflow breakdown (v0.2.0) | 2026-05-19 |
+| `README.md` | Install + usage + memory/dev-wiki + upgrading | 2026-05-19 |
 
 ## Session Journal (last 5)
 
+- [2026-05-19] [[2026-05-19-phase-5-and-6-complete|Phase 5 & 6 complete]] -- venv bootstrap, HTML reports, v0.2.0 shipped to GitHub
 - [2026-05-15] [[2026-05-15-phase-4-dev-wiki-and-memory-integration-complete|Phase 4 complete]] -- 5 tasks done, memory_server vendored, 38 tests
 - [2026-05-15] [[2026-05-15-phase-3-distribution-and-polish-complete|Phase 3 complete]] -- 6 tasks done, v0.1.0 tagged, 34 tests
 - [2026-05-15] [[2026-05-15-phase-2-automated-testing-complete|Phase 2 complete]] -- 30 tests added, make test passes
@@ -65,4 +70,5 @@ Abort: If GitHub remote issues after 3 attempts, commit locally and escalate
 - Phase: [[phase-02-automated-testing|Phase 2]] -- completed
 - Phase: [[phase-03-distribution-and-polish|Phase 3]] -- completed
 - Phase: [[phase-04-dev-wiki-and-memory-integration|Phase 4]] -- completed
-- Phase: [[phase-05-memory-bootstrap-and-report|Phase 5]] -- active
+- Phase: [[phase-05-memory-bootstrap-and-report|Phase 5]] -- completed
+- Phase: [[phase-06-ship-and-workflow-assessment|Phase 6]] -- completed

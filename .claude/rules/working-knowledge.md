@@ -27,5 +27,13 @@
   source: [[journal:2026-05-15-phase-4-dev-wiki-and-memory-integration-complete]] | activated: 2026-05-15
 - [uses: 1] MCP registration uses idempotent python3 JSON merge; handles 3 cases: no settings.json, existing without mcpServers, existing with mcpServers
   source: [[decision:install-sh-scope-expansion]] | activated: 2026-05-15
-- [uses: 1] memory_server pip deps (mcp, pydantic, etc.) not auto-installed by install.sh; user must pip install manually
-  source: [[journal:2026-05-15-phase-4-dev-wiki-and-memory-integration-complete]] | activated: 2026-05-15
+- [uses: 1] memory_server pip deps auto-installed by install.sh in venv at ~/.claude/memory_server/.venv/ (updated Phase 5)
+  source: [[journal:2026-05-19-phase-5-and-6-complete]] | activated: 2026-05-19
+- [uses: 1] scripts/generate-workflow.py (738 lines) generates docs/workflow.html; distinct from generate-report.py (package inventory)
+  source: [[journal:2026-05-19-phase-5-and-6-complete]] | activated: 2026-05-19
+- [uses: 1] Venv bootstrap at ~/.claude/memory_server/.venv/ with graceful fallback; MCP config uses venv Python after deps installed
+  source: [[decision:venv-isolated-memory-deps]] | activated: 2026-05-19
+- [uses: 1] VERSION bumped to 0.2.0; Makefile has 4 targets: sync-rules, test, report, workflow
+  source: [[journal:2026-05-19-phase-5-and-6-complete]] | activated: 2026-05-19
+- [uses: 1] GitHub remote: origin -> https://github.com/j-wanger/nana-dev-kit.git; v0.2.0 tagged and pushed
+  source: [[journal:2026-05-19-phase-5-and-6-complete]] | activated: 2026-05-19

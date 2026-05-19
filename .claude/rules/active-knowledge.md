@@ -4,17 +4,19 @@ The user's email address is wang.jan.tried@gmail.com.
 # currentDate
 Today's date is 2026-05-19.
 
-# Phase 6 Key Facts
+# Phase 7 Key Facts
 
-## Workflow Breakdown
-- Generator script: scripts/generate-workflow.py (new)
-- Output: docs/workflow.html (generated, single-page, versioned)
-- Different from docs/report.html (package inventory) — this is a workflow assessment
-- Content: end-to-end flows, layer deep-dives, hook walkthrough, template inventory, quality signals
-- Makefile target: make workflow
+## Delineation Principle (3-critic consensus)
+- Soul = cognitive identity: "how does this agent think and communicate?" Universal across all projects/languages.
+- AGENTS.md = operational contract: "what does this project require to be correct?" Project-specific toolchain.
+- Test: "would this rule apply in a Rust project with no Python?" Yes → soul. No → AGENTS.md.
 
-## Version & Ship
-- Bump VERSION from 0.1.0 to 0.2.0
-- Two commits: Phase 5 (venv bootstrap + report), Phase 6 (workflow + version bump)
-- Push to GitHub remote, tag v0.2.0
-- CI verification manual post-push
+## Protocol Sources
+- Thinking Protocol: nanaclaw <think> tag experiments + Karpathy "Think Before Coding" + nanaclaw Inner Orientation
+- Memory Recall Protocol: nanaclaw memory architecture (1,500 token budget, frozen snapshot at spawn) + global CLAUDE.md recall/store patterns
+- Surgical Discipline: Karpathy "Surgical Changes" — principle already partially in soul ("subtraction test"), add as bullet
+
+## Budget Math
+- Current: soul 39 + AGENTS.md 87 + nana.instructions.md 43 + workflow.instructions.md 37 = 206
+- After: soul ~57 + personal ~8 + AGENTS.md 87 + nana.instructions.md ~57 + workflow.instructions.md 37 = ~246
+- Ceiling: 300 lines. Margin: ~54 lines.

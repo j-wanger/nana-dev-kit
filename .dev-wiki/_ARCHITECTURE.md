@@ -1,18 +1,18 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-05-15 by /dev-plan (Phase 5)
+> Last updated: 2026-05-19 by /dev-debrief (Phase 6 complete)
 
 ## Project Shape
 
-Shell/Markdown/Python scaffolding kit (50+ files: 12 .sh, 15 .md, 12 .py, 2 .json, 2 .txt, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3. Scaffolds a 5-layer Python dev harness into new/existing projects via two operational modes: `install.sh` (one-time global, includes memory MCP server) and `make sync-rules` (per-project). 38 automated tests via `make test`.
+Shell/Markdown/Python scaffolding kit (50+ files: 12 .sh, 15 .md, 14 .py, 2 .json, 2 .txt, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3. Scaffolds a 5-layer Python dev harness into new/existing projects via two operational modes: `install.sh` (one-time global, includes memory MCP server with venv bootstrap) and `make sync-rules` (per-project). 40 automated tests via `make test`. v0.2.0 on GitHub.
 
 ## Directory Layout
 
 nana-dev-kit/
   install.sh                           # Global installer (4 actions: 3 files + memory_server + MCP)
-  Makefile                             # Project targets (sync-rules, test)
-  VERSION                              # Semantic version: 0.1.0
-  README.md                            # Install + usage + memory/dev-wiki + upgrading (58 lines)
+  Makefile                             # Project targets (sync-rules, test, report, workflow)
+  VERSION                              # Semantic version: 0.2.0
+  README.md                            # Install + usage + memory/dev-wiki + upgrading
   self-test.md                         # Manual smoke test (13 cases)
   .github/
     workflows/
@@ -24,9 +24,11 @@ nana-dev-kit/
     requirements.txt                   # Required deps: mcp, pydantic, pyyaml, nanoid, httpx
     requirements-optional.txt          # Optional: fastembed, sqlite-vec
   docs/
-    report.html                        # Generated HTML package report (all layers, components, workflows)
+    report.html                        # Generated HTML package inventory (v0.2.0)
+    workflow.html                      # Generated HTML workflow breakdown (v0.2.0)
   scripts/
     generate-report.py                 # Python script: scans project, generates docs/report.html
+    generate-workflow.py               # Python script: workflow breakdown generator (738 lines)
     sync-rules.sh                      # Syncs AGENTS.md to 4 agent surfaces (writability check)
   tests/
     helpers.sh                         # Shared assertions (assert_eq, assert_file_exists, etc.)
@@ -51,12 +53,12 @@ nana-dev-kit/
 
 | Module | Purpose | Key Files | Inputs | Outputs |
 |--------|---------|-----------|--------|---------|
-| root | Global installer and project targets | install.sh, Makefile, VERSION | templates/.claude/ | ~/.claude/skills/, ~/.claude/rules/, ~/.claude/memory_server/ |
+| root | Global installer and project targets | install.sh, Makefile, VERSION | templates/.claude/ | ~/.claude/skills/, ~/.claude/rules/, ~/.claude/memory_server/, ~/.claude/memory_server/.venv/ |
 | memory_server/ | Vendored MCP memory server (nanaclaw, 2,373 LOC) | server.py, storage.py, embedding.py, *.py | MCP stdio | Memory CRUD via MCP protocol |
 | .github/workflows/ | Kit CI (shellcheck + make test) | kit-ci.yml | .sh files, Makefile | CI pass/fail |
-| docs/ | Generated reports | report.html | Project files (scanned) | HTML package assessment |
-| scripts/ | Multi-agent sync + report generation | sync-rules.sh, generate-report.py | AGENTS.md, project tree | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md, docs/report.html |
-| tests/ | Automated bash test suite (38 tests) | helpers.sh, test_*.sh | install.sh, scripts/, templates/ | stdout (pass/fail) |
+| docs/ | Generated reports | report.html, workflow.html | Project files (scanned) | HTML package inventory + workflow breakdown |
+| scripts/ | Multi-agent sync + report generation | sync-rules.sh, generate-report.py, generate-workflow.py | AGENTS.md, project tree | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md, docs/report.html, docs/workflow.html |
+| tests/ | Automated bash test suite (40 tests) | helpers.sh, test_*.sh | install.sh, scripts/, templates/ | stdout (pass/fail) |
 | templates/.claude/ | Claude Code config templates (16 files) | hooks/*, rules/*, skills/*, settings.json | -- | -- |
 | templates/.github/ | GitHub config templates (5 files) | workflows/ci.yml, PULL_REQUEST_TEMPLATE.md, CODEOWNERS, instructions/* | -- | -- |
 
@@ -82,7 +84,7 @@ Bash + python3. Hook scripts and install.sh use python3 for JSON parsing. memory
 | Directory | What It Tests | Count |
 |-----------|---------------|-------|
 | self-test.md | Manual smoke tests for all 5 layers | 13 cases (manual) |
-| tests/ | Automated bash test suite | 4 scripts, 38 tests |
+| tests/ | Automated bash test suite | 4 scripts, 40 tests |
 
 Test harness: `tests/helpers.sh` provides assert functions (assert_eq, assert_file_exists, assert_contains, assert_exit_code) + summary reporting. Each `tests/test_*.sh` sources it. `make test` runs all scripts fail-fast. Tests use temp dirs (mktemp -d) for isolation. Breakdown: test_install.sh (16), test_sync_rules.sh (16), test_templates.sh (6).
 

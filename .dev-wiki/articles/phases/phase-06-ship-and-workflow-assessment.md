@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-19
 updated: 2026-05-19
 source: plan
-status: active
+status: completed
 scope: ["scripts/generate-workflow.py", "docs/workflow.html", "VERSION", "Makefile", "README.md", "docs/report.html"]
 entry_criteria: "Phase 5 complete, all prior phases done"
 exit_criteria: "Versioned workflow.html covers all flows/layers/hooks/templates/quality, all work committed, pushed to GitHub, tagged v0.2.0"
