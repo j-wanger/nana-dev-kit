@@ -1,9 +1,10 @@
-ended: 2026-05-19T16:20:09
+ended: 2026-05-19T16:50:58
 pending_commit: no
 session_buffer: no
 debriefed: no
 recent_commits:
+1624291 Remove ephemeral dev-wiki session files
+d22a44f Add workflow breakdown, bump to v0.2.0, prepare for GitHub (Phase 6)
+ff0d2bb Add venv bootstrap and HTML package report (Phase 5)
 88e8079 Integrate dev-wiki lifecycle and memory MCP server (Phase 4)
 fde91c4 Add versioning, CI, edge-case hardening, upgrade docs (Phase 3)
-f075126 Add automated test suite (Phase 2)
-6f7ef8d Initial commit: Nana Dev Kit
