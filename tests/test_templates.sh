@@ -34,8 +34,8 @@ assert_exit_code 1 grep -q 'name = ""' "$PROJECT_ROOT/templates/pyproject.toml"
 # --- Protocol presence in nana-soul.md ---
 SOUL="$PROJECT_ROOT/templates/.claude/rules/nana-soul.md"
 
-test_start "nana-soul.md has 'Before acting' section"
-assert_contains "$SOUL" 'Before acting'
+test_start "nana-soul.md has 'Thinking protocol' section"
+assert_contains "$SOUL" 'Thinking protocol'
 
 test_start "nana-soul.md has 'Memory discipline' section"
 assert_contains "$SOUL" 'Memory discipline'
