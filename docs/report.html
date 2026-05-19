@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nana Dev Kit — Package Report v0.2.0</title>
+<style>
+  :root { --bg: #0d1117; --fg: #c9d1d9; --accent: #58a6ff; --border: #30363d;
+           --card: #161b22; --green: #3fb950; --yellow: #d29922; --red: #f85149; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+         background: var(--bg); color: var(--fg); line-height: 1.6; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+  h1 { color: var(--accent); font-size: 2rem; margin-bottom: 0.5rem; }
+  h2 { color: var(--accent); font-size: 1.4rem; margin: 2rem 0 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  h3 { color: var(--fg); font-size: 1.1rem; margin: 1.5rem 0 0.5rem; }
+  .subtitle { color: #8b949e; font-size: 0.95rem; margin-bottom: 2rem; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; text-align: center; }
+  .stat .num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .stat .label { font-size: 0.85rem; color: #8b949e; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.5rem 0.75rem; border: 1px solid var(--border); text-align: left; }
+  th { background: var(--card); color: var(--accent); font-weight: 600; }
+  tr:nth-child(even) { background: rgba(22,27,34,0.5); }
+  code { background: var(--card); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+  .badge-green { background: rgba(63,185,80,0.15); color: var(--green); }
+  .badge-yellow { background: rgba(210,153,34,0.15); color: var(--yellow); }
+  .category { margin: 1.5rem 0; }
+  .category h3 { color: var(--accent); font-size: 1rem; margin-bottom: 0.5rem; }
+  .file-list { list-style: none; font-family: monospace; font-size: 0.85rem; }
+  .file-list li { padding: 0.2rem 0; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(48,54,61,0.5); }
+  .file-list .lines { color: #8b949e; }
+  .workflow { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin: 0.75rem 0; }
+  .workflow strong { color: var(--accent); }
+  .workflow .trigger { color: #8b949e; font-size: 0.85rem; }
+  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); color: #8b949e; font-size: 0.8rem; text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>Nana Dev Kit</h1>
+<p class="subtitle">5-Layer Python Development Harness Scaffolder &mdash; Package Report v0.2.0 &mdash; Generated 2026-05-19 12:46</p>
+
+<div class="stats">
+  <div class="stat"><div class="num">53</div><div class="label">Files</div></div>
+  <div class="stat"><div class="num">4,488</div><div class="label">Lines of Code</div></div>
+  <div class="stat"><div class="num">40</div><div class="label">Automated Tests</div></div>
+  <div class="stat"><div class="num">5</div><div class="label">Harness Layers</div></div>
+  <div class="stat"><div class="num">v0.1.0</div><div class="label">Latest Tag</div></div>
+</div>
+
+<h2>Architecture: The 5 Layers</h2>
+<p>Every scaffolded project receives all 5 layers, configured and wired together.</p>
+<table>
+  <tr><th>Layer</th><th>Purpose</th><th>Key Files</th></tr>
+  <tr><td><strong>1. Instructions</strong></td><td>Agent-surface config synced to CLAUDE.md, Copilot, Cursor, Gemini</td><td><code>AGENTS.md, scripts/sync-rules.sh</code></td></tr>
+  <tr><td><strong>2. Identity</strong></td><td>Development personality and technical posture</td><td><code>.claude/rules/nana-soul.md</code></td></tr>
+  <tr><td><strong>3. Hooks & Skills</strong></td><td>Claude Code lifecycle hooks + /py-init, /py-lint, /py-test, /py-review</td><td><code>.claude/hooks/, .claude/skills/, .claude/settings.json</code></td></tr>
+  <tr><td><strong>4. Pre-commit</strong></td><td>Commit-time guardrails: ruff, mypy, gitleaks, sync-rules</td><td><code>.pre-commit-config.yaml</code></td></tr>
+  <tr><td><strong>5. CI</strong></td><td>GitHub Actions: lint, typecheck, test, security audit</td><td><code>.github/workflows/ci.yml</code></td></tr>
+</table>
+
+<h2>Workflows</h2>
+<div class="workflow">
+  <strong>Install</strong> <span class="trigger">&mdash; git clone → install.sh</span>
+  <p>Copies py-init skill, nana-soul identity, memory server to ~/.claude/. Creates venv, installs deps, registers MCP server.</p>
+</div>
+<div class="workflow">
+  <strong>Scaffold</strong> <span class="trigger">&mdash; /py-init in a project</span>
+  <p>New: full 5-layer scaffold. Existing: 10-dimension feasibility scan → approval gate → transform → validation.</p>
+</div>
+<div class="workflow">
+  <strong>Develop</strong> <span class="trigger">&mdash; Daily coding with Claude Code</span>
+  <p>Session-start loads dev-wiki state + memory snapshot. Hooks auto-format, block dangerous ops, audit, gate tests.</p>
+</div>
+<div class="workflow">
+  <strong>Lifecycle</strong> <span class="trigger">&mdash; /dev-init → /dev-plan → implement → /dev-debrief</span>
+  <p>Phase-based planning, TDD task execution, session capture. Decisions and journal tracked in .dev-wiki/.</p>
+</div>
+<div class="workflow">
+  <strong>Memory</strong> <span class="trigger">&mdash; Persistent cross-session context</span>
+  <p>MCP server stores project decisions, conventions, user preferences. FTS5 search. Optional vector similarity via fastembed.</p>
+</div>
+<div class="workflow">
+  <strong>Sync</strong> <span class="trigger">&mdash; make sync-rules</span>
+  <p>Propagates AGENTS.md to CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md.</p>
+</div>
+<div class="workflow">
+  <strong>Test</strong> <span class="trigger">&mdash; make test</span>
+  <p>Runs 40 automated bash tests across install, sync, and template verification.</p>
+</div>
+<h2>Memory System</h2>
+<p>Persistent cross-session memory via MCP server. Installed globally by <code>install.sh</code> in an isolated venv.</p>
+<table>
+  <tr><th>Component</th><th>Details</th></tr>
+  <tr><td>Storage</td><td>SQLite + FTS5 full-text search. Optional vector similarity via fastembed.</td></tr>
+  <tr><td>Scope</td><td><code>.memory/memory.db</code> (project) and <code>~/.memory/global.db</code> (global)</td></tr>
+  <tr><td>Transport</td><td>MCP stdio protocol via <code>python3 -m memory_server</code></td></tr>
+  <tr><td>Tools</td><td>store, search, verify, contradict, forget, tag, stats, export, prune, consolidate, import</td></tr>
+  <tr><td>Required Deps</td><td>mcp>=1.0, pydantic>=2.0, pyyaml>=6.0, nanoid>=2.0, httpx>=0.27</td></tr>
+  <tr><td>Optional Deps</td><td>fastembed>=0.4, sqlite-vec>=0.1.6 <span class='badge badge-yellow'>~500MB</span></td></tr>
+</table>
+
+<h2>Dev-Wiki Lifecycle</h2>
+<p>Phase-based development lifecycle tracked in <code>.dev-wiki/</code>. Integrated into session-start hook.</p>
+<table>
+  <tr><th>Artifact</th><th>Purpose</th></tr>
+  <tr><td><code>_CURRENT_STATE.md</code></td><td>Living project state: active phase, next action, key artifacts</td></tr>
+  <tr><td><code>_ARCHITECTURE.md</code></td><td>Project structure, modules, dependencies, test organization</td></tr>
+  <tr><td><code>tasks.md</code></td><td>Phase-ordered task list with TDD cycles and success criteria</td></tr>
+  <tr><td><code>articles/decisions/</code></td><td>Architectural decision records with confidence and rationale</td></tr>
+  <tr><td><code>articles/journal/</code></td><td>Session debrief entries with health delta and observations</td></tr>
+</table>
+
+<h2>Session Context Injection</h2>
+<p>The session-start hook composes context from 4 sources (frozen snapshot pattern &mdash; read once, never edited mid-session):</p>
+<table>
+  <tr><th>#</th><th>Source</th><th>What It Provides</th></tr>
+  <tr><td>1</td><td><code>.dev-wiki/_CURRENT_STATE.md</code></td><td>Active phase, recommended next action</td></tr>
+  <tr><td>2</td><td><code>.memory/MEMORY.md</code></td><td>Project memory snapshot (decisions, conventions)</td></tr>
+  <tr><td>3</td><td><code>PROJECT_STATE.md</code></td><td>Manual cross-session notes</td></tr>
+  <tr><td>4</td><td><code>.claude/rules/py-session-state.md</code></td><td>Compaction-safe session state</td></tr>
+</table>
+
+<h2>File Inventory</h2>
+<div class="category">
+  <h3>Core Scripts <span class="badge badge-green">3 files, 184 lines</span></h3>
+  <ul class="file-list">
+    <li><span>Makefile</span><span class='lines'>23</span></li>
+    <li><span>install.sh</span><span class='lines'>90</span></li>
+    <li><span>scripts/sync-rules.sh</span><span class='lines'>71</span></li>
+  </ul>
+</div>
+<div class="category">
+  <h3>Test Suite <span class="badge badge-green">4 files, 323 lines</span></h3>
+  <ul class="file-list">
+    <li><span>tests/helpers.sh</span><span class='lines'>74</span></li>
+    <li><span>tests/test_install.sh</span><span class='lines'>119</span></li>
+    <li><span>tests/test_sync_rules.sh</span><span class='lines'>96</span></li>
+    <li><span>tests/test_templates.sh</span><span class='lines'>34</span></li>
+  </ul>
+</div>
+<div class="category">
+  <h3>Memory Server <span class="badge badge-green">14 files, 2,382 lines</span></h3>
+  <ul class="file-list">
+    <li><span>memory_server/__init__.py</span><span class='lines'>0</span></li>
+    <li><span>memory_server/__main__.py</span><span class='lines'>17</span></li>
+    <li><span>memory_server/config.py</span><span class='lines'>93</span></li>
+    <li><span>memory_server/consolidator.py</span><span class='lines'>205</span></li>
+    <li><span>memory_server/embedding.py</span><span class='lines'>141</span></li>
+    <li><span>memory_server/extract_cli.py</span><span class='lines'>129</span></li>
+    <li><span>memory_server/extractor.py</span><span class='lines'>164</span></li>
+    <li><span>memory_server/migrate.py</span><span class='lines'>159</span></li>
+    <li><span>memory_server/models.py</span><span class='lines'>79</span></li>
+    <li><span>memory_server/requirements-optional.txt</span><span class='lines'>4</span></li>
+    <li><span>memory_server/requirements.txt</span><span class='lines'>5</span></li>
+    <li><span>memory_server/server.py</span><span class='lines'>302</span></li>
+    <li><span>memory_server/sidecar.py</span><span class='lines'>184</span></li>
+    <li><span>memory_server/storage.py</span><span class='lines'>900</span></li>
+  </ul>
+</div>
+<div class="category">
+  <h3>Templates — Layer 1: Instructions <span class="badge badge-green">3 files, 165 lines</span></h3>
+  <ul class="file-list">
+    <li><span>templates/.github/instructions/nana.instructions.md</span><span class='lines'>42</span></li>
+    <li><span>templates/.github/instructions/workflow.instructions.md</span><span class='lines'>37</span></li>
+    <li><span>templates/AGENTS.md</span><span class='lines'>86</span></li>
+  </ul>
+</div>
+<div class="category">
+  <h3>Templates — Layer 2: Identity <span class="badge badge-green">2 files, 59 lines</span></h3>
+  <ul class="file-list">
+    <li><span>templates/.claude/rules/nana-soul.md</span><span class='lines'>38</span></li>
+    <li><span>templates/.claude/rules/py-session-state.md</span><span class='lines'>21</span></li>
+  </ul>
+</div>
+<div class="category">
+  <h3>Templates — Layer 3: Hooks <span class="badge badge-green">8 files, 254 lines</span></h3>
+  <ul class="file-list">
+    <li><span>templates/.claude/hooks/audit-log.sh</span><span class='lines'>21</span></li>
+    <li><span>templates/.claude/hooks/auto-ruff-format.sh</span><span class='lines'>15</span></li>
+    <li><span>templates/.claude/hooks/block-dangerous-bash.sh</span><span class='lines'>35</span></li>
+    <li><span>templates/.claude/hooks/check-tests-were-run.sh</span><span class='lines'>47</span></li>
+    <li><span>templates/.claude/hooks/py-review-stop-prompt.md</span><span class='lines'>10</span></li>
+    <li><span>templates/.claude/hooks/scan-secrets.sh</span><span class='lines'>24</span></li>
+    <li><span>templates/.claude/hooks/session-start.sh</span><span class='lines'>44</span></li>
+    <li><span>templates/.claude/settings.json</span><span class='lines'>58</span></li>
+  </ul>
+</div>
+<div class="category">
+  <h3>Templates — Layer 3: Skills <span class="badge badge-green">6 files, 504 lines</span></h3>
+  <ul class="file-list">
+    <li><span>templates/.claude/skills/py-init/SKILL.md</span><span class='lines'>168</span></li>
+    <li><span>templates/.claude/skills/py-init/scanner.md</span><span class='lines'>102</span></li>
+    <li><span>templates/.claude/skills/py-init/transform.md</span><span class='lines'>98</span></li>
+    <li><span>templates/.claude/skills/py-lint/SKILL.md</span><span class='lines'>37</span></li>
+    <li><span>templates/.claude/skills/py-review/SKILL.md</span><span class='lines'>58</span></li>
+    <li><span>templates/.claude/skills/py-test/SKILL.md</span><span class='lines'>41</span></li>
+  </ul>
+</div>
+<div class="category">
+  <h3>Templates — Layer 4: Pre-commit <span class="badge badge-green">1 files, 54 lines</span></h3>
+  <ul class="file-list">
+    <li><span>templates/.pre-commit-config.yaml</span><span class='lines'>54</span></li>
+  </ul>
+</div>
+<div class="category">
+  <h3>Templates — Layer 5: CI & GitHub <span class="badge badge-green">4 files, 157 lines</span></h3>
+  <ul class="file-list">
+    <li><span>templates/.github/CODEOWNERS</span><span class='lines'>11</span></li>
+    <li><span>templates/.github/PULL_REQUEST_TEMPLATE.md</span><span class='lines'>25</span></li>
+    <li><span>templates/.github/workflows/ci.yml</span><span class='lines'>49</span></li>
+    <li><span>templates/pyproject.toml</span><span class='lines'>72</span></li>
+  </ul>
+</div>
+<div class="category">
+  <h3>Documentation <span class="badge badge-green">3 files, 313 lines</span></h3>
+  <ul class="file-list">
+    <li><span>README.md</span><span class='lines'>58</span></li>
+    <li><span>VERSION</span><span class='lines'>1</span></li>
+    <li><span>self-test.md</span><span class='lines'>254</span></li>
+  </ul>
+</div>
+<div class="category">
+  <h3>CI & Build <span class="badge badge-green">2 files, 26 lines</span></h3>
+  <ul class="file-list">
+    <li><span>.github/workflows/kit-ci.yml</span><span class='lines'>20</span></li>
+    <li><span>.gitignore</span><span class='lines'>6</span></li>
+  </ul>
+</div>
+<div class="category">
+  <h3>Other <span class="badge badge-green">3 files, 67 lines</span></h3>
+  <ul class="file-list">
+    <li><span>.claude/rules/active-knowledge.md</span><span class='lines'>20</span></li>
+    <li><span>.claude/rules/active-phase.md</span><span class='lines'>16</span></li>
+    <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>31</span></li>
+  </ul>
+</div>
+<h2>Test Coverage</h2>
+<table>
+  <tr><th>Suite</th><th>File</th><th>Focus</th></tr>
+  <tr><td>Install</td><td><code>tests/test_install.sh</code></td><td>Idempotency, MCP registration, venv bootstrap, edge cases</td></tr>
+  <tr><td>Sync</td><td><code>tests/test_sync_rules.sh</code></td><td>4 output files, headers, content propagation, error cases</td></tr>
+  <tr><td>Templates</td><td><code>tests/test_templates.sh</code></td><td>Placeholder presence in AGENTS.md and pyproject.toml</td></tr>
+  <tr><td>Manual</td><td><code>self-test.md</code></td><td>13 scenarios across all 5 layers + retrofit</td></tr>
+</table>
+
+<h2>Recent Git History</h2>
+<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">88e8079 Integrate dev-wiki lifecycle and memory MCP server (Phase 4)
+fde91c4 Add versioning, CI, edge-case hardening, upgrade docs (Phase 3)
+f075126 Add automated test suite (Phase 2)
+6f7ef8d Initial commit: Nana Dev Kit</pre>
+
+<footer>
+  Generated by <code>scripts/generate-report.py</code> &mdash; run <code>make report</code> to regenerate
+</footer>
+
+</body>
+</html>

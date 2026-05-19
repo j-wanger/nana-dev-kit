@@ -6,7 +6,9 @@
 - [[phase-01-foundation-and-packaging|Phase 1: Foundation & Packaging]] -- completed
 - [[phase-02-automated-testing|Phase 2: Automated Testing]] -- completed
 - [[phase-03-distribution-and-polish|Phase 3: Distribution & Polish]] -- completed
-- [[phase-04-dev-wiki-and-memory-integration|Phase 4: Dev-Wiki & Memory Integration]] -- active
+- [[phase-04-dev-wiki-and-memory-integration|Phase 4: Dev-Wiki & Memory Integration]] -- completed
+- [[phase-05-memory-bootstrap-and-report|Phase 5: Memory Bootstrap & Package Report]] -- completed
+- [[phase-06-ship-and-workflow-assessment|Phase 6: Ship & Workflow Assessment]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -29,13 +31,15 @@
 - [[install-sh-scope-expansion|install.sh scope expansion]] -- medium confidence
 - [[v0-versioning-strategy|v0 versioning strategy]] -- medium confidence
 - [[kit-ci-separate-from-template|Kit CI separate from template]] -- medium confidence
-- [[install-sh-stays-minimal|install.sh stays minimal]] -- high confidence
+- [[install-sh-stays-minimal|install.sh stays minimal]] -- high confidence (superseded by install-sh-scope-expansion)
 - [[readme-concise-format|README concise format]] -- high confidence
 - [[commit-dev-wiki-in-initial-commit|Commit .dev-wiki/ in initial commit]] -- high confidence
 - [[pure-bash-test-harness|Pure bash test harness]] -- high confidence
 - [[structural-placeholder-verification|Structural placeholder verification]] -- high confidence
+- [[venv-isolated-memory-deps|Venv-isolated memory deps]] -- medium confidence
 
 ### Journal
+- [[2026-05-15-phase-4-dev-wiki-and-memory-integration-complete|Phase 4 complete]] -- 2026-05-15
 - [[2026-05-15-phase-3-distribution-and-polish-complete|Phase 3 complete]] -- 2026-05-15
 - [[2026-05-15-phase-2-automated-testing-complete|Phase 2 complete]] -- 2026-05-15
 - [[2026-05-15-phase-1-foundation-and-packaging-complete|Phase 1 complete]] -- 2026-05-15
@@ -55,6 +59,9 @@
 
 ## Recent
 
+- 2026-05-19: Phase 6 planned -- 3 tasks, workflow assessment + GitHub ship
+- 2026-05-15: Phase 5 planned -- 3 tasks, 1 decision (venv-isolated-memory-deps)
+- 2026-05-15: Phase 4 completed -- 5 tasks done, memory_server vendored, 38 tests
 - 2026-05-15: Phase 4 planned -- 5 tasks, 2 decisions (vendor-memory-server, install-sh-scope-expansion)
 - 2026-05-15: Phase 3 completed -- 6 tasks done, v0.1.0 tagged, 34 tests
 - 2026-05-15: Phase 3 planned -- 6 tasks, 2 decisions

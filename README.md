@@ -9,7 +9,7 @@ git clone https://github.com/YOUR_USER/nana-dev-kit.git ~/nana-dev-kit
 ~/nana-dev-kit/install.sh
 ```
 
-This copies the `/py-init` skill, Nana identity rule, and memory MCP server to `~/.claude/`. Run once per machine.
+This copies the `/py-init` skill, Nana identity rule, and memory MCP server to `~/.claude/`. Memory deps are auto-installed in an isolated venv. Run once per machine.
 
 ## Upgrading
 
@@ -55,4 +55,4 @@ AGENTS.md is the single source of truth. After editing: `make sync-rules`.
 
 ## Testing
 
-Run `make test` for the automated suite. See [self-test.md](self-test.md) for manual smoke tests.
+Run `make test` for the automated suite. Run `make report` for a package inventory at `docs/report.html`. Run `make workflow` for a detailed workflow breakdown at `docs/workflow.html`. See [self-test.md](self-test.md) for manual smoke tests.

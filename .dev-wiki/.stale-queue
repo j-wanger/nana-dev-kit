@@ -1,5 +1,6 @@
-memory_server/requirements.txt
-memory_server/requirements-optional.txt
 tests/test_install.sh
 install.sh
-templates/.claude/hooks/session-start.sh
+scripts/generate-report.py
+Makefile
+scripts/generate-workflow.py
+VERSION

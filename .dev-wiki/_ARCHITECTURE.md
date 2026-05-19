@@ -1,32 +1,36 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-05-15 by /dev-debrief
+> Last updated: 2026-05-15 by /dev-plan (Phase 5)
 
 ## Project Shape
 
-Shell/Markdown/Python scaffolding kit (36+ files: 12 .sh, 15 .md, 12 .py, 2 .json, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3. Scaffolds a 5-layer Python dev harness into new/existing projects via two operational modes: `install.sh` (one-time global, includes memory MCP server) and `make sync-rules` (per-project). 34 automated tests via `make test`.
+Shell/Markdown/Python scaffolding kit (50+ files: 12 .sh, 15 .md, 12 .py, 2 .json, 2 .txt, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3. Scaffolds a 5-layer Python dev harness into new/existing projects via two operational modes: `install.sh` (one-time global, includes memory MCP server) and `make sync-rules` (per-project). 38 automated tests via `make test`.
 
 ## Directory Layout
 
 nana-dev-kit/
-  install.sh                           # Global installer (source validation)
+  install.sh                           # Global installer (4 actions: 3 files + memory_server + MCP)
   Makefile                             # Project targets (sync-rules, test)
   VERSION                              # Semantic version: 0.1.0
-  README.md                            # Install + usage + upgrading (52 lines)
+  README.md                            # Install + usage + memory/dev-wiki + upgrading (58 lines)
   self-test.md                         # Manual smoke test (13 cases)
   .github/
     workflows/
       kit-ci.yml                       # Kit CI: shellcheck + make test
-  memory_server/                        # Vendored MCP memory server (12 .py files from nanaclaw)
+  memory_server/                       # Vendored MCP memory server (12 .py files from nanaclaw)
     server.py                          # MCP server entry point (python -m memory_server)
     storage.py                         # Memory storage backend
+    embedding.py                       # Optional fastembed integration (try/except guarded)
     requirements.txt                   # Required deps: mcp, pydantic, pyyaml, nanoid, httpx
     requirements-optional.txt          # Optional: fastembed, sqlite-vec
+  docs/
+    report.html                        # Generated HTML package report (all layers, components, workflows)
   scripts/
+    generate-report.py                 # Python script: scans project, generates docs/report.html
     sync-rules.sh                      # Syncs AGENTS.md to 4 agent surfaces (writability check)
   tests/
     helpers.sh                         # Shared assertions (assert_eq, assert_file_exists, etc.)
-    test_install.sh                    # install.sh tests (12)
+    test_install.sh                    # install.sh tests (16: idempotency + MCP registration)
     test_sync_rules.sh                 # sync-rules.sh tests (16)
     test_templates.sh                  # Template placeholder tests (6)
   templates/
@@ -48,10 +52,11 @@ nana-dev-kit/
 | Module | Purpose | Key Files | Inputs | Outputs |
 |--------|---------|-----------|--------|---------|
 | root | Global installer and project targets | install.sh, Makefile, VERSION | templates/.claude/ | ~/.claude/skills/, ~/.claude/rules/, ~/.claude/memory_server/ |
-| memory_server/ | Vendored MCP memory server (nanaclaw) | server.py, storage.py, *.py | MCP stdio | Memory CRUD via MCP protocol |
+| memory_server/ | Vendored MCP memory server (nanaclaw, 2,373 LOC) | server.py, storage.py, embedding.py, *.py | MCP stdio | Memory CRUD via MCP protocol |
 | .github/workflows/ | Kit CI (shellcheck + make test) | kit-ci.yml | .sh files, Makefile | CI pass/fail |
-| scripts/ | Multi-agent sync utility | sync-rules.sh | AGENTS.md | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md |
-| tests/ | Automated bash test suite (34 tests) | helpers.sh, test_*.sh | install.sh, scripts/, templates/ | stdout (pass/fail) |
+| docs/ | Generated reports | report.html | Project files (scanned) | HTML package assessment |
+| scripts/ | Multi-agent sync + report generation | sync-rules.sh, generate-report.py | AGENTS.md, project tree | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md, docs/report.html |
+| tests/ | Automated bash test suite (38 tests) | helpers.sh, test_*.sh | install.sh, scripts/, templates/ | stdout (pass/fail) |
 | templates/.claude/ | Claude Code config templates (16 files) | hooks/*, rules/*, skills/*, settings.json | -- | -- |
 | templates/.github/ | GitHub config templates (5 files) | workflows/ci.yml, PULL_REQUEST_TEMPLATE.md, CODEOWNERS, instructions/* | -- | -- |
 
@@ -70,16 +75,16 @@ Bash + python3. Hook scripts and install.sh use python3 for JSON parsing. memory
 | install.sh | templates/.claude/skills/py-init/SKILL.md, templates/.claude/rules/nana-soul.md, memory_server/ | ~/.claude/skills/py-init/SKILL.md, ~/.claude/rules/nana-soul.md, ~/.claude/.nana-dev-kit-path, ~/.claude/memory_server/, ~/.claude/settings.json | -- | One-time global install + MCP registration |
 | scripts/sync-rules.sh | AGENTS.md (in target project) | CLAUDE.md, .github/copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md | -- | Run per-project |
 | hooks/audit-log.sh | stdin (JSON from Claude Code) | .nana/audit.jsonl | CLAUDE_MODEL | PostToolUse |
-| hooks/session-start.sh | PROJECT_STATE.md, .claude/rules/py-session-state.md | stdout | -- | SessionStart |
+| hooks/session-start.sh | PROJECT_STATE.md, .claude/rules/py-session-state.md, .dev-wiki/_CURRENT_STATE.md, .memory/MEMORY.md | stdout | -- | SessionStart (4 sources) |
 
 ## Test Organization
 
 | Directory | What It Tests | Count |
 |-----------|---------------|-------|
 | self-test.md | Manual smoke tests for all 5 layers | 13 cases (manual) |
-| tests/ | Automated bash test suite | 4 scripts, 34 tests |
+| tests/ | Automated bash test suite | 4 scripts, 38 tests |
 
-Test harness: `tests/helpers.sh` provides assert functions (assert_eq, assert_file_exists, assert_contains, assert_exit_code) + summary reporting. Each `tests/test_*.sh` sources it. `make test` runs all scripts fail-fast. Tests use temp dirs (mktemp -d) for isolation. Breakdown: test_install.sh (12), test_sync_rules.sh (16), test_templates.sh (6).
+Test harness: `tests/helpers.sh` provides assert functions (assert_eq, assert_file_exists, assert_contains, assert_exit_code) + summary reporting. Each `tests/test_*.sh` sources it. `make test` runs all scripts fail-fast. Tests use temp dirs (mktemp -d) for isolation. Breakdown: test_install.sh (16), test_sync_rules.sh (16), test_templates.sh (6).
 
 ## Known Issues
 
