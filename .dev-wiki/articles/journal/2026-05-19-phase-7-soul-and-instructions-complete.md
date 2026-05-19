@@ -14,10 +14,11 @@ source: debrief
 ## What Happened
 - Completed all 5 Phase 7 tasks in a single session: cognitive protocols, personal extraction, AGENTS.md rename, sync, budget regression test
 - Three-critic multi-angle review (context engineering, harness design, UX) produced unanimous convergence on soul vs AGENTS.md delineation
-- nana-soul.md restructured: 2 new sections (Before acting, Memory discipline), 1 renamed (Code quality lens), 1 new bullet (surgical discipline), personal section extracted -- landed at 50 lines (target was <=60)
+- nana-soul.md restructured: 2 new sections (Thinking protocol, Memory discipline), 1 renamed (Code quality lens), 1 new bullet (surgical discipline), personal section extracted -- landed at 51 lines (target was <=60)
+- Post-debrief refinement: "Before acting" section rewritten as "Thinking protocol" after user feedback that the original was too generic. New version includes trigger clause (trade-offs/design/advisory vs factual lookups), cost-of-error proportionality meta-principle, and three distinctive cognitive moves: read subtext from constraints, challenge the frame, delay commitment until information sufficient. Budget: 195/300.
 - New file: templates/.claude/rules/nana-personal.md (personal profile, installed globally by install.sh)
 - install.sh updated to copy nana-personal.md alongside nana-soul.md (validates 3 source files)
-- tests/test_templates.sh expanded from 6 to 14 assertions including instruction budget regression (191/300 lines)
+- tests/test_templates.sh expanded from 6 to 14 assertions including instruction budget regression (195/300 lines)
 
 ## Decisions Made
 - [[soul-vs-agents-delineation|Soul vs AGENTS.md delineation]] -- extracted this session
@@ -27,7 +28,7 @@ source: debrief
 - Personal data in shared template -- extracted to nana-personal.md (installed globally, not scaffolded per-project)
 
 ## Artifacts Changed
-- `templates/.claude/rules/nana-soul.md` (restructured: 50 lines, 3 protocols)
+- `templates/.claude/rules/nana-soul.md` (restructured: 51 lines, Thinking protocol + Memory discipline + Code quality lens)
 - `templates/.claude/rules/nana-personal.md` (new: personal profile)
 - `templates/AGENTS.md` (Verification -> Pre-commit sequence)
 - `templates/.github/instructions/nana.instructions.md` (synced to soul)

@@ -39,9 +39,9 @@
   source: [[journal:2026-05-19-phase-5-and-6-complete]] | activated: 2026-05-19
 - [uses: 1] Soul vs AGENTS.md delineation: soul = cognitive identity (universal, all projects/languages), AGENTS.md = operational contract (project-specific). Litmus: "would this apply in a Rust project?" Yes → soul, No → AGENTS.md
   source: [[decision:soul-vs-agents-delineation]] | activated: 2026-05-19
-- [uses: 1] nana-soul.md has 3 protocols (Before acting, Memory discipline, Code quality lens) at 50 lines; personal profile extracted to nana-personal.md
+- [uses: 1] nana-soul.md Thinking protocol has trigger clause (trade-offs/design/advisory), cost-of-error proportionality, 3 moves (read subtext, challenge frame, delay commitment); 51 lines total
   source: [[journal:2026-05-19-phase-7-soul-and-instructions-complete]] | activated: 2026-05-19
-- [uses: 1] Instruction budget: soul + personal + AGENTS.md + nana.instructions.md = 191/300 lines; regression test in test_templates.sh enforces ceiling
+- [uses: 1] Instruction budget: soul + personal + AGENTS.md + nana.instructions.md = 195/300 lines; regression test in test_templates.sh enforces ceiling
   source: [[journal:2026-05-19-phase-7-soul-and-instructions-complete]] | activated: 2026-05-19
 - [uses: 1] install.sh copies 4 files: py-init SKILL.md, nana-soul.md, nana-personal.md, kit path marker + memory_server/ + MCP registration
   source: [[journal:2026-05-19-phase-7-soul-and-instructions-complete]] | activated: 2026-05-19
