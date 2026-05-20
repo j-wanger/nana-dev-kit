@@ -13,6 +13,7 @@
 - [[phase-08-spec-skill|Phase 8: Spec Skill]] -- completed
 - [[phase-09-file-lifecycle-reference|Phase 9: File Lifecycle Reference]] -- completed
 - [[phase-10-memory-lifecycle-convergence|Phase 10: Memory Lifecycle Convergence]] -- completed
+- [[phase-11-process-hardening|Phase 11: Process Hardening]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -31,6 +32,7 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[layered-gate-enforcement-automated|Layered gate enforcement (automated)]] -- high confidence
 - [[gate-enforcement-checklist-plus-log|Gate enforcement: checklist + log]] -- high confidence
 - [[memory-convergence-mcp-only|Memory convergence: MCP-only]] -- high confidence
 - [[spec-two-tier-review-gate|Spec two-tier review gate]] -- high confidence
@@ -74,6 +76,7 @@
 
 ## Recent
 
+- 2026-05-19: Phase 11 planned -- 5 tasks, 1 decision, process hardening (layered gate enforcement)
 - 2026-05-19: Phase 10 completed -- memory MCP-only, gate enforcement, retro check (Phases 1-10), budget 229/300
 - 2026-05-19: Phase 10 planned -- 2 tasks, memory lifecycle convergence
 - 2026-05-19: Phase 9 completed -- file lifecycle routing table, orphan removed, 59 tests, budget 227/300

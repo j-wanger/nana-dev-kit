@@ -1,6 +1,6 @@
 # Tasks
 
-> Last updated: 2026-05-19 by /dev-plan (Phase 10)
+> Last updated: 2026-05-19 by /dev-plan (Phase 11)
 
 <!-- phase:phase-01-foundation-and-packaging -->
 ## Phase 1: Foundation & Packaging
@@ -85,3 +85,13 @@
 
 - [x] Remove MEMORY.md from session-start + update soul + file-lifecycle — remove .memory/MEMORY.md read block from session-start.sh, add memory_search guidance to nana-soul.md Memory discipline, remove MEMORY.md references from file-lifecycle.md, sync nana.instructions.md: grep -q 'MEMORY' templates/.claude/hooks/session-start.sh returns true (RED), remove block + update soul + lifecycle + sync (GREEN), verify syntax (REFACTOR) | scope: templates/.claude/hooks/session-start.sh, templates/.claude/rules/nana-soul.md, templates/.claude/rules/file-lifecycle.md, templates/.github/instructions/nana.instructions.md | success: ! grep -q 'MEMORY_FILE\|MEMORY.md' templates/.claude/hooks/session-start.sh && grep -qi 'memory_search' templates/.claude/rules/nana-soul.md && ! grep -q 'MEMORY.md' templates/.claude/rules/file-lifecycle.md && diff <(tail -n +5 templates/.github/instructions/nana.instructions.md) templates/.claude/rules/nana-soul.md | size: M
 - [x] Verify tests + commit + push | scope: tests/test_templates.sh, * | success: bash tests/test_templates.sh && git diff --quiet && git diff --cached --quiet | size: S
+
+<!-- phase:phase-11-process-hardening -->
+<!-- gates: spec=n/a(process-hardening) approach=yes plan-review=yes tasks=yes -->
+## Phase 11: Process Hardening
+
+- [x] Add pre-flight gate verification to implementation-guide.md — section at top: parse active-phase.md Gates, refuse if any [ ] unchecked, name the missing gate (instructional enforcement): verify no gate-verification section exists (RED), write section with refusal language (GREEN), verify no false positive on fully-checked example (REFACTOR) | scope: ~/.claude/skills/dev-plan/implementation-guide.md | success: grep -qi 'Pre-Flight Gate Verification\|gate.*unchecked.*STOP\|refuse.*unchecked' ~/.claude/skills/dev-plan/implementation-guide.md | size: M
+- [x] Add gate-compliance audit to dev-debrief retro-check — parse tasks.md <!-- gates: --> comments, verify all expected gates for ceremony level logged, flag SKIPPED without justification: verify no gate-compliance section exists (RED), write audit logic (GREEN), verify clean pass on fully-gated phase (REFACTOR) | scope: ~/.claude/skills/dev-debrief/SKILL.md | success: grep -qi 'gate.*compliance\|gate.*audit' ~/.claude/skills/dev-debrief/SKILL.md && grep -qi 'SKIPPED' ~/.claude/skills/dev-debrief/SKILL.md | size: M
+- [x] Add gate-check reminder to session-start.sh — 3-4 lines: if active-phase.md exists with status active AND unchecked [ ] gates, emit [gate-check] N unchecked gates: bash -n templates/.claude/hooks/session-start.sh passes (RED), add gate-check logic (GREEN), verify syntax (REFACTOR) | scope: templates/.claude/hooks/session-start.sh | success: grep -q 'gate-check\|unchecked.*gate' templates/.claude/hooks/session-start.sh && bash -n templates/.claude/hooks/session-start.sh | size: S
+- [x] Add regression test + budget assertion — assert session-start.sh gate-check logic exists + instruction budget (sum of rules files) stays ≤300 lines: no gate-check assertions exist (RED), add assertions (GREEN) | scope: tests/test_templates.sh | success: bash tests/test_templates.sh && grep -qi 'gate.check\|gate-check' tests/test_templates.sh | size: S
+- [ ] Commit + push + regenerate reports — make report && make workflow, git commit, git push | scope: docs/report.html, docs/workflow.html | success: git diff --quiet && git diff --cached --quiet | size: XS

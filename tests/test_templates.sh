@@ -87,6 +87,13 @@ assert_contains "$LIFECYCLE" 'Decision routing'
 test_start "file-lifecycle.md has memory_store routing"
 assert_contains "$LIFECYCLE" 'memory_store'
 
+# --- Session-start gate-check ---
+test_start "session-start.sh has gate-check logic"
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" 'gate-check'
+
+test_start "session-start.sh passes syntax check"
+assert_exit_code 0 bash -n "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh"
+
 # --- Instruction budget regression test ---
 # Sum always-loaded files: soul + personal + nana.instructions.md + AGENTS.md
 # Ceiling: 300 lines total before instruction-following degrades

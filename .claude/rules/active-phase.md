@@ -1,13 +1,19 @@
 # Active Phase Context
 
-Phase: 10 - Memory Lifecycle Convergence
-Status: Completed, 2/2 tasks done, 100%
-Objective: Converge memory access to MCP-only by removing MEMORY.md from session-start.sh.
+Phase: 11 - Process Hardening
+Status: Active, 0/5 tasks done, ~0%
+Objective: Add structural enforcement for process gates (preventive + detective + reminder + regression).
 
-Result: All work shipped. Memory MCP-only, gate enforcement added post-violation.
+Scope: ~/.claude/skills/dev-plan/implementation-guide.md, ~/.claude/skills/dev-debrief/SKILL.md, templates/.claude/hooks/session-start.sh, tests/test_templates.sh, docs/*
+Exit: Pre-flight refusal added, gate-compliance audit added, session-start reminder added, tests pass, committed.
+Abort: if blocked >3 attempts on any task, ask user.
 
-Retro check (Phases 1-10): Zero blockers, 1 planned reversal, 3 user corrections (all process discipline). Recommendation: process-hardening phase next.
+Constraints:
+- Instruction budget ≤300 lines (current 229/300)
+- Gate enforcement is instructional, not shell-blocking
+- No new rules files in templates/.claude/rules/
 
-Next: Run /dev-plan when ready for Phase 11.
-
-No open tasks. No active phase pending -- awaiting user direction.
+Gates:
+- [x] Approach approved
+- [x] Plan review passed
+- [x] Tasks approved

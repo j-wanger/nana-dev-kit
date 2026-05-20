@@ -14,6 +14,15 @@ if [ -f "$DEVWIKI_STATE" ]; then
   echo ""
 fi
 
+# --- Gate check (active phase with unchecked gates) ---
+ACTIVE_PHASE=".claude/rules/active-phase.md"
+if [ -f "$ACTIVE_PHASE" ] && grep -q 'Status:.*Active' "$ACTIVE_PHASE" 2>/dev/null; then
+  UNCHECKED=$(grep -c '\- \[ \]' "$ACTIVE_PHASE" 2>/dev/null || true)
+  if [ "$UNCHECKED" -gt 0 ] 2>/dev/null; then
+    echo "[gate-check] $UNCHECKED unchecked gate(s) in active phase. Complete gates before implementing."
+  fi
+fi
+
 # --- Session state (compaction anchor) ---
 SESSION_STATE=".claude/rules/py-session-state.md"
 if [ -f "$SESSION_STATE" ]; then

@@ -4,21 +4,21 @@
 
 ## Recommended Next Action
 
-Phase 10 complete (all 10 phases done). Run `/dev-plan` when ready for Phase 11. Retro check at Phase 10 flagged process discipline as the primary improvement area -- consider a process-hardening or refinement phase next.
+Begin Phase 11 implementation: start with Task 1 (pre-flight gate verification in implementation-guide.md).
 
 ## Active Phase
 
-**[[phase-10-memory-lifecycle-convergence|Phase 10: Memory Lifecycle Convergence]]** (status: completed)
+**[[phase-11-process-hardening|Phase 11: Process Hardening]]** (status: active)
 
-Entry criteria: MET (Phase 9 complete)
-Exit criteria: 2/2 -- MEMORY.md removed + soul/lifecycle updated + tests pass + committed -- ALL MET
+Entry criteria: MET (Phase 10 complete)
+Exit criteria: Pre-flight gate verification added, detective audit added, session-start reminder added, tests pass, committed
 
-Progress: 100% (2/2 tasks done)
+Progress: ~0% (0/5 tasks done)
 
 ## Active Phase Contract
 
-Phase: 10 - Memory Lifecycle Convergence
-Tasks: 2 (1M + 1S, see tasks.md)
+Phase: 11 - Process Hardening
+Tasks: 5 (2M + 2S + 1XS, see tasks.md)
 Transition: continue this session
 Abort: if blocked >3 attempts, ask user: skip or abort
 
@@ -26,13 +26,13 @@ Abort: if blocked >3 attempts, ask user: skip or abort
 
 | Decision | Confidence | Date |
 |----------|------------|------|
+| [[layered-gate-enforcement-automated]] | high | 2026-05-19 |
 | [[gate-enforcement-checklist-plus-log]] | high | 2026-05-19 |
 | [[memory-convergence-mcp-only]] | high | 2026-05-19 |
-| [[spec-two-tier-review-gate]] | high | 2026-05-19 |
 
 ## Blockers and Open Questions
 
-None active.
+- None (all planning questions resolved: detective=gate-compliance audit in dev-debrief, scope=both templates+skills, session-length=deferred)
 
 ## Key Artifacts
 
@@ -83,6 +83,8 @@ None active.
 - Phase: [[phase-08-spec-skill|Phase 8]] -- completed
 - Phase: [[phase-09-file-lifecycle-reference|Phase 9]] -- completed
 - Phase: [[phase-10-memory-lifecycle-convergence|Phase 10]] -- completed
+- Phase: [[phase-11-process-hardening|Phase 11]] -- active
+- Decision: [[layered-gate-enforcement-automated|Layered gate enforcement (automated)]] -- high confidence
 - Decision: [[gate-enforcement-checklist-plus-log|Gate enforcement: checklist + log]] -- high confidence
 - Decision: [[memory-convergence-mcp-only|Memory convergence: MCP-only]] -- high confidence
 - Decision: [[spec-two-tier-review-gate|Spec two-tier review gate]] -- high confidence
