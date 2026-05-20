@@ -11,6 +11,7 @@
 - [[phase-06-ship-and-workflow-assessment|Phase 6: Ship & Workflow Assessment]] -- completed
 - [[phase-07-soul-and-instructions-enhancement|Phase 7: Soul & Instructions Enhancement]] -- completed
 - [[phase-08-spec-skill|Phase 8: Spec Skill]] -- completed
+- [[phase-09-file-lifecycle-reference|Phase 9: File Lifecycle Reference]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -44,6 +45,7 @@
 - [[structural-placeholder-verification|Structural placeholder verification]] -- high confidence
 
 ### Journal
+- [[2026-05-19-phase-9-file-lifecycle-reference-complete|Phase 9 complete]] -- 2026-05-19
 - [[2026-05-19-phase-8-spec-skill-complete|Phase 8 complete]] -- 2026-05-19
 - [[2026-05-19-phase-7-soul-and-instructions-complete|Phase 7 complete]] -- 2026-05-19
 - [[2026-05-19-phase-5-and-6-complete|Phase 5 & 6 complete]] -- 2026-05-19
@@ -68,6 +70,8 @@
 
 ## Recent
 
+- 2026-05-19: Phase 9 completed -- file lifecycle routing table, orphan removed, 59 tests, budget 227/300
+- 2026-05-19: Phase 9 planned -- 3 tasks, file lifecycle reference + orphan cleanup
 - 2026-05-19: Phase 8 completed -- spec skill + two-tier review gate, 55 tests, 2 decisions
 - 2026-05-19: Phase 8 planned -- 4 tasks, spec skill + two-tier review gate
 - 2026-05-19: Phase 7 completed -- soul restructured, personal extracted, 48 tests, budget 191/300
@@ -76,5 +80,3 @@
 - 2026-05-19: Phase 6 planned -- 3 tasks, workflow assessment + GitHub ship
 - 2026-05-15: Phase 5 planned -- 3 tasks, 1 decision (venv-isolated-memory-deps)
 - 2026-05-15: Phase 4 completed -- 5 tasks done, memory_server vendored, 38 tests
-- 2026-05-15: Phase 4 planned -- 5 tasks, 2 decisions (vendor-memory-server, install-sh-scope-expansion)
-- 2026-05-15: Phase 3 completed -- 6 tasks done, v0.1.0 tagged, 34 tests
