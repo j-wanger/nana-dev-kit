@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-19
 updated: 2026-05-19
 source: plan
-status: active
+status: completed
 scope: ["~/.claude/skills/dev-plan/implementation-guide.md", "~/.claude/skills/dev-debrief/SKILL.md", "templates/.claude/hooks/session-start.sh", "tests/test_templates.sh", "docs/*"]
 entry_criteria: "Phase 10 complete"
 exit_criteria: "Pre-flight gate verification added, detective audit added, session-start reminder added, regression tests pass, committed"

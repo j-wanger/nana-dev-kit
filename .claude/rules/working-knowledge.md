@@ -55,9 +55,13 @@
   source: [[journal:2026-05-19-phase-9-file-lifecycle-reference-complete]] | activated: 2026-05-19
 - [uses: 1] specs/phase-09-file-lifecycle-reference.md is the second formal spec (Opus 9/10); first was phase-08-spec-skill.md (8/10)
   source: [[journal:2026-05-19-phase-9-file-lifecycle-reference-complete]] | activated: 2026-05-19
-- [uses: 1] Gate enforcement uses two layers: active-phase.md Gates section (5 checkpoints, preventive) + tasks.md gate log HTML comments (detective, auditable)
+- [uses: 3] Gate enforcement uses two layers: active-phase.md Gates section (5 checkpoints, preventive) + tasks.md gate log HTML comments (detective, auditable)
   source: [[decision:gate-enforcement-checklist-plus-log]] | activated: 2026-05-19
 - [uses: 1] Memory access is MCP-only: memory_store to write, memory_search to read; .memory/MEMORY.md files are inert legacy (not deleted, just not read)
   source: [[decision:memory-convergence-mcp-only]] | activated: 2026-05-19
 - [uses: 1] nana-soul.md now 52 lines (+1 from Phase 9: memory_search at session start in Memory discipline section)
   source: [[journal:2026-05-19-phase-10-memory-lifecycle-convergence-complete]] | activated: 2026-05-19
+- [uses: 1] Layered gate enforcement: preventive (implementation-guide.md pre-flight refusal) + detective (dev-debrief gate-compliance audit) + template (session-start.sh gate-check warning); mirrors Tier 0/1 review pattern
+  source: [[decision:layered-gate-enforcement-automated]] | activated: 2026-05-19
+- [uses: 1] Standard ceremony expects 4 gates (spec, approach, plan-review, tasks); Lite expects 2 (approach, tasks); n/a with justification is valid; SKIPPED without justification is flagged
+  source: [[journal:2026-05-19-phase-11-process-hardening-complete]] | activated: 2026-05-19

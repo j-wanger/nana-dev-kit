@@ -1,10 +1,10 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-05-19 by /dev-debrief (Phase 10 complete)
+> Last updated: 2026-05-19 by /dev-debrief (Phase 11 complete)
 
 ## Project Shape
 
-Shell/Markdown/Python scaffolding kit (55+ files: 12 .sh, 19 .md, 14 .py, 2 .json, 2 .txt, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3. Scaffolds a 5-layer Python dev harness into new/existing projects via two operational modes: `install.sh` (one-time global, includes memory MCP server with venv bootstrap + /spec skill + file lifecycle routing) and `make sync-rules` (per-project). 59 automated tests via `make test`. v0.2.0 on GitHub.
+Shell/Markdown/Python scaffolding kit (55+ files: 12 .sh, 19 .md, 14 .py, 2 .json, 2 .txt, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3. Scaffolds a 5-layer Python dev harness into new/existing projects via two operational modes: `install.sh` (one-time global, includes memory MCP server with venv bootstrap + /spec skill + file lifecycle routing) and `make sync-rules` (per-project). 61 automated tests via `make test`. v0.2.0 on GitHub.
 
 ## Directory Layout
 
@@ -58,7 +58,7 @@ nana-dev-kit/
 | .github/workflows/ | Kit CI (shellcheck + make test) | kit-ci.yml | .sh files, Makefile | CI pass/fail |
 | docs/ | Generated reports | report.html, workflow.html | Project files (scanned) | HTML package inventory + workflow breakdown |
 | scripts/ | Multi-agent sync + report generation | sync-rules.sh, generate-report.py, generate-workflow.py | AGENTS.md, project tree | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md, docs/report.html, docs/workflow.html |
-| tests/ | Automated bash test suite (59 tests) | helpers.sh, test_*.sh | install.sh, scripts/, templates/ | stdout (pass/fail) |
+| tests/ | Automated bash test suite (61 tests) | helpers.sh, test_*.sh | install.sh, scripts/, templates/ | stdout (pass/fail) |
 | templates/.claude/ | Claude Code config templates (16 files) | hooks/*, rules/* (soul 52 lines), skills/*, settings.json | -- | -- |
 | templates/.github/ | GitHub config templates (5 files) | workflows/ci.yml, PULL_REQUEST_TEMPLATE.md, CODEOWNERS, instructions/* | -- | -- |
 
@@ -77,16 +77,16 @@ Bash + python3. Hook scripts and install.sh use python3 for JSON parsing. memory
 | install.sh | templates/.claude/skills/py-init/SKILL.md, templates/.claude/skills/spec/, templates/.claude/rules/nana-soul.md, templates/.claude/rules/nana-personal.md, templates/.claude/rules/file-lifecycle.md, memory_server/ | ~/.claude/skills/py-init/SKILL.md, ~/.claude/skills/spec/, ~/.claude/rules/nana-soul.md, ~/.claude/rules/nana-personal.md, ~/.claude/rules/file-lifecycle.md, ~/.claude/.nana-dev-kit-path, ~/.claude/memory_server/, ~/.claude/settings.json | -- | One-time global install + MCP registration |
 | scripts/sync-rules.sh | AGENTS.md (in target project) | CLAUDE.md, .github/copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md | -- | Run per-project |
 | hooks/audit-log.sh | stdin (JSON from Claude Code) | .nana/audit.jsonl | CLAUDE_MODEL | PostToolUse |
-| hooks/session-start.sh | .claude/rules/py-session-state.md, .dev-wiki/_CURRENT_STATE.md | stdout | -- | SessionStart (2 sources, memory via MCP) |
+| hooks/session-start.sh | .claude/rules/py-session-state.md, .dev-wiki/_CURRENT_STATE.md, .claude/rules/active-phase.md | stdout | -- | SessionStart (2 sources + gate-check, memory via MCP) |
 
 ## Test Organization
 
 | Directory | What It Tests | Count |
 |-----------|---------------|-------|
 | self-test.md | Manual smoke tests for all 5 layers | 13 cases (manual) |
-| tests/ | Automated bash test suite | 4 scripts, 59 tests |
+| tests/ | Automated bash test suite | 4 scripts, 61 tests |
 
-Test harness: `tests/helpers.sh` provides assert functions (assert_eq, assert_file_exists, assert_contains, assert_exit_code) + summary reporting. Each `tests/test_*.sh` sources it. `make test` runs all scripts fail-fast. Tests use temp dirs (mktemp -d) for isolation. Breakdown: test_install.sh (21), test_sync_rules.sh (16), test_templates.sh (22, includes protocol + spec + lifecycle + budget regression).
+Test harness: `tests/helpers.sh` provides assert functions (assert_eq, assert_file_exists, assert_contains, assert_exit_code) + summary reporting. Each `tests/test_*.sh` sources it. `make test` runs all scripts fail-fast. Tests use temp dirs (mktemp -d) for isolation. Breakdown: test_install.sh (21), test_sync_rules.sh (16), test_templates.sh (24, includes protocol + spec + lifecycle + gate-check + budget regression).
 
 ## Known Issues
 

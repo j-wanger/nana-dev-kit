@@ -13,7 +13,7 @@
 - [[phase-08-spec-skill|Phase 8: Spec Skill]] -- completed
 - [[phase-09-file-lifecycle-reference|Phase 9: File Lifecycle Reference]] -- completed
 - [[phase-10-memory-lifecycle-convergence|Phase 10: Memory Lifecycle Convergence]] -- completed
-- [[phase-11-process-hardening|Phase 11: Process Hardening]] -- active
+- [[phase-11-process-hardening|Phase 11: Process Hardening]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -50,6 +50,7 @@
 - [[structural-placeholder-verification|Structural placeholder verification]] -- high confidence
 
 ### Journal
+- [[2026-05-19-phase-11-process-hardening-complete|Phase 11 complete]] -- 2026-05-19
 - [[2026-05-19-phase-10-memory-lifecycle-convergence-complete|Phase 10 complete]] -- 2026-05-19
 - [[2026-05-19-phase-9-file-lifecycle-reference-complete|Phase 9 complete]] -- 2026-05-19
 - [[2026-05-19-phase-8-spec-skill-complete|Phase 8 complete]] -- 2026-05-19
@@ -76,6 +77,7 @@
 
 ## Recent
 
+- 2026-05-19: Phase 11 completed -- layered gate enforcement (preventive + detective), tests 59 → 61, budget 229/300
 - 2026-05-19: Phase 11 planned -- 5 tasks, 1 decision, process hardening (layered gate enforcement)
 - 2026-05-19: Phase 10 completed -- memory MCP-only, gate enforcement, retro check (Phases 1-10), budget 229/300
 - 2026-05-19: Phase 10 planned -- 2 tasks, memory lifecycle convergence
@@ -85,5 +87,3 @@
 - 2026-05-19: Phase 8 planned -- 4 tasks, spec skill + two-tier review gate
 - 2026-05-19: Phase 7 completed -- soul restructured, personal extracted, 48 tests, budget 191/300
 - 2026-05-19: Phase 7 planned -- 5 tasks, soul/instructions enhancement + delineation
-- 2026-05-19: Phase 5 & 6 completed -- venv bootstrap, HTML reports, v0.2.0 shipped to GitHub
-- 2026-05-19: Phase 6 planned -- 3 tasks, workflow assessment + GitHub ship
