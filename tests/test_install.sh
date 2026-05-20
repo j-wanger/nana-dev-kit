@@ -35,6 +35,12 @@ assert_exit_code 0 diff "$THOME/.claude/skills/py-init/SKILL.md" "$PROJECT_ROOT/
 test_start "nana-soul.md content matches source"
 assert_exit_code 0 diff "$THOME/.claude/rules/nana-soul.md" "$PROJECT_ROOT/templates/.claude/rules/nana-soul.md"
 
+test_start "creates spec SKILL.md"
+assert_file_exists "$THOME/.claude/skills/spec/SKILL.md"
+
+test_start "creates spec-reviewer-prompt.md"
+assert_file_exists "$THOME/.claude/skills/spec/spec-reviewer-prompt.md"
+
 # Second run — idempotency
 cp "$THOME/.claude/rules/nana-soul.md" "$THOME/nana-first"
 cp "$THOME/.claude/skills/py-init/SKILL.md" "$THOME/skill-first"

@@ -32,6 +32,7 @@ After scaffolding:
 - `/py-lint` — ruff + mypy
 - `/py-test` — pytest with coverage
 - `/py-review` — 8-point PR checklist
+- `/spec` — structured contract before execution (two-tier review gate)
 
 ## The 5 Layers
 

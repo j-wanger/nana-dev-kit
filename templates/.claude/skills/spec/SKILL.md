@@ -1,0 +1,113 @@
+---
+name: spec
+description: Write a structured spec/contract before execution. Use when starting non-trivial work, when the user says "write a spec", "plan this task", or "contract for this". Produces a 9-section contract with two-tier review gate.
+---
+
+# Spec — Structured Contract Creation
+
+Write a spec before execution to prevent the #1 agent failure mode: executing a reasonable interpretation of an ambiguous contract for hours. Constraints matter more than objectives — the negative boundaries are the safety rails.
+
+## Pre-check: Dev-Wiki Detection
+
+```bash
+test -f .dev-wiki/_CURRENT_STATE.md && grep -q '^\- \[ \]' .dev-wiki/tasks.md 2>/dev/null
+```
+
+If BOTH true (dev-wiki exists AND uncompleted tasks): "Active dev-wiki phase detected. Use `/dev-plan` to plan within the dev-wiki lifecycle." **STOP.**
+
+If dev-wiki exists but no uncompleted tasks, or no dev-wiki: proceed.
+
+## Step 1: Gather Context
+
+Read available project state (all optional — use `test -f` guards):
+- `.dev-wiki/_CURRENT_STATE.md` or `PROJECT_STATE.md`
+- `specs/` directory (existing specs for consistency)
+- Recent git log for project activity
+
+## Step 2: Apply Thinking Protocol
+
+Before drafting, reason internally (no output artifact):
+- Is this the right problem to spec? Challenge the frame.
+- Are the constraints real or inherited assumptions?
+- Do we have enough information, or should we ask first?
+
+If information is insufficient: ask the user targeted questions before drafting. Do NOT draft with gaps and hope the user catches them.
+
+## Step 3: Draft Spec
+
+Use this 9-section template. Fill every section — empty sections signal missing thinking.
+
+```markdown
+# Spec: [Task Name]
+
+## Objective
+[1-2 sentences. The outcome, not the steps.]
+
+## Context
+[Why this matters. What preceded it. Self-contained — readable after compaction.]
+
+## Scope
+### In scope
+- [Explicit list]
+### Out of scope
+- [Explicit list — prevents scope creep]
+
+## Approach
+[High-level direction. NOT step-by-step — constrain the direction, not the path.]
+
+## Constraints (CRITICAL)
+[Safety rails. Each prevents a specific known failure mode.]
+- [Constraint: prevents <specific bad outcome>]
+
+## Deliverables
+[Concrete, enumerable outputs. Not "improved code" but "3 files: X, Y, Z."]
+
+## Exit Criteria (machine-checkable)
+[Each is a command returning pass/fail.]
+- [ ] `<verification command>`
+
+## Checkpoints
+[When to pause and report. Proportional to risk.]
+- After [milestone]: report progress, wait for approval
+- If [unexpected condition]: STOP and ask
+
+## Assumptions
+[What must be true. Each has a stop-if-violated fallback.]
+- [Assumption]. If false: [what to do instead]
+```
+
+## Step 4: Two-Tier Review Gate
+
+### Tier 0 — Structural Lint (inline, no tokens)
+
+Verify before dispatching Tier 1. Fix failures first.
+
+- [ ] All 9 H2 headers present (Objective through Assumptions)
+- [ ] Scope has both `### In scope` and `### Out of scope`
+- [ ] Constraints has ≥1 bullet
+- [ ] Exit Criteria has ≥1 `- [ ]` with backtick command
+- [ ] Checkpoints has ≥1 bullet
+- [ ] Assumptions has ≥1 bullet with fallback ("if false", "if missing")
+- [ ] No self-containment violations ("as discussed", "as we agreed", "established earlier")
+
+If any fail: fix, then re-check. Do NOT proceed to Tier 1 with structural failures.
+
+### Tier 1 — Semantic Review (subagent)
+
+Read `spec-reviewer-prompt.md` (companion file in this skill directory). Dispatch an Agent with the spec + reviewer prompt. Collect Score/Issues/Suggestions/Verdict.
+
+- **9-10 (accept):** Present spec to user.
+- **6-8 (revise):** Incorporate feedback, re-run Tier 0, present revised spec.
+- **1-5 (reject):** Surface CRITICAL issues to user alongside the spec.
+
+If Agent tool unavailable: warn "Spec reviewer unavailable" and present with disclaimer.
+
+## Step 5: User Approval (Hard Gate)
+
+Present the spec. Wait for explicit approval before any execution begins.
+
+**Do NOT implement anything until the user approves the spec.**
+
+## Step 6: Persist
+
+Write to `specs/<slug>.md` (`mkdir -p specs/` first). Slug: kebab-case from Objective, ≤40 chars.

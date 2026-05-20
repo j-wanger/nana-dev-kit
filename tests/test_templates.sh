@@ -57,6 +57,24 @@ assert_contains "$PROJECT_ROOT/templates/AGENTS.md" 'Pre-commit sequence'
 test_start "nana-personal.md exists"
 assert_file_exists "$PROJECT_ROOT/templates/.claude/rules/nana-personal.md"
 
+# --- Spec skill ---
+SPEC="$PROJECT_ROOT/templates/.claude/skills/spec/SKILL.md"
+
+test_start "spec SKILL.md exists"
+assert_file_exists "$SPEC"
+
+test_start "spec has Constraints section"
+assert_contains "$SPEC" 'Constraints'
+
+test_start "spec has Checkpoints section"
+assert_contains "$SPEC" 'Checkpoints'
+
+test_start "spec has two-tier review gate"
+assert_contains "$SPEC" 'Tier 0'
+
+test_start "spec-reviewer-prompt.md exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/spec/spec-reviewer-prompt.md"
+
 # --- Instruction budget regression test ---
 # Sum always-loaded files: soul + personal + nana.instructions.md + AGENTS.md
 # Ceiling: 300 lines total before instruction-following degrades

@@ -9,12 +9,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILL_SRC="$SCRIPT_DIR/templates/.claude/skills/py-init/SKILL.md"
 SOUL_SRC="$SCRIPT_DIR/templates/.claude/rules/nana-soul.md"
 PERSONAL_SRC="$SCRIPT_DIR/templates/.claude/rules/nana-personal.md"
+SPEC_SRC="$SCRIPT_DIR/templates/.claude/skills/spec"
 
 MEMORY_SRC="$SCRIPT_DIR/memory_server"
 
 # Validate source files before copying
 missing=0
-for src in "$SKILL_SRC" "$SOUL_SRC" "$PERSONAL_SRC"; do
+for src in "$SKILL_SRC" "$SOUL_SRC" "$PERSONAL_SRC" "$SPEC_SRC/SKILL.md"; do
   if [ ! -f "$src" ]; then
     echo "Error: source file not found: $src" >&2
     missing=1
@@ -28,9 +29,11 @@ fi
 
 echo "Installing Nana Dev Kit..."
 
-# --- Global skill: /py-init ---
-mkdir -p ~/.claude/skills/py-init
+# --- Global skills: /py-init + /spec ---
+mkdir -p ~/.claude/skills/py-init ~/.claude/skills/spec
 cp "$SKILL_SRC" ~/.claude/skills/py-init/SKILL.md
+cp "$SPEC_SRC"/SKILL.md ~/.claude/skills/spec/SKILL.md
+cp "$SPEC_SRC"/spec-reviewer-prompt.md ~/.claude/skills/spec/spec-reviewer-prompt.md
 
 # --- Identity rules (Claude Code global) ---
 mkdir -p ~/.claude/rules
@@ -84,6 +87,7 @@ with open(path, 'w') as f:
 echo ""
 echo "Installed:"
 echo "  ~/.claude/skills/py-init/SKILL.md   — run /py-init in any Python project"
+echo "  ~/.claude/skills/spec/              — run /spec to write contracts before execution"
 echo "  ~/.claude/rules/nana-soul.md        — Nana identity (Claude Code)"
 echo "  ~/.claude/rules/nana-personal.md    — personal profile (customize per user)"
 echo "  ~/.claude/.nana-dev-kit-path        — kit location for /py-init"
