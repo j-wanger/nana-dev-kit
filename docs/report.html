@@ -40,12 +40,12 @@
 <body>
 
 <h1>Nana Dev Kit</h1>
-<p class="subtitle">5-Layer Python Development Harness Scaffolder &mdash; Package Report v0.2.0 &mdash; Generated 2026-05-19 14:50</p>
+<p class="subtitle">5-Layer Python Development Harness Scaffolder &mdash; Package Report v0.2.0 &mdash; Generated 2026-05-19 21:19</p>
 
 <div class="stats">
-  <div class="stat"><div class="num">57</div><div class="label">Files</div></div>
-  <div class="stat"><div class="num">6,445</div><div class="label">Lines of Code</div></div>
-  <div class="stat"><div class="num">48</div><div class="label">Automated Tests</div></div>
+  <div class="stat"><div class="num">62</div><div class="label">Files</div></div>
+  <div class="stat"><div class="num">6,906</div><div class="label">Lines of Code</div></div>
+  <div class="stat"><div class="num">59</div><div class="label">Automated Tests</div></div>
   <div class="stat"><div class="num">5</div><div class="label">Harness Layers</div></div>
   <div class="stat"><div class="num">v0.2.0</div><div class="label">Latest Tag</div></div>
 </div>
@@ -125,22 +125,22 @@
 
 <h2>File Inventory</h2>
 <div class="category">
-  <h3>Core Scripts <span class="badge badge-green">5 files, 1,223 lines</span></h3>
+  <h3>Core Scripts <span class="badge badge-green">5 files, 1,230 lines</span></h3>
   <ul class="file-list">
     <li><span>Makefile</span><span class='lines'>23</span></li>
-    <li><span>install.sh</span><span class='lines'>93</span></li>
+    <li><span>install.sh</span><span class='lines'>100</span></li>
     <li><span>scripts/generate-report.py</span><span class='lines'>298</span></li>
     <li><span>scripts/generate-workflow.py</span><span class='lines'>738</span></li>
     <li><span>scripts/sync-rules.sh</span><span class='lines'>71</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Test Suite <span class="badge badge-green">4 files, 368 lines</span></h3>
+  <h3>Test Suite <span class="badge badge-green">4 files, 408 lines</span></h3>
   <ul class="file-list">
     <li><span>tests/helpers.sh</span><span class='lines'>74</span></li>
-    <li><span>tests/test_install.sh</span><span class='lines'>119</span></li>
+    <li><span>tests/test_install.sh</span><span class='lines'>128</span></li>
     <li><span>tests/test_sync_rules.sh</span><span class='lines'>96</span></li>
-    <li><span>tests/test_templates.sh</span><span class='lines'>79</span></li>
+    <li><span>tests/test_templates.sh</span><span class='lines'>110</span></li>
   </ul>
 </div>
 <div class="category">
@@ -163,22 +163,24 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 1: Instructions <span class="badge badge-green">3 files, 176 lines</span></h3>
+  <h3>Templates — Layer 1: Instructions <span class="badge badge-green">3 files, 178 lines</span></h3>
   <ul class="file-list">
-    <li><span>templates/.github/instructions/nana.instructions.md</span><span class='lines'>53</span></li>
+    <li><span>templates/.github/instructions/nana.instructions.md</span><span class='lines'>55</span></li>
     <li><span>templates/.github/instructions/workflow.instructions.md</span><span class='lines'>37</span></li>
     <li><span>templates/AGENTS.md</span><span class='lines'>86</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 2: Identity <span class="badge badge-green">2 files, 70 lines</span></h3>
+  <h3>Templates — Layer 2: Identity <span class="badge badge-green">4 files, 107 lines</span></h3>
   <ul class="file-list">
-    <li><span>templates/.claude/rules/nana-soul.md</span><span class='lines'>49</span></li>
+    <li><span>templates/.claude/rules/file-lifecycle.md</span><span class='lines'>32</span></li>
+    <li><span>templates/.claude/rules/nana-personal.md</span><span class='lines'>3</span></li>
+    <li><span>templates/.claude/rules/nana-soul.md</span><span class='lines'>51</span></li>
     <li><span>templates/.claude/rules/py-session-state.md</span><span class='lines'>21</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 3: Hooks <span class="badge badge-green">8 files, 254 lines</span></h3>
+  <h3>Templates — Layer 3: Hooks <span class="badge badge-green">8 files, 246 lines</span></h3>
   <ul class="file-list">
     <li><span>templates/.claude/hooks/audit-log.sh</span><span class='lines'>21</span></li>
     <li><span>templates/.claude/hooks/auto-ruff-format.sh</span><span class='lines'>15</span></li>
@@ -186,12 +188,12 @@
     <li><span>templates/.claude/hooks/check-tests-were-run.sh</span><span class='lines'>47</span></li>
     <li><span>templates/.claude/hooks/py-review-stop-prompt.md</span><span class='lines'>10</span></li>
     <li><span>templates/.claude/hooks/scan-secrets.sh</span><span class='lines'>24</span></li>
-    <li><span>templates/.claude/hooks/session-start.sh</span><span class='lines'>44</span></li>
+    <li><span>templates/.claude/hooks/session-start.sh</span><span class='lines'>36</span></li>
     <li><span>templates/.claude/settings.json</span><span class='lines'>58</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 3: Skills <span class="badge badge-green">6 files, 504 lines</span></h3>
+  <h3>Templates — Layer 3: Skills <span class="badge badge-green">8 files, 694 lines</span></h3>
   <ul class="file-list">
     <li><span>templates/.claude/skills/py-init/SKILL.md</span><span class='lines'>168</span></li>
     <li><span>templates/.claude/skills/py-init/scanner.md</span><span class='lines'>102</span></li>
@@ -199,6 +201,8 @@
     <li><span>templates/.claude/skills/py-lint/SKILL.md</span><span class='lines'>37</span></li>
     <li><span>templates/.claude/skills/py-review/SKILL.md</span><span class='lines'>58</span></li>
     <li><span>templates/.claude/skills/py-test/SKILL.md</span><span class='lines'>41</span></li>
+    <li><span>templates/.claude/skills/spec/SKILL.md</span><span class='lines'>113</span></li>
+    <li><span>templates/.claude/skills/spec/spec-reviewer-prompt.md</span><span class='lines'>77</span></li>
   </ul>
 </div>
 <div class="category">
@@ -217,9 +221,9 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Documentation <span class="badge badge-green">3 files, 313 lines</span></h3>
+  <h3>Documentation <span class="badge badge-green">3 files, 314 lines</span></h3>
   <ul class="file-list">
-    <li><span>README.md</span><span class='lines'>58</span></li>
+    <li><span>README.md</span><span class='lines'>59</span></li>
     <li><span>VERSION</span><span class='lines'>1</span></li>
     <li><span>self-test.md</span><span class='lines'>254</span></li>
   </ul>
@@ -232,13 +236,14 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Other <span class="badge badge-green">5 files, 918 lines</span></h3>
+  <h3>Other <span class="badge badge-green">6 files, 1,110 lines</span></h3>
   <ul class="file-list">
-    <li><span>.claude/rules/active-knowledge.md</span><span class='lines'>22</span></li>
-    <li><span>.claude/rules/active-phase.md</span><span class='lines'>16</span></li>
-    <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>39</span></li>
-    <li><span>docs/report.html</span><span class='lines'>260</span></li>
+    <li><span>.claude/rules/active-phase.md</span><span class='lines'>11</span></li>
+    <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>57</span></li>
+    <li><span>docs/report.html</span><span class='lines'>265</span></li>
     <li><span>docs/workflow.html</span><span class='lines'>581</span></li>
+    <li><span>specs/phase-08-spec-skill.md</span><span class='lines'>113</span></li>
+    <li><span>specs/phase-09-file-lifecycle-reference.md</span><span class='lines'>83</span></li>
   </ul>
 </div>
 <h2>Test Coverage</h2>
@@ -251,11 +256,11 @@
 </table>
 
 <h2>Recent Git History</h2>
-<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">84b6d8c Update dev-wiki session state
-1624291 Remove ephemeral dev-wiki session files
-d22a44f Add workflow breakdown, bump to v0.2.0, prepare for GitHub (Phase 6)
-ff0d2bb Add venv bootstrap and HTML package report (Phase 5)
-88e8079 Integrate dev-wiki lifecycle and memory MCP server (Phase 4)</pre>
+<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">8e8e1b5 Debrief Phase 9: file lifecycle reference shipped, 59 tests
+89b46f6 Add file lifecycle routing table, remove PROJECT_STATE.md orphan (Phase 9)
+b31ecdb Debrief Phase 8: spec skill shipped, 55 tests, 2 decisions
+8f5c569 Add /spec skill with two-tier review gate (Phase 8)
+b9dd290 Quick debrief: capture thinking protocol rewrite in session notes</pre>
 
 <footer>
   Generated by <code>scripts/generate-report.py</code> &mdash; run <code>make report</code> to regenerate

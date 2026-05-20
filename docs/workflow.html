@@ -55,7 +55,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <body>
 
 <h1>Nana Dev Kit &mdash; Workflow Breakdown</h1>
-<p class="subtitle">5-Layer Python Development Harness &mdash; v0.2.0 &mdash; Generated 2026-05-19 14:50</p>
+<p class="subtitle">5-Layer Python Development Harness &mdash; v0.2.0 &mdash; Generated 2026-05-19 21:19</p>
 
 <div class="toc">
 <h3>Contents</h3>
@@ -322,14 +322,16 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <h3>Layer 1: Instructions <span class="badge badge-blue">3 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
-<tr><td><code>.github/instructions/nana.instructions.md</code></td><td>53</td><td>Nana identity for GitHub Copilot</td></tr>
+<tr><td><code>.github/instructions/nana.instructions.md</code></td><td>55</td><td>Nana identity for GitHub Copilot</td></tr>
 <tr><td><code>.github/instructions/workflow.instructions.md</code></td><td>37</td><td>Workflow instructions for Copilot</td></tr>
 <tr><td><code>AGENTS.md</code></td><td>86</td><td>Single source of truth for agent instructions</td></tr>
 </table>
-<h3>Layer 2: Identity <span class="badge badge-blue">2 files</span></h3>
+<h3>Layer 2: Identity <span class="badge badge-blue">4 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
-<tr><td><code>.claude/rules/nana-soul.md</code></td><td>49</td><td>Development personality and technical posture</td></tr>
+<tr><td><code>.claude/rules/file-lifecycle.md</code></td><td>32</td><td></td></tr>
+<tr><td><code>.claude/rules/nana-personal.md</code></td><td>3</td><td></td></tr>
+<tr><td><code>.claude/rules/nana-soul.md</code></td><td>51</td><td>Development personality and technical posture</td></tr>
 <tr><td><code>.claude/rules/py-session-state.md</code></td><td>21</td><td>Compaction-safe session state template</td></tr>
 </table>
 <h3>Layer 3: Hooks <span class="badge badge-blue">8 files</span></h3>
@@ -341,10 +343,10 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/hooks/check-tests-were-run.sh</code></td><td>47</td><td>Stop: gates completion on pytest execution</td></tr>
 <tr><td><code>.claude/hooks/py-review-stop-prompt.md</code></td><td>10</td><td>Stop: 6-point code review checklist prompt</td></tr>
 <tr><td><code>.claude/hooks/scan-secrets.sh</code></td><td>24</td><td>PostToolUse: scans for hardcoded secrets</td></tr>
-<tr><td><code>.claude/hooks/session-start.sh</code></td><td>44</td><td>SessionStart: loads 4 context sources</td></tr>
+<tr><td><code>.claude/hooks/session-start.sh</code></td><td>36</td><td>SessionStart: loads 4 context sources</td></tr>
 <tr><td><code>.claude/settings.json</code></td><td>58</td><td>Hook wiring: maps lifecycle events to scripts</td></tr>
 </table>
-<h3>Layer 3: Skills <span class="badge badge-blue">6 files</span></h3>
+<h3>Layer 3: Skills <span class="badge badge-blue">8 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
 <tr><td><code>.claude/skills/py-init/SKILL.md</code></td><td>168</td><td>/py-init skill: scaffold or retrofit harness</td></tr>
@@ -353,6 +355,8 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/skills/py-lint/SKILL.md</code></td><td>37</td><td></td></tr>
 <tr><td><code>.claude/skills/py-review/SKILL.md</code></td><td>58</td><td></td></tr>
 <tr><td><code>.claude/skills/py-test/SKILL.md</code></td><td>41</td><td></td></tr>
+<tr><td><code>.claude/skills/spec/SKILL.md</code></td><td>113</td><td></td></tr>
+<tr><td><code>.claude/skills/spec/spec-reviewer-prompt.md</code></td><td>77</td><td></td></tr>
 </table>
 <h3>Layer 4: Pre-commit <span class="badge badge-blue">1 files</span></h3>
 <table>
@@ -421,11 +425,11 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <div class="quality-card">
 <h4>Test Coverage</h4>
 <table>
-<tr><td><code>test_install.sh</code></td><td>13 assertions, 119 lines</td></tr>
+<tr><td><code>test_install.sh</code></td><td>16 assertions, 128 lines</td></tr>
 <tr><td><code>test_sync_rules.sh</code></td><td>15 assertions, 96 lines</td></tr>
-<tr><td><code>test_templates.sh</code></td><td>13 assertions, 79 lines</td></tr>
+<tr><td><code>test_templates.sh</code></td><td>21 assertions, 110 lines</td></tr>
 </table>
-<p style="margin-top:0.5rem;font-size:0.85rem">Total: <strong>41 assertions</strong> across 3 test scripts. Run with <code>make test</code>.</p>
+<p style="margin-top:0.5rem;font-size:0.85rem">Total: <strong>52 assertions</strong> across 3 test scripts. Run with <code>make test</code>.</p>
 <p style="font-size:0.85rem">Edge cases covered: missing source files, unwritable directories, MCP registration (no file / partial / complete), venv fallback, idempotency (diff between runs).</p>
 </div>
 
@@ -573,7 +577,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 </pre>
 
 <footer>
-  Nana Dev Kit v0.2.0 &mdash; Workflow Breakdown &mdash; Generated 2026-05-19 14:50<br>
+  Nana Dev Kit v0.2.0 &mdash; Workflow Breakdown &mdash; Generated 2026-05-19 21:19<br>
   <code>scripts/generate-workflow.py</code> &mdash; run <code>make workflow</code> to regenerate
 </footer>
 
