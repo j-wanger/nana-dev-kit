@@ -12,6 +12,7 @@
 - [[phase-07-soul-and-instructions-enhancement|Phase 7: Soul & Instructions Enhancement]] -- completed
 - [[phase-08-spec-skill|Phase 8: Spec Skill]] -- completed
 - [[phase-09-file-lifecycle-reference|Phase 9: File Lifecycle Reference]] -- completed
+- [[phase-10-memory-lifecycle-convergence|Phase 10: Memory Lifecycle Convergence]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -30,6 +31,8 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[gate-enforcement-checklist-plus-log|Gate enforcement: checklist + log]] -- high confidence
+- [[memory-convergence-mcp-only|Memory convergence: MCP-only]] -- high confidence
 - [[spec-two-tier-review-gate|Spec two-tier review gate]] -- high confidence
 - [[spec-persistence-adaptive|Spec persistence adaptive routing]] -- high confidence
 - [[soul-vs-agents-delineation|Soul vs AGENTS.md delineation]] -- high confidence
@@ -45,6 +48,7 @@
 - [[structural-placeholder-verification|Structural placeholder verification]] -- high confidence
 
 ### Journal
+- [[2026-05-19-phase-10-memory-lifecycle-convergence-complete|Phase 10 complete]] -- 2026-05-19
 - [[2026-05-19-phase-9-file-lifecycle-reference-complete|Phase 9 complete]] -- 2026-05-19
 - [[2026-05-19-phase-8-spec-skill-complete|Phase 8 complete]] -- 2026-05-19
 - [[2026-05-19-phase-7-soul-and-instructions-complete|Phase 7 complete]] -- 2026-05-19
@@ -70,6 +74,8 @@
 
 ## Recent
 
+- 2026-05-19: Phase 10 completed -- memory MCP-only, gate enforcement, retro check (Phases 1-10), budget 229/300
+- 2026-05-19: Phase 10 planned -- 2 tasks, memory lifecycle convergence
 - 2026-05-19: Phase 9 completed -- file lifecycle routing table, orphan removed, 59 tests, budget 227/300
 - 2026-05-19: Phase 9 planned -- 3 tasks, file lifecycle reference + orphan cleanup
 - 2026-05-19: Phase 8 completed -- spec skill + two-tier review gate, 55 tests, 2 decisions
@@ -78,5 +84,3 @@
 - 2026-05-19: Phase 7 planned -- 5 tasks, soul/instructions enhancement + delineation
 - 2026-05-19: Phase 5 & 6 completed -- venv bootstrap, HTML reports, v0.2.0 shipped to GitHub
 - 2026-05-19: Phase 6 planned -- 3 tasks, workflow assessment + GitHub ship
-- 2026-05-15: Phase 5 planned -- 3 tasks, 1 decision (venv-isolated-memory-deps)
-- 2026-05-15: Phase 4 completed -- 5 tasks done, memory_server vendored, 38 tests

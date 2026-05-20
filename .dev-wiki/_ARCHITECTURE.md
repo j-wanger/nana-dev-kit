@@ -1,6 +1,6 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-05-19 by /dev-debrief (Phase 9 complete)
+> Last updated: 2026-05-19 by /dev-debrief (Phase 10 complete)
 
 ## Project Shape
 
@@ -59,7 +59,7 @@ nana-dev-kit/
 | docs/ | Generated reports | report.html, workflow.html | Project files (scanned) | HTML package inventory + workflow breakdown |
 | scripts/ | Multi-agent sync + report generation | sync-rules.sh, generate-report.py, generate-workflow.py | AGENTS.md, project tree | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md, docs/report.html, docs/workflow.html |
 | tests/ | Automated bash test suite (59 tests) | helpers.sh, test_*.sh | install.sh, scripts/, templates/ | stdout (pass/fail) |
-| templates/.claude/ | Claude Code config templates (16 files) | hooks/*, rules/*, skills/*, settings.json | -- | -- |
+| templates/.claude/ | Claude Code config templates (16 files) | hooks/*, rules/* (soul 52 lines), skills/*, settings.json | -- | -- |
 | templates/.github/ | GitHub config templates (5 files) | workflows/ci.yml, PULL_REQUEST_TEMPLATE.md, CODEOWNERS, instructions/* | -- | -- |
 
 ## Cross-File Dependencies
@@ -77,7 +77,7 @@ Bash + python3. Hook scripts and install.sh use python3 for JSON parsing. memory
 | install.sh | templates/.claude/skills/py-init/SKILL.md, templates/.claude/skills/spec/, templates/.claude/rules/nana-soul.md, templates/.claude/rules/nana-personal.md, templates/.claude/rules/file-lifecycle.md, memory_server/ | ~/.claude/skills/py-init/SKILL.md, ~/.claude/skills/spec/, ~/.claude/rules/nana-soul.md, ~/.claude/rules/nana-personal.md, ~/.claude/rules/file-lifecycle.md, ~/.claude/.nana-dev-kit-path, ~/.claude/memory_server/, ~/.claude/settings.json | -- | One-time global install + MCP registration |
 | scripts/sync-rules.sh | AGENTS.md (in target project) | CLAUDE.md, .github/copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md | -- | Run per-project |
 | hooks/audit-log.sh | stdin (JSON from Claude Code) | .nana/audit.jsonl | CLAUDE_MODEL | PostToolUse |
-| hooks/session-start.sh | .claude/rules/py-session-state.md, .dev-wiki/_CURRENT_STATE.md, .memory/MEMORY.md | stdout | -- | SessionStart (3 sources) |
+| hooks/session-start.sh | .claude/rules/py-session-state.md, .dev-wiki/_CURRENT_STATE.md | stdout | -- | SessionStart (2 sources, memory via MCP) |
 
 ## Test Organization
 

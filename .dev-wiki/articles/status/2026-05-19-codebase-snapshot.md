@@ -2,7 +2,7 @@
 title: "Codebase Snapshot 2026-05-19"
 aliases: []
 category: status
-tags: [snapshot, v0.2.0, phase-8]
+tags: [snapshot, v0.2.0, phase-10]
 parents: []
 created: 2026-05-19
 updated: 2026-05-19
@@ -17,23 +17,25 @@ source: debrief
 |--------|-------|
 | Version | 0.2.0 |
 | Files | 55+ |
-| Automated tests | 55 (4 scripts) |
-| Phases completed | 8 |
-| Decisions recorded | 13 |
-| Instruction budget | 195/300 lines |
+| Automated tests | 59 (4 scripts) |
+| Phases completed | 10 |
+| Decisions recorded | 15 |
+| Instruction budget | 229/300 lines |
 
 ## Recent Commits (last 5)
 
-- `8f5c569` Add /spec skill with two-tier review gate (Phase 8)
-- `b9dd290` Quick debrief: capture thinking protocol rewrite
-- `5efa5cb` Rewrite thinking protocol with distinctive cognitive moves
-- `7af80f3` Debrief Phase 7: soul restructured, 48 tests, budget 191/300
-- `b532074` Update dev-wiki for Phase 7 planning and completion
+- `f0fe90d` Add gate enforcement: checklist in active-phase.md + gate log in tasks.md
+- `dc680a7` Converge memory to MCP-only, remove stale MEMORY.md read (Phase 10)
+- `bca7458` Regenerate HTML reports after Phases 7-9
+- `8e8e1b5` Debrief Phase 9: file lifecycle reference shipped, 59 tests
+- `89b46f6` Add file lifecycle routing table, remove PROJECT_STATE.md orphan (Phase 9)
 
 ## Key Changes Since Last Snapshot (2026-05-15)
 
-- Phases 5-8 completed (venv bootstrap, HTML reports, v0.2.0 ship, soul enhancement, spec skill)
-- Tests: 34 -> 55 (+21)
-- New: /spec skill (two-tier review gate), workflow.html, report.html
+- Phases 5-10 completed (venv bootstrap, HTML reports, v0.2.0 ship, soul enhancement, spec skill, file lifecycle, memory convergence)
+- Tests: 34 -> 59 (+25)
+- New: /spec skill (two-tier review gate), workflow.html, report.html, file-lifecycle.md
 - Soul restructured with thinking protocol, memory discipline; personal extracted
-- install.sh expanded: 3 -> 5 copied items (+ nana-personal + spec skill)
+- Memory converged to MCP-only (MEMORY.md removed from session-start)
+- Gate enforcement added (checklist + audit log) after Phase 10 process violation
+- install.sh expanded: 3 -> 6 copied items (+ nana-personal + spec skill + file-lifecycle)

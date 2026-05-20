@@ -23,8 +23,8 @@
   source: [[decision:kit-ci-separate-from-template]] | activated: 2026-05-15
 - [uses: 1] memory_server/ vendored from nanaclaw (12 .py, 2,373 LOC); runs via MCP stdio (python -m memory_server)
   source: [[decision:vendor-memory-server]] | activated: 2026-05-15
-- [uses: 1] session-start.sh reads 3 sources: py-session-state.md, dev-wiki/_CURRENT_STATE.md, .memory/MEMORY.md; PROJECT_STATE.md orphan removed in Phase 9
-  source: [[journal:2026-05-19-phase-9-file-lifecycle-reference-complete]] | activated: 2026-05-19
+- [uses: 1] session-start.sh reads 2 sources: py-session-state.md, dev-wiki/_CURRENT_STATE.md; memory access is MCP-only (memory_search); MEMORY.md removed in Phase 10
+  source: [[decision:memory-convergence-mcp-only]] | activated: 2026-05-19
 - [uses: 1] MCP registration uses idempotent python3 JSON merge; handles 3 cases: no settings.json, existing without mcpServers, existing with mcpServers
   source: [[decision:install-sh-scope-expansion]] | activated: 2026-05-15
 - [uses: 1] memory_server pip deps auto-installed by install.sh in venv at ~/.claude/memory_server/.venv/ (updated Phase 5)
@@ -41,8 +41,8 @@
   source: [[decision:soul-vs-agents-delineation]] | activated: 2026-05-19
 - [uses: 1] nana-soul.md Thinking protocol has trigger clause (trade-offs/design/advisory), cost-of-error proportionality, 3 moves (read subtext, challenge frame, delay commitment); 51 lines total
   source: [[journal:2026-05-19-phase-7-soul-and-instructions-complete]] | activated: 2026-05-19
-- [uses: 1] Instruction budget: soul + personal + lifecycle + AGENTS.md + nana.instructions.md = 227/300 lines; regression test in test_templates.sh enforces ceiling
-  source: [[journal:2026-05-19-phase-9-file-lifecycle-reference-complete]] | activated: 2026-05-19
+- [uses: 1] Instruction budget: soul (52) + personal + lifecycle + AGENTS.md + nana.instructions.md = 229/300 lines; regression test in test_templates.sh enforces ceiling
+  source: [[journal:2026-05-19-phase-10-memory-lifecycle-convergence-complete]] | activated: 2026-05-19
 - [uses: 1] install.sh copies 6 items: py-init SKILL.md, spec/ skill, nana-soul.md, nana-personal.md, file-lifecycle.md, kit path marker + memory_server/ + MCP registration
   source: [[journal:2026-05-19-phase-9-file-lifecycle-reference-complete]] | activated: 2026-05-19
 - [uses: 1] /spec skill has two-tier review gate: Tier 0 structural lint (inline, deterministic) + Tier 1 semantic subagent (6 dimensions); adaptive persistence (dev-wiki -> /dev-plan, standalone -> specs/)
@@ -55,3 +55,9 @@
   source: [[journal:2026-05-19-phase-9-file-lifecycle-reference-complete]] | activated: 2026-05-19
 - [uses: 1] specs/phase-09-file-lifecycle-reference.md is the second formal spec (Opus 9/10); first was phase-08-spec-skill.md (8/10)
   source: [[journal:2026-05-19-phase-9-file-lifecycle-reference-complete]] | activated: 2026-05-19
+- [uses: 1] Gate enforcement uses two layers: active-phase.md Gates section (5 checkpoints, preventive) + tasks.md gate log HTML comments (detective, auditable)
+  source: [[decision:gate-enforcement-checklist-plus-log]] | activated: 2026-05-19
+- [uses: 1] Memory access is MCP-only: memory_store to write, memory_search to read; .memory/MEMORY.md files are inert legacy (not deleted, just not read)
+  source: [[decision:memory-convergence-mcp-only]] | activated: 2026-05-19
+- [uses: 1] nana-soul.md now 52 lines (+1 from Phase 9: memory_search at session start in Memory discipline section)
+  source: [[journal:2026-05-19-phase-10-memory-lifecycle-convergence-complete]] | activated: 2026-05-19

@@ -1,48 +1,50 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-19 by /dev-debrief (Phase 9 complete)
+> Last updated: 2026-05-19 by /dev-debrief (Phase 10 complete)
 
 ## Recommended Next Action
 
-Phase 9 complete. Run `/dev-plan` when ready for Phase 10. Review docs/workflow.html for usability assessment if not yet done.
+Phase 10 complete (all 10 phases done). Run `/dev-plan` when ready for Phase 11. Retro check at Phase 10 flagged process discipline as the primary improvement area -- consider a process-hardening or refinement phase next.
 
 ## Active Phase
 
-**[[phase-09-file-lifecycle-reference|Phase 9: File Lifecycle Reference]]** (status: completed)
+**[[phase-10-memory-lifecycle-convergence|Phase 10: Memory Lifecycle Convergence]]** (status: completed)
 
-Entry criteria: MET (Phase 8 complete)
-Exit criteria: 3/3 -- lifecycle reference, tests, commit -- ALL MET
+Entry criteria: MET (Phase 9 complete)
+Exit criteria: 2/2 -- MEMORY.md removed + soul/lifecycle updated + tests pass + committed -- ALL MET
 
-Progress: 100% (3/3 tasks done)
+Progress: 100% (2/2 tasks done)
 
 ## Active Phase Contract
 
-Phase: 9 - File Lifecycle Reference
-Tasks: 3 (1M + 2S, see tasks.md)
+Phase: 10 - Memory Lifecycle Convergence
+Tasks: 2 (1M + 1S, see tasks.md)
 Transition: continue this session
-Abort: If budget exceeds 300 lines after trimming, escalate
+Abort: if blocked >3 attempts, ask user: skip or abort
 
 ## Recent Decisions
 
 | Decision | Confidence | Date |
 |----------|------------|------|
+| [[gate-enforcement-checklist-plus-log]] | high | 2026-05-19 |
+| [[memory-convergence-mcp-only]] | high | 2026-05-19 |
 | [[spec-two-tier-review-gate]] | high | 2026-05-19 |
-| [[spec-persistence-adaptive]] | high | 2026-05-19 |
-| [[soul-vs-agents-delineation]] | high | 2026-05-19 |
 
 ## Blockers and Open Questions
 
-- [resolved] PROJECT_STATE.md is orphan — read by session-start.sh but nothing creates it. Removing.
+None active.
 
 ## Key Artifacts
 
 | Path | Purpose | Last Modified |
 |------|---------|---------------|
 | `install.sh` | Global installer (6 items: py-init + spec + soul + personal + lifecycle + memory_server) | 2026-05-19 |
-| `templates/.claude/rules/file-lifecycle.md` | File lifecycle routing table (32 lines, 4 categories) | 2026-05-19 |
+| `templates/.claude/hooks/session-start.sh` | SessionStart hook (reads 2 sources: dev-wiki state, session state) | 2026-05-19 |
+| `templates/.claude/rules/nana-soul.md` | Cognitive identity (52 lines, 3 protocols + memory_search) | 2026-05-19 |
+| `templates/.claude/rules/file-lifecycle.md` | File lifecycle routing table (MCP-only memory, 4 categories) | 2026-05-19 |
 | `templates/.claude/skills/spec/SKILL.md` | Spec creation skill (113 lines, two-tier review gate) | 2026-05-19 |
 | `templates/.claude/skills/spec/spec-reviewer-prompt.md` | Spec quality reviewer (77 lines, 6 dimensions) | 2026-05-19 |
-| `specs/phase-09-file-lifecycle-reference.md` | File lifecycle spec (Opus-reviewed 9/10) | 2026-05-19 |
+| `specs/phase-10-memory-lifecycle-convergence.md` | Memory convergence spec (Opus 8/10) | 2026-05-19 |
 | `memory_server/` | Vendored MCP memory server (12 .py, 2,373 LOC from nanaclaw) | 2026-05-15 |
 | `scripts/sync-rules.sh` | AGENTS.md to 4 agent surfaces (writability check) | 2026-05-15 |
 | `scripts/generate-report.py` | Package inventory HTML generator | 2026-05-19 |
@@ -53,7 +55,6 @@ Abort: If budget exceeds 300 lines after trimming, escalate
 | `tests/test_install.sh` | Install + venv + MCP + spec + lifecycle tests (21) | 2026-05-19 |
 | `tests/test_sync_rules.sh` | Sync correctness + edge-case tests (16) | 2026-05-15 |
 | `tests/test_templates.sh` | Protocol + spec + lifecycle + budget regression (22 tests) | 2026-05-19 |
-| `templates/.claude/rules/nana-soul.md` | Cognitive identity (51 lines, 3 protocols) | 2026-05-19 |
 | `templates/.claude/rules/nana-personal.md` | Personal profile (installed globally) | 2026-05-19 |
 | `templates/AGENTS.md` | Operational contract (Pre-commit sequence) | 2026-05-19 |
 | `templates/` | 5-layer scaffolding templates (30+ files) | 2026-05-19 |
@@ -63,11 +64,11 @@ Abort: If budget exceeds 300 lines after trimming, escalate
 
 ## Session Journal (last 5)
 
+- [2026-05-19] [[2026-05-19-phase-10-memory-lifecycle-convergence-complete|Phase 10 complete]] -- memory MCP-only, gate enforcement, retro check, budget 229/300
 - [2026-05-19] [[2026-05-19-phase-9-file-lifecycle-reference-complete|Phase 9 complete]] -- file lifecycle routing table, orphan removed, 59 tests, budget 227/300
 - [2026-05-19] [[2026-05-19-phase-8-spec-skill-complete|Phase 8 complete]] -- spec skill + reviewer, two-tier review gate, 55 tests, budget 195/300
 - [2026-05-19] [[2026-05-19-phase-7-soul-and-instructions-complete|Phase 7 complete]] -- soul restructured, personal extracted, 48 tests, budget 191/300
 - [2026-05-19] [[2026-05-19-phase-5-and-6-complete|Phase 5 & 6 complete]] -- venv bootstrap, HTML reports, v0.2.0 shipped to GitHub
-- [2026-05-15] [[2026-05-15-phase-4-dev-wiki-and-memory-integration-complete|Phase 4 complete]] -- 5 tasks done, memory_server vendored, 38 tests
 
 ## Cross-References
 
@@ -81,6 +82,9 @@ Abort: If budget exceeds 300 lines after trimming, escalate
 - Phase: [[phase-07-soul-and-instructions-enhancement|Phase 7]] -- completed
 - Phase: [[phase-08-spec-skill|Phase 8]] -- completed
 - Phase: [[phase-09-file-lifecycle-reference|Phase 9]] -- completed
+- Phase: [[phase-10-memory-lifecycle-convergence|Phase 10]] -- completed
+- Decision: [[gate-enforcement-checklist-plus-log|Gate enforcement: checklist + log]] -- high confidence
+- Decision: [[memory-convergence-mcp-only|Memory convergence: MCP-only]] -- high confidence
 - Decision: [[spec-two-tier-review-gate|Spec two-tier review gate]] -- high confidence
 - Decision: [[spec-persistence-adaptive|Spec persistence adaptive routing]] -- high confidence
 - Decision: [[soul-vs-agents-delineation|Soul vs AGENTS.md delineation]] -- high confidence
