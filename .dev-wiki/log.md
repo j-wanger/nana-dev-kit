@@ -16,3 +16,5 @@
 [2026-05-19T20:00:00] PLAN -- Phase 7 planned, 5 tasks, 1 decision (soul-vs-agents-delineation)
 [2026-05-19T22:00:00] DEBRIEF -- 1 decision (soul-vs-agents-delineation), 1 journal, tasks updated, state refreshed, phase 7 READY FOR COMPLETION
 [2026-05-19T22:30:00] DEBRIEF-QUICK -- thinking protocol rewritten (generic → distinctive), journal updated, budget 195/300
+[2026-05-19T23:00:00] PLAN -- Phase 8 planned, 4 tasks, formal spec at specs/phase-08-spec-skill.md (Opus-reviewed 8/10)
+[2026-05-19T23:30:00] DEBRIEF -- 2 decisions (spec-two-tier-review-gate, spec-persistence-adaptive), 1 journal, tasks updated, state refreshed, phase 8 READY FOR COMPLETION

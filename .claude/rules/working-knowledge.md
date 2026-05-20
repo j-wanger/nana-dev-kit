@@ -1,13 +1,13 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
-- [uses: 1] install.sh performs 4 actions: copies py-init skill, nana-soul rule, kit path marker, memory_server/ + registers MCP server in settings.json
+- [uses: 1] install.sh performs 5 actions: copies py-init + spec skills, nana-soul + nana-personal rules, kit path marker, memory_server/ + registers MCP server in settings.json
   source: [[decision:install-sh-scope-expansion]] | activated: 2026-05-15
 - [uses: 1] README targets ~58 lines with install + usage + 5-layer table + memory/dev-wiki section; self-test.md is the detailed reference
   source: [[wiki:readme-concise-format]] | activated: 2026-05-15
 - [uses: 1] .dev-wiki/ is committed as project lifecycle artifact; .claude/settings.local.json is excluded via .gitignore
   source: [[wiki:commit-dev-wiki-in-initial-commit]] | activated: 2026-05-15
-- [uses: 1] install.sh is idempotent: copies 3 files + memory_server + JSON merge; running twice produces identical results
+- [uses: 1] install.sh is idempotent: copies 5 items + memory_server + JSON merge; running twice produces identical results
   source: [[file:install]] | activated: 2026-05-15
 - [uses: 1] sync-rules.sh writes 4 outputs (CLAUDE.md, GEMINI.md, copilot-instructions.md, .cursor/rules/main.mdc) with AUTO-GENERATED headers; missing AGENTS.md exits non-zero
   source: [[file:scripts-sync-rules]] | activated: 2026-05-15
@@ -43,5 +43,11 @@
   source: [[journal:2026-05-19-phase-7-soul-and-instructions-complete]] | activated: 2026-05-19
 - [uses: 1] Instruction budget: soul + personal + AGENTS.md + nana.instructions.md = 195/300 lines; regression test in test_templates.sh enforces ceiling
   source: [[journal:2026-05-19-phase-7-soul-and-instructions-complete]] | activated: 2026-05-19
-- [uses: 1] install.sh copies 4 files: py-init SKILL.md, nana-soul.md, nana-personal.md, kit path marker + memory_server/ + MCP registration
-  source: [[journal:2026-05-19-phase-7-soul-and-instructions-complete]] | activated: 2026-05-19
+- [uses: 1] install.sh copies 5 items: py-init SKILL.md, spec/ skill, nana-soul.md, nana-personal.md, kit path marker + memory_server/ + MCP registration
+  source: [[journal:2026-05-19-phase-8-spec-skill-complete]] | activated: 2026-05-19
+- [uses: 1] /spec skill has two-tier review gate: Tier 0 structural lint (inline, deterministic) + Tier 1 semantic subagent (6 dimensions); adaptive persistence (dev-wiki -> /dev-plan, standalone -> specs/)
+  source: [[decision:spec-two-tier-review-gate]] | activated: 2026-05-19
+- [uses: 1] specs/ directory at project root for standalone spec persistence; phase-08-spec-skill.md is the exemplar (Opus-reviewed 8/10)
+  source: [[decision:spec-persistence-adaptive]] | activated: 2026-05-19
+- [uses: 1] Phase template has 3 optional sections (Constraints, Checkpoints, Assumptions) backported from /spec; dev-plan Step 6 has spec-field coverage note
+  source: [[journal:2026-05-19-phase-8-spec-skill-complete]] | activated: 2026-05-19

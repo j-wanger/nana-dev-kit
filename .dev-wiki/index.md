@@ -10,6 +10,7 @@
 - [[phase-05-memory-bootstrap-and-report|Phase 5: Memory Bootstrap & Package Report]] -- completed
 - [[phase-06-ship-and-workflow-assessment|Phase 6: Ship & Workflow Assessment]] -- completed
 - [[phase-07-soul-and-instructions-enhancement|Phase 7: Soul & Instructions Enhancement]] -- completed
+- [[phase-08-spec-skill|Phase 8: Spec Skill]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -28,19 +29,22 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[spec-two-tier-review-gate|Spec two-tier review gate]] -- high confidence
+- [[spec-persistence-adaptive|Spec persistence adaptive routing]] -- high confidence
 - [[soul-vs-agents-delineation|Soul vs AGENTS.md delineation]] -- high confidence
 - [[vendor-memory-server|Vendor memory server]] -- medium confidence
 - [[install-sh-scope-expansion|install.sh scope expansion]] -- medium confidence
 - [[v0-versioning-strategy|v0 versioning strategy]] -- medium confidence
 - [[kit-ci-separate-from-template|Kit CI separate from template]] -- medium confidence
+- [[venv-isolated-memory-deps|Venv-isolated memory deps]] -- medium confidence
 - [[install-sh-stays-minimal|install.sh stays minimal]] -- high confidence (superseded by install-sh-scope-expansion)
 - [[readme-concise-format|README concise format]] -- high confidence
 - [[commit-dev-wiki-in-initial-commit|Commit .dev-wiki/ in initial commit]] -- high confidence
 - [[pure-bash-test-harness|Pure bash test harness]] -- high confidence
 - [[structural-placeholder-verification|Structural placeholder verification]] -- high confidence
-- [[venv-isolated-memory-deps|Venv-isolated memory deps]] -- medium confidence
 
 ### Journal
+- [[2026-05-19-phase-8-spec-skill-complete|Phase 8 complete]] -- 2026-05-19
 - [[2026-05-19-phase-7-soul-and-instructions-complete|Phase 7 complete]] -- 2026-05-19
 - [[2026-05-19-phase-5-and-6-complete|Phase 5 & 6 complete]] -- 2026-05-19
 - [[2026-05-15-phase-4-dev-wiki-and-memory-integration-complete|Phase 4 complete]] -- 2026-05-15
@@ -49,6 +53,7 @@
 - [[2026-05-15-phase-1-foundation-and-packaging-complete|Phase 1 complete]] -- 2026-05-15
 
 ### Status
+- [[2026-05-19-codebase-snapshot|Codebase Snapshot]] -- 2026-05-19
 - [[2026-05-15-codebase-snapshot|Codebase Snapshot]] -- 2026-05-15
 
 ## By Hierarchy
@@ -63,6 +68,8 @@
 
 ## Recent
 
+- 2026-05-19: Phase 8 completed -- spec skill + two-tier review gate, 55 tests, 2 decisions
+- 2026-05-19: Phase 8 planned -- 4 tasks, spec skill + two-tier review gate
 - 2026-05-19: Phase 7 completed -- soul restructured, personal extracted, 48 tests, budget 191/300
 - 2026-05-19: Phase 7 planned -- 5 tasks, soul/instructions enhancement + delineation
 - 2026-05-19: Phase 5 & 6 completed -- venv bootstrap, HTML reports, v0.2.0 shipped to GitHub
@@ -71,5 +78,3 @@
 - 2026-05-15: Phase 4 completed -- 5 tasks done, memory_server vendored, 38 tests
 - 2026-05-15: Phase 4 planned -- 5 tasks, 2 decisions (vendor-memory-server, install-sh-scope-expansion)
 - 2026-05-15: Phase 3 completed -- 6 tasks done, v0.1.0 tagged, 34 tests
-- 2026-05-15: Phase 3 planned -- 6 tasks, 2 decisions
-- 2026-05-15: Phase 2 completed -- 30 tests, all pass, make test target working
