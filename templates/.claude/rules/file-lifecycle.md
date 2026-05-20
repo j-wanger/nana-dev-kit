@@ -11,9 +11,9 @@
 ### Agent updates (via convention)
 - `py-session-state.md` — update when focus shifts, decisions are made,
   before batch work, every 15-20 exchanges. Read on session resume.
-- `memory_store` (MCP tool) — call when: user corrects you, a decision is
-  made worth preserving cross-session, a preference is learned.
-  Do NOT write to .memory/MEMORY.md directly.
+- `memory_store` / `memory_search` (MCP tools) — store when: user corrects
+  you, a decision is made, a preference is learned. Search at session start
+  and before recommendations. Sole memory access path — no file intermediary.
 
 ### Skills update (via invocation)
 - `.dev-wiki/*` — managed by /dev-plan, /dev-debrief. Don't hand-edit.

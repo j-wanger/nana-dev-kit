@@ -1,6 +1,6 @@
 # Tasks
 
-> Last updated: 2026-05-19 by /dev-debrief (Phase 9)
+> Last updated: 2026-05-19 by /dev-plan (Phase 10)
 
 <!-- phase:phase-01-foundation-and-packaging -->
 ## Phase 1: Foundation & Packaging
@@ -76,3 +76,9 @@
 - [x] Create file-lifecycle.md + remove PROJECT_STATE.md orphan — routing table at templates/.claude/rules/file-lifecycle.md (~30 lines) with 4 categories (user, agent, skill, hook) + decision routing section. Remove PROJECT_STATE.md read from session-start.sh and reference from /spec SKILL.md. Update install.sh to copy file-lifecycle.md: test -f templates/.claude/rules/file-lifecycle.md fails (RED), write routing table + remove orphan + update install.sh (GREEN), trim to ≤35 lines (REFACTOR) | scope: templates/.claude/rules/file-lifecycle.md, templates/.claude/hooks/session-start.sh, templates/.claude/skills/spec/SKILL.md, install.sh | success: test -f templates/.claude/rules/file-lifecycle.md && [ $(wc -l < templates/.claude/rules/file-lifecycle.md) -le 35 ] && grep -qi 'decision routing' templates/.claude/rules/file-lifecycle.md && grep -qi 'AGENTS.md' templates/.claude/rules/file-lifecycle.md && grep -qi 'memory_store' templates/.claude/rules/file-lifecycle.md && ! grep -q 'PROJECT_STATE' templates/.claude/hooks/session-start.sh && ! grep -q 'PROJECT_STATE' templates/.claude/skills/spec/SKILL.md && grep -q 'file-lifecycle' install.sh | size: M
 - [x] Update tests — add file-lifecycle.md copy assertion to test_install.sh, content assertions to test_templates.sh, update budget test to include file-lifecycle.md in wc sum: no file-lifecycle assertions exist (RED), add assertions (GREEN) | scope: tests/test_install.sh, tests/test_templates.sh | success: bash tests/test_install.sh && bash tests/test_templates.sh && grep -qi 'file-lifecycle' tests/test_templates.sh | size: S
 - [x] Commit + push to GitHub | scope: * | success: git diff --quiet && git diff --cached --quiet | size: S
+
+<!-- phase:phase-10-memory-lifecycle-convergence -->
+## Phase 10: Memory Lifecycle Convergence
+
+- [ ] Remove MEMORY.md from session-start + update soul + file-lifecycle — remove .memory/MEMORY.md read block from session-start.sh, add memory_search guidance to nana-soul.md Memory discipline, remove MEMORY.md references from file-lifecycle.md, sync nana.instructions.md: grep -q 'MEMORY' templates/.claude/hooks/session-start.sh returns true (RED), remove block + update soul + lifecycle + sync (GREEN), verify syntax (REFACTOR) | scope: templates/.claude/hooks/session-start.sh, templates/.claude/rules/nana-soul.md, templates/.claude/rules/file-lifecycle.md, templates/.github/instructions/nana.instructions.md | success: ! grep -q 'MEMORY_FILE\|MEMORY.md' templates/.claude/hooks/session-start.sh && grep -qi 'memory_search' templates/.claude/rules/nana-soul.md && ! grep -q 'MEMORY.md' templates/.claude/rules/file-lifecycle.md && diff <(tail -n +5 templates/.github/instructions/nana.instructions.md) templates/.claude/rules/nana-soul.md | size: M
+- [ ] Verify tests + commit + push | scope: tests/test_templates.sh, * | success: bash tests/test_templates.sh && git diff --quiet && git diff --cached --quiet | size: S

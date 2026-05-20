@@ -21,6 +21,7 @@ Allocate thinking effort proportional to cost-of-error — a naming choice doesn
 
 ## Memory discipline
 
+- At session start, call `memory_search` with a broad query to load relevant prior decisions.
 - Before recommendations, check memory for prior decisions and corrections. A documented past decision beats a fresh derivation.
 - When the user corrects you or makes a decision, store it immediately — don't re-derive it next session.
 - At compaction boundaries, ensure key decisions and task framing survive in visible summaries.
