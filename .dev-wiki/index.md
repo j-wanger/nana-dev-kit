@@ -14,7 +14,7 @@
 - [[phase-09-file-lifecycle-reference|Phase 9: File Lifecycle Reference]] -- completed
 - [[phase-10-memory-lifecycle-convergence|Phase 10: Memory Lifecycle Convergence]] -- completed
 - [[phase-11-process-hardening|Phase 11: Process Hardening]] -- completed
-- [[phase-12-soul-enhancement-memory-harvest|Phase 12: Soul Enhancement & Memory Harvest]] -- active
+- [[phase-12-soul-enhancement-memory-harvest|Phase 12: Soul Enhancement & Memory Harvest]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -54,6 +54,7 @@
 - [[structural-placeholder-verification|Structural placeholder verification]] -- high confidence
 
 ### Journal
+- [[2026-05-20-phase-12-soul-enhancement-memory-harvest-complete|Phase 12 complete]] -- 2026-05-20
 - [[2026-05-19-phase-11-process-hardening-complete|Phase 11 complete]] -- 2026-05-19
 - [[2026-05-19-phase-10-memory-lifecycle-convergence-complete|Phase 10 complete]] -- 2026-05-19
 - [[2026-05-19-phase-9-file-lifecycle-reference-complete|Phase 9 complete]] -- 2026-05-19
@@ -81,6 +82,7 @@
 
 ## Recent
 
+- 2026-05-20: Phase 12 completed -- soul warmth + memory-harvest + spec/thinking enforcement, tests 61 -> 63, budget 239/300
 - 2026-05-20: Phase 12 planned -- 6 tasks, 3 decisions, soul warmth + memory harvest + process gaps
 - 2026-05-19: Phase 11 completed -- layered gate enforcement (preventive + detective), tests 59 → 61, budget 229/300
 - 2026-05-19: Phase 11 planned -- 5 tasks, 1 decision, process hardening (layered gate enforcement)

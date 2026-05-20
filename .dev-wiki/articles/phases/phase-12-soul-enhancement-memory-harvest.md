@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-20
 updated: 2026-05-20
 source: plan
-status: active
+status: completed
 scope: ["templates/.claude/rules/nana-soul.md", "templates/.github/instructions/nana.instructions.md", "~/.claude/skills/dev-debrief/memory-harvest.md", "~/.claude/skills/dev-debrief/SKILL.md", "~/.claude/skills/dev-debrief/executor-prompt.md", "~/.claude/skills/dev-plan/SKILL.md", "tests/test_templates.sh", "docs/*"]
 entry_criteria: "Phase 11 complete"
 exit_criteria: "Soul <=60 lines with Voice & presence section, nana.instructions.md synced, memory-harvest companion wired into debrief, spec-existence check + thinking-protocol T0 in dev-plan, all tests pass, committed"

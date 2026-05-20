@@ -1,26 +1,23 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-20 by /dev-plan (Phase 12)
+> Last updated: 2026-05-20 by /dev-debrief (Phase 12 complete)
 
 ## Recommended Next Action
 
-Begin Phase 12 Task 1: compress soul "What to avoid" from 5 to 2 bullets, add "Voice & presence" section, sync nana.instructions.md.
+Run `/dev-plan` when ready for Phase 13. Phase 12 complete: soul has Voice & presence (57/60 lines), memory-harvest wired into debrief, spec/thinking enforcement in dev-plan, 63 tests passing.
 
 ## Active Phase
 
-**[[phase-12-soul-enhancement-memory-harvest|Phase 12: Soul Enhancement & Memory Harvest]]** (status: active)
+**[[phase-12-soul-enhancement-memory-harvest|Phase 12: Soul Enhancement & Memory Harvest]]** (status: completed)
 
 Entry criteria: MET (Phase 11 complete)
-Exit criteria: Soul <=60 lines with Voice & presence, nana.instructions.md synced, memory-harvest companion in debrief, spec-existence check + thinking-protocol T0 in dev-plan, tests pass
+Exit criteria: ALL MET -- Soul 57/60 lines with Voice & presence, nana.instructions.md synced, memory-harvest wired, spec check + T0 in dev-plan, 63 tests pass, committed
 
-Progress: ~0% (0/6 tasks done)
+Progress: 100% (6/6 tasks done)
 
 ## Active Phase Contract
 
-Phase: 12 - Soul Enhancement & Memory Harvest
-Tasks: 6 (2M + 3S + 1XS, see tasks.md)
-Transition: continue
-Abort: if blocked >3 attempts, ask user: skip or abort
+No active phase. Phase 12 completed. Awaiting `/dev-plan` for Phase 13.
 
 ## Recent Decisions
 
@@ -40,7 +37,7 @@ None at this time. All planning questions resolved.
 |------|---------|---------------|
 | `install.sh` | Global installer (6 items: py-init + spec + soul + personal + lifecycle + memory_server) | 2026-05-19 |
 | `templates/.claude/hooks/session-start.sh` | SessionStart hook (reads 2 sources + gate-check) | 2026-05-19 |
-| `templates/.claude/rules/nana-soul.md` | Cognitive identity (52 lines, 3 protocols + memory_search) | 2026-05-19 |
+| `templates/.claude/rules/nana-soul.md` | Cognitive identity (57 lines, 3 protocols + Voice & presence + memory_search) | 2026-05-20 |
 | `templates/.claude/rules/file-lifecycle.md` | File lifecycle routing table (MCP-only memory, 4 categories) | 2026-05-19 |
 | `templates/.claude/skills/spec/SKILL.md` | Spec creation skill (113 lines, two-tier review gate) | 2026-05-19 |
 | `templates/.claude/skills/spec/spec-reviewer-prompt.md` | Spec quality reviewer (77 lines, 6 dimensions) | 2026-05-19 |
@@ -53,21 +50,21 @@ None at this time. All planning questions resolved.
 | `Makefile` | Project targets (sync-rules, test, report, workflow) | 2026-05-19 |
 | `tests/test_install.sh` | Install + venv + MCP + spec + lifecycle tests (21) | 2026-05-19 |
 | `tests/test_sync_rules.sh` | Sync correctness + edge-case tests (16) | 2026-05-15 |
-| `tests/test_templates.sh` | Protocol + spec + lifecycle + gate-check + budget regression (24 tests) | 2026-05-19 |
+| `tests/test_templates.sh` | Protocol + spec + lifecycle + gate-check + soul ceiling + budget regression (26 tests) | 2026-05-20 |
 | `templates/.claude/rules/nana-personal.md` | Personal profile (installed globally) | 2026-05-19 |
 | `templates/AGENTS.md` | Operational contract (Pre-commit sequence) | 2026-05-19 |
 | `templates/` | 5-layer scaffolding templates (30+ files) | 2026-05-19 |
-| `docs/report.html` | Generated package inventory (v0.2.0) | 2026-05-19 |
-| `docs/workflow.html` | Generated workflow breakdown (v0.2.0) | 2026-05-19 |
+| `docs/report.html` | Generated package inventory (v0.2.0) | 2026-05-20 |
+| `docs/workflow.html` | Generated workflow breakdown (v0.2.0) | 2026-05-20 |
 | `README.md` | Install + usage + /spec + memory/dev-wiki + upgrading | 2026-05-19 |
 
 ## Session Journal (last 5)
 
+- [2026-05-20] [[2026-05-20-phase-12-soul-enhancement-memory-harvest-complete|Phase 12 complete]] -- soul warmth + memory-harvest + spec/thinking enforcement, tests 61 → 63, budget 239/300
 - [2026-05-19] [[2026-05-19-phase-11-process-hardening-complete|Phase 11 complete]] -- layered gate enforcement (preventive + detective), tests 59 → 61, budget 229/300
 - [2026-05-19] [[2026-05-19-phase-10-memory-lifecycle-convergence-complete|Phase 10 complete]] -- memory MCP-only, gate enforcement, retro check, budget 229/300
 - [2026-05-19] [[2026-05-19-phase-9-file-lifecycle-reference-complete|Phase 9 complete]] -- file lifecycle routing table, orphan removed, 59 tests, budget 227/300
 - [2026-05-19] [[2026-05-19-phase-8-spec-skill-complete|Phase 8 complete]] -- spec skill + reviewer, two-tier review gate, 55 tests, budget 195/300
-- [2026-05-19] [[2026-05-19-phase-7-soul-and-instructions-complete|Phase 7 complete]] -- soul restructured, personal extracted, 48 tests, budget 191/300
 
 ## Cross-References
 
@@ -83,10 +80,10 @@ None at this time. All planning questions resolved.
 - Phase: [[phase-09-file-lifecycle-reference|Phase 9]] -- completed
 - Phase: [[phase-10-memory-lifecycle-convergence|Phase 10]] -- completed
 - Phase: [[phase-11-process-hardening|Phase 11]] -- completed
-- Phase: [[phase-12-soul-enhancement-memory-harvest|Phase 12]] -- active
+- Phase: [[phase-12-soul-enhancement-memory-harvest|Phase 12]] -- completed
 - Decision: [[soul-warmth-via-compression|Soul warmth via compression]] -- high confidence
 - Decision: [[memory-harvest-in-debrief|Memory harvest in debrief]] -- high confidence
-- Decision: [[spec-and-thinking-enforcement-in-devplan|Spec and thinking enforcement in dev-plan]] -- medium confidence
+- Decision: [[spec-and-thinking-enforcement-in-devplan|Spec and thinking enforcement in dev-plan]] -- high confidence
 - Decision: [[layered-gate-enforcement-automated|Layered gate enforcement (automated)]] -- high confidence
 - Decision: [[gate-enforcement-checklist-plus-log|Gate enforcement: checklist + log]] -- high confidence
 - Decision: [[memory-convergence-mcp-only|Memory convergence: MCP-only]] -- high confidence

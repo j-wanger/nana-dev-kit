@@ -41,8 +41,8 @@
   source: [[decision:soul-vs-agents-delineation]] | activated: 2026-05-19
 - [uses: 1] nana-soul.md Thinking protocol has trigger clause (trade-offs/design/advisory), cost-of-error proportionality, 3 moves (read subtext, challenge frame, delay commitment); 51 lines total
   source: [[journal:2026-05-19-phase-7-soul-and-instructions-complete]] | activated: 2026-05-19
-- [uses: 1] Instruction budget: soul (52) + personal + lifecycle + AGENTS.md + nana.instructions.md = 229/300 lines; regression test in test_templates.sh enforces ceiling
-  source: [[journal:2026-05-19-phase-10-memory-lifecycle-convergence-complete]] | activated: 2026-05-19
+- [uses: 1] Instruction budget: soul (57) + personal + lifecycle + AGENTS.md + nana.instructions.md = 239/300 lines; regression test in test_templates.sh enforces ceiling + soul <=60 assertion
+  source: [[journal:2026-05-20-phase-12-soul-enhancement-memory-harvest-complete]] | activated: 2026-05-20
 - [uses: 1] install.sh copies 6 items: py-init SKILL.md, spec/ skill, nana-soul.md, nana-personal.md, file-lifecycle.md, kit path marker + memory_server/ + MCP registration
   source: [[journal:2026-05-19-phase-9-file-lifecycle-reference-complete]] | activated: 2026-05-19
 - [uses: 1] /spec skill has two-tier review gate: Tier 0 structural lint (inline, deterministic) + Tier 1 semantic subagent (6 dimensions); adaptive persistence (dev-wiki -> /dev-plan, standalone -> specs/)
@@ -59,9 +59,19 @@
   source: [[decision:gate-enforcement-checklist-plus-log]] | activated: 2026-05-19
 - [uses: 1] Memory access is MCP-only: memory_store to write, memory_search to read; .memory/MEMORY.md files are inert legacy (not deleted, just not read)
   source: [[decision:memory-convergence-mcp-only]] | activated: 2026-05-19
-- [uses: 1] nana-soul.md now 52 lines (+1 from Phase 9: memory_search at session start in Memory discipline section)
-  source: [[journal:2026-05-19-phase-10-memory-lifecycle-convergence-complete]] | activated: 2026-05-19
+- [uses: 1] nana-soul.md now 57 lines (Phase 12: compressed 3 redundant bullets, added Voice & presence section); ceiling is 60 lines
+  source: [[journal:2026-05-20-phase-12-soul-enhancement-memory-harvest-complete]] | activated: 2026-05-20
 - [uses: 1] Layered gate enforcement: preventive (implementation-guide.md pre-flight refusal) + detective (dev-debrief gate-compliance audit) + template (session-start.sh gate-check warning); mirrors Tier 0/1 review pattern
   source: [[decision:layered-gate-enforcement-automated]] | activated: 2026-05-19
 - [uses: 1] Standard ceremony expects 4 gates (spec, approach, plan-review, tasks); Lite expects 2 (approach, tasks); n/a with justification is valid; SKIPPED without justification is flagged
   source: [[journal:2026-05-19-phase-11-process-hardening-complete]] | activated: 2026-05-19
+- [uses: 1] Soul compression: 3 "What to avoid" bullets are redundant (sycophantic=Thinking protocol, more code=Work habits+CQL#1, over-broad exceptions=CQL#2); compress before adding new content
+  source: [[decision:soul-warmth-via-compression]] | activated: 2026-05-20
+- [uses: 1] Memory-harvest is a dev-debrief companion (Step 1.5/4.7), not a standalone skill; routes corrections/preferences/lessons to memory_store, decisions to wiki articles
+  source: [[decision:memory-harvest-in-debrief]] | activated: 2026-05-20
+- [uses: 1] dev-plan Step 0.6 spec-existence check (standard ceremony only): requires specs/<phase-slug>.md or phase article ## Formal Spec before planning proceeds
+  source: [[decision:spec-and-thinking-enforcement-in-devplan]] | activated: 2026-05-20
+- [uses: 1] dev-plan Step 6 has thinking-protocol T0: challenge frame, read subtext, delay commitment before approach formulation (conversational only, no artifacts)
+  source: [[decision:spec-and-thinking-enforcement-in-devplan]] | activated: 2026-05-20
+- [uses: 1] nana.instructions.md must byte-match nana-soul.md minus 4-line YAML frontmatter; verified by diff <(tail -n +5 ...) in test suite
+  source: [[decision:soul-vs-agents-delineation]] | activated: 2026-05-20
