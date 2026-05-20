@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-20
 updated: 2026-05-20
 source: plan
-status: active
+status: completed
 scope: ["templates/.claude/rules/nana-soul.md", "templates/.claude/rules/nana-personal.md", "templates/.github/instructions/nana.instructions.md", "install.sh", "VERSION", "docs/*", "tests/*"]
 entry_criteria: "Phase 12 complete"
 exit_criteria: "Soul 59/60 with H8+H9, personal profile templated, SKILL.md ceiling 350, v0.3.0 tagged and pushed, 63+ tests pass"
@@ -37,14 +37,14 @@ See `specs/phase-13-final-polish-and-ship.md` (reviewed 8/10, revised to accept)
 
 ## Exit Criteria
 
-- [ ] Soul has H8 (informed search) and H9 (lateral scope expansion), exactly 59 lines
-- [ ] nana.instructions.md byte-matches soul minus 4-line YAML frontmatter
-- [ ] Personal profile template has no Jake-specific content
-- [ ] install.sh conditionally copies personal profile (skip if existing)
-- [ ] SKILL.md complex-orchestration ceiling is 350
-- [ ] VERSION is 0.3.0
-- [ ] 63+ tests pass
-- [ ] v0.3.0 tag exists, pushed to origin
+- [x] Soul has H8 (informed search) and H9 (lateral scope expansion), exactly 59 lines
+- [x] nana.instructions.md byte-matches soul minus 4-line YAML frontmatter
+- [x] Personal profile template has no Jake-specific content
+- [x] install.sh conditionally copies personal profile (skip if existing)
+- [x] SKILL.md complex-orchestration ceiling is 350
+- [x] VERSION is 0.3.0
+- [x] 65 tests pass (63+ requirement met)
+- [x] v0.3.0 tag exists, pushed to origin
 
 ## Constraints
 

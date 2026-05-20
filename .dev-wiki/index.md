@@ -15,7 +15,7 @@
 - [[phase-10-memory-lifecycle-convergence|Phase 10: Memory Lifecycle Convergence]] -- completed
 - [[phase-11-process-hardening|Phase 11: Process Hardening]] -- completed
 - [[phase-12-soul-enhancement-memory-harvest|Phase 12: Soul Enhancement & Memory Harvest]] -- completed
-- [[phase-13-final-polish-and-ship|Phase 13: Final Polish & Ship]] -- active
+- [[phase-13-final-polish-and-ship|Phase 13: Final Polish & Ship]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -34,17 +34,17 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[personal-profile-template-for-shipping|Personal profile template for shipping]] -- high confidence
+- [[skill-ceiling-250-to-350|SKILL.md ceiling 250 to 350]] -- high confidence
+- [[soul-warmth-via-compression|Soul warmth via compression]] -- high confidence
+- [[memory-harvest-in-debrief|Memory harvest in debrief]] -- high confidence
+- [[spec-and-thinking-enforcement-in-devplan|Spec and thinking enforcement in dev-plan]] -- high confidence
 - [[layered-gate-enforcement-automated|Layered gate enforcement (automated)]] -- high confidence
 - [[gate-enforcement-checklist-plus-log|Gate enforcement: checklist + log]] -- high confidence
 - [[memory-convergence-mcp-only|Memory convergence: MCP-only]] -- high confidence
 - [[spec-two-tier-review-gate|Spec two-tier review gate]] -- high confidence
 - [[spec-persistence-adaptive|Spec persistence adaptive routing]] -- high confidence
 - [[soul-vs-agents-delineation|Soul vs AGENTS.md delineation]] -- high confidence
-- [[soul-warmth-via-compression|Soul warmth via compression]] -- high confidence
-- [[memory-harvest-in-debrief|Memory harvest in debrief]] -- high confidence
-- [[spec-and-thinking-enforcement-in-devplan|Spec and thinking enforcement in dev-plan]] -- medium confidence
-- [[personal-profile-template-for-shipping|Personal profile template for shipping]] -- high confidence
-- [[skill-ceiling-250-to-350|SKILL.md ceiling 250 to 350]] -- high confidence
 - [[vendor-memory-server|Vendor memory server]] -- medium confidence
 - [[install-sh-scope-expansion|install.sh scope expansion]] -- medium confidence
 - [[v0-versioning-strategy|v0 versioning strategy]] -- medium confidence
@@ -57,6 +57,7 @@
 - [[structural-placeholder-verification|Structural placeholder verification]] -- high confidence
 
 ### Journal
+- [[2026-05-20-phase-13-final-polish-and-ship-complete|Phase 13 complete]] -- 2026-05-20
 - [[2026-05-20-phase-12-soul-enhancement-memory-harvest-complete|Phase 12 complete]] -- 2026-05-20
 - [[2026-05-19-phase-11-process-hardening-complete|Phase 11 complete]] -- 2026-05-19
 - [[2026-05-19-phase-10-memory-lifecycle-convergence-complete|Phase 10 complete]] -- 2026-05-19
@@ -70,6 +71,7 @@
 - [[2026-05-15-phase-1-foundation-and-packaging-complete|Phase 1 complete]] -- 2026-05-15
 
 ### Status
+- [[2026-05-20-codebase-snapshot|Codebase Snapshot]] -- 2026-05-20
 - [[2026-05-19-codebase-snapshot|Codebase Snapshot]] -- 2026-05-19
 - [[2026-05-15-codebase-snapshot|Codebase Snapshot]] -- 2026-05-15
 
@@ -85,16 +87,13 @@
 
 ## Recent
 
+- 2026-05-20: Phase 13 completed -- H8+H9 heuristics, personal template, ceiling 350, v0.3.0 shipped, tests 63 -> 65, budget 245/300
 - 2026-05-20: Phase 13 planned -- 5 tasks, 2 decisions, final polish + v0.3.0 ship
 - 2026-05-20: Phase 12 completed -- soul warmth + memory-harvest + spec/thinking enforcement, tests 61 -> 63, budget 239/300
 - 2026-05-20: Phase 12 planned -- 6 tasks, 3 decisions, soul warmth + memory harvest + process gaps
-- 2026-05-19: Phase 11 completed -- layered gate enforcement (preventive + detective), tests 59 → 61, budget 229/300
+- 2026-05-19: Phase 11 completed -- layered gate enforcement (preventive + detective), tests 59 -> 61, budget 229/300
 - 2026-05-19: Phase 11 planned -- 5 tasks, 1 decision, process hardening (layered gate enforcement)
 - 2026-05-19: Phase 10 completed -- memory MCP-only, gate enforcement, retro check (Phases 1-10), budget 229/300
 - 2026-05-19: Phase 10 planned -- 2 tasks, memory lifecycle convergence
 - 2026-05-19: Phase 9 completed -- file lifecycle routing table, orphan removed, 59 tests, budget 227/300
 - 2026-05-19: Phase 9 planned -- 3 tasks, file lifecycle reference + orphan cleanup
-- 2026-05-19: Phase 8 completed -- spec skill + two-tier review gate, 55 tests, 2 decisions
-- 2026-05-19: Phase 8 planned -- 4 tasks, spec skill + two-tier review gate
-- 2026-05-19: Phase 7 completed -- soul restructured, personal extracted, 48 tests, budget 191/300
-- 2026-05-19: Phase 7 planned -- 5 tasks, soul/instructions enhancement + delineation

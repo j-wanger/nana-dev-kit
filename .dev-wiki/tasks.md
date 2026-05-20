@@ -1,9 +1,9 @@
 # Tasks
 
-> Last updated: 2026-05-20 by /dev-plan (Phase 13)
+> Last updated: 2026-05-20 by /dev-debrief (Phase 13 complete)
 
 <details>
-<summary>Phases 1-11 (all completed, 48 tasks)</summary>
+<summary>Phases 1-13 (all completed, 59 tasks)</summary>
 
 <!-- phase:phase-01-foundation-and-packaging -->
 ## Phase 1: Foundation & Packaging
@@ -99,8 +99,6 @@
 - [x] Add regression test + budget assertion | scope: tests/test_templates.sh | success: bash tests/test_templates.sh | size: S
 - [x] Commit + push + regenerate reports | scope: docs/report.html, docs/workflow.html | success: git diff --quiet | size: XS
 
-</details>
-
 <!-- phase:phase-12-soul-enhancement-memory-harvest -->
 <!-- gates: spec=9/10 approach=yes plan-review=pending tasks=yes -->
 ## Phase 12: Soul Enhancement & Memory Harvest
@@ -120,4 +118,6 @@
 - [x] [M] Make personal profile template + conditional install — Replace templates/.claude/rules/nana-personal.md with generic placeholder (no Jake content). Update install.sh to conditionally copy (skip if existing). Write Jake's 7-line version to ~/.claude/rules/nana-personal.md locally. Update tests. TDD: template has 'jake' (RED), replace template + update install.sh + write local (GREEN), verify idempotency (REFACTOR) | scope: templates/.claude/rules/nana-personal.md, install.sh, tests/test_install.sh, tests/test_templates.sh | success: ! grep -qi 'jake' templates/.claude/rules/nana-personal.md && grep -qi 'conditional\|skip.*exist\|-f.*personal' install.sh && bash tests/test_install.sh | size: M
 - [x] [S] Raise SKILL.md ceiling — Change complex-orchestration cap from 250 to 350 in self-check-checklist.md. TDD: grep shows 250 (RED), change to 350 (GREEN) | scope: ~/.claude/skills/dev-plan/self-check-checklist.md | success: grep -q 'complex.*350\|≤350' ~/.claude/skills/dev-plan/self-check-checklist.md | size: S
 - [x] [S] Version bump + reports + tests — Write 0.3.0 to VERSION, regenerate reports, run make test. TDD: VERSION shows 0.2.0 (RED), update + regen + test (GREEN) | scope: VERSION, docs/report.html, docs/workflow.html | success: grep -qx '0.3.0' VERSION && make test | size: S
-- [ ] [XS] Commit + tag v0.3.0 + push — Annotated tag, push with tags. TDD: no v0.3.0 tag (RED), commit + tag + push (GREEN) | scope: * | success: git diff --quiet && git tag -l 'v0.3.0' | grep -q 'v0.3.0' | size: XS
+- [x] [XS] Commit + tag v0.3.0 + push — Annotated tag, push with tags. TDD: no v0.3.0 tag (RED), commit + tag + push (GREEN) | scope: * | success: git diff --quiet && git tag -l 'v0.3.0' | grep -q 'v0.3.0' | size: XS
+
+</details>

@@ -1,26 +1,26 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-20 by /dev-plan (Phase 13)
+> Last updated: 2026-05-20 by /dev-debrief (Phase 13 complete)
 
 ## Recommended Next Action
 
-Begin Phase 13 implementation: start with Task 1 (add H8+H9 to soul Thinking protocol). Five tasks total, shipping v0.3.0.
+Phase 13 complete. v0.3.0 shipped. Run `/dev-plan` to plan Phase 14 (candidates: T0 thinking protocol fix, spec self-grading adversarial review).
 
 ## Active Phase
 
-**[[phase-13-final-polish-and-ship|Phase 13: Final Polish & Ship]]** (status: active)
+**[[phase-13-final-polish-and-ship|Phase 13: Final Polish & Ship]]** (status: completed)
 
 Entry criteria: MET (Phase 12 complete)
-Exit criteria: Soul 59/60 with H8+H9, personal profile templated, SKILL.md ceiling 350, v0.3.0 tagged and pushed, 63+ tests pass
+Exit criteria: ALL MET -- Soul 59/60 with H8+H9, personal templated, ceiling 350, v0.3.0 tagged+pushed, 65 tests pass
 
-Progress: ~0% (0/5 tasks done)
+Progress: 100% (5/5 tasks done, v0.3.0 shipped)
 
 ## Active Phase Contract
 
 Phase: 13 - Final Polish & Ship
-Tasks: 5 (see tasks.md)
-Transition: continue
-Abort: if blocked >3 attempts, ask user: skip or abort
+Tasks: 5 (all complete)
+Transition: complete
+Abort: n/a
 
 ## Recent Decisions
 
@@ -31,15 +31,16 @@ Abort: if blocked >3 attempts, ask user: skip or abort
 
 ## Blockers and Open Questions
 
-None at this time. All planning questions resolved.
+None. Phase 13 complete.
 
 ## Key Artifacts
 
 | Path | Purpose | Last Modified |
 |------|---------|---------------|
-| `install.sh` | Global installer (6 items: py-init + spec + soul + personal + lifecycle + memory_server) | 2026-05-19 |
+| `install.sh` | Global installer (6 items + conditional personal copy + memory_server + MCP) | 2026-05-20 |
 | `templates/.claude/hooks/session-start.sh` | SessionStart hook (reads 2 sources + gate-check) | 2026-05-19 |
-| `templates/.claude/rules/nana-soul.md` | Cognitive identity (57 lines, 3 protocols + Voice & presence + memory_search) | 2026-05-20 |
+| `templates/.claude/rules/nana-soul.md` | Cognitive identity (59 lines, 3 protocols + Voice & presence + H8/H9 + memory_search) | 2026-05-20 |
+| `templates/.claude/rules/nana-personal.md` | Personal profile template (generic, no user-specific content) | 2026-05-20 |
 | `templates/.claude/rules/file-lifecycle.md` | File lifecycle routing table (MCP-only memory, 4 categories) | 2026-05-19 |
 | `templates/.claude/skills/spec/SKILL.md` | Spec creation skill (113 lines, two-tier review gate) | 2026-05-19 |
 | `templates/.claude/skills/spec/spec-reviewer-prompt.md` | Spec quality reviewer (77 lines, 6 dimensions) | 2026-05-19 |
@@ -47,26 +48,26 @@ None at this time. All planning questions resolved.
 | `scripts/sync-rules.sh` | AGENTS.md to 4 agent surfaces (writability check) | 2026-05-15 |
 | `scripts/generate-report.py` | Package inventory HTML generator | 2026-05-19 |
 | `scripts/generate-workflow.py` | Workflow breakdown HTML generator (738 lines) | 2026-05-19 |
-| `VERSION` | Semantic version (0.2.0) | 2026-05-19 |
+| `VERSION` | Semantic version (0.3.0) | 2026-05-20 |
 | `.github/workflows/kit-ci.yml` | Kit CI: shellcheck + make test | 2026-05-15 |
 | `Makefile` | Project targets (sync-rules, test, report, workflow) | 2026-05-19 |
-| `tests/test_install.sh` | Install + venv + MCP + spec + lifecycle tests (21) | 2026-05-19 |
+| `tests/test_install.sh` | Install + venv + MCP + spec + lifecycle + conditional-copy tests (22) | 2026-05-20 |
 | `tests/test_sync_rules.sh` | Sync correctness + edge-case tests (16) | 2026-05-15 |
-| `tests/test_templates.sh` | Protocol + spec + lifecycle + gate-check + soul ceiling + budget regression (26 tests) | 2026-05-20 |
-| `templates/.claude/rules/nana-personal.md` | Personal profile (installed globally) | 2026-05-19 |
+| `tests/test_templates.sh` | Protocol + spec + lifecycle + gate-check + soul ceiling + budget + personal template (27 tests) | 2026-05-20 |
 | `templates/AGENTS.md` | Operational contract (Pre-commit sequence) | 2026-05-19 |
-| `templates/` | 5-layer scaffolding templates (30+ files) | 2026-05-19 |
-| `docs/report.html` | Generated package inventory (v0.2.0) | 2026-05-20 |
-| `docs/workflow.html` | Generated workflow breakdown (v0.2.0) | 2026-05-20 |
+| `templates/` | 5-layer scaffolding templates (30+ files) | 2026-05-20 |
+| `docs/report.html` | Generated package inventory (v0.3.0) | 2026-05-20 |
+| `docs/workflow.html` | Generated workflow breakdown (v0.3.0) | 2026-05-20 |
 | `README.md` | Install + usage + /spec + memory/dev-wiki + upgrading | 2026-05-19 |
+| `~/.claude/skills/dev-plan/self-check-checklist.md` | Post-implementation self-check (ceiling 350) | 2026-05-20 |
 
 ## Session Journal (last 5)
 
-- [2026-05-20] [[2026-05-20-phase-12-soul-enhancement-memory-harvest-complete|Phase 12 complete]] -- soul warmth + memory-harvest + spec/thinking enforcement, tests 61 → 63, budget 239/300
-- [2026-05-19] [[2026-05-19-phase-11-process-hardening-complete|Phase 11 complete]] -- layered gate enforcement (preventive + detective), tests 59 → 61, budget 229/300
+- [2026-05-20] [[2026-05-20-phase-13-final-polish-and-ship-complete|Phase 13 complete]] -- H8+H9 heuristics, personal template, ceiling 350, v0.3.0 shipped, tests 63 -> 65, budget 245/300
+- [2026-05-20] [[2026-05-20-phase-12-soul-enhancement-memory-harvest-complete|Phase 12 complete]] -- soul warmth + memory-harvest + spec/thinking enforcement, tests 61 -> 63, budget 239/300
+- [2026-05-19] [[2026-05-19-phase-11-process-hardening-complete|Phase 11 complete]] -- layered gate enforcement (preventive + detective), tests 59 -> 61, budget 229/300
 - [2026-05-19] [[2026-05-19-phase-10-memory-lifecycle-convergence-complete|Phase 10 complete]] -- memory MCP-only, gate enforcement, retro check, budget 229/300
 - [2026-05-19] [[2026-05-19-phase-9-file-lifecycle-reference-complete|Phase 9 complete]] -- file lifecycle routing table, orphan removed, 59 tests, budget 227/300
-- [2026-05-19] [[2026-05-19-phase-8-spec-skill-complete|Phase 8 complete]] -- spec skill + reviewer, two-tier review gate, 55 tests, budget 195/300
 
 ## Cross-References
 
@@ -83,7 +84,7 @@ None at this time. All planning questions resolved.
 - Phase: [[phase-10-memory-lifecycle-convergence|Phase 10]] -- completed
 - Phase: [[phase-11-process-hardening|Phase 11]] -- completed
 - Phase: [[phase-12-soul-enhancement-memory-harvest|Phase 12]] -- completed
-- Phase: [[phase-13-final-polish-and-ship|Phase 13]] -- active
+- Phase: [[phase-13-final-polish-and-ship|Phase 13]] -- completed
 - Decision: [[personal-profile-template-for-shipping|Personal profile template for shipping]] -- high confidence
 - Decision: [[skill-ceiling-250-to-350|SKILL.md ceiling 250 to 350]] -- high confidence
 - Decision: [[soul-warmth-via-compression|Soul warmth via compression]] -- high confidence
