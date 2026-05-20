@@ -41,6 +41,9 @@ assert_file_exists "$THOME/.claude/skills/spec/SKILL.md"
 test_start "creates spec-reviewer-prompt.md"
 assert_file_exists "$THOME/.claude/skills/spec/spec-reviewer-prompt.md"
 
+test_start "creates file-lifecycle.md"
+assert_file_exists "$THOME/.claude/rules/file-lifecycle.md"
+
 # Second run — idempotency
 cp "$THOME/.claude/rules/nana-soul.md" "$THOME/nana-first"
 cp "$THOME/.claude/skills/py-init/SKILL.md" "$THOME/skill-first"

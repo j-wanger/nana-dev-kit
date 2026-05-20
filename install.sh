@@ -9,13 +9,14 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILL_SRC="$SCRIPT_DIR/templates/.claude/skills/py-init/SKILL.md"
 SOUL_SRC="$SCRIPT_DIR/templates/.claude/rules/nana-soul.md"
 PERSONAL_SRC="$SCRIPT_DIR/templates/.claude/rules/nana-personal.md"
+LIFECYCLE_SRC="$SCRIPT_DIR/templates/.claude/rules/file-lifecycle.md"
 SPEC_SRC="$SCRIPT_DIR/templates/.claude/skills/spec"
 
 MEMORY_SRC="$SCRIPT_DIR/memory_server"
 
 # Validate source files before copying
 missing=0
-for src in "$SKILL_SRC" "$SOUL_SRC" "$PERSONAL_SRC" "$SPEC_SRC/SKILL.md"; do
+for src in "$SKILL_SRC" "$SOUL_SRC" "$PERSONAL_SRC" "$LIFECYCLE_SRC" "$SPEC_SRC/SKILL.md"; do
   if [ ! -f "$src" ]; then
     echo "Error: source file not found: $src" >&2
     missing=1
@@ -39,6 +40,7 @@ cp "$SPEC_SRC"/spec-reviewer-prompt.md ~/.claude/skills/spec/spec-reviewer-promp
 mkdir -p ~/.claude/rules
 cp "$SOUL_SRC" ~/.claude/rules/nana-soul.md
 cp "$PERSONAL_SRC" ~/.claude/rules/nana-personal.md
+cp "$LIFECYCLE_SRC" ~/.claude/rules/file-lifecycle.md
 
 # --- Store kit path for /py-init to find templates ---
 echo "$SCRIPT_DIR" > ~/.claude/.nana-dev-kit-path
@@ -90,6 +92,7 @@ echo "  ~/.claude/skills/py-init/SKILL.md   — run /py-init in any Python proje
 echo "  ~/.claude/skills/spec/              — run /spec to write contracts before execution"
 echo "  ~/.claude/rules/nana-soul.md        — Nana identity (Claude Code)"
 echo "  ~/.claude/rules/nana-personal.md    — personal profile (customize per user)"
+echo "  ~/.claude/rules/file-lifecycle.md   — file update routing reference"
 echo "  ~/.claude/.nana-dev-kit-path        — kit location for /py-init"
 echo "  ~/.claude/memory_server/            — persistent memory MCP server"
 echo "  ~/.claude/settings.json             — MCP server registered"

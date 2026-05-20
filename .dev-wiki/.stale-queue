@@ -1,0 +1,4 @@
+templates/.claude/hooks/session-start.sh
+install.sh
+tests/test_install.sh
+tests/test_templates.sh

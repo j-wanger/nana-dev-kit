@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SessionStart hook — loads project context into Claude's context.
-# Reads: dev-wiki state, memory snapshot, project state, session state.
+# Reads: dev-wiki state, memory snapshot, session state.
 # All reads are optional — graceful silent skip when files are missing.
 
 set -euo pipefail
@@ -19,14 +19,6 @@ MEMORY_FILE=".memory/MEMORY.md"
 if [ -f "$MEMORY_FILE" ]; then
   echo "=== Project Memory ==="
   head -50 "$MEMORY_FILE"
-  echo ""
-fi
-
-# --- Project state (manual cross-session) ---
-STATE_FILE="PROJECT_STATE.md"
-if [ -f "$STATE_FILE" ]; then
-  echo "=== Project State ==="
-  cat "$STATE_FILE"
   echo ""
 fi
 

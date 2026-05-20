@@ -1,26 +1,26 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-19 by /dev-debrief (Phase 8 complete)
+> Last updated: 2026-05-19 by /dev-plan (Phase 9)
 
 ## Recommended Next Action
 
-Phase 8 complete. Review docs/workflow.html for usability assessment. Run /dev-plan when ready for Phase 9.
+Begin Phase 9 implementation. First task: create file-lifecycle.md routing table + remove PROJECT_STATE.md orphan.
 
 ## Active Phase
 
-**[[phase-08-spec-skill|Phase 8: Spec Skill]]** (status: completed)
+**[[phase-09-file-lifecycle-reference|Phase 9: File Lifecycle Reference]]** (status: active)
 
-Entry criteria: MET (Phase 7 complete, all templates functional)
-Exit criteria: 4/4 -- spec skill + reviewer, phase template backport, install + tests, README
+Entry criteria: MET (Phase 8 complete)
+Exit criteria: 0/3 -- lifecycle reference, tests, commit
 
-Progress: 100% (4/4 tasks done)
+Progress: ~0% (0/3 tasks done)
 
 ## Active Phase Contract
 
-Phase: 8 - Spec Skill
-Tasks: 4 (2M + 2S, see tasks.md)
+Phase: 9 - File Lifecycle Reference
+Tasks: 3 (1M + 2S, see tasks.md)
 Transition: continue this session
-Abort: If SKILL.md exceeds 120 lines after 3 trim attempts, escalate
+Abort: If budget exceeds 300 lines after trimming, escalate
 
 ## Recent Decisions
 
@@ -32,8 +32,7 @@ Abort: If SKILL.md exceeds 120 lines after 3 trim attempts, escalate
 
 ## Blockers and Open Questions
 
-- [resolved] Spec persistence: adaptive routing — enrich phase article in dev-wiki, standalone specs/ otherwise. Two-critic validated.
-- [resolved] Spec vs dev-plan overlap: /spec is portable standalone, /dev-plan uses spec template internally.
+- [resolved] PROJECT_STATE.md is orphan — read by session-start.sh but nothing creates it. Removing.
 
 ## Key Artifacts
 

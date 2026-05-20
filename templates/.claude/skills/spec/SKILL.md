@@ -20,7 +20,7 @@ If dev-wiki exists but no uncompleted tasks, or no dev-wiki: proceed.
 ## Step 1: Gather Context
 
 Read available project state (all optional — use `test -f` guards):
-- `.dev-wiki/_CURRENT_STATE.md` or `PROJECT_STATE.md`
+- `.dev-wiki/_CURRENT_STATE.md`
 - `specs/` directory (existing specs for consistency)
 - Recent git log for project activity
 

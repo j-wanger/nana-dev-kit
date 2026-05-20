@@ -75,6 +75,18 @@ assert_contains "$SPEC" 'Tier 0'
 test_start "spec-reviewer-prompt.md exists"
 assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/spec/spec-reviewer-prompt.md"
 
+# --- File lifecycle reference ---
+LIFECYCLE="$PROJECT_ROOT/templates/.claude/rules/file-lifecycle.md"
+
+test_start "file-lifecycle.md exists"
+assert_file_exists "$LIFECYCLE"
+
+test_start "file-lifecycle.md has decision routing"
+assert_contains "$LIFECYCLE" 'Decision routing'
+
+test_start "file-lifecycle.md has memory_store routing"
+assert_contains "$LIFECYCLE" 'memory_store'
+
 # --- Instruction budget regression test ---
 # Sum always-loaded files: soul + personal + nana.instructions.md + AGENTS.md
 # Ceiling: 300 lines total before instruction-following degrades
@@ -83,6 +95,7 @@ BUDGET_TOTAL=0
 for f in \
   "$PROJECT_ROOT/templates/.claude/rules/nana-soul.md" \
   "$PROJECT_ROOT/templates/.claude/rules/nana-personal.md" \
+  "$PROJECT_ROOT/templates/.claude/rules/file-lifecycle.md" \
   "$PROJECT_ROOT/templates/.github/instructions/nana.instructions.md" \
   "$PROJECT_ROOT/templates/AGENTS.md"; do
   BUDGET_TOTAL=$((BUDGET_TOTAL + $(wc -l < "$f")))

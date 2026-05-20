@@ -1,11 +1,16 @@
 # Active Phase Context
 
-Phase: 8 - Spec Skill
-Status: Completed, 4/4 tasks done, 100%
-Objective: Create portable /spec skill with two-tier review gate. Backport spec sections into phase template.
+Phase: 9 - File Lifecycle Reference
+Status: Active, 0/3 tasks done, ~0%
+Objective: Create file lifecycle routing table. Remove PROJECT_STATE.md orphan.
 
-Result: All 4 tasks shipped. Spec SKILL.md (113 lines) + reviewer prompt (77 lines) created. Phase template backported. install.sh + tests updated (55 tests). README updated (59 lines).
+Scope: templates/.claude/rules/file-lifecycle.md, templates/.claude/hooks/session-start.sh, templates/.claude/skills/spec/SKILL.md, install.sh, tests/
 
-Next: Run /dev-plan when ready for Phase 9.
+Constraints:
+- file-lifecycle.md ≤ 35 lines
+- Total instruction budget ≤ 300 (currently 197, adding ~30 = ~227)
+- PROJECT_STATE.md removal must not break session-start.sh
+- Formal spec: specs/phase-09-file-lifecycle-reference.md (Opus 9/10)
 
-No open tasks. No active phase pending -- awaiting user direction.
+Exit criteria: routing table created, orphan removed, installed, tested, pushed.
+Abort: If budget exceeds 300 after trimming, escalate.
