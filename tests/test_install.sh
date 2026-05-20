@@ -57,6 +57,15 @@ assert_exit_code 0 diff "$THOME/nana-first" "$THOME/.claude/rules/nana-soul.md"
 test_start "SKILL.md identical after second run"
 assert_exit_code 0 diff "$THOME/skill-first" "$THOME/.claude/skills/py-init/SKILL.md"
 
+test_start "personal profile not overwritten on re-install"
+echo "# Custom user profile" > "$THOME/.claude/rules/nana-personal.md"
+env HOME="$THOME" bash "$PROJECT_ROOT/install.sh" >/dev/null 2>&1
+if grep -q 'Custom user profile' "$THOME/.claude/rules/nana-personal.md"; then
+  test_pass
+else
+  test_fail "personal profile was overwritten"
+fi
+
 # MCP server registration
 test_start "creates memory_server directory"
 assert_file_exists "$THOME/.claude/memory_server/server.py"

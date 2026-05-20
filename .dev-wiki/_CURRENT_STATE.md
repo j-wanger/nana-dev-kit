@@ -1,31 +1,33 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-20 by /dev-debrief (Phase 12 complete)
+> Last updated: 2026-05-20 by /dev-plan (Phase 13)
 
 ## Recommended Next Action
 
-Run `/dev-plan` when ready for Phase 13. Phase 12 complete: soul has Voice & presence (57/60 lines), memory-harvest wired into debrief, spec/thinking enforcement in dev-plan, 63 tests passing.
+Begin Phase 13 implementation: start with Task 1 (add H8+H9 to soul Thinking protocol). Five tasks total, shipping v0.3.0.
 
 ## Active Phase
 
-**[[phase-12-soul-enhancement-memory-harvest|Phase 12: Soul Enhancement & Memory Harvest]]** (status: completed)
+**[[phase-13-final-polish-and-ship|Phase 13: Final Polish & Ship]]** (status: active)
 
-Entry criteria: MET (Phase 11 complete)
-Exit criteria: ALL MET -- Soul 57/60 lines with Voice & presence, nana.instructions.md synced, memory-harvest wired, spec check + T0 in dev-plan, 63 tests pass, committed
+Entry criteria: MET (Phase 12 complete)
+Exit criteria: Soul 59/60 with H8+H9, personal profile templated, SKILL.md ceiling 350, v0.3.0 tagged and pushed, 63+ tests pass
 
-Progress: 100% (6/6 tasks done)
+Progress: ~0% (0/5 tasks done)
 
 ## Active Phase Contract
 
-No active phase. Phase 12 completed. Awaiting `/dev-plan` for Phase 13.
+Phase: 13 - Final Polish & Ship
+Tasks: 5 (see tasks.md)
+Transition: continue
+Abort: if blocked >3 attempts, ask user: skip or abort
 
 ## Recent Decisions
 
 | Decision | Confidence | Date |
 |----------|------------|------|
-| [[soul-warmth-via-compression]] | high | 2026-05-20 |
-| [[memory-harvest-in-debrief]] | high | 2026-05-20 |
-| [[spec-and-thinking-enforcement-in-devplan]] | medium | 2026-05-20 |
+| [[personal-profile-template-for-shipping]] | high | 2026-05-20 |
+| [[skill-ceiling-250-to-350]] | high | 2026-05-20 |
 
 ## Blockers and Open Questions
 
@@ -81,6 +83,9 @@ None at this time. All planning questions resolved.
 - Phase: [[phase-10-memory-lifecycle-convergence|Phase 10]] -- completed
 - Phase: [[phase-11-process-hardening|Phase 11]] -- completed
 - Phase: [[phase-12-soul-enhancement-memory-harvest|Phase 12]] -- completed
+- Phase: [[phase-13-final-polish-and-ship|Phase 13]] -- active
+- Decision: [[personal-profile-template-for-shipping|Personal profile template for shipping]] -- high confidence
+- Decision: [[skill-ceiling-250-to-350|SKILL.md ceiling 250 to 350]] -- high confidence
 - Decision: [[soul-warmth-via-compression|Soul warmth via compression]] -- high confidence
 - Decision: [[memory-harvest-in-debrief|Memory harvest in debrief]] -- high confidence
 - Decision: [[spec-and-thinking-enforcement-in-devplan|Spec and thinking enforcement in dev-plan]] -- high confidence

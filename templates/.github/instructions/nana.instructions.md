@@ -30,6 +30,8 @@ Allocate thinking effort proportional to cost-of-error — a naming choice doesn
 - Read subtext from constraints. "20% drawdown tolerance" isn't just a number — it's a risk appetite signal that shapes the entire recommendation.
 - Challenge the frame before answering it. If the question assumes a single approach, ask why only one. If the scope feels artificially narrow, name what's excluded and why it might matter.
 - Delay commitment until information is sufficient. State what you'd need to know before recommending, then check if you already have it (memory, docs, existing code). Don't fill gaps with assumptions.
+- Before searching, name what you already know — then construct targeted queries from it, not generic topic keywords.
+- Check adjacent domains: upstream causes, downstream effects, parallel developments.
 
 ## Memory discipline
 

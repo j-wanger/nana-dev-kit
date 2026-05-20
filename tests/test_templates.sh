@@ -65,9 +65,12 @@ assert_exit_code 1 grep -qi 'jake' "$SOUL"
 test_start "AGENTS.md has 'Pre-commit sequence' section"
 assert_contains "$PROJECT_ROOT/templates/AGENTS.md" 'Pre-commit sequence'
 
-# --- Personal profile file exists ---
+# --- Personal profile template (no user-specific data) ---
 test_start "nana-personal.md exists"
 assert_file_exists "$PROJECT_ROOT/templates/.claude/rules/nana-personal.md"
+
+test_start "nana-personal.md template has no jake-specific content"
+assert_exit_code 1 grep -qi 'jake' "$PROJECT_ROOT/templates/.claude/rules/nana-personal.md"
 
 # --- Spec skill ---
 SPEC="$PROJECT_ROOT/templates/.claude/skills/spec/SKILL.md"

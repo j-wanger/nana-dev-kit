@@ -39,7 +39,9 @@ cp "$SPEC_SRC"/spec-reviewer-prompt.md ~/.claude/skills/spec/spec-reviewer-promp
 # --- Identity rules (Claude Code global) ---
 mkdir -p ~/.claude/rules
 cp "$SOUL_SRC" ~/.claude/rules/nana-soul.md
-cp "$PERSONAL_SRC" ~/.claude/rules/nana-personal.md
+if [ ! -f ~/.claude/rules/nana-personal.md ]; then
+  cp "$PERSONAL_SRC" ~/.claude/rules/nana-personal.md
+fi
 cp "$LIFECYCLE_SRC" ~/.claude/rules/file-lifecycle.md
 
 # --- Store kit path for /py-init to find templates ---

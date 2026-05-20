@@ -15,6 +15,7 @@
 - [[phase-10-memory-lifecycle-convergence|Phase 10: Memory Lifecycle Convergence]] -- completed
 - [[phase-11-process-hardening|Phase 11: Process Hardening]] -- completed
 - [[phase-12-soul-enhancement-memory-harvest|Phase 12: Soul Enhancement & Memory Harvest]] -- completed
+- [[phase-13-final-polish-and-ship|Phase 13: Final Polish & Ship]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -42,6 +43,8 @@
 - [[soul-warmth-via-compression|Soul warmth via compression]] -- high confidence
 - [[memory-harvest-in-debrief|Memory harvest in debrief]] -- high confidence
 - [[spec-and-thinking-enforcement-in-devplan|Spec and thinking enforcement in dev-plan]] -- medium confidence
+- [[personal-profile-template-for-shipping|Personal profile template for shipping]] -- high confidence
+- [[skill-ceiling-250-to-350|SKILL.md ceiling 250 to 350]] -- high confidence
 - [[vendor-memory-server|Vendor memory server]] -- medium confidence
 - [[install-sh-scope-expansion|install.sh scope expansion]] -- medium confidence
 - [[v0-versioning-strategy|v0 versioning strategy]] -- medium confidence
@@ -82,6 +85,7 @@
 
 ## Recent
 
+- 2026-05-20: Phase 13 planned -- 5 tasks, 2 decisions, final polish + v0.3.0 ship
 - 2026-05-20: Phase 12 completed -- soul warmth + memory-harvest + spec/thinking enforcement, tests 61 -> 63, budget 239/300
 - 2026-05-20: Phase 12 planned -- 6 tasks, 3 decisions, soul warmth + memory harvest + process gaps
 - 2026-05-19: Phase 11 completed -- layered gate enforcement (preventive + detective), tests 59 → 61, budget 229/300
