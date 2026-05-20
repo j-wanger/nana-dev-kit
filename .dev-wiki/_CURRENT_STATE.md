@@ -1,38 +1,38 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-19 by /dev-debrief (Phase 11 complete)
+> Last updated: 2026-05-20 by /dev-plan (Phase 12)
 
 ## Recommended Next Action
 
-Run /dev-plan when ready for Phase 12. All 11 phases complete. Consider: SKILL.md size reduction, session-length awareness, or new feature work.
+Begin Phase 12 Task 1: compress soul "What to avoid" from 5 to 2 bullets, add "Voice & presence" section, sync nana.instructions.md.
 
 ## Active Phase
 
-**[[phase-11-process-hardening|Phase 11: Process Hardening]]** (status: completed)
+**[[phase-12-soul-enhancement-memory-harvest|Phase 12: Soul Enhancement & Memory Harvest]]** (status: active)
 
-Entry criteria: MET (Phase 10 complete)
-Exit criteria: All met — pre-flight gate verification, detective audit, session-start reminder, tests pass (61), committed
+Entry criteria: MET (Phase 11 complete)
+Exit criteria: Soul <=60 lines with Voice & presence, nana.instructions.md synced, memory-harvest companion in debrief, spec-existence check + thinking-protocol T0 in dev-plan, tests pass
 
-Progress: 100% (5/5 tasks done)
+Progress: ~0% (0/6 tasks done)
 
 ## Active Phase Contract
 
-Phase: 11 - Process Hardening
-Tasks: 5 (2M + 2S + 1XS, see tasks.md)
-Transition: complete
-Abort: n/a (phase complete)
+Phase: 12 - Soul Enhancement & Memory Harvest
+Tasks: 6 (2M + 3S + 1XS, see tasks.md)
+Transition: continue
+Abort: if blocked >3 attempts, ask user: skip or abort
 
 ## Recent Decisions
 
 | Decision | Confidence | Date |
 |----------|------------|------|
-| [[layered-gate-enforcement-automated]] | high | 2026-05-19 |
-| [[gate-enforcement-checklist-plus-log]] | high | 2026-05-19 |
-| [[memory-convergence-mcp-only]] | high | 2026-05-19 |
+| [[soul-warmth-via-compression]] | high | 2026-05-20 |
+| [[memory-harvest-in-debrief]] | high | 2026-05-20 |
+| [[spec-and-thinking-enforcement-in-devplan]] | medium | 2026-05-20 |
 
 ## Blockers and Open Questions
 
-- None
+None at this time. All planning questions resolved.
 
 ## Key Artifacts
 
@@ -83,6 +83,10 @@ Abort: n/a (phase complete)
 - Phase: [[phase-09-file-lifecycle-reference|Phase 9]] -- completed
 - Phase: [[phase-10-memory-lifecycle-convergence|Phase 10]] -- completed
 - Phase: [[phase-11-process-hardening|Phase 11]] -- completed
+- Phase: [[phase-12-soul-enhancement-memory-harvest|Phase 12]] -- active
+- Decision: [[soul-warmth-via-compression|Soul warmth via compression]] -- high confidence
+- Decision: [[memory-harvest-in-debrief|Memory harvest in debrief]] -- high confidence
+- Decision: [[spec-and-thinking-enforcement-in-devplan|Spec and thinking enforcement in dev-plan]] -- medium confidence
 - Decision: [[layered-gate-enforcement-automated|Layered gate enforcement (automated)]] -- high confidence
 - Decision: [[gate-enforcement-checklist-plus-log|Gate enforcement: checklist + log]] -- high confidence
 - Decision: [[memory-convergence-mcp-only|Memory convergence: MCP-only]] -- high confidence

@@ -14,6 +14,7 @@
 - [[phase-09-file-lifecycle-reference|Phase 9: File Lifecycle Reference]] -- completed
 - [[phase-10-memory-lifecycle-convergence|Phase 10: Memory Lifecycle Convergence]] -- completed
 - [[phase-11-process-hardening|Phase 11: Process Hardening]] -- completed
+- [[phase-12-soul-enhancement-memory-harvest|Phase 12: Soul Enhancement & Memory Harvest]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -38,6 +39,9 @@
 - [[spec-two-tier-review-gate|Spec two-tier review gate]] -- high confidence
 - [[spec-persistence-adaptive|Spec persistence adaptive routing]] -- high confidence
 - [[soul-vs-agents-delineation|Soul vs AGENTS.md delineation]] -- high confidence
+- [[soul-warmth-via-compression|Soul warmth via compression]] -- high confidence
+- [[memory-harvest-in-debrief|Memory harvest in debrief]] -- high confidence
+- [[spec-and-thinking-enforcement-in-devplan|Spec and thinking enforcement in dev-plan]] -- medium confidence
 - [[vendor-memory-server|Vendor memory server]] -- medium confidence
 - [[install-sh-scope-expansion|install.sh scope expansion]] -- medium confidence
 - [[v0-versioning-strategy|v0 versioning strategy]] -- medium confidence
@@ -77,6 +81,7 @@
 
 ## Recent
 
+- 2026-05-20: Phase 12 planned -- 6 tasks, 3 decisions, soul warmth + memory harvest + process gaps
 - 2026-05-19: Phase 11 completed -- layered gate enforcement (preventive + detective), tests 59 → 61, budget 229/300
 - 2026-05-19: Phase 11 planned -- 5 tasks, 1 decision, process hardening (layered gate enforcement)
 - 2026-05-19: Phase 10 completed -- memory MCP-only, gate enforcement, retro check (Phases 1-10), budget 229/300

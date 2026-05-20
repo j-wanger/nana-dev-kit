@@ -1,6 +1,6 @@
 # Tasks
 
-> Last updated: 2026-05-19 by /dev-plan (Phase 11)
+> Last updated: 2026-05-20 by /dev-plan (Phase 12)
 
 <!-- phase:phase-01-foundation-and-packaging -->
 ## Phase 1: Foundation & Packaging
@@ -95,3 +95,14 @@
 - [x] Add gate-check reminder to session-start.sh — 3-4 lines: if active-phase.md exists with status active AND unchecked [ ] gates, emit [gate-check] N unchecked gates: bash -n templates/.claude/hooks/session-start.sh passes (RED), add gate-check logic (GREEN), verify syntax (REFACTOR) | scope: templates/.claude/hooks/session-start.sh | success: grep -q 'gate-check\|unchecked.*gate' templates/.claude/hooks/session-start.sh && bash -n templates/.claude/hooks/session-start.sh | size: S
 - [x] Add regression test + budget assertion — assert session-start.sh gate-check logic exists + instruction budget (sum of rules files) stays ≤300 lines: no gate-check assertions exist (RED), add assertions (GREEN) | scope: tests/test_templates.sh | success: bash tests/test_templates.sh && grep -qi 'gate.check\|gate-check' tests/test_templates.sh | size: S
 - [x] Commit + push + regenerate reports — make report && make workflow, git commit, git push | scope: docs/report.html, docs/workflow.html | success: git diff --quiet && git diff --cached --quiet | size: XS
+
+<!-- phase:phase-12-soul-enhancement-memory-harvest -->
+<!-- gates: spec=9/10 approach=yes plan-review=pending tasks=yes -->
+## Phase 12: Soul Enhancement & Memory Harvest
+
+- [x] Compress soul + add Voice & presence section — free >=3 lines via compression (remove 3 redundant "What to avoid" bullets), add 5-bullet Voice & presence section. Sync nana.instructions.md. TDD: soul missing "Voice" section (RED), compress + add + sync (GREEN), verify reads coherently (REFACTOR) | scope: templates/.claude/rules/nana-soul.md, templates/.github/instructions/nana.instructions.md | success: grep -qi 'Voice.*presence' templates/.claude/rules/nana-soul.md && [ $(wc -l < templates/.claude/rules/nana-soul.md) -le 60 ] && diff <(tail -n +5 templates/.github/instructions/nana.instructions.md) templates/.claude/rules/nana-soul.md | size: M
+- [x] Create memory-harvest companion + wire into dev-debrief — Write memory-harvest.md (~40 lines): extraction categories, memory_store output, 100-entry ceiling, stale removal. Add Step 4.7 to SKILL.md (~3 lines). Add step to executor-prompt.md. TDD: memory-harvest.md doesn't exist (RED), write companion + wire (GREEN), verify no overlap with Step 5 (REFACTOR) | scope: ~/.claude/skills/dev-debrief/memory-harvest.md, ~/.claude/skills/dev-debrief/SKILL.md, ~/.claude/skills/dev-debrief/executor-prompt.md | success: test -f ~/.claude/skills/dev-debrief/memory-harvest.md && grep -qi 'memory.harvest' ~/.claude/skills/dev-debrief/SKILL.md && grep -qi 'memory_store' ~/.claude/skills/dev-debrief/memory-harvest.md && grep -qi 'memory.harvest' ~/.claude/skills/dev-debrief/executor-prompt.md | size: M
+- [x] Add spec-existence check to dev-plan pre-checks — New Step 0.6: standard ceremony checks specs/<phase-slug>.md or phase article ## Formal Spec. If neither: STOP. Lite: skip. TDD: no spec check exists (RED), add Step 0.6 (GREEN) | scope: ~/.claude/skills/dev-plan/SKILL.md | success: grep -qi 'spec.*exist\|spec.*check\|No spec found' ~/.claude/skills/dev-plan/SKILL.md | size: S
+- [x] Add thinking-protocol T0 to dev-plan Step 6 — Inline check: challenge frame, read subtext, delay commitment. Conversational output only. TDD: no thinking protocol reference in Step 6 area (RED), add T0 check (GREEN) | scope: ~/.claude/skills/dev-plan/SKILL.md | success: grep -qi 'thinking.protocol\|challenge.*frame' ~/.claude/skills/dev-plan/SKILL.md | size: S
+- [x] Add soul ceiling test + regression check — Assert soul <=60 lines in test_templates.sh. Run full suite. TDD: no soul ceiling test (RED), add assertion (GREEN) | scope: tests/test_templates.sh | success: bash tests/test_templates.sh && grep -qi 'soul.*60\|60.*soul\|wc.*nana-soul' tests/test_templates.sh | size: S
+- [ ] Commit + push + regenerate reports — make report && make workflow, git commit, git push. TDD: reports outdated (RED), regenerate + commit + push (GREEN) | scope: docs/report.html, docs/workflow.html | success: git diff --quiet && git diff --cached --quiet | size: XS

@@ -46,6 +46,18 @@ assert_contains "$SOUL" 'Code quality lens'
 test_start "nana-soul.md has surgical discipline bullet"
 assert_contains "$SOUL" 'every changed line'
 
+test_start "nana-soul.md has 'Voice & presence' section"
+assert_contains "$SOUL" 'Voice'
+
+test_start "nana-soul.md stays under 60 lines"
+SOUL_LINES=$(wc -l < "$SOUL")
+if [ "$SOUL_LINES" -le 60 ]; then
+  echo -n "($SOUL_LINES/60) "
+  test_pass
+else
+  test_fail "soul: $SOUL_LINES / 60 lines OVER"
+fi
+
 test_start "nana-soul.md has no personal data (jake)"
 assert_exit_code 1 grep -qi 'jake' "$SOUL"
 
