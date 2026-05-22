@@ -90,6 +90,9 @@ assert_contains "$SPEC" 'Tier 0'
 test_start "spec-reviewer-prompt.md exists"
 assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/spec/spec-reviewer-prompt.md"
 
+test_start "adversarial-constraints-prompt.md exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/spec/adversarial-constraints-prompt.md"
+
 # --- File lifecycle reference ---
 LIFECYCLE="$PROJECT_ROOT/templates/.claude/rules/file-lifecycle.md"
 

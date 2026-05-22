@@ -28,3 +28,5 @@
 [2026-05-20T09:00:00] DEBRIEF -- 0 decisions (3 existing deduped), 1 journal, tasks updated, state refreshed, phase 12 READY FOR COMPLETION
 [2026-05-20T10:00:00] PLAN -- Phase 13 planned, 5 tasks, 2 decisions (personal-profile-template-for-shipping, skill-ceiling-250-to-350), formal spec at specs/phase-13-final-polish-and-ship.md (8/10 revised-to-accept)
 [2026-05-20T14:00:00] DEBRIEF -- 0 decisions (2 existing deduped), 1 journal, tasks updated, state refreshed, phase 13 READY FOR COMPLETION, v0.3.0 shipped
+[2026-05-21T00:00:00] PLAN -- Phase 14 planned, 3 tasks, 2 decisions (t0-wording-over-structural-subagent, adversarial-constraint-generation-as-spec-step)
+[2026-05-21T12:00:00] DEBRIEF -- 0 decisions (2 existing deduped), 1 journal, tasks updated, state refreshed, phase 14 READY FOR COMPLETION

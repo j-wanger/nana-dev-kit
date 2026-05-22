@@ -1,6 +1,6 @@
 # Tasks
 
-> Last updated: 2026-05-20 by /dev-debrief (Phase 13 complete)
+> Last updated: 2026-05-21 by /dev-plan (Phase 14 planned)
 
 <details>
 <summary>Phases 1-13 (all completed, 59 tasks)</summary>
@@ -121,3 +121,11 @@
 - [x] [XS] Commit + tag v0.3.0 + push — Annotated tag, push with tags. TDD: no v0.3.0 tag (RED), commit + tag + push (GREEN) | scope: * | success: git diff --quiet && git tag -l 'v0.3.0' | grep -q 'v0.3.0' | size: XS
 
 </details>
+
+<!-- phase:phase-14-adversarial-thinking-and-review -->
+<!-- gates: spec=8/10 approach=yes plan-review=8/10 tasks=yes -->
+## Phase 14: Adversarial Thinking & Review
+
+- [x] [S] T0 Rewrite — force non-vacuous output in dev-plan Step 6: grep -qi 'weakest.*assumption' fails (RED), rewrite Step 6 T0 with output-format requirements: name weakest assumption + what breaks, identify alternative framing, state what info would change recommendation, add non-vacuity gate ~15 lines (GREEN) | scope: ~/.claude/skills/dev-plan/SKILL.md | success: grep -qi 'weakest.*assumption\|what breaks' ~/.claude/skills/dev-plan/SKILL.md | size: S
+- [x] [M] Adversarial constraint generation — spec Step 2.5 + companion: test -f adversarial-constraints-prompt.md fails (RED), create adversarial-constraints-prompt.md (~40-50 lines) with clean-context subagent prompt for constraints with falsifiability tests, edge cases, scope risks + insert Step 2.5 in spec SKILL.md ~20 lines (GREEN), verify SKILL.md ≤ 350 lines (REFACTOR) | scope: templates/.claude/skills/spec/SKILL.md, templates/.claude/skills/spec/adversarial-constraints-prompt.md | success: test -f templates/.claude/skills/spec/adversarial-constraints-prompt.md && grep -qi 'adversarial.*constraint\|clean.context.*subagent' templates/.claude/skills/spec/SKILL.md && [ $(wc -l < templates/.claude/skills/spec/SKILL.md) -le 350 ] | size: M
+- [x] [M] Install + tests + verification: grep -q 'adversarial-constraints-prompt' install.sh fails (RED), add copy line to install.sh + test assertions in test_install.sh and test_templates.sh (GREEN), run full suite (REFACTOR) | scope: install.sh, tests/test_install.sh, tests/test_templates.sh | success: grep -q 'adversarial-constraints-prompt' install.sh && make test && [ $(wc -l < templates/.claude/rules/nana-soul.md) -le 60 ] | size: M

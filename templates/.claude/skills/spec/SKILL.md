@@ -33,6 +33,17 @@ Before drafting, reason internally (no output artifact):
 
 If information is insufficient: ask the user targeted questions before drafting. Do NOT draft with gaps and hope the user catches them.
 
+## Step 2.5: Adversarial Constraint Generation (clean-context subagent)
+
+Before drafting, dispatch a clean-context subagent to independently generate constraints:
+
+1. **Read** `adversarial-constraints-prompt.md` (companion file in this skill directory).
+2. **Dispatch** Agent with the adversarial prompt + ONLY the Objective and Context from Step 1. Do NOT include your thinking, approach ideas, scope decisions, or conversation history — the subagent must reason independently.
+3. **Collect** the subagent's constraints, edge cases, and scope risks.
+4. **Incorporate or reject:** For each item the subagent generated, either incorporate it into your draft (Step 3) or explicitly note why you're rejecting it. Do not silently ignore items.
+
+If Agent tool unavailable: warn `"Adversarial constraint generator unavailable — drafting with author-only constraints."` and proceed to Step 3.
+
 ## Step 3: Draft Spec
 
 Use this 9-section template. Fill every section — empty sections signal missing thinking.

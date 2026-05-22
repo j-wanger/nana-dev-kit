@@ -41,6 +41,9 @@ assert_file_exists "$THOME/.claude/skills/spec/SKILL.md"
 test_start "creates spec-reviewer-prompt.md"
 assert_file_exists "$THOME/.claude/skills/spec/spec-reviewer-prompt.md"
 
+test_start "creates adversarial-constraints-prompt.md"
+assert_file_exists "$THOME/.claude/skills/spec/adversarial-constraints-prompt.md"
+
 test_start "creates file-lifecycle.md"
 assert_file_exists "$THOME/.claude/rules/file-lifecycle.md"
 

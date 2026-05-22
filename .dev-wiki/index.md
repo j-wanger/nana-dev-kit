@@ -16,6 +16,7 @@
 - [[phase-11-process-hardening|Phase 11: Process Hardening]] -- completed
 - [[phase-12-soul-enhancement-memory-harvest|Phase 12: Soul Enhancement & Memory Harvest]] -- completed
 - [[phase-13-final-polish-and-ship|Phase 13: Final Polish & Ship]] -- completed
+- [[phase-14-adversarial-thinking-and-review|Phase 14: Adversarial Thinking & Review]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -34,6 +35,8 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[t0-wording-over-structural-subagent|T0 wording over structural subagent]] -- high confidence
+- [[adversarial-constraint-generation-as-spec-step|Adversarial constraint generation as spec Step 2.5]] -- high confidence
 - [[personal-profile-template-for-shipping|Personal profile template for shipping]] -- high confidence
 - [[skill-ceiling-250-to-350|SKILL.md ceiling 250 to 350]] -- high confidence
 - [[soul-warmth-via-compression|Soul warmth via compression]] -- high confidence
@@ -57,6 +60,7 @@
 - [[structural-placeholder-verification|Structural placeholder verification]] -- high confidence
 
 ### Journal
+- [[2026-05-21-phase-14-adversarial-thinking-and-review-complete|Phase 14 complete]] -- 2026-05-21
 - [[2026-05-20-phase-13-final-polish-and-ship-complete|Phase 13 complete]] -- 2026-05-20
 - [[2026-05-20-phase-12-soul-enhancement-memory-harvest-complete|Phase 12 complete]] -- 2026-05-20
 - [[2026-05-19-phase-11-process-hardening-complete|Phase 11 complete]] -- 2026-05-19
@@ -71,6 +75,7 @@
 - [[2026-05-15-phase-1-foundation-and-packaging-complete|Phase 1 complete]] -- 2026-05-15
 
 ### Status
+- [[2026-05-21-codebase-snapshot|Codebase Snapshot]] -- 2026-05-21
 - [[2026-05-20-codebase-snapshot|Codebase Snapshot]] -- 2026-05-20
 - [[2026-05-19-codebase-snapshot|Codebase Snapshot]] -- 2026-05-19
 - [[2026-05-15-codebase-snapshot|Codebase Snapshot]] -- 2026-05-15
@@ -87,6 +92,8 @@
 
 ## Recent
 
+- 2026-05-21: Phase 14 completed -- T0 output-format forcing, adversarial spec Step 2.5, tests 65 -> 67, soul/budget unchanged
+- 2026-05-21: Phase 14 planned -- 3 tasks, 2 decisions, adversarial thinking (T0 wording + spec Step 2.5)
 - 2026-05-20: Phase 13 completed -- H8+H9 heuristics, personal template, ceiling 350, v0.3.0 shipped, tests 63 -> 65, budget 245/300
 - 2026-05-20: Phase 13 planned -- 5 tasks, 2 decisions, final polish + v0.3.0 ship
 - 2026-05-20: Phase 12 completed -- soul warmth + memory-harvest + spec/thinking enforcement, tests 61 -> 63, budget 239/300
@@ -95,5 +102,3 @@
 - 2026-05-19: Phase 11 planned -- 5 tasks, 1 decision, process hardening (layered gate enforcement)
 - 2026-05-19: Phase 10 completed -- memory MCP-only, gate enforcement, retro check (Phases 1-10), budget 229/300
 - 2026-05-19: Phase 10 planned -- 2 tasks, memory lifecycle convergence
-- 2026-05-19: Phase 9 completed -- file lifecycle routing table, orphan removed, 59 tests, budget 227/300
-- 2026-05-19: Phase 9 planned -- 3 tasks, file lifecycle reference + orphan cleanup

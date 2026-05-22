@@ -35,6 +35,7 @@ mkdir -p ~/.claude/skills/py-init ~/.claude/skills/spec
 cp "$SKILL_SRC" ~/.claude/skills/py-init/SKILL.md
 cp "$SPEC_SRC"/SKILL.md ~/.claude/skills/spec/SKILL.md
 cp "$SPEC_SRC"/spec-reviewer-prompt.md ~/.claude/skills/spec/spec-reviewer-prompt.md
+cp "$SPEC_SRC"/adversarial-constraints-prompt.md ~/.claude/skills/spec/adversarial-constraints-prompt.md
 
 # --- Identity rules (Claude Code global) ---
 mkdir -p ~/.claude/rules
