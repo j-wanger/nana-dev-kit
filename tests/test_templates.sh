@@ -112,6 +112,45 @@ assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" 'gate-c
 test_start "session-start.sh passes syntax check"
 assert_exit_code 0 bash -n "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh"
 
+# --- Imported skills presence ---
+test_start "dev-plan SKILL.md exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md"
+
+test_start "dev-wiki SKILL.md exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/dev-wiki/SKILL.md"
+
+test_start "dev-debrief SKILL.md exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/dev-debrief/SKILL.md"
+
+test_start "wiki-query SKILL.md exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/wiki-query/SKILL.md"
+
+test_start "knowledge-wiki SKILL.md exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/knowledge-wiki/SKILL.md"
+
+test_start "wiki-init SKILL.md exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/wiki-init/SKILL.md"
+
+# --- PreCompact hook ---
+test_start "pre-compact.sh exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/hooks/pre-compact.sh"
+
+test_start "pre-compact.sh passes syntax check"
+assert_exit_code 0 bash -n "$PROJECT_ROOT/templates/.claude/hooks/pre-compact.sh"
+
+# --- Session-start memory guidance ---
+test_start "session-start.sh has memory_search guidance"
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" 'memory_search'
+
+# --- MANIFEST ---
+test_start "MANIFEST exists with >100 entries"
+MANIFEST="$PROJECT_ROOT/templates/.claude/skills/MANIFEST"
+if [ -f "$MANIFEST" ] && [ "$(wc -l < "$MANIFEST")" -gt 100 ]; then
+  test_pass
+else
+  test_fail "MANIFEST missing or too small"
+fi
+
 # --- Instruction budget regression test ---
 # Sum always-loaded files: soul + personal + nana.instructions.md + AGENTS.md
 # Ceiling: 300 lines total before instruction-following degrades

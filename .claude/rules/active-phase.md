@@ -1,11 +1,18 @@
 # Active Phase Context
 
-Phase: 14 - Adversarial Thinking & Review
-Status: Completed, 3/3 tasks done, 100%
-Objective: Made T0 thinking protocol and spec constraint generation genuinely adversarial. T0 forces named assumptions + what breaks. Spec has adversarial Step 2.5 with clean-context subagent.
+Phase: 15 - Wire the Lifecycle
+Status: Active, 0/7 tasks done, 0%
+Objective: Merge dev-wiki + knowledge-wiki skills into monorepo, refactor install.sh with modular flags (--all/--core-only/--no-python/--dry-run), add PreCompact hook, enhance session-start with memory_search guidance.
 
-Result: All exit criteria met. 67 tests pass. Soul 59/60, spec SKILL 124/350.
+Scope: templates/.claude/skills/dev-*/, templates/.claude/skills/wiki-*/, templates/.claude/skills/knowledge-wiki/, install.sh, templates/.claude/hooks/
 
-Next: Run /dev-plan to plan Phase 15. Candidates: /spec routing investigation, T0 challenge quality rubric, generalize adversarial pre-generation.
+Key constraints:
+- Import verbatim from ~/.claude/skills/ (canonical source, ahead of repos)
+- install.sh idempotent, <10s, module deps validated
+- PreCompact hook: pure POSIX shell + git, no Python/MCP
+- No SKILL.md content modifications
+
+Exit criteria: 17 skill dirs imported, install flags work, PreCompact outputs state, session-start has memory guidance, make test passes
+Abort: 3 failed attempts on any task → ask user
 
 Gates: [x] spec [x] approach [x] plan-review [x] tasks

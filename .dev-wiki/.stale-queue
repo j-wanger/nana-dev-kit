@@ -3,3 +3,4 @@ tests/test_templates.sh
 install.sh
 tests/test_install.sh
 VERSION
+templates/.claude/hooks/pre-compact.sh

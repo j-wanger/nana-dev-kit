@@ -137,4 +137,92 @@ else
   test_fail "no error message in output"
 fi
 
+# --- Module flags ---
+THOME_FLAGS=$(mktemp -d)
+
+test_start "--dry-run does not create files"
+env HOME="$THOME_FLAGS" bash "$PROJECT_ROOT/install.sh" --dry-run >/dev/null 2>&1
+if [ ! -d "$THOME_FLAGS/.claude/skills" ]; then
+  test_pass
+else
+  test_fail "dry-run created files"
+fi
+
+test_start "--dry-run mentions dev-plan"
+DRY_OUTPUT=$(env HOME="$THOME_FLAGS" bash "$PROJECT_ROOT/install.sh" --dry-run 2>&1)
+if echo "$DRY_OUTPUT" | grep -q 'dev-plan'; then
+  test_pass
+else
+  test_fail "--dry-run output missing dev-plan"
+fi
+
+test_start "--core-only installs spec"
+env HOME="$THOME_FLAGS" bash "$PROJECT_ROOT/install.sh" --core-only >/dev/null 2>&1
+assert_file_exists "$THOME_FLAGS/.claude/skills/spec/SKILL.md"
+
+test_start "--core-only does NOT install dev-plan"
+if [ ! -d "$THOME_FLAGS/.claude/skills/dev-plan" ]; then
+  test_pass
+else
+  test_fail "dev-plan present under --core-only"
+fi
+
+test_start "--core-only does NOT install wiki-query"
+if [ ! -d "$THOME_FLAGS/.claude/skills/wiki-query" ]; then
+  test_pass
+else
+  test_fail "wiki-query present under --core-only"
+fi
+
+test_start "--core-only does NOT install py-init"
+if [ ! -d "$THOME_FLAGS/.claude/skills/py-init" ]; then
+  test_pass
+else
+  test_fail "py-init present under --core-only"
+fi
+
+rm -rf "$THOME_FLAGS"
+
+THOME_NP=$(mktemp -d)
+
+test_start "--no-python installs dev-plan"
+env HOME="$THOME_NP" bash "$PROJECT_ROOT/install.sh" --no-python >/dev/null 2>&1
+assert_file_exists "$THOME_NP/.claude/skills/dev-plan/SKILL.md"
+
+test_start "--no-python installs wiki-query"
+assert_file_exists "$THOME_NP/.claude/skills/wiki-query/SKILL.md"
+
+test_start "--no-python does NOT install py-init"
+if [ ! -d "$THOME_NP/.claude/skills/py-init" ]; then
+  test_pass
+else
+  test_fail "py-init present under --no-python"
+fi
+
+rm -rf "$THOME_NP"
+
+# Full install with all modules
+THOME_ALL=$(mktemp -d)
+
+test_start "full install creates dev-plan skill"
+env HOME="$THOME_ALL" bash "$PROJECT_ROOT/install.sh" >/dev/null 2>&1
+assert_file_exists "$THOME_ALL/.claude/skills/dev-plan/SKILL.md"
+
+test_start "full install creates wiki-query skill"
+assert_file_exists "$THOME_ALL/.claude/skills/wiki-query/SKILL.md"
+
+test_start "full install creates dev-wiki skill"
+assert_file_exists "$THOME_ALL/.claude/skills/dev-wiki/SKILL.md"
+
+test_start "full install creates knowledge-wiki skill"
+assert_file_exists "$THOME_ALL/.claude/skills/knowledge-wiki/SKILL.md"
+
+test_start "full install creates dev-debrief skill"
+assert_file_exists "$THOME_ALL/.claude/skills/dev-debrief/SKILL.md"
+
+test_start "full install creates wiki-init skill"
+assert_file_exists "$THOME_ALL/.claude/skills/wiki-init/SKILL.md"
+
+rm -rf "$THOME_ALL"
+
 test_summary "test_install"

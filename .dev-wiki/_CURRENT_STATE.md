@@ -1,38 +1,38 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-21 by /dev-debrief (Phase 14 complete)
+> Last updated: 2026-05-21 by /dev-plan (Phase 15 planned)
 
 ## Recommended Next Action
 
-Run `/dev-plan` to plan Phase 15. Candidates: /spec routing investigation, T0 challenge quality rubric, generalize adversarial pre-generation pattern.
+Begin Phase 15 implementation: Task 1 — Import dev-wiki skills (6 dirs from ~/.claude/skills/).
 
 ## Active Phase
 
-**[[phase-14-adversarial-thinking-and-review|Phase 14: Adversarial Thinking & Review]]** (status: completed)
+**[[phase-15-wire-the-lifecycle|Phase 15: Wire the Lifecycle]]** (status: active)
 
-Entry criteria: MET (Phase 13 complete, v0.3.0 shipped)
-Exit criteria: ALL MET — T0 forces named assumptions, spec has adversarial Step 2.5, companion exists, install.sh copies it, 67 tests pass
+Entry criteria: MET (Phase 14 complete, spec approved 7/10 revised)
+Exit criteria: 17 skill dirs imported, install.sh modular with flags, PreCompact hook, session-start memory guidance, make test passes
 
-Progress: 100% (3/3 tasks done)
+Progress: ~0% (0/7 tasks done)
 
 ## Active Phase Contract
 
-Phase: 14 - Adversarial Thinking & Review (COMPLETED)
-Tasks: 3/3 done
-Transition: run /dev-plan for Phase 15
-Abort: n/a (phase complete)
+Phase: 15 - Wire the Lifecycle
+Tasks: 0/7 done (1L 4M 2S)
+Transition: fresh session with /dev-context (7 tasks, L phase)
+Abort: if import from ~/.claude/skills/ produces inconsistent state after 3 fix attempts
 
 ## Recent Decisions
 
 | Decision | Confidence | Date |
 |----------|------------|------|
+| [[monorepo-skill-distribution]] | high | 2026-05-21 |
+| [[import-source-canonical-installed]] | high | 2026-05-21 |
 | [[t0-wording-over-structural-subagent]] | high | 2026-05-21 |
-| [[adversarial-constraint-generation-as-spec-step]] | high | 2026-05-21 |
-| [[personal-profile-template-for-shipping]] | high | 2026-05-20 |
 
 ## Blockers and Open Questions
 
-- /spec routing: skill listed in available skills but not recognized as command. Needs investigation. Orthogonal to Phase 14 work. (raised 2026-05-21)
+- /spec routing: skill listed in available skills but not recognized as command. Needs investigation. Orthogonal to Phase 15 work. (raised 2026-05-21)
 
 ## Key Artifacts
 

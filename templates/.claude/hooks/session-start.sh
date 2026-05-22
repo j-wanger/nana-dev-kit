@@ -34,4 +34,13 @@ if [ -f "$SESSION_STATE" ]; then
   fi
 fi
 
+# --- Memory search guidance ---
+TASKS=".dev-wiki/tasks.md"
+if [ -f "$TASKS" ]; then
+  TOPIC=$(grep -m1 '^\- \[ \]' "$TASKS" 2>/dev/null | sed 's/^- \[ \] \[.\] //' | sed 's/ —.*//' | head -c 80 || true)
+  if [ -n "$TOPIC" ]; then
+    echo "[memory] Run memory_search with query: \"$TOPIC\""
+  fi
+fi
+
 exit 0

@@ -17,6 +17,7 @@
 - [[phase-12-soul-enhancement-memory-harvest|Phase 12: Soul Enhancement & Memory Harvest]] -- completed
 - [[phase-13-final-polish-and-ship|Phase 13: Final Polish & Ship]] -- completed
 - [[phase-14-adversarial-thinking-and-review|Phase 14: Adversarial Thinking & Review]] -- completed
+- [[phase-15-wire-the-lifecycle|Phase 15: Wire the Lifecycle]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
