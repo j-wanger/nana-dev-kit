@@ -31,3 +31,5 @@
 [2026-05-21T00:00:00] PLAN -- Phase 14 planned, 3 tasks, 2 decisions (t0-wording-over-structural-subagent, adversarial-constraint-generation-as-spec-step)
 [2026-05-21T12:00:00] DEBRIEF -- 0 decisions (2 existing deduped), 1 journal, tasks updated, state refreshed, phase 14 READY FOR COMPLETION
 [2026-05-21T18:00:00] PLAN -- Phase 15 planned, 7 tasks (1L 4M 2S), 2 decisions (monorepo-skill-distribution, import-source-canonical-installed), formal spec at specs/phase-15-wire-the-lifecycle.md (7/10 revised-to-accept)
+[2026-05-22T12:00:00] DEBRIEF -- 0 decisions (2 existing deduped), 1 journal, tasks updated, state refreshed, phase 15 READY FOR COMPLETION, retro triggered (Phases 11-15: clean)
+[2026-05-22T18:00:00] PLAN -- Phase 16 planned, 6 tasks (4M 2S), 3 decisions (global-hooks-project-opt-in, lightweight-deliverable-check-stop, python-json-parsing-hooks)

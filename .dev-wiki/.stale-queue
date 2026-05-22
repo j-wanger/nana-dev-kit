@@ -1,6 +1,8 @@
-templates/.claude/hooks/session-start.sh
-tests/test_templates.sh
+
+templates/.claude/hooks/enforce-spec.sh
+templates/.claude/hooks/enforce-loop.sh
+tests/test_enforce.sh
+Makefile
 install.sh
 tests/test_install.sh
-VERSION
-templates/.claude/hooks/pre-compact.sh
+templates/.claude/hooks/session-start.sh

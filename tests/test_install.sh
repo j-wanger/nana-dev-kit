@@ -181,6 +181,13 @@ else
   test_fail "py-init present under --core-only"
 fi
 
+test_start "--core-only does NOT install enforce hooks"
+if [ ! -f "$THOME_FLAGS/.claude/hooks/enforce-spec.sh" ] && [ ! -f "$THOME_FLAGS/.claude/enforce" ]; then
+  test_pass
+else
+  test_fail "enforce hooks present under --core-only"
+fi
+
 rm -rf "$THOME_FLAGS"
 
 THOME_NP=$(mktemp -d)
@@ -222,6 +229,22 @@ assert_file_exists "$THOME_ALL/.claude/skills/dev-debrief/SKILL.md"
 
 test_start "full install creates wiki-init skill"
 assert_file_exists "$THOME_ALL/.claude/skills/wiki-init/SKILL.md"
+
+test_start "full install creates enforce-spec hook"
+assert_file_exists "$THOME_ALL/.claude/hooks/enforce-spec.sh"
+
+test_start "full install creates enforce-loop hook"
+assert_file_exists "$THOME_ALL/.claude/hooks/enforce-loop.sh"
+
+test_start "full install creates enforce marker"
+assert_file_exists "$THOME_ALL/.claude/enforce"
+
+test_start "full install registers hooks in settings.json"
+if grep -q 'enforce-spec.sh' "$THOME_ALL/.claude/settings.json" 2>/dev/null && grep -q 'enforce-loop.sh' "$THOME_ALL/.claude/settings.json" 2>/dev/null; then
+  test_pass
+else
+  test_fail "hooks not registered in settings.json"
+fi
 
 rm -rf "$THOME_ALL"
 

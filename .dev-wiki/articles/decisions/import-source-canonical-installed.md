@@ -1,6 +1,6 @@
 ---
 title: Import Source — Canonical Installed Versions
-status: active
+status: accepted
 confidence: high
 date: 2026-05-21
 source: plan

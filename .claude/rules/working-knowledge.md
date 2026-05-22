@@ -87,3 +87,15 @@
   source: [[decision:t0-wording-over-structural-subagent]] | activated: 2026-05-21
 - [uses: 1] Spec SKILL.md Step 2.5 adversarial constraint generation with companion adversarial-constraints-prompt.md (41 lines); install.sh copies it; 124/350 lines
   source: [[decision:adversarial-constraint-generation-as-spec-step]] | activated: 2026-05-21
+- [uses: 1] install.sh refactored to module-group architecture (~240 lines) with --all/--core-only/--no-python/--dry-run flags; modules: core (rules + memory), python (py-init + spec), dev-wiki (6 dirs), knowledge-wiki (11 dirs)
+  source: [[decision:monorepo-skill-distribution]] | activated: 2026-05-22
+- [uses: 1] templates/.claude/skills/ contains 22 skill dirs + MANIFEST (115 files, ~630KB); source repos (~/dev-wiki, ~/knowledge-wiki) are historical — monorepo is canonical
+  source: [[decision:import-source-canonical-installed]] | activated: 2026-05-22
+- [uses: 1] SIGPIPE race: grep -q in pipefail mode causes premature pipe closure; fix by capturing output to variable first, then grep the variable
+  source: [[journal:2026-05-22-phase-15-wire-the-lifecycle-complete]] | activated: 2026-05-22
+- [uses: 1] PreCompact hook at templates/.claude/hooks/pre-compact.sh: pure bash, reads committed _CURRENT_STATE.md + tasks.md + active-phase.md, outputs structured summary
+  source: [[journal:2026-05-22-phase-15-wire-the-lifecycle-complete]] | activated: 2026-05-22
+- [uses: 1] session-start.sh enhanced with memory_search topic guidance (extracts active task topic from dev-wiki state); reads 2 sources + gate-check + memory guidance
+  source: [[journal:2026-05-22-phase-15-wire-the-lifecycle-complete]] | activated: 2026-05-22
+- [uses: 1] wiki-index ships Python files (indexer.py, search.py, wikilib.py, convert.py) — needs language-neutrality accounting in future phase
+  source: [[journal:2026-05-22-phase-15-wire-the-lifecycle-complete]] | activated: 2026-05-22

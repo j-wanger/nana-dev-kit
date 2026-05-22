@@ -212,6 +212,47 @@ if [ "$INSTALL_DEVWIKI" = true ]; then
   for skill in $DEVWIKI_SKILLS; do
     install_skill_dir "$skill"
   done
+
+  # Enforcement hooks
+  HOOKS_SRC="$SCRIPT_DIR/templates/.claude/hooks"
+  if $DRY_RUN; then
+    echo "[dry-run] install hooks: enforce-spec.sh, enforce-loop.sh"
+    echo "[dry-run] register hooks in settings.json"
+    echo "[dry-run] create enforce marker: ~/.claude/enforce"
+  else
+    mkdir -p ~/.claude/hooks
+    cp "$HOOKS_SRC/enforce-spec.sh" ~/.claude/hooks/enforce-spec.sh
+    cp "$HOOKS_SRC/enforce-loop.sh" ~/.claude/hooks/enforce-loop.sh
+    chmod +x ~/.claude/hooks/enforce-spec.sh ~/.claude/hooks/enforce-loop.sh
+    touch ~/.claude/enforce
+
+    # Register hooks in settings.json (idempotent JSON merge)
+    SETTINGS=~/.claude/settings.json
+    python3 -c "
+import json, os
+path = os.path.expanduser('$SETTINGS')
+data = {}
+if os.path.isfile(path):
+    with open(path) as f:
+        data = json.load(f)
+if 'hooks' not in data:
+    data['hooks'] = {}
+hooks = data['hooks']
+spec_hook = {'matcher': 'Write|Edit', 'command': os.path.expanduser('~/.claude/hooks/enforce-spec.sh')}
+loop_hook = {'command': os.path.expanduser('~/.claude/hooks/enforce-loop.sh')}
+if 'PreToolUse' not in hooks:
+    hooks['PreToolUse'] = []
+if not any(h.get('command','').endswith('enforce-spec.sh') for h in hooks['PreToolUse']):
+    hooks['PreToolUse'].append(spec_hook)
+if 'Stop' not in hooks:
+    hooks['Stop'] = []
+if not any(h.get('command','').endswith('enforce-loop.sh') for h in hooks['Stop']):
+    hooks['Stop'].append(loop_hook)
+with open(path, 'w') as f:
+    json.dump(data, f, indent=2)
+    f.write('\n')
+"
+  fi
 fi
 
 # === Knowledge-wiki module ===
@@ -234,6 +275,7 @@ if ! $DRY_RUN; then
   [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/.nana-dev-kit-path        — kit location marker"
   [ "$INSTALL_PYTHON" = true ] && echo "  ~/.claude/skills/py-init/           — /py-init Python scaffolding"
   [ "$INSTALL_DEVWIKI" = true ] && echo "  ~/.claude/skills/dev-*/             — dev-wiki lifecycle (6 skills)"
+  [ "$INSTALL_DEVWIKI" = true ] && echo "  ~/.claude/hooks/enforce-*.sh        — enforcement hooks (spec + loop)"
   [ "$INSTALL_KNOWLEDGE" = true ] && echo "  ~/.claude/skills/wiki-*/            — knowledge-wiki pipeline (11 skills)"
   echo ""
   echo "Next: open a project and run /dev-init to bootstrap the dev lifecycle."

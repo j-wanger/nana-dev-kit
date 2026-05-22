@@ -1,9 +1,9 @@
 # Tasks
 
-> Last updated: 2026-05-21 by /dev-plan (Phase 15 planned)
+> Last updated: 2026-05-22 by /dev-plan (Phase 16 planned)
 
 <details>
-<summary>Phases 1-13 (all completed, 59 tasks)</summary>
+<summary>Phases 1-15 (all completed, 69 tasks, collapsed)</summary>
 
 <!-- phase:phase-01-foundation-and-packaging -->
 ## Phase 1: Foundation & Packaging
@@ -120,8 +120,6 @@
 - [x] [S] Version bump + reports + tests — Write 0.3.0 to VERSION, regenerate reports, run make test. TDD: VERSION shows 0.2.0 (RED), update + regen + test (GREEN) | scope: VERSION, docs/report.html, docs/workflow.html | success: grep -qx '0.3.0' VERSION && make test | size: S
 - [x] [XS] Commit + tag v0.3.0 + push — Annotated tag, push with tags. TDD: no v0.3.0 tag (RED), commit + tag + push (GREEN) | scope: * | success: git diff --quiet && git tag -l 'v0.3.0' | grep -q 'v0.3.0' | size: XS
 
-</details>
-
 <!-- phase:phase-14-adversarial-thinking-and-review -->
 <!-- gates: spec=8/10 approach=yes plan-review=8/10 tasks=yes -->
 ## Phase 14: Adversarial Thinking & Review
@@ -141,3 +139,16 @@
 - [x] [M] Add PreCompact hook — pure bash, reads _CURRENT_STATE.md + tasks.md + active-phase.md, outputs structured summary for context injection. TDD: test -f templates/.claude/hooks/pre-compact.sh fails (RED), write hook with graceful skips (GREEN), test against fixture with output validation (REFACTOR) | scope: templates/.claude/hooks/pre-compact.sh | success: bash -n templates/.claude/hooks/pre-compact.sh && mkdir -p /tmp/test-pc/.dev-wiki && printf '## Active Phase\n**Phase 15** (status: active)\n' > /tmp/test-pc/.dev-wiki/_CURRENT_STATE.md && (cd /tmp/test-pc && bash "$OLDPWD/templates/.claude/hooks/pre-compact.sh") 2>/dev/null | grep -qi 'phase' && rm -rf /tmp/test-pc | size: M
 - [x] [S] Enhance session-start.sh — extract active task topic from dev-wiki state, output memory_search guidance line. TDD: grep -q 'memory_search' templates/.claude/hooks/session-start.sh fails (RED), add topic extraction + guidance output (GREEN) | scope: templates/.claude/hooks/session-start.sh | success: bash -n templates/.claude/hooks/session-start.sh && grep -q 'memory_search' templates/.claude/hooks/session-start.sh | size: S
 - [x] [M] Update test suite — test_install.sh: flag combinations (--all, --core-only, --no-python), negative assertions, new skill dir presence. test_templates.sh: spot-check imported skills. TDD: new assertions fail (RED), add test cases (GREEN), verify make test <30s (REFACTOR) | scope: tests/test_install.sh, tests/test_templates.sh | success: make test && THOME=$(mktemp -d) && HOME="$THOME" bash install.sh && test -d "$THOME/.claude/skills/dev-plan" && test -d "$THOME/.claude/skills/wiki-query" && rm -rf "$THOME" | size: M
+
+</details>
+
+<!-- phase:phase-16-enforce-the-loop -->
+<!-- gates: spec=pending approach=yes plan-review=yes tasks=yes -->
+## Phase 16: Enforce the Loop
+
+- [x] [M] enforce-spec.sh — PreToolUse hook for spec enforcement: `bash -n templates/.claude/hooks/enforce-spec.sh` fails (RED), implement: parse JSON stdin via Python for file_path, check .claude/enforce marker, path allowlist, active-phase.md gate check, specs/<slug>.md validity check with `grep -qE '^\- \[ \] `.+`'`, exit 2 if no approved spec (GREEN), verify allowlist covers all meta paths (REFACTOR) | scope: templates/.claude/hooks/enforce-spec.sh | success: `bash -n templates/.claude/hooks/enforce-spec.sh && echo '{"tool_name":"Write","input":{"file_path":"src/main.py"}}' | bash templates/.claude/hooks/enforce-spec.sh; [ $? -eq 0 ] && T=$(mktemp -d) && mkdir -p "$T/.claude/rules" "$T/.dev-wiki" && printf 'Phase: 99 - test\n' > "$T/.claude/rules/active-phase.md" && touch "$T/.claude/enforce" && echo '{"tool_name":"Write","input":{"file_path":"src/x.py"}}' | (cd "$T" && bash "$OLDPWD/templates/.claude/hooks/enforce-spec.sh") 2>/dev/null; [ $? -eq 2 ] && rm -rf "$T"` | size: M
+- [x] [M] enforce-loop.sh — Stop hook for loop enforcement: `bash -n templates/.claude/hooks/enforce-loop.sh` fails (RED), implement: check .claude/enforce + .dev-wiki existence, read active phase slug from active-phase.md, run file-existence exit criteria from specs/<slug>.md, count open tasks in active phase section, check debrief journal entry via git log + glob, advisory stdout for debrief/open-tasks (GREEN), verify no false blocking on empty state (REFACTOR) | scope: templates/.claude/hooks/enforce-loop.sh | success: `bash -n templates/.claude/hooks/enforce-loop.sh && echo '{}' | bash templates/.claude/hooks/enforce-loop.sh; [ $? -eq 0 ] && T=$(mktemp -d) && mkdir -p "$T/.claude/rules" "$T/.dev-wiki" "$T/specs" && printf 'Phase: 99 - test\n' > "$T/.claude/rules/active-phase.md" && printf '- [ ] \x60test -f '"$T"'/missing-file\x60\n' > "$T/specs/phase-99-test.md" && touch "$T/.claude/enforce" && echo '{}' | (cd "$T" && bash "$OLDPWD/templates/.claude/hooks/enforce-loop.sh") 2>/dev/null; [ $? -eq 2 ] && rm -rf "$T"` | size: M
+- [x] [M] test_enforce.sh — 10 enforcement test cases: `bash tests/test_enforce.sh` fails (RED), implement fixture-based tests with temp dirs: (a) allow no .dev-wiki, (b) allow allowlisted path, (c) block no spec, (d) block stub spec, (e) allow valid spec, (f) allow gate marked [x], (g) deliverable-check pass, (h) deliverable-check fail, (i) debrief advisory output, (j) marker absent = allow. Wire into Makefile test target (GREEN), verify all 10 pass deterministically (REFACTOR) | scope: tests/test_enforce.sh, Makefile | success: `bash tests/test_enforce.sh && grep -q 'test_enforce' Makefile` | size: M
+- [x] [M] install.sh — hooks module + enforce marker: `bash install.sh --dry-run 2>&1 | grep -q 'enforce-spec'` fails (RED), implement: add hooks to dev-wiki module group (requires core), create ~/.claude/hooks/ dir, copy enforce-*.sh, JSON merge for hooks section in settings.json (append to arrays, don't overwrite), create .claude/enforce marker in target project dir (GREEN), verify idempotency — run twice, diff (REFACTOR) | scope: install.sh | success: `bash install.sh --dry-run 2>&1 | grep -q 'enforce-spec' && THOME=$(mktemp -d) && HOME="$THOME" bash install.sh && test -f "$THOME/.claude/hooks/enforce-spec.sh" && test -f "$THOME/.claude/enforce" && rm -rf "$THOME"` | size: M
+- [x] [S] test_install.sh — enforcement hook assertions: enforce hook assertions fail (RED), add test cases: --all includes hooks + marker, --core-only excludes hooks + marker, hooks JSON registration in settings.json (GREEN) | scope: tests/test_install.sh | success: `grep -q 'enforce' tests/test_install.sh && bash tests/test_install.sh` | size: S
+- [x] [S] session-start.sh — enforcement status report: `grep -q 'enforce' templates/.claude/hooks/session-start.sh` fails (RED), add: check .claude/enforce existence, report "[enforcement] active" or "[enforcement] inactive (touch .claude/enforce to enable)" (GREEN) | scope: templates/.claude/hooks/session-start.sh | success: `bash -n templates/.claude/hooks/session-start.sh && grep -q 'enforce' templates/.claude/hooks/session-start.sh` | size: S

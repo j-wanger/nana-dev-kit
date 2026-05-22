@@ -13,6 +13,7 @@ test:
 	@bash "$(NANA_KIT_DIR)tests/test_install.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_sync_rules.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_templates.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_enforce.sh"
 	@echo ""
 	@echo "All tests passed."
 

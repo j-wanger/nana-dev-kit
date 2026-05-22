@@ -1,6 +1,6 @@
 ---
 title: Monorepo Skill Distribution
-status: active
+status: accepted
 confidence: high
 date: 2026-05-21
 source: plan

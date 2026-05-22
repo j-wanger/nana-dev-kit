@@ -43,4 +43,11 @@ if [ -f "$TASKS" ]; then
   fi
 fi
 
+# --- Enforcement status ---
+if [ -f "$HOME/.claude/enforce" ]; then
+  echo "[enforcement] active"
+else
+  echo "[enforcement] inactive (touch ~/.claude/enforce to enable)"
+fi
+
 exit 0

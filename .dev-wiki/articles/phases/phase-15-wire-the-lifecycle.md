@@ -1,8 +1,9 @@
 ---
 title: "Phase 15: Wire the Lifecycle"
-status: active
+status: completed
 started: 2026-05-21
-updated: 2026-05-21
+completed: 2026-05-22
+updated: 2026-05-22
 ceremony: standard
 scope:
   - templates/.claude/skills/dev-*/**

@@ -1,18 +1,16 @@
 # Active Phase Context
 
-Phase: 15 - Wire the Lifecycle
-Status: Active, 0/7 tasks done, 0%
-Objective: Merge dev-wiki + knowledge-wiki skills into monorepo, refactor install.sh with modular flags (--all/--core-only/--no-python/--dry-run), add PreCompact hook, enhance session-start with memory_search guidance.
+Phase: 16 - Enforce the Loop
+Objective: Add deterministic enforcement hooks — enforce-spec.sh (PreToolUse, blocks writes without approved spec) and enforce-loop.sh (Stop, checks deliverable files) — distributed globally via install.sh with per-project opt-in via .claude/enforce marker.
 
-Scope: templates/.claude/skills/dev-*/, templates/.claude/skills/wiki-*/, templates/.claude/skills/knowledge-wiki/, install.sh, templates/.claude/hooks/
+Scope: templates/.claude/hooks/enforce-*.sh, install.sh, tests/test_enforce.sh, tests/test_install.sh, templates/.claude/hooks/session-start.sh, Makefile
 
-Key constraints:
-- Import verbatim from ~/.claude/skills/ (canonical source, ahead of repos)
-- install.sh idempotent, <10s, module deps validated
-- PreCompact hook: pure POSIX shell + git, no Python/MCP
-- No SKILL.md content modifications
+Key constraints: 100ms hook budget, fail-open without marker, Python JSON parsing, path allowlist for meta/test/md files, advisory-only for open tasks and debrief.
 
-Exit criteria: 17 skill dirs imported, install flags work, PreCompact outputs state, session-start has memory guidance, make test passes
-Abort: 3 failed attempts on any task → ask user
+Exit criteria: enforce-spec blocks no-spec writes, enforce-loop checks deliverables, 10 enforcement tests, install.sh distributes hooks, session-start reports enforcement status, make test passes.
 
-Gates: [x] spec [x] approach [x] plan-review [x] tasks
+Abort: if blocked >3 attempts on any task, ask user: skip or abort phase.
+
+Tests: 92 passing. Soul: 59/60. Budget: 245/300.
+
+Gates: [x] spec (pending formal write) [x] approach [x] plan-review [x] tasks
