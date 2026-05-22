@@ -216,14 +216,15 @@ if [ "$INSTALL_DEVWIKI" = true ]; then
   # Enforcement hooks
   HOOKS_SRC="$SCRIPT_DIR/templates/.claude/hooks"
   if $DRY_RUN; then
-    echo "[dry-run] install hooks: enforce-spec.sh, enforce-loop.sh"
+    echo "[dry-run] install hooks: enforce-spec.sh, enforce-loop.sh, detect-loop.sh"
     echo "[dry-run] register hooks in settings.json"
     echo "[dry-run] create enforce marker: ~/.claude/enforce"
   else
     mkdir -p ~/.claude/hooks
     cp "$HOOKS_SRC/enforce-spec.sh" ~/.claude/hooks/enforce-spec.sh
     cp "$HOOKS_SRC/enforce-loop.sh" ~/.claude/hooks/enforce-loop.sh
-    chmod +x ~/.claude/hooks/enforce-spec.sh ~/.claude/hooks/enforce-loop.sh
+    cp "$HOOKS_SRC/detect-loop.sh" ~/.claude/hooks/detect-loop.sh
+    chmod +x ~/.claude/hooks/enforce-spec.sh ~/.claude/hooks/enforce-loop.sh ~/.claude/hooks/detect-loop.sh
     touch ~/.claude/enforce
 
     # Register hooks in settings.json (idempotent JSON merge)
@@ -242,8 +243,13 @@ spec_hook = {'matcher': 'Write|Edit', 'command': os.path.expanduser('~/.claude/h
 loop_hook = {'command': os.path.expanduser('~/.claude/hooks/enforce-loop.sh')}
 if 'PreToolUse' not in hooks:
     hooks['PreToolUse'] = []
+detect_hook = {'matcher': 'Bash', 'command': os.path.expanduser('~/.claude/hooks/detect-loop.sh')}
 if not any(h.get('command','').endswith('enforce-spec.sh') for h in hooks['PreToolUse']):
     hooks['PreToolUse'].append(spec_hook)
+if 'PostToolUse' not in hooks:
+    hooks['PostToolUse'] = []
+if not any(h.get('command','').endswith('detect-loop.sh') for h in hooks['PostToolUse']):
+    hooks['PostToolUse'].append(detect_hook)
 if 'Stop' not in hooks:
     hooks['Stop'] = []
 if not any(h.get('command','').endswith('enforce-loop.sh') for h in hooks['Stop']):

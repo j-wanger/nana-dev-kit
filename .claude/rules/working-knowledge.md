@@ -99,3 +99,11 @@
   source: [[journal:2026-05-22-phase-15-wire-the-lifecycle-complete]] | activated: 2026-05-22
 - [uses: 1] wiki-index ships Python files (indexer.py, search.py, wikilib.py, convert.py) — needs language-neutrality accounting in future phase
   source: [[journal:2026-05-22-phase-15-wire-the-lifecycle-complete]] | activated: 2026-05-22
+- [uses: 1] Hook exit codes: 0 = allow (tool use proceeds), 2 = block (stderr shown to Claude); PreToolUse receives JSON on stdin with input.file_path; Stop receives session context JSON
+  source: [[wiki:hook-exit-codes]] | activated: 2026-05-22
+- [uses: 1] Enforcement hooks (enforce-spec.sh, enforce-loop.sh) install globally to ~/.claude/hooks/; check CWD .claude/enforce marker (fail-open); install.sh JSON merges hooks into settings.json
+  source: [[decision:global-hooks-project-opt-in]] | activated: 2026-05-22
+- [uses: 1] Stop hook (enforce-loop.sh) runs only file-existence exit criteria (test -f, test -d) from specs/<slug>.md; open tasks and debrief status are advisory (stdout), not blocking (exit 2)
+  source: [[decision:lightweight-deliverable-check-stop]] | activated: 2026-05-22
+- [uses: 1] Subshell variable propagation: $(setup_fixture) doesn't export HOME to parent; use inline HOME=... before command instead of export in subshell for test fixtures
+  source: [[journal:2026-05-22-phase-16-enforce-the-loop-complete]] | activated: 2026-05-22

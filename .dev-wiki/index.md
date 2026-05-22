@@ -18,7 +18,8 @@
 - [[phase-13-final-polish-and-ship|Phase 13: Final Polish & Ship]] -- completed
 - [[phase-14-adversarial-thinking-and-review|Phase 14: Adversarial Thinking & Review]] -- completed
 - [[phase-15-wire-the-lifecycle|Phase 15: Wire the Lifecycle]] -- completed
-- [[phase-16-enforce-the-loop|Phase 16: Enforce the Loop]] -- active
+- [[phase-16-enforce-the-loop|Phase 16: Enforce the Loop]] -- completed
+- [[phase-17-harden|Phase 17: Harden]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -37,9 +38,12 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
-- [[global-hooks-project-opt-in|Global hooks with project-level opt-in]] -- medium confidence, accepted
-- [[lightweight-deliverable-check-stop|Lightweight deliverable check at Stop]] -- medium confidence, accepted
-- [[python-json-parsing-hooks|Python JSON parsing in hooks]] -- medium confidence, accepted
+- [[pure-bash-loop-detection|Pure bash for detect-loop.sh]] -- high confidence, accepted
+- [[sqlite3-memory-nudge|sqlite3 for memory nudge (not MCP)]] -- medium confidence, accepted
+- [[staged-pruning-stale-queue|Staged pruning to .stale-queue]] -- high confidence, accepted
+- [[global-hooks-project-opt-in|Global hooks with project-level opt-in]] -- high confidence, accepted
+- [[lightweight-deliverable-check-stop|Lightweight deliverable check at Stop]] -- high confidence, accepted
+- [[python-json-parsing-hooks|Python JSON parsing in hooks]] -- high confidence, accepted
 - [[monorepo-skill-distribution|Monorepo Skill Distribution]] -- high confidence, accepted
 - [[import-source-canonical-installed|Import Source -- Canonical Installed Versions]] -- high confidence, accepted
 - [[t0-wording-over-structural-subagent|T0 wording over structural subagent]] -- high confidence
@@ -67,6 +71,7 @@
 - [[structural-placeholder-verification|Structural placeholder verification]] -- high confidence
 
 ### Journal
+- [[2026-05-22-phase-16-enforce-the-loop-complete|Phase 16 complete]] -- 2026-05-22
 - [[2026-05-22-phase-15-wire-the-lifecycle-complete|Phase 15 complete]] -- 2026-05-22
 - [[2026-05-21-phase-14-adversarial-thinking-and-review-complete|Phase 14 complete]] -- 2026-05-21
 - [[2026-05-20-phase-13-final-polish-and-ship-complete|Phase 13 complete]] -- 2026-05-20
@@ -101,6 +106,8 @@
 
 ## Recent
 
+- 2026-05-22: Phase 17 planned -- 4 tasks, 3 decisions, harden (loop detection + memory nudge + working-knowledge pruning)
+- 2026-05-22: Phase 16 completed -- enforcement hooks (spec gate + deliverable check), global hooks + opt-in, tests 92 -> 107
 - 2026-05-22: Phase 16 planned -- 6 tasks, 3 decisions, enforce the loop (spec gate + deliverable check + global hooks)
 - 2026-05-22: Phase 15 completed -- monorepo skills (17 dirs), modular install flags, PreCompact hook, tests 67 -> 92, retro clean
 - 2026-05-21: Phase 15 planned -- 7 tasks, 2 decisions, wire the lifecycle (monorepo + modular install)
@@ -109,6 +116,3 @@
 - 2026-05-20: Phase 13 completed -- H8+H9 heuristics, personal template, ceiling 350, v0.3.0 shipped, tests 63 -> 65, budget 245/300
 - 2026-05-20: Phase 13 planned -- 5 tasks, 2 decisions, final polish + v0.3.0 ship
 - 2026-05-20: Phase 12 completed -- soul warmth + memory-harvest + spec/thinking enforcement, tests 61 -> 63, budget 239/300
-- 2026-05-20: Phase 12 planned -- 6 tasks, 3 decisions, soul warmth + memory harvest + process gaps
-- 2026-05-19: Phase 11 completed -- layered gate enforcement (preventive + detective), tests 59 -> 61, budget 229/300
-- 2026-05-19: Phase 11 planned -- 5 tasks, 1 decision, process hardening (layered gate enforcement)

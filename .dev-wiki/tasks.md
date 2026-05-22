@@ -1,9 +1,9 @@
 # Tasks
 
-> Last updated: 2026-05-22 by /dev-plan (Phase 16 planned)
+> Last updated: 2026-05-22 by /dev-plan (Phase 17 planned)
 
 <details>
-<summary>Phases 1-15 (all completed, 69 tasks, collapsed)</summary>
+<summary>Phases 1-16 (all completed, 81 tasks, collapsed)</summary>
 
 <!-- phase:phase-01-foundation-and-packaging -->
 ## Phase 1: Foundation & Packaging
@@ -140,10 +140,8 @@
 - [x] [S] Enhance session-start.sh — extract active task topic from dev-wiki state, output memory_search guidance line. TDD: grep -q 'memory_search' templates/.claude/hooks/session-start.sh fails (RED), add topic extraction + guidance output (GREEN) | scope: templates/.claude/hooks/session-start.sh | success: bash -n templates/.claude/hooks/session-start.sh && grep -q 'memory_search' templates/.claude/hooks/session-start.sh | size: S
 - [x] [M] Update test suite — test_install.sh: flag combinations (--all, --core-only, --no-python), negative assertions, new skill dir presence. test_templates.sh: spot-check imported skills. TDD: new assertions fail (RED), add test cases (GREEN), verify make test <30s (REFACTOR) | scope: tests/test_install.sh, tests/test_templates.sh | success: make test && THOME=$(mktemp -d) && HOME="$THOME" bash install.sh && test -d "$THOME/.claude/skills/dev-plan" && test -d "$THOME/.claude/skills/wiki-query" && rm -rf "$THOME" | size: M
 
-</details>
-
 <!-- phase:phase-16-enforce-the-loop -->
-<!-- gates: spec=pending approach=yes plan-review=yes tasks=yes -->
+<!-- gates: spec=approved approach=yes plan-review=7/10(revised) tasks=yes -->
 ## Phase 16: Enforce the Loop
 
 - [x] [M] enforce-spec.sh — PreToolUse hook for spec enforcement: `bash -n templates/.claude/hooks/enforce-spec.sh` fails (RED), implement: parse JSON stdin via Python for file_path, check .claude/enforce marker, path allowlist, active-phase.md gate check, specs/<slug>.md validity check with `grep -qE '^\- \[ \] `.+`'`, exit 2 if no approved spec (GREEN), verify allowlist covers all meta paths (REFACTOR) | scope: templates/.claude/hooks/enforce-spec.sh | success: `bash -n templates/.claude/hooks/enforce-spec.sh && echo '{"tool_name":"Write","input":{"file_path":"src/main.py"}}' | bash templates/.claude/hooks/enforce-spec.sh; [ $? -eq 0 ] && T=$(mktemp -d) && mkdir -p "$T/.claude/rules" "$T/.dev-wiki" && printf 'Phase: 99 - test\n' > "$T/.claude/rules/active-phase.md" && touch "$T/.claude/enforce" && echo '{"tool_name":"Write","input":{"file_path":"src/x.py"}}' | (cd "$T" && bash "$OLDPWD/templates/.claude/hooks/enforce-spec.sh") 2>/dev/null; [ $? -eq 2 ] && rm -rf "$T"` | size: M
@@ -152,3 +150,14 @@
 - [x] [M] install.sh — hooks module + enforce marker: `bash install.sh --dry-run 2>&1 | grep -q 'enforce-spec'` fails (RED), implement: add hooks to dev-wiki module group (requires core), create ~/.claude/hooks/ dir, copy enforce-*.sh, JSON merge for hooks section in settings.json (append to arrays, don't overwrite), create .claude/enforce marker in target project dir (GREEN), verify idempotency — run twice, diff (REFACTOR) | scope: install.sh | success: `bash install.sh --dry-run 2>&1 | grep -q 'enforce-spec' && THOME=$(mktemp -d) && HOME="$THOME" bash install.sh && test -f "$THOME/.claude/hooks/enforce-spec.sh" && test -f "$THOME/.claude/enforce" && rm -rf "$THOME"` | size: M
 - [x] [S] test_install.sh — enforcement hook assertions: enforce hook assertions fail (RED), add test cases: --all includes hooks + marker, --core-only excludes hooks + marker, hooks JSON registration in settings.json (GREEN) | scope: tests/test_install.sh | success: `grep -q 'enforce' tests/test_install.sh && bash tests/test_install.sh` | size: S
 - [x] [S] session-start.sh — enforcement status report: `grep -q 'enforce' templates/.claude/hooks/session-start.sh` fails (RED), add: check .claude/enforce existence, report "[enforcement] active" or "[enforcement] inactive (touch .claude/enforce to enable)" (GREEN) | scope: templates/.claude/hooks/session-start.sh | success: `bash -n templates/.claude/hooks/session-start.sh && grep -q 'enforce' templates/.claude/hooks/session-start.sh` | size: S
+
+</details>
+
+<!-- phase:phase-17-harden -->
+<!-- gates: spec=approved approach=yes plan-review=pending tasks=yes -->
+## Phase 17: Harden
+
+- [ ] [M] detect-loop.sh — pure bash PostToolUse hook: `bash -n templates/.claude/hooks/detect-loop.sh` fails (RED), implement: parse command+exit_code from JSON stdin via grep/sed, append to .loop-state file, check last 3 lines for consecutive identical failed commands, emit advisory warning to stderr if loop detected, exit 0 always (GREEN), verify no false positives on alternating commands (REFACTOR) | scope: templates/.claude/hooks/detect-loop.sh | success: `bash -n templates/.claude/hooks/detect-loop.sh && T=$(mktemp -d) && mkdir -p "$T/.claude" && touch "$T/.claude/enforce" && printf '{"tool_name":"Bash","tool_input":{"command":"false"},"stdout":"","stderr":"err","exit_code":1}' | (cd "$T" && bash "$OLDPWD/templates/.claude/hooks/detect-loop.sh"); [ $? -eq 0 ] && rm -rf "$T"` | size: M
+- [ ] [M] session-start.sh enhancements — memory nudge + working-knowledge pruning + loop state clear: `grep -q 'sqlite3' templates/.claude/hooks/session-start.sh` fails (RED), implement: sqlite3 query of memory.db entry count with 2s timeout + cooldown file check, working-knowledge pruning ([uses:1] + >30d + not [pinned] entries moved to .stale-queue max 5), clear .loop-state file if present (GREEN), verify graceful skip when sqlite3/DB unavailable (REFACTOR) | scope: templates/.claude/hooks/session-start.sh | success: `bash -n templates/.claude/hooks/session-start.sh && grep -q 'sqlite3' templates/.claude/hooks/session-start.sh && grep -q 'stale-queue\|stale.queue' templates/.claude/hooks/session-start.sh && grep -q 'loop-state\|loop.state' templates/.claude/hooks/session-start.sh` | size: M
+- [ ] [M] test_harden.sh + Makefile — 8 fixture tests: `bash tests/test_harden.sh` fails (RED), implement fixture-based tests: (a) detect-loop exits 0 on non-Bash tool, (b) detect-loop exits 0 on successful command, (c) detect-loop warns on 3 identical failures, (d) detect-loop no warn on 2 identical failures, (e) session-start clears loop state, (f) session-start skips memory nudge when no DB, (g) working-knowledge pruning moves stale entry, (h) working-knowledge pruning respects pinned. Wire into Makefile test target (GREEN), verify all 8 pass deterministically (REFACTOR) | scope: tests/test_harden.sh, Makefile | success: `bash tests/test_harden.sh && grep -q 'test_harden' Makefile` | size: M
+- [ ] [S] install.sh — detect-loop.sh hook copy + PostToolUse registration: `bash install.sh --dry-run 2>&1 | grep -q 'detect-loop'` fails (RED), add detect-loop.sh to hooks module copy list + add PostToolUse JSON registration in settings.json merge (GREEN) | scope: install.sh | success: `bash install.sh --dry-run 2>&1 | grep -q 'detect-loop' && THOME=$(mktemp -d) && HOME="$THOME" bash install.sh && test -f "$THOME/.claude/hooks/detect-loop.sh" && rm -rf "$THOME"` | size: S

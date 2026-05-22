@@ -1,7 +1,7 @@
 ---
 title: Lightweight deliverable check at Stop
 status: accepted
-confidence: medium
+confidence: high
 date: 2026-05-22
 source: plan
 tags: [hooks, enforcement, verification]

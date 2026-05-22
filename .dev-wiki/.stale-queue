@@ -6,3 +6,5 @@ Makefile
 install.sh
 tests/test_install.sh
 templates/.claude/hooks/session-start.sh
+templates/.claude/hooks/detect-loop.sh
+tests/test_harden.sh

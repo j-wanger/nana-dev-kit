@@ -1,7 +1,7 @@
 ---
 title: Python JSON parsing in hooks
 status: accepted
-confidence: medium
+confidence: high
 date: 2026-05-22
 source: plan
 tags: [hooks, json, python, consistency]

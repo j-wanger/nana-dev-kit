@@ -1,6 +1,6 @@
 ---
 title: "Phase 16: Enforce the Loop"
-status: active
+status: completed
 started: 2026-05-22
 updated: 2026-05-22
 ceremony: standard
@@ -56,6 +56,10 @@ Global install to ~/.claude/hooks/ with .claude/enforce marker for per-project o
 - Claude Code hook JSON schema remains stable (tool_name + input.file_path for PreToolUse). If false: adapt parsing to new schema.
 - python3 available in PATH (guaranteed by install.sh prereq). If false: fall back to jq or pure bash.
 
+## Results
+
+All 6 tasks completed. 15 new tests (10 enforce + 5 install, total 107). Decision confidence upgraded medium -> high for all 3 decisions. Enforcement hooks distributed globally via install.sh with per-project opt-in marker.
+
 ## Formal Spec
 
-Pending -- spec gate marked pending in active-phase.md.
+specs/phase-16-enforce-the-loop.md (approved).

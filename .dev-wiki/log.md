@@ -33,3 +33,5 @@
 [2026-05-21T18:00:00] PLAN -- Phase 15 planned, 7 tasks (1L 4M 2S), 2 decisions (monorepo-skill-distribution, import-source-canonical-installed), formal spec at specs/phase-15-wire-the-lifecycle.md (7/10 revised-to-accept)
 [2026-05-22T12:00:00] DEBRIEF -- 0 decisions (2 existing deduped), 1 journal, tasks updated, state refreshed, phase 15 READY FOR COMPLETION, retro triggered (Phases 11-15: clean)
 [2026-05-22T18:00:00] PLAN -- Phase 16 planned, 6 tasks (4M 2S), 3 decisions (global-hooks-project-opt-in, lightweight-deliverable-check-stop, python-json-parsing-hooks)
+[2026-05-22T23:00:00] DEBRIEF -- 0 decisions (3 existing updated medium->high), 1 journal, tasks updated, state refreshed, phase 16 READY FOR COMPLETION
+[2026-05-22T23:30:00] PLAN -- Phase 17 planned, 4 tasks (3M 1S), 3 decisions (pure-bash-loop-detection, sqlite3-memory-nudge, staged-pruning-stale-queue)
