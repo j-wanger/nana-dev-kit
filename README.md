@@ -2,6 +2,10 @@
 
 End-to-end development harness for Claude Code. Installs 22 skills, 11 hooks, identity rules, and a persistent memory server. Covers the full lifecycle: scaffold → spec → plan → execute → debrief.
 
+## Requirements
+
+Bash, [jq](https://jqlang.github.io/jq/) 1.5+, Python 3.8+ (for memory server). macOS or Linux — hooks are bash scripts, not portable to native Windows.
+
 ## Quick Start
 
 ```bash

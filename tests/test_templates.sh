@@ -112,6 +112,23 @@ assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" 'gate-c
 test_start "session-start.sh passes syntax check"
 assert_exit_code 0 bash -n "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh"
 
+# --- Hook jq migration ---
+for hook in audit-log auto-ruff-format block-dangerous-bash scan-secrets enforce-spec check-tests-were-run; do
+  test_start "$hook.sh uses jq (not python3 -c)"
+  HOOKFILE="$PROJECT_ROOT/templates/.claude/hooks/$hook.sh"
+  if grep -q 'jq' "$HOOKFILE" && ! grep -q 'python3 -c' "$HOOKFILE"; then
+    test_pass
+  else
+    test_fail "$hook.sh still uses python3 -c or missing jq"
+  fi
+done
+
+test_start "audit-log.sh has jq fail-open guard"
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/audit-log.sh" 'command -v jq'
+
+test_start "block-dangerous-bash.sh has jq fail-open guard"
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/block-dangerous-bash.sh" 'command -v jq'
+
 # --- Imported skills presence ---
 test_start "dev-plan SKILL.md exists"
 assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md"

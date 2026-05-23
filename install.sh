@@ -290,5 +290,11 @@ if ! $DRY_RUN; then
   [ "$INSTALL_DEVWIKI" = true ] && echo "  ~/.claude/hooks/enforce-*.sh        — enforcement hooks (spec + loop)"
   [ "$INSTALL_KNOWLEDGE" = true ] && echo "  ~/.claude/skills/wiki-*/            — knowledge-wiki pipeline (11 skills)"
   echo ""
-  echo "Next: open a project and run /dev-init to bootstrap the dev lifecycle."
+  echo "Getting started (open a project, then run one of these):"
+  echo "  /dev-init     — bootstrap dev-wiki lifecycle tracking"
+  echo "  /py-init      — scaffold Python project with full toolchain"
+  echo "  /wiki-init    — start a knowledge wiki for your domain"
+else
+  echo ""
+  echo "[dry-run] Getting started: /dev-init (lifecycle), /py-init (Python), /wiki-init (knowledge)"
 fi

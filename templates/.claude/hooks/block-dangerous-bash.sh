@@ -5,8 +5,10 @@
 
 set -euo pipefail
 
+command -v jq >/dev/null 2>&1 || { echo "[warn] jq not found, hook skipped" >&2; exit 0; }
+
 INPUT=$(cat)
-COMMAND=$(echo "$INPUT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('input',{}).get('command',''))" 2>/dev/null || echo "")
+COMMAND=$(echo "$INPUT" | jq -r '.input.command // empty' 2>/dev/null || echo "")
 
 # Block rm -rf with dangerous targets
 if echo "$COMMAND" | grep -qE 'rm\s+-[a-zA-Z]*r[a-zA-Z]*f.*(/|~|\$HOME|\.\.)'; then
