@@ -40,6 +40,16 @@
         ]
       }
     ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/pre-compact.sh"
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [

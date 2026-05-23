@@ -1,24 +1,24 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-22 by /dev-debrief (Phase 22 completed)
+> Last updated: 2026-05-22 by /dev-plan (Phase 23 planned)
 
 ## Recommended Next Action
 
-Run `/dev-plan` to plan Phase 23. Candidates: language-agnostic core (Gap 4.1), PostCommit hook (Gap 1.6), worktree support (Gap 4.3), eval corpus expansion, bash 3.2 convention doc.
+Start implementing Phase 23 tasks. Task 1: Register pre-compact.sh in settings.json.
 
 ## Active Phase
 
-**[[phase-22-session-start-refactor|Phase 22: Session-Start Refactor + v0.4.0 Ship]]** (status: completed)
+**[[phase-23-bug-fixes-readme|Phase 23: Bug Fixes + README Rewrite]]** (status: active)
 
-Entry criteria: MET (Phase 21 complete, 128 tests passing, 38/38 eval)
-Exit criteria: ALL MET (session-start.sh 66 lines, 2 sourced modules, scan-secrets fixed, gap analysis updated, v0.4.0 tagged and pushed)
+Entry criteria: MET (Phase 22 complete, 133 tests passing, 38/38 eval, v0.4.0 shipped)
+Exit criteria: PreCompact registered in settings.json + install.sh, memory-harvest.md aligned, README rewritten (90-100 lines), all tests + eval pass
 
-Progress: 100% (5/5 tasks done)
+Progress: 0% (0/6 tasks done)
 
 ## Active Phase Contract
 
-Phase: 22 - Session-Start Refactor + v0.4.0 Ship
-Tasks: 5 (1M 4S, see tasks.md)
+Phase: 23 - Bug Fixes + README Rewrite
+Tasks: 6 (2M 4S, see tasks.md)
 Transition: continue
 Abort: if blocked >3 attempts, ask user: skip or abort
 
@@ -26,7 +26,8 @@ Abort: if blocked >3 attempts, ask user: skip or abort
 
 | Decision | Confidence | Date |
 |----------|------------|------|
-| [[session-start-modular-source]] | medium | 2026-05-22 |
+| [[pre-compact-dev-wiki-module]] | high | 2026-05-22 |
+| [[readme-budget-superseded]] | high | 2026-05-22 |
 
 ## Blockers and Open Questions
 
@@ -62,7 +63,8 @@ Abort: if blocked >3 attempts, ask user: skip or abort
 
 - Status: [[2026-05-22-codebase-snapshot|Codebase Snapshot 2026-05-22]]
 - Phases 1-22: completed (see index.md)
-- Decision: [[session-start-modular-source|Session-start modular sourcing]] -- high confidence, accepted
-- Decision: [[scan-secrets-quote-break-fix|POSIX-portable quote matching]] -- high confidence, accepted
+- Phase 23: active (bug fixes + README rewrite)
+- Decision: [[pre-compact-dev-wiki-module|pre-compact.sh in dev-wiki module]] -- high confidence, accepted
+- Decision: [[readme-budget-superseded|README budget 58 -> 90-100 lines]] -- high confidence, accepted
 - Roadmap: [[roadmap-gap-analysis|Engineering Gap Analysis]] -- 3 OPEN gaps remain (1.6, 4.1, 4.3)
 - Retro: Phases 16-20 clean (0 blockers, 0 reversals, 0 user corrections)

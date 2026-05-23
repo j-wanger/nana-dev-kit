@@ -216,7 +216,7 @@ if [ "$INSTALL_DEVWIKI" = true ]; then
   # Enforcement hooks
   HOOKS_SRC="$SCRIPT_DIR/templates/.claude/hooks"
   if $DRY_RUN; then
-    echo "[dry-run] install hooks: enforce-spec.sh, enforce-loop.sh, detect-loop.sh"
+    echo "[dry-run] install hooks: enforce-spec.sh, enforce-loop.sh, detect-loop.sh, pre-compact.sh"
     echo "[dry-run] register hooks in settings.json"
     echo "[dry-run] create enforce marker: ~/.claude/enforce"
   else
@@ -224,7 +224,8 @@ if [ "$INSTALL_DEVWIKI" = true ]; then
     cp "$HOOKS_SRC/enforce-spec.sh" ~/.claude/hooks/enforce-spec.sh
     cp "$HOOKS_SRC/enforce-loop.sh" ~/.claude/hooks/enforce-loop.sh
     cp "$HOOKS_SRC/detect-loop.sh" ~/.claude/hooks/detect-loop.sh
-    chmod +x ~/.claude/hooks/enforce-spec.sh ~/.claude/hooks/enforce-loop.sh ~/.claude/hooks/detect-loop.sh
+    cp "$HOOKS_SRC/pre-compact.sh" ~/.claude/hooks/pre-compact.sh
+    chmod +x ~/.claude/hooks/enforce-spec.sh ~/.claude/hooks/enforce-loop.sh ~/.claude/hooks/detect-loop.sh ~/.claude/hooks/pre-compact.sh
     touch ~/.claude/enforce
 
     # Register hooks in settings.json (idempotent JSON merge)
@@ -254,6 +255,11 @@ if 'Stop' not in hooks:
     hooks['Stop'] = []
 if not any(h.get('command','').endswith('enforce-loop.sh') for h in hooks['Stop']):
     hooks['Stop'].append(loop_hook)
+compact_hook = {'command': os.path.expanduser('~/.claude/hooks/pre-compact.sh')}
+if 'PreCompact' not in hooks:
+    hooks['PreCompact'] = []
+if not any(h.get('command','').endswith('pre-compact.sh') for h in hooks['PreCompact']):
+    hooks['PreCompact'].append(compact_hook)
 with open(path, 'w') as f:
     json.dump(data, f, indent=2)
     f.write('\n')

@@ -252,4 +252,47 @@ else
   test_fail "budget: $BUDGET_TOTAL / 300 lines OVER"
 fi
 
+# --- Memory-harvest API correctness ---
+test_start "memory-harvest.md uses category=custom (not lesson/constraint)"
+HARVEST="$PROJECT_ROOT/templates/.claude/skills/dev-debrief/memory-harvest.md"
+if ! grep -q 'category.*lesson\|category.*constraint' "$HARVEST" && grep -q 'category.*custom' "$HARVEST"; then
+  test_pass
+else
+  test_fail "memory-harvest.md has invalid MCP categories"
+fi
+
+test_start "memory-harvest.md uses trust (not confidence)"
+if grep -q 'trust' "$HARVEST" && ! grep -q 'confidence' "$HARVEST"; then
+  test_pass
+else
+  test_fail "memory-harvest.md uses confidence instead of trust"
+fi
+
+# --- README v0.4.0 coverage ---
+test_start "README mentions enforcement"
+assert_contains "$PROJECT_ROOT/README.md" 'nforcement'
+
+test_start "README mentions eval"
+assert_contains "$PROJECT_ROOT/README.md" 'eval'
+
+test_start "README mentions dev-plan"
+assert_contains "$PROJECT_ROOT/README.md" 'dev-plan'
+
+test_start "README within 70-120 line budget"
+README_LINES=$(wc -l < "$PROJECT_ROOT/README.md")
+if [ "$README_LINES" -ge 70 ] && [ "$README_LINES" -le 120 ]; then
+  echo -n "($README_LINES/120) "
+  test_pass
+else
+  test_fail "README: $README_LINES lines (expected 70-120)"
+fi
+
+# --- PreCompact hook registration ---
+test_start "settings.json has PreCompact hook"
+if jq -e '.hooks.PreCompact' "$PROJECT_ROOT/templates/.claude/settings.json" >/dev/null 2>&1; then
+  test_pass
+else
+  test_fail "PreCompact missing from settings.json"
+fi
+
 test_summary "test_templates"

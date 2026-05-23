@@ -249,6 +249,16 @@ else
   test_fail "hooks not registered in settings.json"
 fi
 
+test_start "full install creates pre-compact hook"
+assert_file_exists "$THOME_ALL/.claude/hooks/pre-compact.sh"
+
+test_start "full install registers PreCompact in settings.json"
+if grep -q 'pre-compact.sh' "$THOME_ALL/.claude/settings.json" 2>/dev/null && grep -q 'PreCompact' "$THOME_ALL/.claude/settings.json" 2>/dev/null; then
+  test_pass
+else
+  test_fail "PreCompact not registered in settings.json"
+fi
+
 rm -rf "$THOME_ALL"
 
 test_summary "test_install"

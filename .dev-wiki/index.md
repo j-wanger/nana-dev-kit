@@ -25,6 +25,7 @@
 - [[phase-20-eval-harness|Phase 20: Eval Harness]] -- completed
 - [[phase-21-eval-expansion|Phase 21: Eval Expansion]] -- completed
 - [[phase-22-session-start-refactor|Phase 22: Session-Start Refactor + v0.4.0 Ship]] -- completed
+- [[phase-23-bug-fixes-readme|Phase 23: Bug Fixes + README Rewrite]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -87,6 +88,8 @@
 - [[structural-placeholder-verification|Structural placeholder verification]] -- high confidence
 - [[scan-secrets-quote-break-fix|POSIX-portable quote matching for scan-secrets]] -- high confidence, accepted
 - [[session-start-modular-source|Session-start.sh modular sourcing pattern]] -- high confidence, accepted
+- [[pre-compact-dev-wiki-module|pre-compact.sh belongs in dev-wiki module group]] -- high confidence, accepted
+- [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
 - [[2026-05-22-phase-22-session-start-refactor-complete|Phase 22 complete]] -- 2026-05-22
@@ -133,8 +136,8 @@
 
 ## Recent
 
+- 2026-05-22: Phase 23 planned -- 6 tasks, 2 decisions, bug fixes (pre-compact registration, memory-harvest API) + README rewrite
 - 2026-05-22: Phase 22 completed -- session-start refactor, scan-secrets fix, gap analysis update, v0.4.0 shipped, 133 tests
-- 2026-05-22: Phase 22 planned -- 5 tasks, 1 decision, session-start refactor + scan-secrets fix + gap analysis + v0.4.0
 - 2026-05-22: Phase 21 completed -- eval expansion (38 scenarios, 4 categories, context category, validate-prompt.sh), make eval 38/38
 - 2026-05-22: Phase 21 planned -- 6 tasks, 3 decisions, eval expansion (context category + 5 hooks + prompt validator)
 - 2026-05-22: Phase 20 completed -- eval harness (18 scenarios, runner, validators, schemas), make eval 18/18

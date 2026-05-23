@@ -6,10 +6,10 @@ Extract conversation-level institutional knowledge and route to `memory_store` M
 
 Scan the conversation analysis output (Step 4) for knowledge that survives beyond this phase:
 
-1. **User corrections** — when the user overrode an agent decision or restored prior state. Store with category `correction`.
-2. **Preferences learned** — communication style, workflow expectations, tool choices revealed through interaction (not stated explicitly). Store with category `preference`.
-3. **Failure lessons** — approaches that failed and why, dead ends explored. Store with category `lesson`.
-4. **Non-obvious constraints** — project rules or boundaries discovered during implementation that aren't documented. Store with category `constraint`.
+1. **User corrections** — when the user overrode an agent decision or restored prior state. Tag: `harvest-correction`.
+2. **Preferences learned** — communication style, workflow expectations, tool choices revealed through interaction (not stated explicitly). Tag: `harvest-preference`.
+3. **Failure lessons** — approaches that failed and why, dead ends explored. Tag: `harvest-lesson`.
+4. **Non-obvious constraints** — project rules or boundaries discovered during implementation that aren't documented. Tag: `harvest-constraint`.
 
 ## What NOT to Extract
 
@@ -20,20 +20,23 @@ Scan the conversation analysis output (Step 4) for knowledge that survives beyon
 
 ## Output Format
 
-For each extracted item, emit a `memory_store` call:
+For each extracted item, call `memory_store` with flat params (matching memory-bridge.md conventions):
 
 ```
-memory_store({
+memory_store(
   content: "<one-sentence fact>",
-  metadata: { category: "<correction|preference|lesson|constraint>", source_session: "<date>", confidence: "<high|medium>" }
-})
+  category: "custom",
+  tags: ["<harvest-correction|harvest-preference|harvest-lesson|harvest-constraint>"],
+  trust: "high",
+  source: "observed"
+)
 ```
 
-Use `high` confidence for explicit user corrections. Use `medium` for inferred preferences and lessons.
+Use `trust: "high"` for explicit user corrections. Use `trust: "medium"` for inferred preferences and lessons.
 
 ## Advisory Ceiling
 
-Target ≤100 total entries in the memory store. Before storing, check current count via `memory_search` with a broad query. If approaching the ceiling, prefer updating existing entries over creating new ones.
+Target ≤100 total entries in the memory store. Before storing, check current count via `memory_stats`. If `memory_stats` is unavailable, fall back to `memory_search(query="harvest-", limit=50)` and count results. If approaching the ceiling, prefer updating existing entries over creating new ones.
 
 ## Stale Entry Removal
 
@@ -43,3 +46,4 @@ If a new fact contradicts an existing memory entry, update the existing entry ra
 
 - Quick debrief mode: skip entirely (insufficient conversation depth).
 - No corrections, preferences, or lessons detected: skip. Emit: "Memory harvest: nothing to extract."
+- MCP tools unavailable (subagent context): skip. Emit: "Memory harvest: skipped (no MCP access)."

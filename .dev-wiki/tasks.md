@@ -1,9 +1,9 @@
 # Tasks
 
-> Last updated: 2026-05-22 by /dev-plan (Phase 22 planned)
+> Last updated: 2026-05-22 by /dev-plan (Phase 23 planned)
 
 <details>
-<summary>Phases 1-21 (all completed, 111 tasks, collapsed)</summary>
+<summary>Phases 1-22 (all completed, 116 tasks, collapsed)</summary>
 
 
 
@@ -203,8 +203,6 @@
 - [x] [M] Context scenarios — 4 scenarios: soul-sections (Voice & presence, Thinking protocol sections present), file-lifecycle (routing table sections), session-start-guidance (dev-wiki output), rules-installed (nana-soul.md + file-lifecycle.md exist after install). Depends Task 1. TDD: no context-* dirs (RED), create 4 scenario dirs with checks arrays (GREEN), verify context category 100% (REFACTOR). | scope: eval/corpus/context-* | success: [ $(find eval/corpus -type d -name 'context-*' | wc -l) -ge 3 ] && make eval 2>&1 | grep -qi 'context' | size: M
 - [x] [M] Lifecycle + docs + final verify — 2-3 new lifecycle scenarios (multi-hook chains), update eval/README.md with context category docs, verify total >= 30 scenarios. Depends Tasks 1-5. TDD: total < 30 (RED), create lifecycle scenarios + update README (GREEN), verify make eval 100% + make test passes (REFACTOR). | scope: eval/corpus/lifecycle-*, eval/README.md, Makefile | success: [ $(find eval/corpus -name 'scenario.json' | wc -l) -ge 30 ] && make eval 2>&1 | grep -qE 'Score.*100' && make test | size: M
 
-</details>
-
 <!-- phase:phase-22-session-start-refactor -->
 <!-- gates: spec=8/10 approach=yes plan-review=7/10(revised) tasks=yes -->
 ## Phase 22: Session-Start Refactor + v0.4.0 Ship
@@ -214,3 +212,16 @@
 - [x] Update gap analysis: grep for CLOSED Phase 19 fails (RED), close gaps 1.3 (Phase 19), 3.3 (Phase 19), 4.2 (Phase 20), mark 4.4 PARTIAL (Phase 19), update header date (GREEN) | scope: .dev-wiki/articles/roadmap-gap-analysis.md | success: grep -c 'CLOSED.*Phase' .dev-wiki/articles/roadmap-gap-analysis.md | grep -qE '^[4-9]' | size: S
 - [x] Test updates: grep for session-start.d in test_templates.sh fails (RED), add file existence + bash -n assertions for wk-prune.sh and memory-nudge.sh (GREEN). Depends: Tasks 1, 2. | scope: tests/test_templates.sh | success: grep -q 'session-start\.d' tests/test_templates.sh && make test && make eval 2>&1 | grep -qE 'Score.*100' | size: S
 - [x] v0.4.0 bump + tag + push: grep -qx '0.4.0' VERSION fails (RED), write 0.4.0 to VERSION, commit, tag v0.4.0, push (GREEN). Depends: Tasks 1-4. | scope: VERSION | success: grep -qx '0.4.0' VERSION && make test && make eval 2>&1 | grep -qE 'Score.*100' | size: S
+
+</details>
+
+<!-- phase:phase-23-bug-fixes-readme -->
+<!-- gates: spec=8/10 approach=8/10 plan-review=n/a tasks=yes -->
+## Phase 23: Bug Fixes + README Rewrite
+
+- [ ] [S] Register pre-compact.sh in settings.json — add PreCompact entry with nested format. RED: jq -e '.hooks.PreCompact' fails. GREEN: Add PreCompact entry. | scope: templates/.claude/settings.json | success: jq -e '.hooks.PreCompact' templates/.claude/settings.json && jq -e '.hooks.PreCompact[0].hooks[0].command' templates/.claude/settings.json | grep -q 'pre-compact' | size: S
+- [ ] [M] Add pre-compact.sh to install.sh dev-wiki module — global copy + PreCompact JSON merge + idempotency verify. RED: bash install.sh --dry-run | grep 'pre-compact' fails. GREEN: Add to dev-wiki hooks copy + JSON merge. REFACTOR: Run twice, diff settings.json. | scope: install.sh | success: bash install.sh --dry-run 2>&1 | grep -q 'pre-compact' && THOME=$(mktemp -d) && HOME="$THOME" bash install.sh && test -f "$THOME/.claude/hooks/pre-compact.sh" && jq -e '.hooks.PreCompact' "$THOME/.claude/settings.json" && HOME="$THOME" bash install.sh && rm -rf "$THOME" | size: M
+- [ ] [S] Fix memory-harvest.md API mismatches — rewrite to match memory-bridge.md. RED: grep -q 'category.*lesson' (present). GREEN: Replace categories, API shape, params. | scope: templates/.claude/skills/dev-debrief/memory-harvest.md | success: ! grep -q 'category.*lesson\|category.*constraint\|confidence' templates/.claude/skills/dev-debrief/memory-harvest.md && grep -q 'category.*custom' templates/.claude/skills/dev-debrief/memory-harvest.md && grep -q 'trust' templates/.claude/skills/dev-debrief/memory-harvest.md | size: S
+- [ ] [M] Rewrite README.md — v0.4.0, 90-100 lines. RED: grep -qi 'dev-plan' README.md fails. GREEN: Rewrite with 7 sections. REFACTOR: Verify claims map to installed files. | scope: README.md | success: grep -qi 'enforcement' README.md && grep -qi 'eval' README.md && grep -qi 'dev-plan' README.md && grep -qi 'dev-init' README.md && [ $(wc -l < README.md) -ge 70 ] && [ $(wc -l < README.md) -le 120 ] | size: M
+- [ ] [S] Update tests — PreCompact + README + memory-harvest assertions. Depends: 1-4. RED: grep -q 'PreCompact' tests/test_install.sh fails. GREEN: Add assertions. | scope: tests/test_install.sh, tests/test_templates.sh | success: grep -q 'PreCompact' tests/test_install.sh && grep -q 'memory.harvest\|memory-harvest' tests/test_templates.sh && make test && make eval 2>&1 | grep -qE 'Score.*100' | size: S
+- [ ] [S] Commit + push. Depends: 1-5. | scope: * | success: git diff --quiet && make test | size: S
