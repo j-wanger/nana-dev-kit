@@ -26,6 +26,7 @@
 - [[phase-21-eval-expansion|Phase 21: Eval Expansion]] -- completed
 - [[phase-22-session-start-refactor|Phase 22: Session-Start Refactor + v0.4.0 Ship]] -- completed
 - [[phase-23-bug-fixes-readme|Phase 23: Bug Fixes + README Rewrite]] -- completed
+- [[phase-24-dx-hook-performance|Phase 24: DX + Hook Performance]] -- planned
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -60,7 +61,8 @@
 - [[staged-pruning-stale-queue|Staged pruning to .stale-queue]] -- high confidence, accepted
 - [[global-hooks-project-opt-in|Global hooks with project-level opt-in]] -- high confidence, accepted
 - [[lightweight-deliverable-check-stop|Lightweight deliverable check at Stop]] -- high confidence, accepted
-- [[python-json-parsing-hooks|Python JSON parsing in hooks]] -- high confidence, accepted
+- [[python-json-parsing-hooks|Python JSON parsing in hooks]] -- high confidence, accepted (superseded by jq-hook-migration)
+- [[jq-hook-migration|Migrate 6 hooks from python3 -c to jq]] -- high confidence, accepted
 - [[monorepo-skill-distribution|Monorepo Skill Distribution]] -- high confidence, accepted
 - [[import-source-canonical-installed|Import Source -- Canonical Installed Versions]] -- high confidence, accepted
 - [[t0-wording-over-structural-subagent|T0 wording over structural subagent]] -- high confidence
@@ -137,6 +139,7 @@
 
 ## Recent
 
+- 2026-05-22: Phase 24 planned -- 5 tasks, 1 decision (jq-hook-migration), jq hook migration + DX improvements
 - 2026-05-22: Phase 23 completed -- bug fixes (pre-compact registration, memory-harvest API), README rewrite (93 lines), 142 tests
 - 2026-05-22: Phase 23 planned -- 6 tasks, 2 decisions, bug fixes (pre-compact registration, memory-harvest API) + README rewrite
 - 2026-05-22: Phase 22 completed -- session-start refactor, scan-secrets fix, gap analysis update, v0.4.0 shipped, 133 tests

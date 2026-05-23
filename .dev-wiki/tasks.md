@@ -1,6 +1,6 @@
 # Tasks
 
-> Last updated: 2026-05-22 by /dev-debrief (Phase 23 completed)
+> Last updated: 2026-05-22 by /dev-plan (Phase 24 planned)
 
 <details>
 <summary>Phases 1-23 (all completed, 122 tasks, collapsed)</summary>
@@ -225,3 +225,13 @@
 - [x] [S] Commit + push. Depends: 1-5. | scope: * | success: git diff --quiet && make test | size: S
 
 </details>
+
+<!-- phase:phase-24-dx-hook-performance -->
+<!-- gates: spec=7/10(revised) approach=8/10 plan-review=7/10(revised) tasks=yes -->
+## Phase 24: DX + Hook Performance
+
+- [ ] [M] Migrate 6 hooks to jq — add jq guard + replace python3 -c with jq -r | scope: templates/.claude/hooks/{audit-log,auto-ruff-format,block-dangerous-bash,scan-secrets,enforce-spec,check-tests-were-run}.sh | success: ! grep -r 'python3 -c' templates/.claude/hooks/{audit-log,auto-ruff-format,block-dangerous-bash,scan-secrets,enforce-spec,check-tests-were-run}.sh && grep -q 'command -v jq' templates/.claude/hooks/audit-log.sh && grep -q 'command -v jq' templates/.claude/hooks/block-dangerous-bash.sh && make eval 2>&1 | grep -qE 'Score.*100' | size: M
+- [ ] [S] install.sh Getting Started output — add 3-path guide | scope: install.sh | success: bash install.sh --dry-run 2>&1 | grep -qi 'dev-init' | size: S
+- [ ] [S] README Requirements — add before Quick Start | scope: README.md | success: grep -qi 'requirements' README.md && grep -qi 'jq' README.md | size: S
+- [ ] [S] Update tests — jq assertions in test_templates.sh. Depends: 1-3. | scope: tests/test_templates.sh | success: make test && make eval 2>&1 | grep -qE 'Score.*100' | size: S
+- [ ] [S] Commit + push. Depends: 1-4. | scope: * | success: git diff --quiet && make test | size: S

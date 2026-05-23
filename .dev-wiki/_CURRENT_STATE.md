@@ -1,33 +1,32 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-22 by /dev-debrief (Phase 23 completed)
+> Last updated: 2026-05-22 by /dev-plan (Phase 24 planned)
 
 ## Recommended Next Action
 
-Run /dev-plan to plan Phase 24. Candidates: language-agnostic core (Gap 4.1), session-start.sh refactor (U.3), eval corpus expansion (template-only hooks), bash 3.2 convention doc, scan-secrets BSD grep fix, install.sh cosmetic output fix.
+Begin Task 1: Migrate 6 hooks from python3 -c to jq. Add jq fail-open guard to audit-log.sh and block-dangerous-bash.sh, then replace all python3 -c invocations with jq -r equivalents.
 
 ## Active Phase
 
-**[[phase-23-bug-fixes-readme|Phase 23: Bug Fixes + README Rewrite]]** (status: completed)
+**[[phase-24-dx-hook-performance|Phase 24: DX + Hook Performance]]** (status: planned)
 
-Entry criteria: MET (Phase 22 complete, 133 tests passing, 38/38 eval, v0.4.0 shipped)
-Exit criteria: MET (PreCompact registered, memory-harvest.md aligned, README rewritten 93 lines, 142 tests + 38/38 eval pass)
+Entry criteria: MET (Phase 23 complete, 142 tests passing, 38/38 eval, v0.4.0 shipped)
+Exit criteria: No python3 -c in 6 migrated hooks, jq guards present, Getting Started in install.sh, Requirements in README, make test + make eval 100%
 
-Progress: 100% (6/6 tasks done)
+Progress: 0% (0/5 tasks done)
 
 ## Active Phase Contract
 
-Phase: 23 - Bug Fixes + README Rewrite
-Tasks: 6 (2M 4S, see tasks.md)
-Transition: complete
-Abort: n/a (completed)
+Phase: 24 - DX + Hook Performance
+Tasks: 5 (1M 4S, see tasks.md)
+Transition: Phase 23 complete -> Phase 24
+Abort: If jq migration breaks eval or hook behavior in unexpected ways, revert and reassess.
 
 ## Recent Decisions
 
 | Decision | Confidence | Date |
 |----------|------------|------|
-| [[pre-compact-dev-wiki-module]] | high | 2026-05-22 |
-| [[readme-budget-superseded]] | high | 2026-05-22 |
+| [[jq-hook-migration]] | high | 2026-05-22 |
 
 ## Blockers and Open Questions
 
@@ -54,17 +53,16 @@ Abort: n/a (completed)
 
 ## Session Journal (last 5)
 
+- [2026-05-22] Phase 24 planned -- 5 tasks, 1 decision, jq hook migration + DX improvements
 - [2026-05-22] [[2026-05-22-phase-23-bug-fixes-readme-complete|Phase 23 complete]] -- bug fixes (pre-compact registration, memory-harvest API), README rewrite (93 lines), 142 tests
 - [2026-05-22] [[2026-05-22-phase-22-session-start-refactor-complete|Phase 22 complete]] -- session-start refactor, scan-secrets fix, gap analysis update, v0.4.0 shipped, 133 tests
 - [2026-05-22] [[2026-05-22-phase-21-eval-expansion-complete|Phase 21 complete]] -- eval expansion (38 scenarios, 4 categories, context category, validate-prompt.sh), make eval 38/38
 - [2026-05-22] [[2026-05-22-phase-20-eval-harness-complete|Phase 20 complete]] -- eval harness (18 scenarios, runner, validators, schemas), make eval 18/18
-- [2026-05-22] [[2026-05-22-phase-19-memory-wiki-bridge-complete|Phase 19 complete]] -- memory-wiki bridge (3 channels: dev-plan+spec write, wiki-query read), tests 120 -> 128
 
 ## Cross-References
 
 - Status: [[2026-05-22-codebase-snapshot|Codebase Snapshot 2026-05-22]]
 - Phases 1-23: completed (see index.md)
-- Decision: [[pre-compact-dev-wiki-module|pre-compact.sh in dev-wiki module]] -- high confidence, accepted
-- Decision: [[readme-budget-superseded|README budget 58 -> 90-100 lines]] -- high confidence, accepted
+- Decision: [[jq-hook-migration|Migrate 6 hooks from python3 -c to jq]] -- high confidence, accepted
 - Roadmap: [[roadmap-gap-analysis|Engineering Gap Analysis]] -- 3 OPEN gaps remain (1.6, 4.1, 4.3)
 - Retro: Phases 16-20 clean (0 blockers, 0 reversals, 0 user corrections)

@@ -47,4 +47,5 @@
 [2026-05-22T28:00:00] PLAN -- Phase 22 planned, 5 tasks, 1 decision (session-start-modular-source)
 [2026-05-22T28:30:00] DEBRIEF -- 2 decisions (1 updated medium->high, 1 new scan-secrets-quote-break-fix), 1 journal, tasks updated, state refreshed, phase 22 READY FOR COMPLETION, v0.4.0 shipped
 [2026-05-22T29:30:00] DEBRIEF -- 0 decisions (2 existing verified high), 1 journal, tasks updated, state refreshed, phase 23 READY FOR COMPLETION
+[2026-05-22T30:00:00] PLAN -- Phase 24 planned, 5 tasks (1M 4S), 1 decision (jq-hook-migration), jq hook migration + DX improvements
 [2026-05-22T29:00:00] PLAN -- Phase 23 planned, 6 tasks (2M 4S), 2 decisions (pre-compact-dev-wiki-module, readme-budget-superseded), bug fixes + README rewrite

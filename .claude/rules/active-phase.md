@@ -1,10 +1,10 @@
 # Active Phase Context
 
-Phase: 23 - Bug Fixes + README Rewrite (COMPLETED)
-Status: All 6 tasks done, all exit criteria met
-Objective: Fixed orphaned pre-compact.sh hook registration, fixed memory-harvest.md API mismatches, rewrote README.md for v0.4.0.
+Phase: 24 - DX + Hook Performance
+Status: Planned, 0/5 tasks done
+Objective: Migrate 6 hooks from python3 -c to jq for latency reduction. Add jq fail-open guard. Add Getting Started output to install.sh. Add Requirements to README.
 
-Next: Run /dev-plan to plan Phase 24. Candidates: language-agnostic core (Gap 4.1), session-start.sh refactor (U.3), eval corpus expansion (template-only hooks), bash 3.2 convention doc, install.sh cosmetic output fix.
+Next task: Task 1 [M] — Migrate 6 hooks to jq (add jq guard + replace python3 -c with jq -r).
 
 Tests: 142 passing. Eval: 38/38. Budget: 245/300.
 
