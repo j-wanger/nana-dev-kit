@@ -1,6 +1,6 @@
 # Tasks
 
-> Last updated: 2026-05-23 by /dev-plan (Phase 26 planned)
+> Last updated: 2026-05-23 by /dev-plan (Phase 27 planned)
 
 <details>
 <summary>Phases 1-25 (all completed, 132 tasks, collapsed)</summary>
@@ -256,3 +256,12 @@
 - [x] [M] Cross-skill reference validation — new test function in test_templates.sh: grep all ~/.claude/skills/ absolute path references from skill files, map to templates/ paths, check file existence, output file:line for broken refs. Fix any broken refs found: grep -q 'cross.skill.*ref\|skill.*reference' test_templates.sh fails (RED), add test_cross_skill_references function, wire into test runner (GREEN), run and fix any broken references discovered (REFACTOR) | scope: tests/test_templates.sh, templates/.claude/skills/ | success: grep -q 'cross.skill.*ref\|skill.*reference' tests/test_templates.sh && bash tests/test_templates.sh | size: M
 - [x] [XS] README Windows note — add one line to Requirements section: grep -qi 'WSL\|windows' README.md fails (RED), add Windows note after existing Requirements line (GREEN) | scope: README.md | success: grep -qi 'WSL' README.md && grep -qi 'windows' README.md | size: XS
 - [x] [S] Eval scenarios for crash recovery — 2 scenarios: (a) commits newer than state with no debrief → recovery message, (b) commits newer but debrief exists → no recovery message. Depends: Task 3: find eval/corpus/hook-session-start-* -name 'scenario.json' | wc -l returns <3 (RED), create 2 scenario dirs with manifests, fixtures, expected output checks (GREEN) | scope: eval/corpus/hook-session-start-*/ | success: [ $(find eval/corpus/hook-session-start-* -name 'scenario.json' 2>/dev/null | wc -l) -ge 3 ] && make eval 2>&1 | grep -qE 'Score.*100' | size: S
+
+<!-- phase:phase-27-dx-ship -->
+<!-- gates: spec=9/10 approach=9/10 plan-review=8/10(revised) tasks=yes -->
+## Phase 27: DX + Ship
+
+- [x] [S] README refresh — fix stale numbers: grep -q '43-scenario' README.md fails (RED), update 5 stale numbers (43 eval scenarios x2, 28 hook fidelity, 160 tests, 43 eval in testing section), verify all other factual claims (GREEN), REFACTOR: n/a | scope: README.md | success: grep -q '43-scenario' README.md && grep -q '43 eval' README.md && grep -q '28)' README.md && grep -q '160 tests' README.md && make test | size: S
+- [x] [S] README staleness regression tests — add dynamic count assertions: grep -qE 'readme.*drift|readme.*stale|README.*accuracy' tests/test_templates.sh fails (RED), add test function: compute actual eval count via find, extract README claim via grep, compare; same for test script count; fail loudly if pattern not found (GREEN), REFACTOR: n/a | scope: tests/test_templates.sh | success: grep -qE 'readme.*drift|readme.*stale|README.*accuracy' tests/test_templates.sh && bash tests/test_templates.sh | size: S
+- [x] [XS] install.sh summary polish — update echo lines to list all 5 global hooks: grep -q 'detect-loop' install.sh summary section fails (RED), update hook description lines to cover enforce-spec, enforce-loop, detect-loop, post-commit, pre-compact (GREEN), REFACTOR: n/a | scope: install.sh | success: bash install.sh --dry-run 2>&1 | grep -qi 'hook' && make test | size: XS
+- [ ] [S] VERSION bump + tag + push — bump and ship: grep -qx '0.5.0' VERSION fails (RED), write 0.5.0 to VERSION, run make test && make eval, commit, tag v0.5.0, push (GREEN), REFACTOR: n/a | scope: VERSION | success: grep -qx '0.5.0' VERSION && make test && make eval && git tag -l 'v0.5.0' | grep -q 'v0.5.0' | size: S

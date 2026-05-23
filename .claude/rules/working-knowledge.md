@@ -1,6 +1,12 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
+- [uses: 1] memory_forget(memory_id, superseded_by="", scope="project") for soft delete with optional supersession chain; memory_prune only targets trust='low' + strength=1 so is dead code for bridge/harvest entries (trust='medium'/'high')
+  source: [[decision:memory-supersede-harness-layer]] + [[wiki:memory-mcp-api]] | activated: 2026-05-23
+- [uses: 1] Crash recovery dual condition: commits newer than _CURRENT_STATE.md mtime AND no debrief commit in recent history. Advisory only (exit 0). Guarded by test -f .dev-wiki/_CURRENT_STATE.md. Case-insensitive Debrief grep on git log.
+  source: [[decision:crash-recovery-dual-condition]] | activated: 2026-05-23
+- [uses: 1] Memory-bridge auto-supersede: search existing bridge-decisions for same phase-slug, store new, memory_forget highest-scoring conflict with superseded_by. 10-call cap per bridge run, 1 supersede per decision max. Ceiling 500.
+  source: [[decision:memory-supersede-harness-layer]] | activated: 2026-05-23
 - [uses: 1] jq fail-open guard pattern: `command -v jq >/dev/null 2>&1 || exit 0` at top of hook. If jq absent, hook silently allows. Established Phase 24, used by 8 hooks.
   source: [[decision:jq-hook-migration]] + [[journal:2026-05-22-phase-25-postcommit-hook-complete]] | activated: 2026-05-22
 - [uses: 1] PostCommit hook writes .dev-wiki/.pending-commit sidecar (one-line JSON: hash, message, files). Advisory only (exit 0). Claude processes via [dev-wiki:post-commit] trigger in dev-wiki-hooks rules.

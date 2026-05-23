@@ -1,10 +1,10 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-05-22 by /dev-debrief (Phase 25 completed)
+> Last updated: 2026-05-23 by /dev-debrief (Phase 26 completed)
 
 ## Project Shape
 
-Shell/Markdown/Python scaffolding kit (180+ files: 18 .sh, 107 skill .md, 20+ template .md, 14 memory_server .py, 4 wiki-index .py, 41 eval scenarios, 4 eval schemas, 4 eval validators, 2 .json, 2 .txt, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3 + jq (hooks + eval). Scaffolds a 5-layer Python dev harness + dev-wiki lifecycle + knowledge-wiki pipeline into new/existing projects via two operational modes: `install.sh` (one-time global, module-group architecture with --all/--core-only/--no-python/--dry-run flags) and `make sync-rules` (per-project). 159 automated tests via `make test` + 41 eval scenarios via `make eval`. v0.4.0 on GitHub.
+Shell/Markdown/Python scaffolding kit (180+ files: 18 .sh, 107 skill .md, 20+ template .md, 14 memory_server .py, 4 wiki-index .py, 41 eval scenarios, 4 eval schemas, 4 eval validators, 2 .json, 2 .txt, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3 + jq (hooks + eval). Scaffolds a 5-layer Python dev harness + dev-wiki lifecycle + knowledge-wiki pipeline into new/existing projects via two operational modes: `install.sh` (one-time global, module-group architecture with --all/--core-only/--no-python/--dry-run flags) and `make sync-rules` (per-project). 159 automated tests via `make test` + 43 eval scenarios via `make eval`. v0.4.0 on GitHub.
 
 ## Directory Layout
 
@@ -50,9 +50,9 @@ nana-dev-kit/
 | root | Global installer and project targets | install.sh, Makefile, VERSION | templates/.claude/ | ~/.claude/skills/ (22 dirs), ~/.claude/rules/ (3 files), ~/.claude/hooks/ (enforcement: enforce-spec.sh, enforce-loop.sh; advisory: detect-loop.sh), ~/.claude/memory_server/, ~/.claude/memory_server/.venv/, .claude/enforce (marker) |
 | memory_server/ | Vendored MCP memory server (nanaclaw, 2,373 LOC) | server.py, storage.py, embedding.py, *.py | MCP stdio | Memory CRUD via MCP protocol |
 | .github/workflows/ | Kit CI (shellcheck + make test) | kit-ci.yml | .sh files, Makefile | CI pass/fail |
-| eval/ | Eval harness: benchmark corpus + scoring (41 scenarios) | corpus/*/scenario.json, schemas/*.json, validators/*.sh | templates/.claude/hooks/*, skill outputs | Scored eval report (text) |
+| eval/ | Eval harness: benchmark corpus + scoring (43 scenarios) | corpus/*/scenario.json, schemas/*.json, validators/*.sh | templates/.claude/hooks/*, skill outputs | Scored eval report (text) |
 | docs/ | Generated reports | report.html, workflow.html | Project files (scanned) | HTML package inventory + workflow breakdown |
-| scripts/ | Multi-agent sync + report generation + eval | sync-rules.sh, generate-report.py, generate-workflow.py, eval-runner.sh | AGENTS.md, project tree, eval/corpus/ | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md, docs/report.html, docs/workflow.html, eval report (text) |
+| scripts/ | Multi-agent sync + report generation + eval | sync-rules.sh, generate-report.py, generate-workflow.py, eval-runner.sh (~310 lines, init_git/touch_old support) | AGENTS.md, project tree, eval/corpus/ | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md, docs/report.html, docs/workflow.html, eval report (text) |
 | tests/ | Automated bash test suite (159 tests) | helpers.sh, test_*.sh | install.sh, scripts/, templates/ | stdout (pass/fail) |
 | templates/.claude/hooks/ | Claude Code lifecycle hook templates (12 files + session-start.d/ with 2 modules). 8 hooks use jq for JSON parsing; detect-loop.sh is pure bash; others have no JSON parsing. | session-start.sh, session-start.d/{wk-prune,memory-nudge}.sh, pre-compact.sh, post-commit.sh, audit-log.sh, enforce-spec.sh, enforce-loop.sh, detect-loop.sh, scan-secrets.sh, etc. | .dev-wiki/ state, .claude/rules/, specs/*.md, .claude/enforce | stdout (context injection, safety gates, enforcement blocking, loop detection, commit notification) |
 | templates/.claude/rules/ | Identity + lifecycle rules (4 files) | nana-soul.md (59 lines), nana-personal.md, file-lifecycle.md, py-session-state.md | -- | -- |
@@ -78,7 +78,7 @@ Bash + python3 + jq (hooks + eval). memory_server requires pip deps (mcp, pydant
 
 ## Test Organization
 
-159 automated tests (6 scripts) + 41 eval scenarios (4 categories). `make test` runs regression tests fail-fast in temp dirs. `make eval` runs scored eval separately (requires jq).
+159 automated tests (6 scripts) + 43 eval scenarios (4 categories). `make test` runs regression tests fail-fast in temp dirs. `make eval` runs scored eval separately (requires jq).
 
 ## Known Issues
 

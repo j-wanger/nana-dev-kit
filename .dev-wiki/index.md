@@ -28,7 +28,8 @@
 - [[phase-23-bug-fixes-readme|Phase 23: Bug Fixes + README Rewrite]] -- completed
 - [[phase-24-dx-hook-performance|Phase 24: DX + Hook Performance]] -- completed
 - [[phase-25-postcommit-hook|Phase 25: PostCommit Hook]] -- completed
-- [[phase-26-memory-harness-hardening|Phase 26: Memory & Harness Hardening]] -- active
+- [[phase-26-memory-harness-hardening|Phase 26: Memory & Harness Hardening]] -- completed
+- [[phase-27-dx-ship|Phase 27: DX + Ship]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -69,6 +70,7 @@
 - [[memory-supersede-harness-layer|Memory supersede at harness layer]] -- high confidence, accepted
 - [[crash-recovery-dual-condition|Crash recovery dual condition]] -- high confidence, accepted
 - [[cross-skill-ref-test-time|Cross-skill reference validation at test time]] -- high confidence, accepted
+- [[gap-43-wont-build|Worktree/parallel development won't-build]] -- high confidence, accepted
 - [[monorepo-skill-distribution|Monorepo Skill Distribution]] -- high confidence, accepted
 - [[import-source-canonical-installed|Import Source -- Canonical Installed Versions]] -- high confidence, accepted
 - [[t0-wording-over-structural-subagent|T0 wording over structural subagent]] -- high confidence
@@ -100,6 +102,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-23-phase-26-memory-harness-hardening-complete|Phase 26 complete]] -- 2026-05-23
 - [[2026-05-22-phase-25-postcommit-hook-complete|Phase 25 complete]] -- 2026-05-22
 - [[2026-05-22-phase-24-dx-hook-performance-complete|Phase 24 complete]] -- 2026-05-22
 - [[2026-05-22-phase-23-bug-fixes-readme-complete|Phase 23 complete]] -- 2026-05-22
@@ -129,6 +132,7 @@
 - [[roadmap-gap-analysis|Engineering Gap Analysis & Roadmap]] -- active, tracks open/closed gaps and build order
 
 ### Status
+- [[2026-05-23-codebase-snapshot|Codebase Snapshot]] -- 2026-05-23
 - [[2026-05-22-codebase-snapshot|Codebase Snapshot]] -- 2026-05-22
 - [[2026-05-21-codebase-snapshot|Codebase Snapshot]] -- 2026-05-21
 - [[2026-05-20-codebase-snapshot|Codebase Snapshot]] -- 2026-05-20
@@ -147,6 +151,8 @@
 
 ## Recent
 
+- 2026-05-23: Phase 27 planned -- 4 tasks, 0 decisions, README refresh + staleness regression tests + install.sh polish + v0.5.0 ship
+- 2026-05-23: Phase 26 completed -- memory supersession, crash recovery, cross-skill ref test, 4 decisions, 159 tests, 43/43 eval, Gap 4.3 won't-build
 - 2026-05-23: Phase 26 planned -- 6 tasks, 3 decisions (memory-supersede-harness-layer, crash-recovery-dual-condition, cross-skill-ref-test-time), memory & harness hardening
 - 2026-05-22: Phase 25 completed -- PostCommit hook, .pending-commit sidecar, 3 eval scenarios, 159 tests, 41/41 eval, Gap 1.6 closed
 - 2026-05-22: Phase 25 planned -- 5 tasks, 1 decision (postcommit-hook-architecture), PostCommit hook implementation

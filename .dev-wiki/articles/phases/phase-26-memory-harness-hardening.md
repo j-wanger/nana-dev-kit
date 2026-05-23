@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-23
 updated: 2026-05-23
 source: plan
-status: active
+status: completed
 scope: ["templates/.claude/skills/dev-plan/memory-bridge.md", "templates/.claude/skills/dev-debrief/memory-harvest.md", "templates/.claude/hooks/session-start.sh", "tests/test_templates.sh", "README.md", "eval/corpus/hook-session-start-*/"]
 entry_criteria: "Phase 25 complete, 159 tests passing, 41/41 eval"
 exit_criteria: "memory-bridge + harvest have supersede logic, session-start crash recovery, cross-skill ref test, README Windows note, 2 eval scenarios, all tests pass, eval 100%"
@@ -31,13 +31,13 @@ Files and modules affected:
 
 ## Exit Criteria
 
-- [ ] memory-bridge.md has ceiling 500, memory_forget, superseded_by
-- [ ] memory-harvest.md has ceiling 500, memory_forget
-- [ ] session-start.sh has [recovery] output with dual-condition crash detection
-- [ ] test_templates.sh has cross-skill reference validation function
-- [ ] README.md mentions WSL/Windows
-- [ ] 2+ crash recovery eval scenarios pass
-- [ ] All existing tests pass, eval 100%
+- [x] memory-bridge.md has ceiling 500, memory_forget, superseded_by
+- [x] memory-harvest.md has ceiling 500, memory_forget
+- [x] session-start.sh has [recovery] output with dual-condition crash detection
+- [x] test_templates.sh has cross-skill reference validation function
+- [x] README.md mentions WSL/Windows
+- [x] 2+ crash recovery eval scenarios pass
+- [x] All existing tests pass, eval 100%
 
 ## Constraints
 
@@ -49,6 +49,10 @@ Files and modules affected:
 
 - memory_forget MCP tool accepts superseded_by parameter. If false: document as known limitation, skip supersession chain.
 - stat -f (macOS) and stat -c (Linux) both available. If false: use only one platform variant with graceful skip.
+
+## Outcome
+
+All 6 tasks completed. 4 decisions captured (3 confirmed from planning + 1 new gap-43-wont-build). 1 broken cross-skill reference found and fixed. eval expanded to 43 scenarios. 159 tests stable. Roadmap Gap 4.3 closed as won't-build.
 
 ## Notes
 

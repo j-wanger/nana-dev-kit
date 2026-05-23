@@ -291,7 +291,7 @@ if ! $DRY_RUN; then
   [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/.nana-dev-kit-path        — kit location marker"
   [ "$INSTALL_PYTHON" = true ] && echo "  ~/.claude/skills/py-init/           — /py-init Python scaffolding"
   [ "$INSTALL_DEVWIKI" = true ] && echo "  ~/.claude/skills/dev-*/             — dev-wiki lifecycle (6 skills)"
-  [ "$INSTALL_DEVWIKI" = true ] && echo "  ~/.claude/hooks/enforce-*.sh        — enforcement hooks (spec + loop)"
+  [ "$INSTALL_DEVWIKI" = true ] && echo "  ~/.claude/hooks/                    — lifecycle hooks (enforce, detect-loop, post-commit, pre-compact)"
   [ "$INSTALL_KNOWLEDGE" = true ] && echo "  ~/.claude/skills/wiki-*/            — knowledge-wiki pipeline (11 skills)"
   echo ""
   echo "Getting started (open a project, then run one of these):"

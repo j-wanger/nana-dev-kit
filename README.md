@@ -39,7 +39,7 @@ Then in any project:
 | 4. Enforcement | Spec enforcement, deliverable checks, loop detection — opt-in via `~/.claude/enforce` | `enforce-spec.sh`, `enforce-loop.sh`, `detect-loop.sh` |
 | 5. Pre-commit | Commit-time guardrails (ruff, mypy, gitleaks, sync-rules) | `.pre-commit-config.yaml` |
 | 6. CI | GitHub Actions (lint, typecheck, test, security audit) | `.github/workflows/ci.yml` |
-| 7. Eval | 38-scenario harness across 4 categories (hook, skill, lifecycle, context) | `eval/corpus/`, `scripts/eval-runner.sh` |
+| 7. Eval | 43-scenario harness across 4 categories (hook, skill, lifecycle, context) | `eval/corpus/`, `scripts/eval-runner.sh` |
 
 ## Skills by Module
 
@@ -65,10 +65,10 @@ After scaffolding, run `/dev-init` to set up dev-wiki lifecycle tracking (phases
 ## Eval
 
 ```bash
-make eval    # runs 38 scenarios, binary scoring, requires jq
+make eval    # runs 43 scenarios, binary scoring, requires jq
 ```
 
-Four categories: hook fidelity (23), skill artifact validation (6), lifecycle compliance (5), context injection (4). Separate from `make test` — eval benchmarks the harness, tests verify the kit.
+Four categories: hook fidelity (28), skill artifact validation (6), lifecycle compliance (5), context injection (4). Separate from `make test` — eval benchmarks the harness, tests verify the kit.
 
 ## Enforcement
 
@@ -91,7 +91,7 @@ Re-run `~/nana-dev-kit/install.sh` to update. Existing files are overwritten; `n
 ## Testing
 
 ```bash
-make test    # 133 tests across 6 scripts
-make eval    # 38 eval scenarios (requires jq)
+make test    # 163 tests across 5 scripts
+make eval    # 43 eval scenarios (requires jq)
 make report  # package inventory at docs/report.html
 ```

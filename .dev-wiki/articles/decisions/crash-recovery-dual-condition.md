@@ -6,7 +6,7 @@ tags: [session-start, crash-recovery, hooks]
 parents: [phase-26-memory-harness-hardening]
 created: 2026-05-23
 updated: 2026-05-23
-source: plan
+source: debrief
 confidence: high
 ---
 

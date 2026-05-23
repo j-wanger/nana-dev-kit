@@ -338,6 +338,42 @@ else
   test_fail "PreCompact missing from settings.json"
 fi
 
+# --- README accuracy (drift detection) ---
+README="$PROJECT_ROOT/README.md"
+
+test_start "README eval scenario count matches reality"
+ACTUAL_EVAL=$(find "$PROJECT_ROOT/eval/corpus" -name 'scenario.json' | wc -l | tr -d ' ')
+README_EVAL=$(grep -oE '[0-9]+-scenario' "$README" | head -1 | grep -oE '[0-9]+')
+if [ -z "$README_EVAL" ]; then
+  test_fail "could not extract eval count from README (pattern: N-scenario)"
+elif [ "$ACTUAL_EVAL" = "$README_EVAL" ]; then
+  test_pass
+else
+  test_fail "README says $README_EVAL scenarios, actually $ACTUAL_EVAL"
+fi
+
+test_start "README hook fidelity count matches reality"
+ACTUAL_HOOK_EVAL=$(find "$PROJECT_ROOT/eval/corpus" -type d -name 'hook-*' | wc -l | tr -d ' ')
+README_HOOK_EVAL=$(grep -oE 'hook fidelity \([0-9]+\)' "$README" | grep -oE '[0-9]+')
+if [ -z "$README_HOOK_EVAL" ]; then
+  test_fail "could not extract hook fidelity count from README (pattern: hook fidelity (N))"
+elif [ "$ACTUAL_HOOK_EVAL" = "$README_HOOK_EVAL" ]; then
+  test_pass
+else
+  test_fail "README says $README_HOOK_EVAL hook scenarios, actually $ACTUAL_HOOK_EVAL"
+fi
+
+test_start "README test script count matches reality"
+ACTUAL_SCRIPTS=$(grep -c 'bash.*tests/test_' "$PROJECT_ROOT/Makefile" | tr -d ' ')
+README_SCRIPTS=$(grep -oE '[0-9]+ scripts' "$README" | head -1 | grep -oE '[0-9]+')
+if [ -z "$README_SCRIPTS" ]; then
+  test_fail "could not extract script count from README (pattern: N scripts)"
+elif [ "$ACTUAL_SCRIPTS" = "$README_SCRIPTS" ]; then
+  test_pass
+else
+  test_fail "README says $README_SCRIPTS scripts, actually $ACTUAL_SCRIPTS"
+fi
+
 # --- Cross-skill reference validation ---
 test_start "cross-skill references resolve to existing files"
 SKILL_DIR="$PROJECT_ROOT/templates/.claude/skills"
