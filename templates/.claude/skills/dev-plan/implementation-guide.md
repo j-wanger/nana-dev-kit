@@ -36,7 +36,7 @@ If your project uses eval-driven development (`.claude/evals/` directory exists)
 
 1. **Before implementing each task:** Check if capability eval criteria should be defined for the changed functionality. Write eval definitions before code per EDD principles.
 2. **After completing tasks:** Run regression baseline check if `baseline.json` exists. Compare pass rates and cost against thresholds.
-3. **Reference:** `/eval` skill for eval definition, run, and report commands. See `~/.claude/skills/eval-harness/eval-patterns.md` for metric taxonomy and threshold templates.
+3. **Reference:** Run `make eval` for the eval corpus. See `eval/README.md` for scenario structure and scoring.
 
 Skip this section if the project has no `.claude/evals/` directory.
 

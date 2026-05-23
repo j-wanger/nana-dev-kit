@@ -155,9 +155,35 @@ assert_file_exists "$PROJECT_ROOT/templates/.claude/hooks/pre-compact.sh"
 test_start "pre-compact.sh passes syntax check"
 assert_exit_code 0 bash -n "$PROJECT_ROOT/templates/.claude/hooks/pre-compact.sh"
 
+# --- PostCommit hook ---
+test_start "post-commit.sh exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/hooks/post-commit.sh"
+
+test_start "post-commit.sh passes syntax check"
+assert_exit_code 0 bash -n "$PROJECT_ROOT/templates/.claude/hooks/post-commit.sh"
+
+test_start "post-commit.sh has jq fail-open guard"
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/post-commit.sh" 'command -v jq'
+
+test_start "post-commit.sh emits dev-wiki trigger tag"
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/post-commit.sh" 'dev-wiki:post-commit'
+
+test_start "post-commit.sh writes pending-commit sidecar"
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/post-commit.sh" 'pending-commit'
+
+test_start "settings.json has PostToolUse Bash matcher for post-commit"
+if jq -e '.hooks.PostToolUse[] | select(.hooks[].command | test("post-commit"))' "$PROJECT_ROOT/templates/.claude/settings.json" >/dev/null 2>&1; then
+  test_pass
+else
+  test_fail "post-commit.sh not registered in PostToolUse"
+fi
+
 # --- Session-start memory guidance ---
 test_start "session-start.sh has memory_search guidance"
 assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" 'memory_search'
+
+test_start "session-start.sh has pending-commit stale check"
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" 'pending-commit'
 
 # --- Session-start.d/ modules ---
 test_start "session-start.d/wk-prune.sh exists"
@@ -310,6 +336,27 @@ if jq -e '.hooks.PreCompact' "$PROJECT_ROOT/templates/.claude/settings.json" >/d
   test_pass
 else
   test_fail "PreCompact missing from settings.json"
+fi
+
+# --- Cross-skill reference validation ---
+test_start "cross-skill references resolve to existing files"
+SKILL_DIR="$PROJECT_ROOT/templates/.claude/skills"
+BROKEN_REFS=0
+BROKEN_LIST=""
+while IFS= read -r ref; do
+  LOCAL=$(echo "$ref" | sed 's|~/.claude/skills/|'"$SKILL_DIR"'/|')
+  if [ ! -f "$LOCAL" ]; then
+    SRC=$(grep -rn "$ref" "$SKILL_DIR" | head -1 | cut -d: -f1-2)
+    BROKEN_LIST="${BROKEN_LIST}  BROKEN: ${SRC} -> ${ref}"$'\n'
+    BROKEN_REFS=$((BROKEN_REFS + 1))
+  fi
+done < <(grep -roh '~/.claude/skills/[^"'\'' ]*\.md' "$SKILL_DIR" | grep -v '[*<]' | sort -u)
+if [ "$BROKEN_REFS" -eq 0 ]; then
+  test_pass
+else
+  echo ""
+  printf '%s' "$BROKEN_LIST"
+  test_fail "$BROKEN_REFS broken cross-skill reference(s)"
 fi
 
 test_summary "test_templates"

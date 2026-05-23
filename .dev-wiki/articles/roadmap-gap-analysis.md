@@ -10,7 +10,7 @@ status: active
 > Goal: make nana-dev-kit a complete end-to-end development automation tool.
 > Source: user-authored gap analysis, phases 14-17 followed this as build order.
 
-## Gap Status (as of Phase 22)
+## Gap Status (as of Phase 25)
 
 ### Tier 1: Integration — connect existing pieces
 
@@ -21,7 +21,7 @@ status: active
 | 1.3 | Memory ↔ dev-wiki bridge | **CLOSED** Phase 19 (memory-bridge.md companion, dev-plan auto-stores decisions via memory_store) |
 | 1.4 | Session state from memory | **CLOSED** Phase 15 (session-start.sh memory guidance) |
 | 1.5 | No PreCompact hook | **CLOSED** Phase 15 |
-| 1.6 | No PostCommit hook for dev-wiki | OPEN |
+| 1.6 | No PostCommit hook for dev-wiki | **CLOSED** Phase 25 (post-commit.sh PostToolUse hook + .pending-commit sidecar) |
 
 ### Tier 2: Enforcement — proven patterns
 
@@ -47,7 +47,7 @@ status: active
 |-----|------------|--------|
 | 4.1 | Language-agnostic mode | OPEN (wiki-index ships Python) |
 | 4.2 | Eval harness for the harness | **CLOSED** Phase 20 (eval-runner.sh, 38 scenarios, binary scoring) |
-| 4.3 | Worktree / parallel development | OPEN |
+| 4.3 | Worktree / parallel development | **CLOSED** Won't-build: regular subagents already parallelize; worktree isolation only defers merge conflicts without net benefit for single-dev phase-sequential workflow |
 | 4.4 | Wiki ↔ memory bidirectional bridge | **PARTIAL** Phase 19 (memory_search in wiki-query reads, memory_store in dev-plan/spec writes; missing: auto-generation of wiki articles from memory) |
 
 ### Unplanned (emerged during execution)
@@ -66,7 +66,7 @@ status: active
 4. ~~**session-start.sh refactor** (U.3)~~ — **DONE** Phase 22
 5. ~~**Version bump v0.4.0**~~ — **DONE** Phase 22
 6. ~~**Eval harness** (4.2)~~ — **DONE** Phases 20-21
-7. **Worktree/parallel** (4.3) — high effort, high value for larger projects
+7. ~~**Worktree/parallel** (4.3)~~ — **WON'T-BUILD** regular subagents cover the parallelism need
 
 ## What NOT to Build
 

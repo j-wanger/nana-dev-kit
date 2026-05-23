@@ -1,0 +1,19 @@
+{
+  "name": "post-commit skips --amend commits silently",
+  "category": "hook",
+  "hook": "post-commit.sh",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      ".dev-wiki/.gitkeep": "enforce-marker"
+    },
+    "home_files": {
+      ".claude/enforce": "enforce-marker"
+    }
+  },
+  "input": "{\"tool_name\": \"Bash\", \"tool_input\": {\"command\": \"git commit --amend -m \\\"fix typo\\\"\"}, \"stdout\": \"\", \"stderr\": \"\", \"exit_code\": 0}",
+  "expected": {
+    "exit_code": 0,
+    "stdout_not_contains": ["dev-wiki:post-commit", "pending-commit"]
+  }
+}

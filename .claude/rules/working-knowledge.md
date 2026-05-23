@@ -1,7 +1,11 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
-- [uses: 2] Eval design: binary scoring only (pass=1.0, fail=0.0), jq hard dependency, eval/ top-level directory separate from tests/; make eval never called by make test; 38 scenarios in 4 categories (hook, skill, context, lifecycle)
+- [uses: 1] jq fail-open guard pattern: `command -v jq >/dev/null 2>&1 || exit 0` at top of hook. If jq absent, hook silently allows. Established Phase 24, used by 8 hooks.
+  source: [[decision:jq-hook-migration]] + [[journal:2026-05-22-phase-25-postcommit-hook-complete]] | activated: 2026-05-22
+- [uses: 1] PostCommit hook writes .dev-wiki/.pending-commit sidecar (one-line JSON: hash, message, files). Advisory only (exit 0). Claude processes via [dev-wiki:post-commit] trigger in dev-wiki-hooks rules.
+  source: [[decision:postcommit-hook-architecture]] | activated: 2026-05-22
+- [uses: 2] Eval design: binary scoring only (pass=1.0, fail=0.0), jq hard dependency, eval/ top-level directory separate from tests/; make eval never called by make test; 41 scenarios in 4 categories (hook, skill, context, lifecycle)
   source: [[decision:eval-binary-scoring-only]] + [[decision:eval-jq-hard-dependency]] + [[decision:eval-top-level-directory]] | activated: 2026-05-22
 - [uses: 1] Context eval is a new runner category (not folded into hook/skill); eval report shows "context 4/4" directly answering "do rules reach the model?"; checks array with file_exists, section_present, hook_output types
   source: [[decision:context-eval-new-category]] | activated: 2026-05-22

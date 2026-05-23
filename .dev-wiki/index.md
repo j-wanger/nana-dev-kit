@@ -27,6 +27,8 @@
 - [[phase-22-session-start-refactor|Phase 22: Session-Start Refactor + v0.4.0 Ship]] -- completed
 - [[phase-23-bug-fixes-readme|Phase 23: Bug Fixes + README Rewrite]] -- completed
 - [[phase-24-dx-hook-performance|Phase 24: DX + Hook Performance]] -- completed
+- [[phase-25-postcommit-hook|Phase 25: PostCommit Hook]] -- completed
+- [[phase-26-memory-harness-hardening|Phase 26: Memory & Harness Hardening]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -62,7 +64,11 @@
 - [[global-hooks-project-opt-in|Global hooks with project-level opt-in]] -- high confidence, accepted
 - [[lightweight-deliverable-check-stop|Lightweight deliverable check at Stop]] -- high confidence, accepted
 - [[python-json-parsing-hooks|Python JSON parsing in hooks]] -- high confidence, accepted (superseded by jq-hook-migration)
+- [[postcommit-hook-architecture|PostCommit hook architecture (PostToolUse + advisory sidecar + JSON format)]] -- high confidence, accepted
 - [[jq-hook-migration|Migrate 6 hooks from python3 -c to jq]] -- high confidence, accepted
+- [[memory-supersede-harness-layer|Memory supersede at harness layer]] -- high confidence, accepted
+- [[crash-recovery-dual-condition|Crash recovery dual condition]] -- high confidence, accepted
+- [[cross-skill-ref-test-time|Cross-skill reference validation at test time]] -- high confidence, accepted
 - [[monorepo-skill-distribution|Monorepo Skill Distribution]] -- high confidence, accepted
 - [[import-source-canonical-installed|Import Source -- Canonical Installed Versions]] -- high confidence, accepted
 - [[t0-wording-over-structural-subagent|T0 wording over structural subagent]] -- high confidence
@@ -94,6 +100,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-22-phase-25-postcommit-hook-complete|Phase 25 complete]] -- 2026-05-22
 - [[2026-05-22-phase-24-dx-hook-performance-complete|Phase 24 complete]] -- 2026-05-22
 - [[2026-05-22-phase-23-bug-fixes-readme-complete|Phase 23 complete]] -- 2026-05-22
 - [[2026-05-22-phase-22-session-start-refactor-complete|Phase 22 complete]] -- 2026-05-22
@@ -140,6 +147,9 @@
 
 ## Recent
 
+- 2026-05-23: Phase 26 planned -- 6 tasks, 3 decisions (memory-supersede-harness-layer, crash-recovery-dual-condition, cross-skill-ref-test-time), memory & harness hardening
+- 2026-05-22: Phase 25 completed -- PostCommit hook, .pending-commit sidecar, 3 eval scenarios, 159 tests, 41/41 eval, Gap 1.6 closed
+- 2026-05-22: Phase 25 planned -- 5 tasks, 1 decision (postcommit-hook-architecture), PostCommit hook implementation
 - 2026-05-22: Phase 24 completed -- jq hook migration (6 hooks), install.sh Getting Started, README Requirements, 150 tests
 - 2026-05-22: Phase 24 planned -- 5 tasks, 1 decision (jq-hook-migration), jq hook migration + DX improvements
 - 2026-05-22: Phase 23 completed -- bug fixes (pre-compact registration, memory-harvest API), README rewrite (93 lines), 142 tests

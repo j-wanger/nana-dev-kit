@@ -10,9 +10,23 @@ This companion stores DECISIONS (approach choices, constraints, trade-offs) with
 
 ### 1. Budget Guard
 
-Call `memory_stats`. If total active entries ≥ 80 (of 100 advisory ceiling): emit `"Memory bridge: budget guard triggered (N/100 entries). Skipping store."` and STOP. Do not store.
+Call `memory_stats`. If total active entries ≥ 400 (of 500 advisory ceiling): emit `"Memory bridge: budget guard triggered (N/500 entries). Skipping store."` and STOP. Do not store.
 
 If `memory_stats` is unavailable (MCP error): fall back to `memory_search(query="bridge-decision", limit=50)` and count results. If fallback also fails: skip silently.
+
+### 1.5. Auto-Supersede Check
+
+For each decision to be stored (Step 2), search for existing entries that this decision replaces:
+
+```
+results = memory_search(query="bridge-decision <phase-slug>", limit=5)
+```
+
+Response schema: each result is `{"memory": {"id": "mem_xxx", "content": "...", "tags": [...]}, "score": N}`. Extract old entry ID via `result["memory"]["id"]`.
+
+For each result tagged `bridge-decision` whose content conflicts with the new decision (same topic, different conclusion), mark it for supersession. **Max 1 supersession per new decision** — pick the highest-scoring conflicting match. If no conflicts found, proceed (no-op).
+
+**MCP call budget:** 10 calls total per bridge run (searches + stores + forgets). If budget exhausted mid-run, log remaining decisions to stdout and skip their supersession.
 
 ### 2. Select Key Decisions
 
@@ -32,12 +46,22 @@ memory_store(
 )
 ```
 
-Dedup is handled by memory_store's built-in near-duplicate detection (exact matches reinforce, near matches warn). Do NOT implement manual search-then-update.
+Response schema: `{"id": "mem_new", "action": "created|reinforced"}`. Capture `id` for supersession linking.
+
+If Step 1.5 marked an old entry for supersession, call `memory_forget` immediately after storing:
+
+```
+memory_forget(memory_id=old_id, superseded_by=new_id)
+```
+
+This soft-deletes the old entry and links it to the replacement. The old entry remains in the database (active=False) for audit trail.
+
+Dedup for non-superseded entries is handled by memory_store's built-in near-duplicate detection (exact matches reinforce, near matches warn).
 
 ### 4. Fail-Open
 
-If any memory_store call fails (MCP unavailable, timeout, ValueError): log `"Memory bridge: store failed for '<decision>'. Continuing."` and proceed. Memory bridge is additive — never block dev-plan flow.
+If any MCP call fails (memory_search, memory_store, memory_forget — MCP unavailable, timeout, ValueError): log `"Memory bridge: <operation> failed for '<decision>'. Continuing."` and proceed. Memory bridge is additive — never block dev-plan flow.
 
 ### 5. Report
 
-Emit: `"Memory bridge: stored N/M decisions to memory."` (where M is total decisions, N is successfully stored). If all skipped due to budget or failure, this line still appears with N=0.
+Emit: `"Memory bridge: stored N/M decisions, superseded K entries."` (where M is total decisions, N is successfully stored, K is superseded). If all skipped due to budget or failure, this line still appears with N=0, K=0.

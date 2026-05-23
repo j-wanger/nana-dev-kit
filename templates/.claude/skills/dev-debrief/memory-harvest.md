@@ -36,11 +36,25 @@ Use `trust: "high"` for explicit user corrections. Use `trust: "medium"` for inf
 
 ## Advisory Ceiling
 
-Target ≤100 total entries in the memory store. Before storing, check current count via `memory_stats`. If `memory_stats` is unavailable, fall back to `memory_search(query="harvest-", limit=50)` and count results. If approaching the ceiling, prefer updating existing entries over creating new ones.
+Target ≤500 total entries in the memory store (500 advisory ceiling — SQLite/FTS5 handles thousands). Before storing, check current count via `memory_stats`. If `memory_stats` is unavailable, fall back to `memory_search(query="harvest-", limit=50)` and count results. If at or above 400 entries, prefer updating existing entries over creating new ones.
 
-## Stale Entry Removal
+## Stale Entry Supersession
 
-If a new fact contradicts an existing memory entry, update the existing entry rather than creating a duplicate. If a prior correction is no longer relevant (code was rewritten, decision was reversed), note it for removal.
+Before storing a correction, search for prior corrections on the same topic:
+
+```
+results = memory_search(query="harvest-correction <topic keywords>", limit=3)
+```
+
+For each result tagged with a `harvest-*` tag whose content the new entry reverses or replaces, call `memory_forget` to supersede it:
+
+```
+memory_forget(memory_id=old_result["memory"]["id"], superseded_by=new_id)
+```
+
+This soft-deletes the old entry (active=False) and links it to the replacement. The old entry remains in the database for audit trail. If `memory_forget` fails, log and continue (fail-open).
+
+If a prior correction is no longer relevant (code was rewritten, decision was reversed) but no new entry replaces it, call `memory_forget(memory_id=old_id)` without superseded_by to deactivate it.
 
 ## Skip Conditions
 

@@ -127,6 +127,22 @@ for manifest in "${SCENARIOS[@]}"; do
       stage_files "$manifest" "$SCENARIO_DIR" "$WORK_DIR" '.setup.cwd_files'
       stage_files "$manifest" "$SCENARIO_DIR" "$EVAL_HOME" '.setup.home_files'
 
+      # Touch old: set specific files to old mtime (before git init)
+      while IFS= read -r tpath; do
+        [ -z "$tpath" ] && continue
+        touch -t "202601010000" "$WORK_DIR/$tpath" 2>/dev/null || true
+      done < <(jq -r '.setup.touch_old // [] | .[]' "$manifest" 2>/dev/null)
+
+      # Git init if requested (commit timestamp = now, after touch_old)
+      INIT_GIT=$(jq -r '.setup.init_git // empty' "$manifest" 2>/dev/null || true)
+      if [ -n "$INIT_GIT" ]; then
+        git -C "$WORK_DIR" init -q 2>/dev/null
+        git -C "$WORK_DIR" add . 2>/dev/null
+        GIT_MSG="$INIT_GIT"
+        [ "$GIT_MSG" = "true" ] && GIT_MSG="eval init"
+        git -C "$WORK_DIR" -c user.email="eval@test" -c user.name="eval" commit -q -m "$GIT_MSG" 2>/dev/null || true
+      fi
+
       HOOK=$(jq -r '.hook' "$manifest")
       HOOK_SCRIPT="$HOOKS_DIR/$HOOK"
 

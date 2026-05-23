@@ -38,6 +38,15 @@
             "command": ".claude/hooks/audit-log.sh"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/post-commit.sh"
+          }
+        ]
       }
     ],
     "PreCompact": [

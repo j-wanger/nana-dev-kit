@@ -216,7 +216,7 @@ if [ "$INSTALL_DEVWIKI" = true ]; then
   # Enforcement hooks
   HOOKS_SRC="$SCRIPT_DIR/templates/.claude/hooks"
   if $DRY_RUN; then
-    echo "[dry-run] install hooks: enforce-spec.sh, enforce-loop.sh, detect-loop.sh, pre-compact.sh"
+    echo "[dry-run] install hooks: enforce-spec.sh, enforce-loop.sh, detect-loop.sh, pre-compact.sh, post-commit.sh"
     echo "[dry-run] register hooks in settings.json"
     echo "[dry-run] create enforce marker: ~/.claude/enforce"
   else
@@ -225,7 +225,8 @@ if [ "$INSTALL_DEVWIKI" = true ]; then
     cp "$HOOKS_SRC/enforce-loop.sh" ~/.claude/hooks/enforce-loop.sh
     cp "$HOOKS_SRC/detect-loop.sh" ~/.claude/hooks/detect-loop.sh
     cp "$HOOKS_SRC/pre-compact.sh" ~/.claude/hooks/pre-compact.sh
-    chmod +x ~/.claude/hooks/enforce-spec.sh ~/.claude/hooks/enforce-loop.sh ~/.claude/hooks/detect-loop.sh ~/.claude/hooks/pre-compact.sh
+    cp "$HOOKS_SRC/post-commit.sh" ~/.claude/hooks/post-commit.sh
+    chmod +x ~/.claude/hooks/enforce-spec.sh ~/.claude/hooks/enforce-loop.sh ~/.claude/hooks/detect-loop.sh ~/.claude/hooks/pre-compact.sh ~/.claude/hooks/post-commit.sh
     touch ~/.claude/enforce
 
     # Register hooks in settings.json (idempotent JSON merge)
@@ -251,6 +252,9 @@ if 'PostToolUse' not in hooks:
     hooks['PostToolUse'] = []
 if not any(h.get('command','').endswith('detect-loop.sh') for h in hooks['PostToolUse']):
     hooks['PostToolUse'].append(detect_hook)
+postcommit_hook = {'matcher': 'Bash', 'command': os.path.expanduser('~/.claude/hooks/post-commit.sh')}
+if not any(h.get('command','').endswith('post-commit.sh') for h in hooks['PostToolUse']):
+    hooks['PostToolUse'].append(postcommit_hook)
 if 'Stop' not in hooks:
     hooks['Stop'] = []
 if not any(h.get('command','').endswith('enforce-loop.sh') for h in hooks['Stop']):

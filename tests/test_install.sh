@@ -259,6 +259,16 @@ else
   test_fail "PreCompact not registered in settings.json"
 fi
 
+test_start "full install creates post-commit hook"
+assert_file_exists "$THOME_ALL/.claude/hooks/post-commit.sh"
+
+test_start "full install registers post-commit in settings.json"
+if grep -q 'post-commit.sh' "$THOME_ALL/.claude/settings.json" 2>/dev/null; then
+  test_pass
+else
+  test_fail "post-commit not registered in settings.json"
+fi
+
 rm -rf "$THOME_ALL"
 
 test_summary "test_install"
