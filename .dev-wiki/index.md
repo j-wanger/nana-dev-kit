@@ -26,7 +26,7 @@
 - [[phase-21-eval-expansion|Phase 21: Eval Expansion]] -- completed
 - [[phase-22-session-start-refactor|Phase 22: Session-Start Refactor + v0.4.0 Ship]] -- completed
 - [[phase-23-bug-fixes-readme|Phase 23: Bug Fixes + README Rewrite]] -- completed
-- [[phase-24-dx-hook-performance|Phase 24: DX + Hook Performance]] -- planned
+- [[phase-24-dx-hook-performance|Phase 24: DX + Hook Performance]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -94,6 +94,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-22-phase-24-dx-hook-performance-complete|Phase 24 complete]] -- 2026-05-22
 - [[2026-05-22-phase-23-bug-fixes-readme-complete|Phase 23 complete]] -- 2026-05-22
 - [[2026-05-22-phase-22-session-start-refactor-complete|Phase 22 complete]] -- 2026-05-22
 - [[2026-05-22-phase-21-eval-expansion-complete|Phase 21 complete]] -- 2026-05-22
@@ -139,6 +140,7 @@
 
 ## Recent
 
+- 2026-05-22: Phase 24 completed -- jq hook migration (6 hooks), install.sh Getting Started, README Requirements, 150 tests
 - 2026-05-22: Phase 24 planned -- 5 tasks, 1 decision (jq-hook-migration), jq hook migration + DX improvements
 - 2026-05-22: Phase 23 completed -- bug fixes (pre-compact registration, memory-harvest API), README rewrite (93 lines), 142 tests
 - 2026-05-22: Phase 23 planned -- 6 tasks, 2 decisions, bug fixes (pre-compact registration, memory-harvest API) + README rewrite

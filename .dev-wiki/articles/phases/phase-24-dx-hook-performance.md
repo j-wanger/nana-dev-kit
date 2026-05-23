@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-22
 updated: 2026-05-22
 source: plan
-status: planned
+status: READY FOR COMPLETION
 scope: ["templates/.claude/hooks/*.sh", "install.sh", "README.md", "tests/test_templates.sh"]
 entry_criteria: "Phase 23 complete, 142 tests passing, 38/38 eval, v0.4.0 shipped"
 exit_criteria: "No python3 -c in 6 migrated hooks, jq guards present, Getting Started in install.sh, Requirements in README, make test + make eval 100%"
