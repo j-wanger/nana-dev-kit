@@ -19,7 +19,12 @@
 - [[phase-14-adversarial-thinking-and-review|Phase 14: Adversarial Thinking & Review]] -- completed
 - [[phase-15-wire-the-lifecycle|Phase 15: Wire the Lifecycle]] -- completed
 - [[phase-16-enforce-the-loop|Phase 16: Enforce the Loop]] -- completed
-- [[phase-17-harden|Phase 17: Harden]] -- active
+- [[phase-17-harden|Phase 17: Harden]] -- completed
+- [[phase-18-spec-dev-plan-ux-unification|Phase 18: Spec/Dev-Plan UX Unification]] -- completed
+- [[phase-19-memory-wiki-bridge|Phase 19: Memory-Wiki Bridge]] -- completed
+- [[phase-20-eval-harness|Phase 20: Eval Harness]] -- completed
+- [[phase-21-eval-expansion|Phase 21: Eval Expansion]] -- completed
+- [[phase-22-session-start-refactor|Phase 22: Session-Start Refactor + v0.4.0 Ship]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -38,6 +43,17 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[eval-binary-scoring-only|Binary scoring only for eval harness]] -- medium confidence, accepted
+- [[eval-jq-hard-dependency|jq as hard dependency for eval runner]] -- medium confidence, accepted
+- [[eval-top-level-directory|eval/ as top-level directory]] -- medium confidence, accepted
+- [[context-eval-new-category|Context eval as new runner category]] -- medium confidence, accepted
+- [[hook-stdin-per-hook-contracts|Per-hook stdin JSON field contracts]] -- medium confidence, accepted
+- [[eval-missing-tool-fallback-only|Test missing-tool fallback paths only]] -- medium confidence, accepted
+- [[memory-bridge-category-custom|Use category=custom with bridge-decision tag]] -- high confidence, accepted
+- [[memory-bridge-budget-guard-stats|Use memory_stats for budget guard]] -- high confidence, accepted
+- [[memory-bridge-inline-orchestrator|Bridge runs inline in orchestrator]] -- high confidence, accepted
+- [[companion-file-spec-auto-invoke|Companion file for spec auto-invocation]] -- high confidence, accepted
+- [[spec-routing-investigation|Spec routing is platform issue]] -- high confidence, accepted
 - [[pure-bash-loop-detection|Pure bash for detect-loop.sh]] -- high confidence, accepted
 - [[sqlite3-memory-nudge|sqlite3 for memory nudge (not MCP)]] -- medium confidence, accepted
 - [[staged-pruning-stale-queue|Staged pruning to .stale-queue]] -- high confidence, accepted
@@ -69,8 +85,14 @@
 - [[commit-dev-wiki-in-initial-commit|Commit .dev-wiki/ in initial commit]] -- high confidence
 - [[pure-bash-test-harness|Pure bash test harness]] -- high confidence
 - [[structural-placeholder-verification|Structural placeholder verification]] -- high confidence
+- [[session-start-modular-source|Session-start.sh modular sourcing pattern]] -- medium confidence
 
 ### Journal
+- [[2026-05-22-phase-21-eval-expansion-complete|Phase 21 complete]] -- 2026-05-22
+- [[2026-05-22-phase-20-eval-harness-complete|Phase 20 complete]] -- 2026-05-22
+- [[2026-05-22-phase-19-memory-wiki-bridge-complete|Phase 19 complete]] -- 2026-05-22
+- [[2026-05-22-phase-18-spec-devplan-ux-complete|Phase 18 complete]] -- 2026-05-22
+- [[2026-05-22-phase-17-harden-complete|Phase 17 complete]] -- 2026-05-22
 - [[2026-05-22-phase-16-enforce-the-loop-complete|Phase 16 complete]] -- 2026-05-22
 - [[2026-05-22-phase-15-wire-the-lifecycle-complete|Phase 15 complete]] -- 2026-05-22
 - [[2026-05-21-phase-14-adversarial-thinking-and-review-complete|Phase 14 complete]] -- 2026-05-21
@@ -86,6 +108,9 @@
 - [[2026-05-15-phase-3-distribution-and-polish-complete|Phase 3 complete]] -- 2026-05-15
 - [[2026-05-15-phase-2-automated-testing-complete|Phase 2 complete]] -- 2026-05-15
 - [[2026-05-15-phase-1-foundation-and-packaging-complete|Phase 1 complete]] -- 2026-05-15
+
+### Roadmap
+- [[roadmap-gap-analysis|Engineering Gap Analysis & Roadmap]] -- active, tracks open/closed gaps and build order
 
 ### Status
 - [[2026-05-22-codebase-snapshot|Codebase Snapshot]] -- 2026-05-22
@@ -106,13 +131,16 @@
 
 ## Recent
 
-- 2026-05-22: Phase 17 planned -- 4 tasks, 3 decisions, harden (loop detection + memory nudge + working-knowledge pruning)
+- 2026-05-22: Phase 22 planned -- 5 tasks, 1 decision, session-start refactor + scan-secrets fix + gap analysis + v0.4.0
+- 2026-05-22: Phase 21 completed -- eval expansion (38 scenarios, 4 categories, context category, validate-prompt.sh), make eval 38/38
+- 2026-05-22: Phase 21 planned -- 6 tasks, 3 decisions, eval expansion (context category + 5 hooks + prompt validator)
+- 2026-05-22: Phase 20 completed -- eval harness (18 scenarios, runner, validators, schemas), make eval 18/18
+- 2026-05-22: Phase 20 planned -- 6 tasks, 3 decisions, eval harness (corpus + runner + validators)
+- 2026-05-22: Phase 19 completed -- memory-wiki bridge (3 channels: dev-plan+spec write, wiki-query read), tests 120 -> 128
+- 2026-05-22: Phase 18 completed -- spec auto-invocation companion, routing investigation, STOP removed, tests 115 -> 120
+- 2026-05-22: Phase 17 completed -- loop detection hook, memory nudge, working-knowledge pruning, tests 107 -> 115
 - 2026-05-22: Phase 16 completed -- enforcement hooks (spec gate + deliverable check), global hooks + opt-in, tests 92 -> 107
-- 2026-05-22: Phase 16 planned -- 6 tasks, 3 decisions, enforce the loop (spec gate + deliverable check + global hooks)
-- 2026-05-22: Phase 15 completed -- monorepo skills (17 dirs), modular install flags, PreCompact hook, tests 67 -> 92, retro clean
-- 2026-05-21: Phase 15 planned -- 7 tasks, 2 decisions, wire the lifecycle (monorepo + modular install)
-- 2026-05-21: Phase 14 completed -- T0 output-format forcing, adversarial spec Step 2.5, tests 65 -> 67, soul/budget unchanged
-- 2026-05-21: Phase 14 planned -- 3 tasks, 2 decisions, adversarial thinking (T0 wording + spec Step 2.5)
-- 2026-05-20: Phase 13 completed -- H8+H9 heuristics, personal template, ceiling 350, v0.3.0 shipped, tests 63 -> 65, budget 245/300
-- 2026-05-20: Phase 13 planned -- 5 tasks, 2 decisions, final polish + v0.3.0 ship
-- 2026-05-20: Phase 12 completed -- soul warmth + memory-harvest + spec/thinking enforcement, tests 61 -> 63, budget 239/300
+- 2026-05-22: Phase 15 completed -- monorepo skills (17 dirs), modular install flags, PreCompact hook, tests 67 -> 92
+- 2026-05-21: Phase 14 completed -- T0 output-format forcing, adversarial spec Step 2.5, tests 65 -> 67
+- 2026-05-20: Phase 13 completed -- H8+H9 heuristics, personal template, v0.3.0 shipped, 65 tests
+- 2026-05-20: Phase 12 completed -- soul compression + Voice & presence, memory-harvest companion, spec/thinking enforcement

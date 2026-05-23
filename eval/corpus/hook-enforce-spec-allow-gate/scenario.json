@@ -1,0 +1,19 @@
+{
+  "name": "enforce-spec allows when gate marked [x]",
+  "category": "hook",
+  "hook": "enforce-spec.sh",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      ".dev-wiki/.keep": "keep",
+      ".claude/rules/active-phase.md": "active-phase.md"
+    },
+    "home_files": {
+      ".claude/enforce": "enforce-marker"
+    }
+  },
+  "input": "{\"tool_name\": \"Write\", \"input\": {\"file_path\": \"src/main.py\"}}",
+  "expected": {
+    "exit_code": 0
+  }
+}

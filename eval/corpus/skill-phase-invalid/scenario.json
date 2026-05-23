@@ -1,0 +1,10 @@
+{
+  "name": "invalid phase article missing frontmatter",
+  "category": "skill",
+  "artifact_type": "phase-article",
+  "artifact_file": "artifact.md",
+  "scoring": "binary",
+  "expected": {
+    "valid": false
+  }
+}

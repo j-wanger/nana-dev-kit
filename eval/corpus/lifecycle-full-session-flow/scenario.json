@@ -1,0 +1,43 @@
+{
+  "name": "full session: start reports state, audit-log records write, stop allows without py changes",
+  "category": "lifecycle",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      ".dev-wiki/_CURRENT_STATE.md": "current-state.md",
+      ".dev-wiki/tasks.md": "tasks.md"
+    },
+    "home_files": {
+      ".claude/enforce": "enforce-marker"
+    }
+  },
+  "steps": [
+    {
+      "hook": "session-start.sh",
+      "input": "",
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": ["Dev-Wiki State"]
+      }
+    },
+    {
+      "hook": "audit-log.sh",
+      "input": "{\"tool_name\":\"Write\",\"input\":{\"file_path\":\"README.md\"}}",
+      "setup_delta": {
+        "cwd_files": {
+          "README.md": "# Project"
+        }
+      },
+      "expected": {
+        "exit_code": 0
+      }
+    },
+    {
+      "hook": "check-tests-were-run.sh",
+      "input": "{\"tool_uses\":[{\"input\":{\"file_path\":\"README.md\",\"command\":\"echo done\"}}]}",
+      "expected": {
+        "exit_code": 0
+      }
+    }
+  ]
+}

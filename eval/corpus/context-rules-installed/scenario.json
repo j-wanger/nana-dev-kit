@@ -1,0 +1,17 @@
+{
+  "name": "all three rule files installed and present",
+  "category": "context",
+  "scoring": "binary",
+  "setup": {
+    "home_files": {
+      ".claude/rules/nana-soul.md": "nana-soul.md",
+      ".claude/rules/file-lifecycle.md": "file-lifecycle.md",
+      ".claude/rules/nana-personal.md": "nana-personal.md"
+    }
+  },
+  "checks": [
+    {"type": "file_exists", "path": ".claude/rules/nana-soul.md"},
+    {"type": "file_exists", "path": ".claude/rules/file-lifecycle.md"},
+    {"type": "file_exists", "path": ".claude/rules/nana-personal.md"}
+  ]
+}

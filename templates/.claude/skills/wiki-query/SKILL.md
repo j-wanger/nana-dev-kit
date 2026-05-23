@@ -98,6 +98,8 @@ The question may arrive as:
 
 If neither search nor keyword scoring returns results, omit both sections entirely — do not include placeholder text.
 
+**Memory bridge (fail-open):** After wiki search, call `memory_search(query: "<question>", limit: 5)`. If results are non-empty, include them as a `### Memory Results` section in the analyst's Runtime Context. If `memory_search` is unavailable or returns empty, skip silently — do not add placeholder text.
+
 ### Steps 2-6: Orchestration (Analyst -> Writer -> Reviewer pipeline)
 
 Read `~/.claude/skills/knowledge-wiki/pipeline-spec.md` for the standard Analyst -> Writer -> Reviewer pipeline. This skill follows that template with these skill-specific inputs:
@@ -122,6 +124,9 @@ Read `~/.claude/skills/knowledge-wiki/pipeline-spec.md` for the standard Analyst
 
 ### Pre-Scored Candidates
 {{keyword-scored article list from Step 1 Tier 3, or omit section if search was used}}
+
+### Memory Results
+{{memory_search results from Step 1 memory bridge, or omit section if unavailable/empty}}
 ```
 
 **Skill-specific writer extras:** Append the user's question under `## Question` and the schema summary under `## Schema` alongside the analyst plan. Writer output uses `## Answer`, `## Sources`, and `## Gaps` sections (not the standard files-created format).

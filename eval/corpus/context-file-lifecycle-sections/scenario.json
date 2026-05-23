@@ -1,0 +1,17 @@
+{
+  "name": "file-lifecycle.md has routing sections",
+  "category": "context",
+  "scoring": "binary",
+  "setup": {
+    "home_files": {
+      ".claude/rules/file-lifecycle.md": "file-lifecycle.md"
+    }
+  },
+  "checks": [
+    {"type": "file_exists", "path": ".claude/rules/file-lifecycle.md"},
+    {"type": "section_present", "path": ".claude/rules/file-lifecycle.md", "sections": [
+      "## Who updates what",
+      "## Decision routing"
+    ]}
+  ]
+}

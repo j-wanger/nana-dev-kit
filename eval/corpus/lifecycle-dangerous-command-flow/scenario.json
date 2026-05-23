@@ -1,0 +1,23 @@
+{
+  "name": "dangerous command blocked, safe command allowed in sequence",
+  "category": "lifecycle",
+  "scoring": "binary",
+  "setup": {},
+  "steps": [
+    {
+      "hook": "block-dangerous-bash.sh",
+      "input": "{\"tool_name\":\"Bash\",\"input\":{\"command\":\"git push origin main --force\"}}",
+      "expected": {
+        "exit_code": 2,
+        "stderr_contains": ["Blocked"]
+      }
+    },
+    {
+      "hook": "block-dangerous-bash.sh",
+      "input": "{\"tool_name\":\"Bash\",\"input\":{\"command\":\"git push origin main\"}}",
+      "expected": {
+        "exit_code": 0
+      }
+    }
+  ]
+}

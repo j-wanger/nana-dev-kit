@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SessionStart Hook Input",
+  "description": "SessionStart hooks receive no stdin JSON. session-start.sh and pre-compact.sh read filesystem state directly (.dev-wiki/, .claude/rules/). This schema documents the empty contract.",
+  "type": "object",
+  "properties": {}
+}

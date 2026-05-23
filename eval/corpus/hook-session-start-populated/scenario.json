@@ -1,0 +1,20 @@
+{
+  "name": "session-start outputs state when dev-wiki is populated",
+  "category": "hook",
+  "hook": "session-start.sh",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      ".dev-wiki/_CURRENT_STATE.md": "current-state.md",
+      ".dev-wiki/tasks.md": "tasks.md"
+    },
+    "home_files": {
+      ".claude/enforce": "enforce-marker"
+    }
+  },
+  "input": "",
+  "expected": {
+    "exit_code": 0,
+    "stdout_contains": ["Dev-Wiki State", "enforcement.*active", "memory.*search"]
+  }
+}

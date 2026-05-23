@@ -1,0 +1,21 @@
+{
+  "name": "enforce-loop allows stop when deliverable exists",
+  "category": "hook",
+  "hook": "enforce-loop.sh",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      ".dev-wiki/.keep": "keep",
+      ".claude/rules/active-phase.md": "active-phase.md",
+      "specs/phase-99-fictional-test.md": "spec.md",
+      "output/result.txt": "result.txt"
+    },
+    "home_files": {
+      ".claude/enforce": "enforce-marker"
+    }
+  },
+  "input": "{}",
+  "expected": {
+    "exit_code": 0
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "auto-ruff exits 0 for non-Python file",
+  "category": "hook",
+  "hook": "auto-ruff-format.sh",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      "README.md": "# Hello"
+    }
+  },
+  "input": "{\"tool_name\":\"Write\",\"input\":{\"file_path\":\"README.md\"}}",
+  "expected": {
+    "exit_code": 0
+  }
+}

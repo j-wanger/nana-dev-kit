@@ -1,0 +1,12 @@
+{
+  "name": "check-tests-were-run blocks stop when Python modified without pytest",
+  "category": "hook",
+  "hook": "check-tests-were-run.sh",
+  "scoring": "binary",
+  "setup": {},
+  "input": "{\"tool_uses\":[{\"input\":{\"file_path\":\"src/app.py\",\"command\":\"echo test\"}}]}",
+  "expected": {
+    "exit_code": 2,
+    "stderr_contains": ["pytest"]
+  }
+}

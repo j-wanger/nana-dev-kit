@@ -1,0 +1,10 @@
+{
+  "name": "py-review-stop-prompt.md passes prompt validation",
+  "category": "skill",
+  "scoring": "binary",
+  "artifact_file": "prompt.md",
+  "artifact_type": "prompt",
+  "expected": {
+    "valid": true
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "invalid spec missing sections and structure",
+  "category": "skill",
+  "artifact_type": "spec",
+  "artifact_file": "artifact.md",
+  "scoring": "binary",
+  "expected": {
+    "valid": false
+  }
+}

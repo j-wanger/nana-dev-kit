@@ -1,0 +1,16 @@
+{
+  "name": "scan-secrets warns on hardcoded secret pattern",
+  "category": "hook",
+  "hook": "scan-secrets.sh",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      "settings.py": "API_KEY = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456'"
+    }
+  },
+  "input": "{\"tool_name\":\"Write\",\"input\":{\"file_path\":\"settings.py\"}}",
+  "expected": {
+    "exit_code": 0,
+    "stderr_contains": ["potential.*secret"]
+  }
+}

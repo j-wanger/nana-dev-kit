@@ -1,0 +1,10 @@
+{
+  "name": "valid spec with all 9 sections",
+  "category": "skill",
+  "artifact_type": "spec",
+  "artifact_file": "artifact.md",
+  "scoring": "binary",
+  "expected": {
+    "valid": true
+  }
+}

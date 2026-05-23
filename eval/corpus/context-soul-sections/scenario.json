@@ -1,0 +1,21 @@
+{
+  "name": "nana-soul.md has all required sections",
+  "category": "context",
+  "scoring": "binary",
+  "setup": {
+    "home_files": {
+      ".claude/rules/nana-soul.md": "nana-soul.md"
+    }
+  },
+  "checks": [
+    {"type": "file_exists", "path": ".claude/rules/nana-soul.md"},
+    {"type": "section_present", "path": ".claude/rules/nana-soul.md", "sections": [
+      "## Technical posture",
+      "## Voice & presence",
+      "## Thinking protocol",
+      "## Memory discipline",
+      "## Work habits",
+      "## Code quality lens"
+    ]}
+  ]
+}

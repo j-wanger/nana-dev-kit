@@ -1,0 +1,15 @@
+{
+  "name": "audit-log creates .nana/audit.jsonl on file write",
+  "category": "hook",
+  "hook": "audit-log.sh",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      "src/app.py": "print('hello')"
+    }
+  },
+  "input": "{\"tool_name\":\"Write\",\"input\":{\"file_path\":\"src/app.py\"}}",
+  "expected": {
+    "exit_code": 0
+  }
+}

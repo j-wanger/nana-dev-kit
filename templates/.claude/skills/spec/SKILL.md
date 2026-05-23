@@ -122,3 +122,7 @@ Present the spec. Wait for explicit approval before any execution begins.
 ## Step 6: Persist
 
 Write to `specs/<slug>.md` (`mkdir -p specs/` first). Slug: kebab-case from Objective, ≤40 chars.
+
+## Step 6.5: Memory Bridge (fail-open)
+
+After persisting, store one memory entry summarizing the spec. Call `memory_store(content: "Spec <slug>: <objective>. Key constraints: <c1>; <c2>; <c3>.", category: "custom", tags: ["bridge-decision", "<spec-slug>"], trust: "medium")`. If `memory_store` is unavailable or fails, skip silently — do not block the spec flow.

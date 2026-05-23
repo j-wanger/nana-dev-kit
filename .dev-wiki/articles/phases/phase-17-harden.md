@@ -1,6 +1,6 @@
 ---
 title: "Phase 17: Harden"
-status: active
+status: completed
 started: 2026-05-22
 updated: 2026-05-22
 ceremony: standard
@@ -54,6 +54,10 @@ Three independent capabilities: (1) detect-loop.sh pure bash PostToolUse hook tr
 - memory.db exists at ~/.claude/memory_server/memory.db with queryable tables. If false: skip memory nudge silently.
 - PostToolUse hook JSON includes tool_name, tool_input, stdout, stderr, exit_code fields. If false: adapt parsing.
 - working-knowledge.md entries follow `[uses: N]` format with `activated: YYYY-MM-DD` date. If false: skip age check for entries without dates.
+
+## Outcome
+
+All 4 tasks completed. detect-loop.sh (54 lines, pure bash) detects repetitive tool failures. session-start.sh enhanced with memory nudge, working-knowledge pruning, and loop state cleanup. 8 new fixture tests. install.sh distributes the new hook. Tests: 107 -> 115.
 
 ## Formal Spec
 

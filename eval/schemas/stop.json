@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stop Hook Input",
+  "description": "JSON piped to stdin for Stop hooks. enforce-loop.sh reads stdin but does not parse specific fields — enforcement is based on filesystem state (specs, tasks, active-phase).",
+  "type": "object",
+  "properties": {
+    "reason": {
+      "type": "string",
+      "description": "Reason for stopping (e.g., user request, context limit)"
+    }
+  }
+}

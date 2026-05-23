@@ -1,0 +1,15 @@
+{
+  "name": "scan-secrets exits 0 for clean file",
+  "category": "hook",
+  "hook": "scan-secrets.sh",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      "config.py": "DEBUG = True\nLOG_LEVEL = 'info'"
+    }
+  },
+  "input": "{\"tool_name\":\"Write\",\"input\":{\"file_path\":\"config.py\"}}",
+  "expected": {
+    "exit_code": 0
+  }
+}

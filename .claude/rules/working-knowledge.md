@@ -1,6 +1,31 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
+- [uses: 2] Eval design: binary scoring only (pass=1.0, fail=0.0), jq hard dependency, eval/ top-level directory separate from tests/; make eval never called by make test; 38 scenarios in 4 categories (hook, skill, context, lifecycle)
+  source: [[decision:eval-binary-scoring-only]] + [[decision:eval-jq-hard-dependency]] + [[decision:eval-top-level-directory]] | activated: 2026-05-22
+- [uses: 1] Context eval is a new runner category (not folded into hook/skill); eval report shows "context 4/4" directly answering "do rules reach the model?"; checks array with file_exists, section_present, hook_output types
+  source: [[decision:context-eval-new-category]] | activated: 2026-05-22
+- [uses: 1] Fixture JSON must match per-hook stdin field paths: audit-log/auto-ruff/scan-secrets use {"input":{"file_path":"..."}}, block-dangerous-bash uses {"input":{"command":"..."}}, check-tests-were-run uses {"tool_uses":[...]}
+  source: [[decision:hook-stdin-per-hook-contracts]] | activated: 2026-05-22
+- [uses: 1] scan-secrets.sh has macOS BSD grep compatibility bug: \x27 in pattern doesn't match single quotes; eval fixture uses double quotes as workaround
+  source: [[journal:2026-05-22-phase-21-eval-expansion-complete]] | activated: 2026-05-22
+- [uses: 1] Eval harnesses should measure 3 layers: outcome (did it work), trajectory (was path efficient), system metrics (cost/latency); for dev-kit self-eval, focus on outcome + trajectory, defer system metrics
+  source: [[wiki:agentic-eval-3-layer-model]] | activated: 2026-05-22
+- [uses: 1] Scenario-based eval needs 4 components per case: initial context (fixture), interaction script (input), oracle assertions (expected), timeouts; structured JSON manifest per scenario
+  source: [[wiki:scenario-eval-structure]] | activated: 2026-05-22
+- [uses: 1] Memory store Category enum: fact/preference/correction/entity/custom -- no "decision" category; use category="custom" with tags=["bridge-decision"] for all bridge entries
+  source: [[decision:memory-bridge-category-custom]] | activated: 2026-05-22
+- [uses: 1] Budget guard for memory entries uses memory_stats MCP tool (not empty-query memory_search which returns 0 after FTS sanitization); fallback: memory_search("bridge-decision", limit=50) count
+  source: [[decision:memory-bridge-budget-guard-stats]] | activated: 2026-05-22
+- [uses: 1] Memory bridge runs inline in dev-plan orchestrator after artifact-writer subagent returns -- Agent subagents cannot access MCP tools (memory_store/memory_stats)
+  source: [[decision:memory-bridge-inline-orchestrator]] | activated: 2026-05-22
+- [uses: 2] Skill tool `Skill(skill="spec", args=...)` is the established pattern for cross-skill calls; companion files isolate orchestration logic from main SKILL.md; cp -r auto-distributes new companions without install.sh changes
+  source: [[wiki:skill-tool-invocation-pattern]] | activated: 2026-05-22
+- [uses: 1] spec SKILL.md pre-check blocks when dev-wiki has uncompleted tasks; between phases (all tasks done) the guard does NOT fire -- auto-invocation is safe
+  source: [[wiki:spec-precheck-between-phases]] | activated: 2026-05-22
+- [uses: 1] install.sh directory-based copy (`cp -r`) means new companion files in existing skill dirs auto-distribute without install.sh changes
+  source: [[journal:2026-05-22-phase-18-spec-devplan-ux-complete]] | activated: 2026-05-22
+
 - [uses: 1] install.sh performs 6 actions: copies py-init + spec skills, nana-soul + nana-personal + file-lifecycle rules, kit path marker, memory_server/ + registers MCP server in settings.json
   source: [[decision:install-sh-scope-expansion]] | activated: 2026-05-19
 - [uses: 1] README targets ~58 lines with install + usage + 5-layer table + memory/dev-wiki section; self-test.md is the detailed reference
@@ -99,11 +124,15 @@
   source: [[journal:2026-05-22-phase-15-wire-the-lifecycle-complete]] | activated: 2026-05-22
 - [uses: 1] wiki-index ships Python files (indexer.py, search.py, wikilib.py, convert.py) — needs language-neutrality accounting in future phase
   source: [[journal:2026-05-22-phase-15-wire-the-lifecycle-complete]] | activated: 2026-05-22
-- [uses: 1] Hook exit codes: 0 = allow (tool use proceeds), 2 = block (stderr shown to Claude); PreToolUse receives JSON on stdin with input.file_path; Stop receives session context JSON
+- [uses: 3] Hook exit codes: 0 = allow (tool use proceeds), 2 = block (stderr shown to Claude); PreToolUse receives JSON on stdin with input.file_path; PostToolUse receives tool_name, tool_input, stdout, stderr, exit_code; advisory hooks MUST exit 0
   source: [[wiki:hook-exit-codes]] | activated: 2026-05-22
-- [uses: 1] Enforcement hooks (enforce-spec.sh, enforce-loop.sh) install globally to ~/.claude/hooks/; check CWD .claude/enforce marker (fail-open); install.sh JSON merges hooks into settings.json
+- [uses: 3] Enforcement hooks (enforce-spec.sh, enforce-loop.sh, detect-loop.sh) install globally to ~/.claude/hooks/; check CWD .claude/enforce marker (fail-open); install.sh JSON merges hooks into settings.json
   source: [[decision:global-hooks-project-opt-in]] | activated: 2026-05-22
 - [uses: 1] Stop hook (enforce-loop.sh) runs only file-existence exit criteria (test -f, test -d) from specs/<slug>.md; open tasks and debrief status are advisory (stdout), not blocking (exit 2)
   source: [[decision:lightweight-deliverable-check-stop]] | activated: 2026-05-22
 - [uses: 1] Subshell variable propagation: $(setup_fixture) doesn't export HOME to parent; use inline HOME=... before command instead of export in subshell for test fixtures
   source: [[journal:2026-05-22-phase-16-enforce-the-loop-complete]] | activated: 2026-05-22
+- [uses: 1] detect-loop.sh is pure bash exception to python-json-parsing-hooks convention; <50ms PostToolUse budget precludes Python subprocess (~20ms overhead)
+  source: [[decision:pure-bash-loop-detection]] | activated: 2026-05-22
+- [uses: 1] Working-knowledge entries use [uses: N] format with activated: YYYY-MM-DD; [pinned] tag prevents auto-pruning; sort by activation date (newest first)
+  source: [[wiki:working-knowledge-spec]] | activated: 2026-05-22

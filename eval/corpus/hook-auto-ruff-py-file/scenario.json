@@ -1,0 +1,15 @@
+{
+  "name": "auto-ruff exits 0 for Python file (ruff may or may not run)",
+  "category": "hook",
+  "hook": "auto-ruff-format.sh",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      "app.py": "x=1"
+    }
+  },
+  "input": "{\"tool_name\":\"Write\",\"input\":{\"file_path\":\"app.py\"}}",
+  "expected": {
+    "exit_code": 0
+  }
+}

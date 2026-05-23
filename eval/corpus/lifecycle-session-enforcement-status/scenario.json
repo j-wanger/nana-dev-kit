@@ -1,0 +1,35 @@
+{
+  "name": "session-start reports enforcement status correctly across state changes",
+  "category": "lifecycle",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      ".dev-wiki/_CURRENT_STATE.md": "current-state.md",
+      ".dev-wiki/tasks.md": "tasks.md"
+    },
+    "home_files": {}
+  },
+  "steps": [
+    {
+      "hook": "session-start.sh",
+      "input": "{}",
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": ["enforcement.*inactive"]
+      }
+    },
+    {
+      "hook": "session-start.sh",
+      "input": "{}",
+      "setup_delta": {
+        "home_files": {
+          ".claude/enforce": "enforce-marker"
+        }
+      },
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": ["enforcement.*active"]
+      }
+    }
+  ]
+}

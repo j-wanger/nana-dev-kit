@@ -1,24 +1,24 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-22 by /dev-plan (Phase 17 planned)
+> Last updated: 2026-05-22 by /dev-plan (Phase 22 planned)
 
 ## Recommended Next Action
 
-Begin Phase 17 implementation: start with task 1 (detect-loop.sh pure bash PostToolUse hook).
+Begin Phase 22 Task 1: extract session-start modules into session-start.d/wk-prune.sh and memory-nudge.sh.
 
 ## Active Phase
 
-**[[phase-17-harden|Phase 17: Harden]]** (status: active, ~0%)
+**[[phase-22-session-start-refactor|Phase 22: Session-Start Refactor + v0.4.0 Ship]]** (status: active)
 
-Entry criteria: MET (Phase 16 completed, 107 tests passing, all enforcement hooks working)
-Exit criteria: detect-loop.sh detects repetitive tool calls, session-start.sh nudges memory consolidation, working-knowledge auto-pruning implemented, tests pass, make test passes
+Entry criteria: MET (Phase 21 complete, 128 tests passing, 38/38 eval)
+Exit criteria: session-start.sh ≤70 lines, sourced modules, scan-secrets fix, gap analysis updated, v0.4.0 tagged
 
-Progress: ~0% (0/4 tasks done)
+Progress: ~0% (0/5 tasks done)
 
 ## Active Phase Contract
 
-Phase: 17 - Harden
-Tasks: 4 (3M 1S)
+Phase: 22 - Session-Start Refactor + v0.4.0 Ship
+Tasks: 5 (1M 4S, see tasks.md)
 Transition: continue
 Abort: if blocked >3 attempts, ask user: skip or abort
 
@@ -26,48 +26,43 @@ Abort: if blocked >3 attempts, ask user: skip or abort
 
 | Decision | Confidence | Date |
 |----------|------------|------|
-| [[pure-bash-loop-detection]] | high | 2026-05-22 |
-| [[sqlite3-memory-nudge]] | medium | 2026-05-22 |
-| [[staged-pruning-stale-queue]] | high | 2026-05-22 |
-| [[global-hooks-project-opt-in]] | high | 2026-05-22 |
-| [[lightweight-deliverable-check-stop]] | high | 2026-05-22 |
+| [[session-start-modular-source]] | medium | 2026-05-22 |
 
 ## Blockers and Open Questions
 
-- /spec routing: skill listed in available skills but not recognized as command. Needs investigation. Orthogonal to Phase 17 work. (raised 2026-05-21, carried forward)
-- memory.db schema: sqlite3 query depends on knowing the table/column names in vendored memory_server. Unverified — may need discovery during implementation. (raised 2026-05-22)
+- None
 
 ## Key Artifacts
 
 | Path | Purpose | Last Modified |
 |------|---------|---------------|
-| `install.sh` | Module-group installer (~260 lines, --all/--core-only/--no-python/--dry-run, hooks module) | 2026-05-22 |
-| `templates/.claude/hooks/enforce-spec.sh` | PreToolUse spec enforcement hook (58 lines) | 2026-05-22 |
-| `templates/.claude/hooks/enforce-loop.sh` | Stop deliverable check hook (85 lines) | 2026-05-22 |
-| `templates/.claude/hooks/session-start.sh` | SessionStart hook (2 sources + gate-check + memory guidance + enforcement status) | 2026-05-22 |
-| `templates/.claude/hooks/pre-compact.sh` | PreCompact hook (pure bash, reads committed state) | 2026-05-22 |
+| `scripts/eval-runner.sh` | Eval corpus runner (~310 lines, jq, HOME isolation, binary scoring, 4 categories) | 2026-05-22 |
+| `eval/corpus/` | 38 scenario directories (23 hook-*, 6 skill-*, 5 lifecycle-*, 4 context-*) | 2026-05-22 |
+| `eval/schemas/` | 4 JSON input schemas for hook contracts | 2026-05-22 |
+| `eval/validators/` | 4 bash validators for skill artifact contracts (spec, phase, decision, prompt) | 2026-05-22 |
+| `eval/README.md` | Corpus structure, scoring docs, hook stdin contracts table | 2026-05-22 |
+| `install.sh` | Module-group installer (~270 lines, --all/--core-only/--no-python/--dry-run, hooks module) | 2026-05-22 |
+| `templates/.claude/hooks/` | 11 lifecycle hooks (session-start, pre-compact, enforce-spec, enforce-loop, detect-loop, etc.) | 2026-05-22 |
 | `templates/.claude/skills/` | 22 skill dirs + MANIFEST (115 files, ~630KB) | 2026-05-22 |
 | `templates/.claude/rules/nana-soul.md` | Cognitive identity (59 lines, 3 protocols + Voice & presence + H8/H9 + memory_search) | 2026-05-20 |
-| `templates/.claude/rules/file-lifecycle.md` | File lifecycle routing table (MCP-only memory, 4 categories) | 2026-05-19 |
-| `templates/.claude/skills/spec/SKILL.md` | Spec creation skill (124 lines, two-tier review gate + adversarial Step 2.5) | 2026-05-21 |
 | `memory_server/` | Vendored MCP memory server (12 .py, 2,373 LOC from nanaclaw) | 2026-05-15 |
-| `tests/test_enforce.sh` | Enforcement hook fixture tests (10 tests) | 2026-05-22 |
-| `tests/test_install.sh` | Install flag combos, skill dirs, MCP, enforcement assertions (43 tests) | 2026-05-22 |
+| `tests/` | 6 test scripts, 128 tests (helpers.sh + test_*.sh) | 2026-05-22 |
 | `VERSION` | Semantic version (0.3.0) | 2026-05-20 |
 
 ## Session Journal (last 5)
 
-- [2026-05-22] [[2026-05-22-phase-16-enforce-the-loop-complete|Phase 16 complete]] -- enforcement hooks (spec gate + deliverable check), global hooks + opt-in, tests 92 -> 107
-- [2026-05-22] [[2026-05-22-phase-15-wire-the-lifecycle-complete|Phase 15 complete]] -- monorepo skills (17 dirs), modular install, PreCompact hook, tests 67 -> 92, retro check clean
-- [2026-05-21] [[2026-05-21-phase-14-adversarial-thinking-and-review-complete|Phase 14 complete]] -- T0 output-format forcing, adversarial spec Step 2.5, tests 65 -> 67, soul/budget unchanged
-- [2026-05-20] [[2026-05-20-phase-13-final-polish-and-ship-complete|Phase 13 complete]] -- H8+H9 heuristics, personal template, ceiling 350, v0.3.0 shipped, tests 63 -> 65, budget 245/300
-- [2026-05-20] [[2026-05-20-phase-12-soul-enhancement-memory-harvest-complete|Phase 12 complete]] -- soul warmth + memory-harvest + spec/thinking enforcement, tests 61 -> 63, budget 239/300
+- [2026-05-22] [[2026-05-22-phase-21-eval-expansion-complete|Phase 21 complete]] -- eval expansion (38 scenarios, 4 categories, context category, validate-prompt.sh), make eval 38/38
+- [2026-05-22] [[2026-05-22-phase-20-eval-harness-complete|Phase 20 complete]] -- eval harness (18 scenarios, runner, validators, schemas), make eval 18/18
+- [2026-05-22] [[2026-05-22-phase-19-memory-wiki-bridge-complete|Phase 19 complete]] -- memory-wiki bridge (3 channels: dev-plan+spec write, wiki-query read), tests 120 -> 128
+- [2026-05-22] [[2026-05-22-phase-18-spec-devplan-ux-complete|Phase 18 complete]] -- spec auto-invocation companion, routing investigation, STOP removed, tests 115 -> 120
+- [2026-05-22] [[2026-05-22-phase-17-harden-complete|Phase 17 complete]] -- loop detection hook, memory nudge, working-knowledge pruning, tests 107 -> 115
 
 ## Cross-References
 
 - Status: [[2026-05-22-codebase-snapshot|Codebase Snapshot 2026-05-22]]
-- Phases 1-16: completed (see index.md)
-- Decision: [[global-hooks-project-opt-in|Global hooks with project-level opt-in]] -- high confidence, accepted
-- Decision: [[lightweight-deliverable-check-stop|Lightweight deliverable check at Stop]] -- high confidence, accepted
-- Decision: [[python-json-parsing-hooks|Python JSON parsing in hooks]] -- high confidence, accepted
-- Retro: Phases 11-15 clean (0 blockers, 0 reversals, 1 low-signal user correction)
+- Phases 1-21: completed (see index.md)
+- Decision: [[context-eval-new-category|Context eval as new runner category]] -- medium confidence, accepted
+- Decision: [[hook-stdin-per-hook-contracts|Per-hook stdin JSON field contracts]] -- high confidence, accepted
+- Decision: [[eval-missing-tool-fallback-only|Test missing-tool fallback paths only]] -- medium confidence, accepted
+- Roadmap: [[roadmap-gap-analysis|Engineering Gap Analysis]] -- Gaps 1.3+3.3+4.4 closed by Phase 19
+- Retro: Phases 16-20 clean (0 blockers, 0 reversals, 0 user corrections)

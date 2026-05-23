@@ -1,0 +1,36 @@
+{
+  "name": "enforce-spec blocks write without spec, then allows after spec added",
+  "category": "lifecycle",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      ".dev-wiki/.keep": "keep",
+      ".claude/rules/active-phase.md": "active-phase.md"
+    },
+    "home_files": {
+      ".claude/enforce": "enforce-marker"
+    }
+  },
+  "steps": [
+    {
+      "hook": "enforce-spec.sh",
+      "input": "{\"tool_name\": \"Write\", \"input\": {\"file_path\": \"src/app.py\"}}",
+      "expected": {
+        "exit_code": 2,
+        "stderr_contains": ["No approved spec"]
+      }
+    },
+    {
+      "hook": "enforce-spec.sh",
+      "input": "{\"tool_name\": \"Write\", \"input\": {\"file_path\": \"src/app.py\"}}",
+      "setup_delta": {
+        "cwd_files": {
+          "specs/phase-1-acme-feature.md": "spec.md"
+        }
+      },
+      "expected": {
+        "exit_code": 0
+      }
+    }
+  ]
+}

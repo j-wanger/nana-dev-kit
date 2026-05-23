@@ -16,7 +16,7 @@ if command -v gitleaks &>/dev/null; then
   fi
 else
   # Fallback: basic pattern matching for common secret formats
-  if grep -qEi '(api[_-]?key|secret[_-]?key|password|token|credential)\s*[=:]\s*["\x27][A-Za-z0-9+/=_-]{16,}' "$FILE_PATH" 2>/dev/null; then
+  if grep -qEi '(api[_-]?key|secret[_-]?key|password|token|credential)\s*[=:]\s*["'"'"'][A-Za-z0-9+/=_-]{16,}' "$FILE_PATH" 2>/dev/null; then
     echo "Warning: potential hardcoded secret detected in $FILE_PATH. Review before committing." >&2
   fi
 fi

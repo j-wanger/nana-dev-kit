@@ -215,6 +215,9 @@ test_start "full install creates dev-plan skill"
 env HOME="$THOME_ALL" bash "$PROJECT_ROOT/install.sh" >/dev/null 2>&1
 assert_file_exists "$THOME_ALL/.claude/skills/dev-plan/SKILL.md"
 
+test_start "full install copies spec-auto-invoke.md companion"
+assert_file_exists "$THOME_ALL/.claude/skills/dev-plan/spec-auto-invoke.md"
+
 test_start "full install creates wiki-query skill"
 assert_file_exists "$THOME_ALL/.claude/skills/wiki-query/SKILL.md"
 

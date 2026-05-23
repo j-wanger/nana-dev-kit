@@ -130,7 +130,7 @@ Read `$WIKI/config.md` for `ceremony:` value (lite or standard). If absent, defa
 
 ### Step 0.6: Spec Existence Check *(Lite: skip)*
 
-For standard ceremony: check if `$ROOT/specs/<phase-slug>.md` exists OR the target phase article has a `## Formal Spec` section. Derive `<phase-slug>` from the phase name (kebab-case, e.g., "phase-12-soul-enhancement"). If neither exists: "No spec found for Phase N. Run `/spec` first." STOP. This prevents bypassing the spec review gate.
+For standard ceremony: check if `$ROOT/specs/<phase-slug>.md` exists OR the target phase article has a `## Formal Spec` section. Derive `<phase-slug>` from the phase name (kebab-case, e.g., "phase-12-soul-enhancement"). If neither exists: read `~/.claude/skills/dev-plan/spec-auto-invoke.md` and follow the auto-invocation protocol (invoke /spec inline, handle terminal states, restart from Step 1 on approval).
 
 ---
 
@@ -271,6 +271,9 @@ All wiki artifacts are updated atomically. Follow this order:
 
 #### 8a: Finalize Decision Articles *(Lite: skip)*
 Update draft decisions: set `confidence` to `medium`/`high`, set `source: plan`. Create additional articles for new decisions from Steps 5-7.
+
+#### 8a-bis: Memory Bridge *(Lite: skip)*
+Read `~/.claude/skills/dev-plan/memory-bridge.md` and follow the procedure: budget guard via `memory_stats`, select 1-3 key decisions, store to memory with `category="custom"` and `tags=["bridge-decision"]`. Fail-open — skip silently on any error.
 
 #### 8b: Write Tasks to tasks.md
 Write tasks for the target phase (see `~/.claude/skills/dev-plan/task-schema.md` for enriched task schema, `~/.claude/skills/dev-wiki/size-budgets.md` for size budgets). Each task MUST include TDD cycle (RED/GREEN/REFACTOR), scope, success criterion, and size *(Lite: simplified — description+scope+success only)*. Order by dependency. At most 1 L task per phase.

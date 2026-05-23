@@ -1,0 +1,12 @@
+{
+  "name": "block-dangerous-bash blocks git commit --no-verify",
+  "category": "hook",
+  "hook": "block-dangerous-bash.sh",
+  "scoring": "binary",
+  "setup": {},
+  "input": "{\"tool_name\":\"Bash\",\"input\":{\"command\":\"git commit -m 'fix' --no-verify\"}}",
+  "expected": {
+    "exit_code": 2,
+    "stderr_contains": ["Blocked.*no-verify"]
+  }
+}

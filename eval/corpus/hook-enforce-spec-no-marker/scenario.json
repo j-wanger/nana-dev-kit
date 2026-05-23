@@ -1,0 +1,14 @@
+{
+  "name": "enforce-spec allows without enforcement marker",
+  "category": "hook",
+  "hook": "enforce-spec.sh",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {},
+    "home_files": {}
+  },
+  "input": "{\"tool_name\": \"Write\", \"input\": {\"file_path\": \"src/main.py\"}}",
+  "expected": {
+    "exit_code": 0
+  }
+}

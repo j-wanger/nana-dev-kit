@@ -1,0 +1,11 @@
+{
+  "name": "block-dangerous-bash allows safe commands",
+  "category": "hook",
+  "hook": "block-dangerous-bash.sh",
+  "scoring": "binary",
+  "setup": {},
+  "input": "{\"tool_name\":\"Bash\",\"input\":{\"command\":\"git status\"}}",
+  "expected": {
+    "exit_code": 0
+  }
+}

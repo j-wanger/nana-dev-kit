@@ -1,0 +1,11 @@
+{
+  "name": "check-tests-were-run allows stop when no Python files touched",
+  "category": "hook",
+  "hook": "check-tests-were-run.sh",
+  "scoring": "binary",
+  "setup": {},
+  "input": "{\"tool_uses\":[{\"input\":{\"file_path\":\"README.md\",\"command\":\"echo hello\"}}]}",
+  "expected": {
+    "exit_code": 0
+  }
+}

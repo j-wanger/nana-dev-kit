@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PostToolUse Hook Input",
+  "description": "JSON piped to stdin for PostToolUse hooks (Bash). Derived from detect-loop.sh field access patterns (grep/sed, no Python).",
+  "type": "object",
+  "required": ["tool_name", "tool_input"],
+  "properties": {
+    "tool_name": {
+      "type": "string",
+      "description": "Name of the tool that was invoked (e.g., Bash)"
+    },
+    "tool_input": {
+      "type": "object",
+      "properties": {
+        "command": {
+          "type": "string",
+          "description": "The bash command that was executed. Parsed by detect-loop.sh via grep."
+        }
+      },
+      "required": ["command"]
+    },
+    "stdout": {
+      "type": "string",
+      "description": "Standard output from the tool execution"
+    },
+    "stderr": {
+      "type": "string",
+      "description": "Standard error from the tool execution"
+    },
+    "exit_code": {
+      "type": "integer",
+      "description": "Exit code of the tool execution. Parsed by detect-loop.sh via grep."
+    }
+  }
+}

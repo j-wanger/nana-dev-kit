@@ -1,0 +1,37 @@
+{
+  "name": "enforce-loop blocks stop when deliverable missing, allows after created",
+  "category": "lifecycle",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      ".dev-wiki/.keep": "keep",
+      ".claude/rules/active-phase.md": "active-phase.md",
+      "specs/phase-2-build-widget.md": "spec.md"
+    },
+    "home_files": {
+      ".claude/enforce": "enforce-marker"
+    }
+  },
+  "steps": [
+    {
+      "hook": "enforce-loop.sh",
+      "input": "{}",
+      "expected": {
+        "exit_code": 2,
+        "stderr_contains": ["Deliverable missing"]
+      }
+    },
+    {
+      "hook": "enforce-loop.sh",
+      "input": "{}",
+      "setup_delta": {
+        "cwd_files": {
+          "dist/widget.js": "widget-content"
+        }
+      },
+      "expected": {
+        "exit_code": 0
+      }
+    }
+  ]
+}

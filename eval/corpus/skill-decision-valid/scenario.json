@@ -1,0 +1,10 @@
+{
+  "name": "valid decision article with required frontmatter",
+  "category": "skill",
+  "artifact_type": "decision-article",
+  "artifact_file": "artifact.md",
+  "scoring": "binary",
+  "expected": {
+    "valid": true
+  }
+}

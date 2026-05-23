@@ -142,6 +142,27 @@ assert_exit_code 0 bash -n "$PROJECT_ROOT/templates/.claude/hooks/pre-compact.sh
 test_start "session-start.sh has memory_search guidance"
 assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" 'memory_search'
 
+# --- Session-start.d/ modules ---
+test_start "session-start.d/wk-prune.sh exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/hooks/session-start.d/wk-prune.sh"
+
+test_start "session-start.d/wk-prune.sh passes syntax check"
+assert_exit_code 0 bash -n "$PROJECT_ROOT/templates/.claude/hooks/session-start.d/wk-prune.sh"
+
+test_start "session-start.d/memory-nudge.sh exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/hooks/session-start.d/memory-nudge.sh"
+
+test_start "session-start.d/memory-nudge.sh passes syntax check"
+assert_exit_code 0 bash -n "$PROJECT_ROOT/templates/.claude/hooks/session-start.d/memory-nudge.sh"
+
+test_start "session-start.sh sources 2 modules from session-start.d/"
+SOURCES=$(grep -c 'source.*session-start\.d/' "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh")
+if [ "$SOURCES" -eq 2 ]; then
+  test_pass
+else
+  test_fail "expected 2 source lines, got $SOURCES"
+fi
+
 # --- MANIFEST ---
 test_start "MANIFEST exists with >100 entries"
 MANIFEST="$PROJECT_ROOT/templates/.claude/skills/MANIFEST"
@@ -149,6 +170,66 @@ if [ -f "$MANIFEST" ] && [ "$(wc -l < "$MANIFEST")" -gt 100 ]; then
   test_pass
 else
   test_fail "MANIFEST missing or too small"
+fi
+
+# --- Spec auto-invoke companion ---
+test_start "spec-auto-invoke.md exists in dev-plan skill"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/dev-plan/spec-auto-invoke.md"
+
+test_start "spec-auto-invoke.md referenced from SKILL.md"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md" 'spec-auto-invoke'
+
+test_start "SKILL.md STOP behavior removed from Step 0.6"
+if grep -q 'Run.*\/spec.*first.*STOP' "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md"; then
+  test_fail "STOP still present in Step 0.6"
+else
+  test_pass
+fi
+
+test_start "dev-plan SKILL.md ≤350 lines"
+DEVPLAN_LINES=$(wc -l < "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md")
+if [ "$DEVPLAN_LINES" -le 350 ]; then
+  echo -n "($DEVPLAN_LINES/350) "
+  test_pass
+else
+  test_fail "SKILL.md: $DEVPLAN_LINES / 350 lines OVER"
+fi
+
+# --- Memory-wiki bridge ---
+test_start "memory-bridge.md exists in dev-plan skill"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/dev-plan/memory-bridge.md"
+
+test_start "memory-bridge.md referenced from dev-plan SKILL.md"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md" 'memory-bridge.md'
+
+test_start "memory-bridge.md has bridge-decision tag"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/dev-plan/memory-bridge.md" 'bridge-decision'
+
+test_start "spec SKILL.md has memory_store bridge"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/spec/SKILL.md" 'memory_store'
+
+test_start "wiki-query SKILL.md has memory_search bridge"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/wiki-query/SKILL.md" 'memory_search'
+
+test_start "wiki-query SKILL.md has Memory Results section"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/wiki-query/SKILL.md" 'Memory Results'
+
+test_start "spec SKILL.md ≤350 lines"
+SPEC_LINES=$(wc -l < "$PROJECT_ROOT/templates/.claude/skills/spec/SKILL.md")
+if [ "$SPEC_LINES" -le 350 ]; then
+  echo -n "($SPEC_LINES/350) "
+  test_pass
+else
+  test_fail "spec SKILL.md: $SPEC_LINES / 350 lines OVER"
+fi
+
+test_start "wiki-query SKILL.md ≤350 lines"
+WQ_LINES=$(wc -l < "$PROJECT_ROOT/templates/.claude/skills/wiki-query/SKILL.md")
+if [ "$WQ_LINES" -le 350 ]; then
+  echo -n "($WQ_LINES/350) "
+  test_pass
+else
+  test_fail "wiki-query SKILL.md: $WQ_LINES / 350 lines OVER"
 fi
 
 # --- Instruction budget regression test ---

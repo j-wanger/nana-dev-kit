@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PreToolUse Hook Input",
+  "description": "JSON piped to stdin for PreToolUse hooks (Write, Edit). Derived from enforce-spec.sh field access patterns.",
+  "type": "object",
+  "required": ["tool_name", "input"],
+  "properties": {
+    "tool_name": {
+      "type": "string",
+      "description": "Name of the tool being invoked (e.g., Write, Edit, Bash)"
+    },
+    "input": {
+      "type": "object",
+      "properties": {
+        "file_path": {
+          "type": "string",
+          "description": "Absolute or relative path of the file being written/edited. Parsed by enforce-spec.sh via python3 json.load."
+        },
+        "content": {
+          "type": "string",
+          "description": "File content (Write) or replacement text (Edit). Not parsed by hooks."
+        }
+      }
+    }
+  }
+}
