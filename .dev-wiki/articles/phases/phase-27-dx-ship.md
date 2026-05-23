@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-23
 updated: 2026-05-23
 source: plan
-status: active
+status: completed
 scope: ["README.md", "tests/test_templates.sh", "install.sh", "VERSION"]
 entry_criteria: "Phase 26 complete, 159 tests passing, 43/43 eval"
 exit_criteria: "README numbers fixed, staleness regression tests pass, install.sh summary updated, v0.5.0 tagged, make test + make eval pass"

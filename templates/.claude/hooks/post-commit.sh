@@ -11,7 +11,7 @@ if [ ! -f "$HOME/.claude/enforce" ]; then
 fi
 
 # --- jq fail-open guard ---
-command -v jq >/dev/null 2>&1 || { echo "[warn] jq not found, post-commit hook skipped" >&2; exit 0; }
+command -v jq >/dev/null 2>&1 || { echo "[nana:post-commit] jq not found, post-commit hook skipped" >&2; exit 0; }
 
 INPUT=$(cat)
 

@@ -271,4 +271,33 @@ fi
 
 rm -rf "$THOME_ALL"
 
+# --- --status flag ---
+test_start "--status shows skills count"
+THOME_STATUS=$(mktemp -d)
+HOME="$THOME_STATUS" bash "$PROJECT_ROOT/install.sh" >/dev/null 2>&1
+STATUS_OUT=$(HOME="$THOME_STATUS" bash "$PROJECT_ROOT/install.sh" --status 2>&1)
+if echo "$STATUS_OUT" | grep -q 'skills'; then
+  test_pass
+else
+  test_fail "--status missing skills line"
+fi
+
+test_start "--status shows hooks count"
+if echo "$STATUS_OUT" | grep -q 'hooks'; then
+  test_pass
+else
+  test_fail "--status missing hooks line"
+fi
+
+test_start "--status shows version"
+if echo "$STATUS_OUT" | grep -q 'version'; then
+  test_pass
+else
+  test_fail "--status missing version line"
+fi
+
+test_start "--status exits 0"
+assert_exit_code 0 env HOME="$THOME_STATUS" bash "$PROJECT_ROOT/install.sh" --status
+rm -rf "$THOME_STATUS"
+
 test_summary "test_install"

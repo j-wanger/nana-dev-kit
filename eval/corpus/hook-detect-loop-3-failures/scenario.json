@@ -14,6 +14,6 @@
   "input": "{\"tool_name\": \"Bash\", \"tool_input\": {\"command\": \"false\"}, \"stdout\": \"\", \"stderr\": \"err\", \"exit_code\": 1}",
   "expected": {
     "exit_code": 0,
-    "stdout_contains": ["loop-detected"]
+    "stdout_contains": ["nana:loop"]
   }
 }

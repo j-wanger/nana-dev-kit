@@ -52,7 +52,7 @@ printf '%s\n' "$SIG" >> "$LOOP_STATE"
 COUNT=$(wc -l < "$LOOP_STATE" 2>/dev/null | tr -d ' ')
 
 if [ "$COUNT" -ge 3 ] 2>/dev/null; then
-  echo "[loop-detected] Same command failed $COUNT times consecutively. Consider a different approach."
+  echo "[nana:loop] Same command failed $COUNT times consecutively. Consider a different approach."
 fi
 
 exit 0

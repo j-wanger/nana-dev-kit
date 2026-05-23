@@ -16,7 +16,7 @@ if [ ! -d ".dev-wiki" ]; then
 fi
 
 # --- Parse file path from stdin JSON ---
-command -v jq >/dev/null 2>&1 || { echo "[warn] jq not found, hook skipped" >&2; exit 0; }
+command -v jq >/dev/null 2>&1 || { echo "[nana:enforce-spec] jq not found, hook skipped" >&2; exit 0; }
 
 INPUT=$(cat)
 FILE_PATH=$(echo "$INPUT" | jq -r '.input.file_path // empty' 2>/dev/null || echo "")
@@ -55,5 +55,5 @@ if [ -f "$ACTIVE_PHASE" ]; then
   fi
 fi
 
-echo "No approved spec for active phase. Run /spec first." >&2
+echo "[nana:enforce-spec] No approved spec for active phase. Run /spec first." >&2
 exit 2

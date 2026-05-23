@@ -5,7 +5,7 @@
 
 set -euo pipefail
 
-command -v jq >/dev/null 2>&1 || { echo "[warn] jq not found, hook skipped" >&2; exit 0; }
+command -v jq >/dev/null 2>&1 || { echo "[nana:tests] jq not found, hook skipped" >&2; exit 0; }
 
 INPUT=$(cat)
 
@@ -21,7 +21,7 @@ fi
 PYTEST_RAN=$(echo "$INPUT" | jq -r '[.tool_uses[].input.command // ""] | any(contains("pytest"))' 2>/dev/null || echo "false")
 
 if [ "$PYTEST_RAN" != "true" ]; then
-  echo "You modified Python files but haven't run the test suite yet. Run: uv run pytest -x --cov=src --cov-fail-under=85" >&2
+  echo "[nana:tests] You modified Python files but haven't run the test suite yet. Run: uv run pytest -x --cov=src --cov-fail-under=85" >&2
   exit 2
 fi
 

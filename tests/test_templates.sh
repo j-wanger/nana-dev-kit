@@ -107,7 +107,10 @@ assert_contains "$LIFECYCLE" 'memory_store'
 
 # --- Session-start gate-check ---
 test_start "session-start.sh has gate-check logic"
-assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" 'gate-check'
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" 'nana:gate'
+
+test_start "session-start.sh has kit summary line"
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" 'nana:kit'
 
 test_start "session-start.sh passes syntax check"
 assert_exit_code 0 bash -n "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh"
@@ -213,6 +216,14 @@ if [ -f "$MANIFEST" ] && [ "$(wc -l < "$MANIFEST")" -gt 100 ]; then
   test_pass
 else
   test_fail "MANIFEST missing or too small"
+fi
+
+test_start "MANIFEST has skill descriptions (10+)"
+DESC_COUNT=$(grep -c '^# [a-z]' "$MANIFEST" || true)
+if [ "$DESC_COUNT" -ge 10 ]; then
+  test_pass
+else
+  test_fail "MANIFEST has $DESC_COUNT descriptions, expected 10+"
 fi
 
 # --- Spec auto-invoke companion ---

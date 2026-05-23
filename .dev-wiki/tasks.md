@@ -1,9 +1,9 @@
 # Tasks
 
-> Last updated: 2026-05-23 by /dev-plan (Phase 27 planned)
+> Last updated: 2026-05-23 by /dev-plan (Phase 28 planned)
 
 <details>
-<summary>Phases 1-25 (all completed, 132 tasks, collapsed)</summary>
+<summary>Phases 1-27 (all completed, 146 tasks, collapsed)</summary>
 
 
 
@@ -244,8 +244,6 @@
 - [x] [M] eval scenarios -- 3 scenarios: hook-post-commit-detected (commit success -> .pending-commit written), hook-post-commit-non-commit (fast-path skip), hook-post-commit-amend-skip (--amend -> no .pending-commit). Depends: Task 1. | RED: [ $(find eval/corpus/hook-post-commit-* -name 'scenario.json' 2>/dev/null | wc -l) -ge 3 ] fails | GREEN: Create 3 scenario dirs with manifests + fixtures | REFACTOR: Verify make eval 100% | scope: eval/corpus/hook-post-commit-*/ | success: [ $(find eval/corpus/hook-post-commit-* -name 'scenario.json' 2>/dev/null | wc -l) -ge 3 ] && make eval 2>&1 | grep -qE 'Score.*100' | size: M
 - [x] [S] tests + final verify -- test_templates.sh + test_install.sh assertions for hook, settings.json, install copy. | RED: grep -q 'post.commit\|post-commit' tests/test_templates.sh fails | GREEN: Add assertions | scope: tests/test_templates.sh, tests/test_install.sh | success: make test && make eval 2>&1 | grep -qE 'Score.*100' | size: S
 
-</details>
-
 <!-- phase:phase-26-memory-harness-hardening -->
 <!-- gates: spec=7/10(revised) approach=8/10 plan-review=8/10 tasks=yes -->
 ## Phase 26: Memory & Harness Hardening
@@ -264,4 +262,17 @@
 - [x] [S] README refresh — fix stale numbers: grep -q '43-scenario' README.md fails (RED), update 5 stale numbers (43 eval scenarios x2, 28 hook fidelity, 160 tests, 43 eval in testing section), verify all other factual claims (GREEN), REFACTOR: n/a | scope: README.md | success: grep -q '43-scenario' README.md && grep -q '43 eval' README.md && grep -q '28)' README.md && grep -q '160 tests' README.md && make test | size: S
 - [x] [S] README staleness regression tests — add dynamic count assertions: grep -qE 'readme.*drift|readme.*stale|README.*accuracy' tests/test_templates.sh fails (RED), add test function: compute actual eval count via find, extract README claim via grep, compare; same for test script count; fail loudly if pattern not found (GREEN), REFACTOR: n/a | scope: tests/test_templates.sh | success: grep -qE 'readme.*drift|readme.*stale|README.*accuracy' tests/test_templates.sh && bash tests/test_templates.sh | size: S
 - [x] [XS] install.sh summary polish — update echo lines to list all 5 global hooks: grep -q 'detect-loop' install.sh summary section fails (RED), update hook description lines to cover enforce-spec, enforce-loop, detect-loop, post-commit, pre-compact (GREEN), REFACTOR: n/a | scope: install.sh | success: bash install.sh --dry-run 2>&1 | grep -qi 'hook' && make test | size: XS
-- [ ] [S] VERSION bump + tag + push — bump and ship: grep -qx '0.5.0' VERSION fails (RED), write 0.5.0 to VERSION, run make test && make eval, commit, tag v0.5.0, push (GREEN), REFACTOR: n/a | scope: VERSION | success: grep -qx '0.5.0' VERSION && make test && make eval && git tag -l 'v0.5.0' | grep -q 'v0.5.0' | size: S
+- [x] [S] VERSION bump + tag + push — bump and ship: grep -qx '0.5.0' VERSION fails (RED), write 0.5.0 to VERSION, run make test && make eval, commit, tag v0.5.0, push (GREEN), REFACTOR: n/a | scope: VERSION | success: grep -qx '0.5.0' VERSION && make test && make eval && git tag -l 'v0.5.0' | grep -q 'v0.5.0' | size: S
+
+</details>
+
+<!-- phase:phase-28-dx-discoverability -->
+<!-- gates: spec=9/10(revised) approach=yes plan-review=8/10 tasks=yes -->
+## Phase 28: DX Discoverability
+
+- [x] [S] Assertion inventory — build change manifest: grep all 11 hook scripts for echo/printf output lines, grep all eval/corpus scenarios for stdout_contains/stderr_contains, grep test scripts for output assertions. Write mapping to .dev-wiki/.hook-prefix-inventory.md (scratch file). Verifies exactly which eval scenarios need updates. RED: no inventory exists. GREEN: run grep commands, compile mapping table. REFACTOR: review mapping for completeness, verify no hooks missed. | scope: templates/.claude/hooks/*.sh, eval/corpus/*/scenario.json, tests/*.sh | success: test -f .dev-wiki/.hook-prefix-inventory.md && grep -c 'nana:' .dev-wiki/.hook-prefix-inventory.md | grep -qE '^[1-9]' | size: S
+- [x] [M] Hook prefix normalization + eval updates: modify all 11 hooks to use [nana:<hook>] prefix. Three categories: silent (jq guard only: audit-log, auto-ruff-format), semantic trigger (post-commit: keep [dev-wiki:post-commit], add [nana:post-commit]), user-facing (8 hooks: add [nana:<hook>] prefix per mapping table, session-start gets [nana:gate], [nana:memory], [nana:recovery], [nana:pending], [nana:enforce]). Update eval assertions across scenario files. Depends: Task 1. RED: grep -rL '\[nana:' templates/.claude/hooks/*.sh | wc -l returns 11. GREEN: edit all 11 hooks + eval scenarios. REFACTOR: make test && make eval. | scope: templates/.claude/hooks/*.sh, eval/corpus/hook-detect-loop-3-failures/scenario.json, eval/corpus/hook-session-start-populated/scenario.json, eval/corpus/hook-session-start-recovery-detected/scenario.json, eval/corpus/lifecycle-session-enforcement-status/scenario.json | success: grep -rL '\[nana:\|dev-wiki:' templates/.claude/hooks/*.sh | wc -l | grep -q '^0$' && make test && make eval | size: M
+- [x] [M] install.sh --status: add --status flag handler. Dynamic filesystem checks: count skills, hooks, rules, memory venv, VERSION, enforcement marker. Grouped output. Add test assertions. RED: bash install.sh --status fails/no output. GREEN: add --status case (~40-60 lines). REFACTOR: verify output matches filesystem, add test assertions in test_install.sh. | scope: install.sh, tests/test_install.sh | success: bash install.sh --status 2>&1 | grep -q 'skills' && bash install.sh --status 2>&1 | grep -q 'hooks' && grep -q 'status' tests/test_install.sh && make test | size: M
+- [x] [S] MANIFEST enrichment: append # descriptions section. One line per skill: # <skill-dir>: <first sentence from SKILL.md>. Existing checksum lines untouched. Add test assertion. RED: grep -c '^# [a-z]' templates/.claude/skills/MANIFEST returns 0. GREEN: extract descriptions, append section. REFACTOR: n/a. | scope: templates/.claude/skills/MANIFEST, tests/test_templates.sh | success: grep -c '^# [a-z]' templates/.claude/skills/MANIFEST | grep -qE '^[1-9][0-9]' && make test | size: S
+- [x] [S] Session-start kit summary line: add [nana:kit] dynamic summary line as final output. Counts skills/hooks, checks memory, reads VERSION. <=120 chars. Depends: Task 2. RED: grep -q '\[nana:kit\]' templates/.claude/hooks/session-start.sh fails. GREEN: add dynamic count block (~8-10 lines). REFACTOR: verify output <=120 chars. | scope: templates/.claude/hooks/session-start.sh, tests/test_templates.sh | success: grep -q '\[nana:kit\]' templates/.claude/hooks/session-start.sh && bash -n templates/.claude/hooks/session-start.sh && make test | size: S
+- [x] [S] Final verify: run full test + eval suite. Verify all 6 spec exit criteria. RED: not all verified in one pass. GREEN: run each criterion. REFACTOR: review for regressions. | scope: tests/, eval/, install.sh, templates/.claude/hooks/, templates/.claude/skills/MANIFEST | success: make test && make eval && bash install.sh --status 2>&1 | grep -q 'skills' && grep -rL '\[nana:\|dev-wiki:' templates/.claude/hooks/*.sh | wc -l | grep -q '^0$' && grep -c '^# [a-z]' templates/.claude/skills/MANIFEST | grep -qE '^[1-9][0-9]' && grep -q '\[nana:kit\]' templates/.claude/hooks/session-start.sh | size: S

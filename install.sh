@@ -17,6 +17,7 @@ MEMORY_SRC="$SCRIPT_DIR/memory_server"
 
 # --- Flag parsing ---
 DRY_RUN=false
+SHOW_STATUS=false
 INSTALL_CORE=true
 INSTALL_PYTHON=true
 INSTALL_DEVWIKI=true
@@ -26,6 +27,8 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --dry-run)
       DRY_RUN=true ;;
+    --status)
+      SHOW_STATUS=true ;;
     --core-only)
       INSTALL_PYTHON=false
       INSTALL_DEVWIKI=false
@@ -39,11 +42,54 @@ while [[ $# -gt 0 ]]; do
       INSTALL_KNOWLEDGE=true ;;
     *)
       echo "Error: unknown flag: $1" >&2
-      echo "Usage: install.sh [--all|--core-only|--no-python] [--dry-run]" >&2
+      echo "Usage: install.sh [--all|--core-only|--no-python] [--dry-run] [--status]" >&2
       exit 1 ;;
   esac
   shift
 done
+
+# --- Status check (early return, no writes) ---
+if $SHOW_STATUS; then
+  echo "=== Nana Dev Kit Status ==="
+  KIT_PATH=""
+  if [ -f "$HOME/.claude/.nana-dev-kit-path" ]; then
+    KIT_PATH=$(cat "$HOME/.claude/.nana-dev-kit-path" 2>/dev/null || true)
+  fi
+  if [ -n "$KIT_PATH" ] && [ -f "$KIT_PATH/VERSION" ]; then
+    echo "  version: $(cat "$KIT_PATH/VERSION")"
+  else
+    echo "  version: unknown (kit path marker missing)"
+  fi
+  echo ""
+  echo "Core:"
+  RULES_COUNT=$(ls "$HOME/.claude/rules/"*.md 2>/dev/null | wc -l | tr -d ' ')
+  echo "  rules:   $RULES_COUNT files in ~/.claude/rules/"
+  if [ -d "$HOME/.claude/memory_server/.venv" ]; then
+    echo "  memory:  active (venv at ~/.claude/memory_server/.venv/)"
+  else
+    echo "  memory:  absent (no venv found)"
+  fi
+  echo ""
+  echo "Skills:"
+  SKILL_COUNT=$(ls -d "$HOME/.claude/skills"/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+  echo "  skills:  $SKILL_COUNT installed"
+  PY_SKILLS=$(ls -d "$HOME/.claude/skills"/py-*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+  DEV_SKILLS=$(ls -d "$HOME/.claude/skills"/dev-*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+  WIKI_SKILLS=$(ls -d "$HOME/.claude/skills"/wiki-*/SKILL.md "$HOME/.claude/skills"/knowledge-wiki/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+  echo "    python:    $PY_SKILLS"
+  echo "    lifecycle: $DEV_SKILLS"
+  echo "    wiki:      $WIKI_SKILLS"
+  echo ""
+  echo "Hooks:"
+  HOOK_COUNT=$(ls "$HOME/.claude/hooks/"*.sh 2>/dev/null | wc -l | tr -d ' ')
+  echo "  hooks:   $HOOK_COUNT installed in ~/.claude/hooks/"
+  if [ -f "$HOME/.claude/enforce" ]; then
+    echo "  enforce: active"
+  else
+    echo "  enforce: inactive"
+  fi
+  exit 0
+fi
 
 # --- Module dependency validation ---
 if [ "$INSTALL_PYTHON" = true ] && [ "$INSTALL_CORE" = false ]; then

@@ -5,7 +5,7 @@
 
 set -euo pipefail
 
-command -v jq >/dev/null 2>&1 || { echo "[warn] jq not found, hook skipped" >&2; exit 0; }
+command -v jq >/dev/null 2>&1 || { echo "[nana:audit] jq not found, hook skipped" >&2; exit 0; }
 
 INPUT=$(cat)
 FILE_PATH=$(echo "$INPUT" | jq -r '.input.file_path // empty' 2>/dev/null || echo "")

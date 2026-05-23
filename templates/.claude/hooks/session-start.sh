@@ -23,7 +23,7 @@ ACTIVE_PHASE=".claude/rules/active-phase.md"
 if [ -f "$ACTIVE_PHASE" ] && grep -q 'Status:.*Active' "$ACTIVE_PHASE" 2>/dev/null; then
   UNCHECKED=$(grep -c '\- \[ \]' "$ACTIVE_PHASE" 2>/dev/null || true)
   if [ "$UNCHECKED" -gt 0 ] 2>/dev/null; then
-    echo "[gate-check] $UNCHECKED unchecked gate(s) in active phase. Complete gates before implementing."
+    echo "[nana:gate] $UNCHECKED unchecked gate(s) in active phase. Complete gates before implementing."
   fi
 fi
 
@@ -43,7 +43,7 @@ TASKS=".dev-wiki/tasks.md"
 if [ -f "$TASKS" ]; then
   TOPIC=$(grep -m1 '^\- \[ \]' "$TASKS" 2>/dev/null | sed 's/^- \[ \] \[.\] //' | sed 's/ —.*//' | head -c 80 || true)
   if [ -n "$TOPIC" ]; then
-    echo "[memory] Run memory_search with query: \"$TOPIC\""
+    echo "[nana:memory] Run memory_search with query: \"$TOPIC\""
   fi
 fi
 
@@ -54,14 +54,14 @@ if [ -f "$DEVWIKI_STATE" ]; then
   if [ "$LATEST_COMMIT" -gt "$STATE_MTIME" ] 2>/dev/null; then
     DEBRIEF_SINCE=$(git log --since="@$STATE_MTIME" --oneline -i --grep="Debrief" 2>/dev/null | wc -l | tr -d ' ' || echo 0)
     if [ "$DEBRIEF_SINCE" -eq 0 ] 2>/dev/null; then
-      echo "[recovery] Commits detected since last state update. Consider /dev-check or /dev-debrief."
+      echo "[nana:recovery] Commits detected since last state update. Consider /dev-check or /dev-debrief."
     fi
   fi
 fi
 
 # --- Stale post-commit sidecar ---
 if [ -f ".dev-wiki/.pending-commit" ]; then
-  echo "[post-commit] Unprocessed commit detected. Run task matching."
+  echo "[nana:pending] Unprocessed commit detected. Run task matching."
   rm -f ".dev-wiki/.pending-commit"
 fi
 
@@ -76,9 +76,23 @@ prune_working_knowledge ".claude/rules/working-knowledge.md" ".dev-wiki/.stale-q
 
 # --- Enforcement status ---
 if [ -f "$HOME/.claude/enforce" ]; then
-  echo "[enforcement] active"
+  echo "[nana:enforce] active"
 else
-  echo "[enforcement] inactive (touch ~/.claude/enforce to enable)"
+  echo "[nana:enforce] inactive (touch ~/.claude/enforce to enable)"
 fi
+
+# --- Kit summary ---
+SKILL_N=0
+HOOK_N=0
+[ -d "$HOME/.claude/skills" ] && SKILL_N=$(find "$HOME/.claude/skills" -maxdepth 2 -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+[ -d "$HOME/.claude/hooks" ] && HOOK_N=$(find "$HOME/.claude/hooks" -maxdepth 1 -name "*.sh" 2>/dev/null | wc -l | tr -d ' ')
+MEM="absent"
+[ -d "$HOME/.claude/memory_server/.venv" ] && MEM="active"
+KIT_VER=""
+if [ -f "$HOME/.claude/.nana-dev-kit-path" ]; then
+  KP=$(cat "$HOME/.claude/.nana-dev-kit-path" 2>/dev/null || true)
+  [ -n "$KP" ] && [ -f "$KP/VERSION" ] && KIT_VER=" v$(cat "$KP/VERSION")"
+fi
+echo "[nana:kit] ${SKILL_N} skills, ${HOOK_N} hooks, memory ${MEM}${KIT_VER}"
 
 exit 0

@@ -5,7 +5,7 @@
 
 set -euo pipefail
 
-echo "=== Pre-Compaction State Snapshot ==="
+echo "[nana:compact] === Pre-Compaction State Snapshot ==="
 
 # --- Active phase from compaction anchor ---
 ACTIVE_PHASE=".claude/rules/active-phase.md"
@@ -40,11 +40,11 @@ if [ -f "$TASKS" ]; then
   TOPIC=$(grep -m1 '^\- \[ \]' "$TASKS" 2>/dev/null | sed 's/^- \[ \] \[.\] //' | sed 's/ —.*//' | head -c 80 || true)
   if [ -n "$TOPIC" ]; then
     echo ""
-    echo "[memory] After compaction, run memory_search with query: \"$TOPIC\""
+    echo "[nana:memory] After compaction, run memory_search with query: \"$TOPIC\""
   fi
 fi
 
 echo ""
-echo "=== End Pre-Compaction Snapshot ==="
+echo "[nana:compact] === End Pre-Compaction Snapshot ==="
 
 exit 0

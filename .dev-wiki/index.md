@@ -29,7 +29,8 @@
 - [[phase-24-dx-hook-performance|Phase 24: DX + Hook Performance]] -- completed
 - [[phase-25-postcommit-hook|Phase 25: PostCommit Hook]] -- completed
 - [[phase-26-memory-harness-hardening|Phase 26: Memory & Harness Hardening]] -- completed
-- [[phase-27-dx-ship|Phase 27: DX + Ship]] -- active
+- [[phase-27-dx-ship|Phase 27: DX + Ship]] -- completed
+- [[phase-28-dx-discoverability|Phase 28: DX Discoverability]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -70,6 +71,8 @@
 - [[memory-supersede-harness-layer|Memory supersede at harness layer]] -- high confidence, accepted
 - [[crash-recovery-dual-condition|Crash recovery dual condition]] -- high confidence, accepted
 - [[cross-skill-ref-test-time|Cross-skill reference validation at test time]] -- high confidence, accepted
+- [[hook-prefix-nana-namespace|Hook prefix [nana:<hook>] namespace]] -- medium confidence, accepted
+- [[status-in-install-sh|Status command in install.sh]] -- medium confidence, accepted
 - [[gap-43-wont-build|Worktree/parallel development won't-build]] -- high confidence, accepted
 - [[monorepo-skill-distribution|Monorepo Skill Distribution]] -- high confidence, accepted
 - [[import-source-canonical-installed|Import Source -- Canonical Installed Versions]] -- high confidence, accepted
@@ -102,6 +105,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-23-phase-27-dx-ship-complete|Phase 27 complete]] -- 2026-05-23
 - [[2026-05-23-phase-26-memory-harness-hardening-complete|Phase 26 complete]] -- 2026-05-23
 - [[2026-05-22-phase-25-postcommit-hook-complete|Phase 25 complete]] -- 2026-05-22
 - [[2026-05-22-phase-24-dx-hook-performance-complete|Phase 24 complete]] -- 2026-05-22
@@ -151,6 +155,8 @@
 
 ## Recent
 
+- 2026-05-23: Phase 28 planned -- 6 tasks (2M 4S), 2 decisions (hook-prefix-nana-namespace, status-in-install-sh), DX discoverability
+- 2026-05-23: Phase 27 completed -- README refresh (5 stale numbers), 3 staleness regression tests, install.sh summary polish, v0.5.0 shipped, 163 tests, 43/43 eval
 - 2026-05-23: Phase 27 planned -- 4 tasks, 0 decisions, README refresh + staleness regression tests + install.sh polish + v0.5.0 ship
 - 2026-05-23: Phase 26 completed -- memory supersession, crash recovery, cross-skill ref test, 4 decisions, 159 tests, 43/43 eval, Gap 4.3 won't-build
 - 2026-05-23: Phase 26 planned -- 6 tasks, 3 decisions (memory-supersede-harness-layer, crash-recovery-dual-condition, cross-skill-ref-test-time), memory & harness hardening
@@ -160,7 +166,6 @@
 - 2026-05-22: Phase 24 planned -- 5 tasks, 1 decision (jq-hook-migration), jq hook migration + DX improvements
 - 2026-05-22: Phase 23 completed -- bug fixes (pre-compact registration, memory-harvest API), README rewrite (93 lines), 142 tests
 - 2026-05-22: Phase 23 planned -- 6 tasks, 2 decisions, bug fixes (pre-compact registration, memory-harvest API) + README rewrite
-- 2026-05-22: Phase 22 completed -- session-start refactor, scan-secrets fix, gap analysis update, v0.4.0 shipped, 133 tests
 - 2026-05-22: Phase 21 completed -- eval expansion (38 scenarios, 4 categories, context category, validate-prompt.sh), make eval 38/38
 - 2026-05-22: Phase 21 planned -- 6 tasks, 3 decisions, eval expansion (context category + 5 hooks + prompt validator)
 - 2026-05-22: Phase 20 completed -- eval harness (18 scenarios, runner, validators, schemas), make eval 18/18

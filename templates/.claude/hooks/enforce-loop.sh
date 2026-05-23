@@ -63,7 +63,7 @@ if [ -f "$SPEC_FILE" ]; then
   done < <(grep -E '^\- \[ \] `' "$SPEC_FILE" 2>/dev/null || true)
 
   if [ -n "$FAILED" ]; then
-    echo "Deliverable missing. Exit criterion not met: $FAILED" >&2
+    echo "[nana:enforce-loop] Deliverable missing. Exit criterion not met: $FAILED" >&2
     exit 2
   fi
 fi
@@ -74,7 +74,7 @@ if [ -f "$TASKS_FILE" ]; then
   PHASE_MARKER="<!-- phase:phase-${PHASE_NUM}-${SLUG} -->"
   OPEN_COUNT=$(sed -n "/${PHASE_MARKER}/,/<!-- phase:/{ /^- \[ \]/p; }" "$TASKS_FILE" 2>/dev/null | wc -l | tr -d ' ')
   if [ "$OPEN_COUNT" -gt 0 ] 2>/dev/null; then
-    echo "[enforce-loop] $OPEN_COUNT open task(s) remaining in Phase $PHASE_NUM."
+    echo "[nana:enforce-loop] $OPEN_COUNT open task(s) remaining in Phase $PHASE_NUM."
   fi
 fi
 
@@ -87,7 +87,7 @@ if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/n
       TODAY=$(date +%Y-%m-%d)
       JOURNAL_EXISTS=$(find .dev-wiki/articles/journal/ -name "${TODAY}-*" 2>/dev/null | head -1)
       if [ -z "$JOURNAL_EXISTS" ]; then
-        echo "[enforce-loop] Commits found but no debrief today. Consider running /dev-debrief."
+        echo "[nana:enforce-loop] Commits found but no debrief today. Consider running /dev-debrief."
       fi
     fi
   fi

@@ -112,3 +112,27 @@ ec297f639a856b595197ac37a26ded8f  templates/.claude/skills/wiki-reorg/SKILL.md
 6fe7a2c0158973cf77ad249a59fb554e  templates/.claude/skills/wiki-reorg/analyst-prompt.md
 67c317cbb6953e04962d73cf44bb65eb  templates/.claude/skills/wiki-reorg/reviewer-prompt.md
 1d2493a774c26de198549f1243fd9bd4  templates/.claude/skills/wiki-reorg/writer-prompt.md
+
+# descriptions
+# dev-check: Diagnose dev wiki structural integrity and state consistency, then offer to auto-fix issues.
+# dev-debrief: Tiered session capture with phase debriefs, decision logging, and memory harvesting.
+# dev-init: Bootstrap a .dev-wiki/ directory for a project.
+# dev-plan: Plan one phase at a time, informed by accumulated wiki knowledge.
+# dev-scan: Deep codebase analysis producing structural knowledge for the dev-wiki.
+# dev-wiki: Route dev wiki operations and enforce development lifecycle discipline.
+# knowledge-wiki: Route wiki operations and enforce wiki workflow discipline.
+# py-init: Scaffold or retrofit the Nana Dev Kit harness into the current directory.
+# py-lint: Run linting, formatting, and type checking (ruff + mypy).
+# py-review: Review the current diff against the 8-point AI PR checklist.
+# py-test: Run the full test suite with coverage and report failures concisely.
+# spec: Write a structured spec/contract before execution to prevent ambiguous contracts.
+# wiki-absorb: Process raw entries in inbox/ into polished, cross-linked, tagged articles.
+# wiki-add: Add content to inbox/ as raw entries for later processing by /wiki-absorb.
+# wiki-bootstrap: Seed the wiki with foundational domain knowledge via research and batch-generation.
+# wiki-consolidate: Process unconsolidated episodic entries through dedup and fact extraction.
+# wiki-health: Combined wiki health tool: dashboard metrics, structural audit, and staleness marking.
+# wiki-index: Build a hybrid search index over wiki articles and episodic entries.
+# wiki-init: Initialize a project-specific wiki through interactive interview and scaffold.
+# wiki-query: Answer questions by navigating the project wiki's knowledge base.
+# wiki-registry: Manage the wiki registry (~/.claude/wikis.json).
+# wiki-reorg: Restructure wiki hierarchy, create hub articles, add cross-links, normalize tags.
