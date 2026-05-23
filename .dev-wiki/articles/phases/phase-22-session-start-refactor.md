@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-22
 updated: 2026-05-22
 source: plan
-status: active
+status: completed
 scope: ["templates/.claude/hooks/session-start.sh", "templates/.claude/hooks/session-start.d/*", "templates/.claude/hooks/scan-secrets.sh", "eval/corpus/hook-scan-secrets-pattern/*", ".dev-wiki/articles/roadmap-gap-analysis.md", "tests/test_templates.sh", "VERSION"]
 entry_criteria: "Phase 21 complete, 128 tests passing, 38/38 eval"
 exit_criteria: "session-start.sh ≤70 lines, 2 sourced modules pass bash -n, scan-secrets \x27 removed, gap analysis updated, make test + make eval 100%, v0.4.0 tagged"
