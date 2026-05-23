@@ -13,13 +13,13 @@ source: debrief
 | Metric | Value |
 |--------|-------|
 | Files (tracked) | 190+ (115 skill files, 14 memory_server .py, 11 hooks, 4 rules, 5 scripts, 38 eval scenarios, 4 eval schemas, 4 eval validators, 8 test/config) |
-| Test count | 133 (6 scripts: 44 install + 16 sync + 43 templates + 10 enforce + 8 harden + 12 other) |
+| Test count | 142 (6 scripts: 46 install + 16 sync + 48 templates + 10 enforce + 8 harden + 14 other) |
 | Test status | All passing |
 | Eval scenarios | 38 (23 hook, 6 skill, 4 context, 5 lifecycle) -- all scoring 38/38 |
 | Soul lines | 59/60 |
 | Instruction budget | 245/300 |
 | VERSION | 0.4.0 |
-| Phases completed | 22 |
+| Phases completed | 23 |
 | Skill directories | 22 (6 dev-wiki + 11 knowledge-wiki + 5 original) |
 
 ## Module Structure
@@ -31,7 +31,7 @@ source: debrief
 | memory_server/ | 12 .py | Vendored MCP memory server |
 | eval/ | 50+ | Eval harness: 38 corpus scenarios, 4 schemas, 4 validators, README |
 | scripts/ | 4 | sync-rules.sh, generate-report.py, generate-workflow.py, eval-runner.sh |
-| tests/ | 6 | helpers.sh + 5 test scripts (128 tests) |
+| tests/ | 6 | helpers.sh + 5 test scripts (142 tests) |
 | templates/.claude/rules/ | 4 | Identity + lifecycle rules |
 
 ## Recent Commits (last 5)
@@ -44,9 +44,9 @@ source: debrief
 
 ## Key Changes Since Last Snapshot
 
-- session-start.sh: refactored from 125 to 66 lines, 2 modules extracted to session-start.d/
-- scan-secrets.sh: BSD grep fix (\x27 -> quote-break pattern)
-- Gap analysis updated: 3 OPEN gaps remain (1.6, 4.1, 4.3)
-- Tests: 128 -> 133 (+5 session-start.d/ assertions)
-- VERSION: 0.3.0 -> 0.4.0, tagged and pushed
+- pre-compact.sh: registered in settings.json hooks + added to install.sh dev-wiki module
+- memory-harvest.md: API rewritten to match memory-bridge.md (category=custom, tags, trust param)
+- README.md: full rewrite (59 -> 93 lines, 7 sections for v0.4.0)
+- Tests: 133 -> 142 (+9 new: PreCompact install, memory-harvest, README assertions)
+- Phase 23 completed (bug fixes + README rewrite)
 - Phase 22 completed (session-start refactor + v0.4.0)

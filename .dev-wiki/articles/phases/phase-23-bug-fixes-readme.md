@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-22
 updated: 2026-05-22
 source: plan
-status: active
+status: completed
 scope: ["templates/.claude/settings.json", "install.sh", "templates/.claude/skills/dev-debrief/memory-harvest.md", "README.md", "tests/test_install.sh", "tests/test_templates.sh"]
 entry_criteria: "Phase 22 complete, 133 tests passing, 38/38 eval, v0.4.0 shipped"
 exit_criteria: "PreCompact registered in settings.json + install.sh, memory-harvest.md aligned with memory-bridge.md API, README rewritten (90-100 lines, 7 sections), all tests + eval pass"
@@ -55,7 +55,13 @@ Files and modules affected:
 
 See `specs/phase-23-bug-fixes-readme.md` (approved 8/10).
 
+## Completion
+
+All 6/6 tasks completed. Exit criteria met. Tests: 133 -> 142. README: 59 -> 93 lines.
+Journal: [[2026-05-22-phase-23-bug-fixes-readme-complete]]
+
 ## Notes
 
 - 2 decisions: pre-compact-dev-wiki-module (new), readme-budget-superseded (supersedes readme-concise-format)
 - No knowledge gaps identified
+- READY FOR COMPLETION

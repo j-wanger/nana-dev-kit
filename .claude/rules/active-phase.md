@@ -1,11 +1,11 @@
 # Active Phase Context
 
-Phase: 23 - Bug Fixes + README Rewrite
-Status: Planned, ready for implementation
-Objective: Fix orphaned pre-compact.sh hook registration, fix memory-harvest.md API mismatches, rewrite README for v0.4.0.
+Phase: 23 - Bug Fixes + README Rewrite (COMPLETED)
+Status: All 6 tasks done, all exit criteria met
+Objective: Fixed orphaned pre-compact.sh hook registration, fixed memory-harvest.md API mismatches, rewrote README.md for v0.4.0.
 
-Next: Start Task 1 — register pre-compact.sh in settings.json.
+Next: Run /dev-plan to plan Phase 24. Candidates: language-agnostic core (Gap 4.1), session-start.sh refactor (U.3), eval corpus expansion (template-only hooks), bash 3.2 convention doc, install.sh cosmetic output fix.
 
-Tests: 133 passing. Eval: 38/38 scenarios. Budget: 245/300.
+Tests: 142 passing. Eval: 38/38. Budget: 245/300.
 
-Gates: [x] spec [x] approach [ ] plan-review [x] tasks
+Gates: [x] spec [x] approach [x] plan-review [x] tasks
