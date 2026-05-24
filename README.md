@@ -36,10 +36,10 @@ Then in any project:
 | 1. Instructions | Agent config synced to CLAUDE.md, Copilot, Cursor, Gemini | `AGENTS.md`, `scripts/sync-rules.sh` |
 | 2. Identity | Development personality and technical posture | `.claude/rules/nana-soul.md` |
 | 3. Hooks | 11 lifecycle hooks (session-start, pre-compact, audit, format, secrets, review, test gate) | `.claude/hooks/`, `.claude/settings.json` |
-| 4. Enforcement | Spec enforcement, deliverable checks, loop detection — opt-in via `~/.claude/enforce` | `enforce-spec.sh`, `enforce-loop.sh`, `detect-loop.sh` |
+| 4. Enforcement | Spec enforcement, deliverable checks, memory gating, loop detection — opt-in via markers | `enforce-spec.sh`, `enforce-loop.sh`, `enforce-memory.sh`, `detect-loop.sh` |
 | 5. Pre-commit | Commit-time guardrails (ruff, mypy, gitleaks, sync-rules) | `.pre-commit-config.yaml` |
 | 6. CI | GitHub Actions (lint, typecheck, test, security audit) | `.github/workflows/ci.yml` |
-| 7. Eval | 43-scenario harness across 4 categories (hook, skill, lifecycle, context) | `eval/corpus/`, `scripts/eval-runner.sh` |
+| 7. Eval | 47-scenario harness across 4 categories (hook, skill, lifecycle, context) | `eval/corpus/`, `scripts/eval-runner.sh` |
 
 ## Skills by Module
 
@@ -67,10 +67,10 @@ For memory maintenance, use `/memory-consolidate` to identify and merge duplicat
 ## Eval
 
 ```bash
-make eval    # runs 43 scenarios, binary scoring, requires jq
+make eval    # runs 47 scenarios, binary scoring, requires jq
 ```
 
-Four categories: hook fidelity (28), skill artifact validation (6), lifecycle compliance (5), context injection (4). Separate from `make test` — eval benchmarks the harness, tests verify the kit.
+Four categories: hook fidelity (31), skill artifact validation (6), lifecycle compliance (6), context injection (4). Separate from `make test` — eval benchmarks the harness, tests verify the kit.
 
 ## Enforcement
 
@@ -80,7 +80,7 @@ Enforcement hooks install globally and activate per-project via a marker file:
 touch .claude/enforce    # enable in current project
 ```
 
-When active: `/spec` required before implementation (PreToolUse), deliverables checked at session end (Stop), repeated failures detected (PostToolUse).
+When active: `/spec` required before implementation (PreToolUse), `memory_search` required before writes (PreToolUse, via `~/.claude/enforce-memory`), deliverables checked at session end (Stop), repeated failures detected (PostToolUse).
 
 ## Per-Project Sync
 
@@ -93,7 +93,7 @@ Re-run `~/nana-dev-kit/install.sh` to update. Existing files are overwritten; `n
 ## Testing
 
 ```bash
-make test    # 181 tests across 5 scripts
+make test    # 190 tests across 5 scripts
 make eval    # 43 eval scenarios (requires jq)
 make report  # package inventory at docs/report.html
 ```

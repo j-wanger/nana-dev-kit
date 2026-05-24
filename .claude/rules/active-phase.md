@@ -1,17 +1,11 @@
 # Active Phase Context
 
-Phase: 30 - Data-Driven Report Generators (ACTIVE)
-Status: 0/4 tasks done
-Objective: Update generate-report.py and generate-workflow.py to reflect 7-layer architecture, read from sources of truth, add Enforcement + Memory Bridge sections, staleness regression test, README fix.
+Phase: 31 - Integration Eval + Memory Gating (COMPLETED)
+Status: All 5 tasks done, all exit criteria met
+Objective: Lifecycle eval scenario (4-step hook chain), enforce-memory.sh hook with session-start.sh integration, install.sh registration, 3 eval scenarios, tests.
 
-Approach: Update in place. No new scripts or architectural changes. Content updates + light data-reading logic.
+Next: Run /dev-plan to plan Phase 32. Candidates: language-agnostic core (Gap 4.1, last OPEN gap), LongMemEval-S benchmarking, harness A/B eval, generator refactoring, generalized MCP enforcement.
 
-Tasks: 4 (1S + 2M + 1L)
-1. [M] generate-report.py updates — LAYERS 5→7, categorize_files(), test_start counting, MANIFEST
-2. [L] generate-workflow.py updates — 7-Layer subtitle, rewrite flows, Enforcement + Memory Bridge sections, dynamic hooks, MANIFEST
-3. [M] Staleness regression test — test_templates.sh (depends 1-2)
-4. [S] Final verify + README fix (depends 1-3)
-
-Tests: 175 passing. Eval: 43/43.
+Tests: 190 passing. Eval: 47/47. Budget: ~300/300.
 
 Gates: [x] spec [x] approach [x] plan-review [x] tasks

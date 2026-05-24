@@ -1,15 +1,15 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-05-23 by /dev-debrief (Phase 29 completed)
+> Last updated: 2026-05-24 by /dev-debrief (Phase 31 completed)
 
 ## Project Shape
 
-Shell/Markdown/Python scaffolding kit (190+ files: 18 .sh, 112 skill .md, 20+ template .md, 14 memory_server .py, 4 wiki-index .py, 43 eval scenarios, 4 eval schemas, 4 eval validators, 2 .json, 2 .txt, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3 + jq (hooks + eval). Scaffolds a 5-layer Python dev harness + dev-wiki lifecycle + knowledge-wiki pipeline into new/existing projects via two operational modes: `install.sh` (one-time global, module-group architecture with --all/--core-only/--no-python/--dry-run/--status flags) and `make sync-rules` (per-project). 175 automated tests via `make test` + 43 eval scenarios via `make eval`. v0.5.0 on GitHub.
+Shell/Markdown/Python scaffolding kit (190+ files: 18 .sh, 112 skill .md, 20+ template .md, 14 memory_server .py, 4 wiki-index .py, 47 eval scenarios, 4 eval schemas, 4 eval validators, 2 .json, 2 .txt, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3 + jq (hooks + eval). Scaffolds a 5-layer Python dev harness + dev-wiki lifecycle + knowledge-wiki pipeline into new/existing projects via two operational modes: `install.sh` (one-time global, module-group architecture with --all/--core-only/--no-python/--dry-run/--status flags) and `make sync-rules` (per-project). 190 automated tests via `make test` + 47 eval scenarios via `make eval`. v0.5.0 on GitHub.
 
 ## Directory Layout
 
 nana-dev-kit/
-  install.sh                           # Module-group installer (~320 lines, --all/--core-only/--no-python/--dry-run/--status, hooks module, 5 global hooks)
+  install.sh                           # Module-group installer (~320 lines, --all/--core-only/--no-python/--dry-run/--status, hooks module, 6 global hooks)
   Makefile, VERSION, README.md         # Build targets, v0.5.0, docs (~95 lines, 7 sections)
   .github/workflows/kit-ci.yml        # Kit CI: shellcheck + make test
   memory_server/                       # Vendored MCP memory server (12 .py, nanaclaw)
@@ -19,12 +19,12 @@ nana-dev-kit/
     schemas/                           # JSON input schemas for hook contracts
     validators/                        # Bash validators for skill artifact contracts
     README.md                          # Corpus structure + scoring documentation
-  scripts/                             # sync-rules.sh, generate-report.py, generate-workflow.py, eval-runner.sh (~270 lines)
-  tests/                               # 6 scripts, 163 tests (helpers.sh + test_*.sh)
+  scripts/                             # sync-rules.sh, generate-report.py (~350 lines), generate-workflow.py (~800 lines), eval-runner.sh (~310 lines)
+  tests/                               # 6 scripts, 181 tests (helpers.sh + test_*.sh)
   templates/
     AGENTS.md, pyproject.toml, .pre-commit-config.yaml
     .claude/
-      hooks/                           # 12 lifecycle hooks (session-start, pre-compact, post-commit, audit-log, enforce-spec, enforce-loop, detect-loop, etc.)
+      hooks/                           # 13 lifecycle hooks (session-start, pre-compact, post-commit, audit-log, enforce-spec, enforce-loop, enforce-memory, detect-loop, etc.)
         session-start.d/               # Sourced modules (wk-prune.sh, memory-nudge.sh)
       rules/                           # 4 identity + lifecycle rules (soul, personal, lifecycle, session-state)
       skills/                          # 24 dirs + MANIFEST (120 files, ~650KB)
@@ -43,20 +43,20 @@ nana-dev-kit/
 |-------------|-----------|---------|
 | install.sh | `bash install.sh [--all\|--core-only\|--no-python\|--dry-run\|--status]` | Module-group global install: core (rules + memory), python (py-init + spec), dev-wiki (6 skill dirs), knowledge-wiki (11 skill dirs). --status shows runtime inventory. |
 | scripts/sync-rules.sh | `make sync-rules` | Per-project: syncs AGENTS.md to CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md |
-| scripts/eval-runner.sh | `make eval` | Runs eval corpus (43 scenarios in 4 categories), produces scored report. Requires jq. |
+| scripts/eval-runner.sh | `make eval` | Runs eval corpus (47 scenarios in 4 categories), produces scored report. Requires jq. |
 
 ## Module Responsibilities
 
 | Module | Purpose | Key Files | Inputs | Outputs |
 |--------|---------|-----------|--------|---------|
-| root | Global installer and project targets | install.sh, Makefile, VERSION | templates/.claude/ | ~/.claude/skills/ (22 dirs), ~/.claude/rules/ (3 files), ~/.claude/hooks/ (5 global hooks: enforce-spec, enforce-loop, detect-loop, post-commit, pre-compact), ~/.claude/memory_server/, ~/.claude/memory_server/.venv/, .claude/enforce (marker) |
+| root | Global installer and project targets | install.sh, Makefile, VERSION | templates/.claude/ | ~/.claude/skills/ (24 dirs), ~/.claude/rules/ (3 files), ~/.claude/hooks/ (6 global hooks: enforce-spec, enforce-loop, enforce-memory, detect-loop, post-commit, pre-compact), ~/.claude/memory_server/, ~/.claude/memory_server/.venv/, .claude/enforce (marker), ~/.claude/enforce-memory (marker) |
 | memory_server/ | Vendored MCP memory server (nanaclaw, 2,373 LOC) | server.py, storage.py, embedding.py, *.py | MCP stdio | Memory CRUD via MCP protocol |
 | .github/workflows/ | Kit CI (shellcheck + make test) | kit-ci.yml | .sh files, Makefile | CI pass/fail |
-| eval/ | Eval harness: benchmark corpus + scoring (43 scenarios) | corpus/*/scenario.json, schemas/*.json, validators/*.sh | templates/.claude/hooks/*, skill outputs | Scored eval report (text) |
-| docs/ | Generated reports | report.html, workflow.html | Project files (scanned) | HTML package inventory + workflow breakdown |
-| scripts/ | Multi-agent sync + report generation + eval | sync-rules.sh, generate-report.py, generate-workflow.py, eval-runner.sh (~310 lines, init_git/touch_old support) | AGENTS.md, project tree, eval/corpus/ | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md, docs/report.html, docs/workflow.html, eval report (text) |
-| tests/ | Automated bash test suite (175 tests, including 3 README accuracy regression tests) | helpers.sh, test_*.sh | install.sh, scripts/, templates/ | stdout (pass/fail) |
-| templates/.claude/hooks/ | Claude Code lifecycle hook templates (12 files + session-start.d/ with 2 modules). All hooks use `[nana:<hook>]` message prefix (exception: `[dev-wiki:post-commit]` kept as semantic trigger). 8 hooks use jq for JSON parsing; detect-loop.sh is pure bash. enforce-spec.sh + enforce-loop.sh write enforcement.log (JSONL, 500-line cap). | session-start.sh, session-start.d/{wk-prune,memory-nudge}.sh, pre-compact.sh, post-commit.sh, audit-log.sh, enforce-spec.sh, enforce-loop.sh, detect-loop.sh, scan-secrets.sh, etc. | .dev-wiki/ state, .claude/rules/, specs/*.md, .claude/enforce | stdout (context injection, safety gates, enforcement blocking, loop detection, commit notification), .dev-wiki/enforcement.log |
+| eval/ | Eval harness: benchmark corpus + scoring (47 scenarios) | corpus/*/scenario.json, schemas/*.json, validators/*.sh | templates/.claude/hooks/*, skill outputs | Scored eval report (text) |
+| docs/ | Generated reports (7-Layer architecture) | report.html (package inventory, Eval/Specs categories), workflow.html (12-hook table, Enforcement + Memory Bridge sections) | Project files, templates/.claude/skills/MANIFEST, templates/.claude/settings.json | HTML package inventory + workflow breakdown |
+| scripts/ | Multi-agent sync + report generation + eval | sync-rules.sh, generate-report.py (~350 lines, 7-Layer, MANIFEST, test_start counting), generate-workflow.py (~800 lines, 7-Layer, 12-hook table, Enforcement + Memory Bridge sections), eval-runner.sh (~310 lines, init_git/touch_old support) | AGENTS.md, project tree, eval/corpus/, templates/.claude/skills/MANIFEST, templates/.claude/settings.json | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md, docs/report.html, docs/workflow.html, eval report (text) |
+| tests/ | Automated bash test suite (190 tests, including 3 README accuracy + 6 report staleness regression tests) | helpers.sh, test_*.sh | install.sh, scripts/, templates/, docs/ | stdout (pass/fail) |
+| templates/.claude/hooks/ | Claude Code lifecycle hook templates (13 files + session-start.d/ with 2 modules). All hooks use `[nana:<hook>]` message prefix (exception: `[dev-wiki:post-commit]` kept as semantic trigger). 9 hooks use jq for JSON parsing; detect-loop.sh is pure bash. enforce-spec.sh, enforce-loop.sh, enforce-memory.sh write enforcement.log (JSONL, 500-line cap). | session-start.sh, session-start.d/{wk-prune,memory-nudge}.sh, pre-compact.sh, post-commit.sh, audit-log.sh, enforce-spec.sh, enforce-loop.sh, enforce-memory.sh, detect-loop.sh, scan-secrets.sh, etc. | .dev-wiki/ state, .claude/rules/, specs/*.md, .claude/enforce, ~/.claude/enforce-memory | stdout (context injection, safety gates, enforcement blocking, loop detection, commit notification, memory gate), .dev-wiki/enforcement.log |
 | templates/.claude/rules/ | Identity + lifecycle rules (4 files) | nana-soul.md (59 lines), nana-personal.md, file-lifecycle.md, py-session-state.md | -- | -- |
 | templates/.claude/skills/ | 24 skill directories + MANIFEST with descriptions (~120 files) | SKILL.md files + companion .md files | -- | -- |
 | templates/.github/ | GitHub config templates (5 files) | workflows/ci.yml, PULL_REQUEST_TEMPLATE.md, CODEOWNERS, instructions/* | -- | -- |
@@ -80,7 +80,7 @@ Bash + python3 + jq (hooks + eval). memory_server requires pip deps (mcp, pydant
 
 ## Test Organization
 
-175 automated tests (6 scripts) + 43 eval scenarios (4 categories). `make test` runs regression tests fail-fast in temp dirs. `make eval` runs scored eval separately (requires jq).
+190 automated tests (6 scripts) + 47 eval scenarios (4 categories). `make test` runs regression tests fail-fast in temp dirs. `make eval` runs scored eval separately (requires jq).
 
 ## Known Issues
 

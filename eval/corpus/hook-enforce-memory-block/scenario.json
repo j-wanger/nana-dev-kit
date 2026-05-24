@@ -1,0 +1,19 @@
+{
+  "name": "enforce-memory blocks write when memory not consulted",
+  "category": "hook",
+  "hook": "enforce-memory.sh",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      ".dev-wiki/.gitkeep": "marker"
+    },
+    "home_files": {
+      ".claude/enforce-memory": "marker"
+    }
+  },
+  "input": "{\"tool_name\": \"Write\", \"input\": {\"file_path\": \"src/app.py\"}}",
+  "expected": {
+    "exit_code": 2,
+    "stderr_contains": ["nana:enforce-memory"]
+  }
+}

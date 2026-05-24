@@ -209,6 +209,25 @@ else
   test_fail "expected 2 source lines, got $SOURCES"
 fi
 
+# --- Enforce-memory hook ---
+test_start "enforce-memory.sh exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/hooks/enforce-memory.sh"
+
+test_start "enforce-memory.sh passes syntax check"
+assert_exit_code 0 bash -n "$PROJECT_ROOT/templates/.claude/hooks/enforce-memory.sh"
+
+test_start "enforce-memory.sh has jq fail-open guard"
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/enforce-memory.sh" 'command -v jq'
+
+test_start "enforce-memory.sh has nana prefix"
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/enforce-memory.sh" 'nana:enforce-memory'
+
+test_start "enforce-memory.sh checks memory-consulted gate"
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/enforce-memory.sh" 'memory-consulted'
+
+test_start "session-start.sh clears memory-consulted"
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" 'memory-consulted'
+
 # --- MANIFEST ---
 test_start "MANIFEST exists with >100 entries"
 MANIFEST="$PROJECT_ROOT/templates/.claude/skills/MANIFEST"

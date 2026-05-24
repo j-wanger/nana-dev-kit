@@ -1,0 +1,19 @@
+{
+  "name": "enforce-memory allows write when memory consulted",
+  "category": "hook",
+  "hook": "enforce-memory.sh",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      ".dev-wiki/.gitkeep": "marker",
+      ".claude/.memory-consulted": "marker"
+    },
+    "home_files": {
+      ".claude/enforce-memory": "marker"
+    }
+  },
+  "input": "{\"tool_name\": \"Write\", \"input\": {\"file_path\": \"src/app.py\"}}",
+  "expected": {
+    "exit_code": 0
+  }
+}

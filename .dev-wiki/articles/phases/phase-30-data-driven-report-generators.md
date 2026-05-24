@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-23
 updated: 2026-05-23
 source: plan
-status: active
+status: completed
 scope: ["scripts/generate-report.py", "scripts/generate-workflow.py", "tests/test_templates.sh", "docs/*", "README.md"]
 entry_criteria: "Phase 29 complete, 175 tests passing, 43/43 eval"
 exit_criteria: "Reports show 7-Layer, no stale strings (MEMORY.md, 5-Layer), Enforcement + Memory Bridge sections in workflow.html, staleness regression test in test_templates.sh, README numbers fixed"

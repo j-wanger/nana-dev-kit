@@ -269,6 +269,19 @@ else
   test_fail "post-commit not registered in settings.json"
 fi
 
+test_start "full install creates enforce-memory hook"
+assert_file_exists "$THOME_ALL/.claude/hooks/enforce-memory.sh"
+
+test_start "full install creates enforce-memory marker"
+assert_file_exists "$THOME_ALL/.claude/enforce-memory"
+
+test_start "full install registers enforce-memory in settings.json"
+if grep -q 'enforce-memory.sh' "$THOME_ALL/.claude/settings.json" 2>/dev/null; then
+  test_pass
+else
+  test_fail "enforce-memory not registered in settings.json"
+fi
+
 rm -rf "$THOME_ALL"
 
 # --- --status flag ---

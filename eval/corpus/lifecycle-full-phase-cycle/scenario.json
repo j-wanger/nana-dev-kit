@@ -1,0 +1,49 @@
+{
+  "name": "full phase cycle: session-start loads context, enforce-spec allows write, post-commit detects commit, enforce-loop passes",
+  "category": "lifecycle",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      ".dev-wiki/_CURRENT_STATE.md": "current-state.md",
+      ".dev-wiki/tasks.md": "tasks.md",
+      ".claude/rules/active-phase.md": "active-phase.md",
+      "specs/phase-31-integration.md": "spec.md",
+      "src/app.py": "deliverable.py"
+    },
+    "home_files": {
+      ".claude/enforce": "enforce-marker"
+    }
+  },
+  "steps": [
+    {
+      "hook": "session-start.sh",
+      "input": "",
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": ["Dev-Wiki State", "nana:enforce.*active"]
+      }
+    },
+    {
+      "hook": "enforce-spec.sh",
+      "input": "{\"tool_name\": \"Write\", \"input\": {\"file_path\": \"src/app.py\"}}",
+      "expected": {
+        "exit_code": 0
+      }
+    },
+    {
+      "hook": "post-commit.sh",
+      "input": "{\"tool_name\": \"Bash\", \"tool_input\": {\"command\": \"git commit -m 'feat: add app'\"}, \"stdout\": \"\", \"stderr\": \"\", \"exit_code\": 0}",
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": ["dev-wiki:post-commit"]
+      }
+    },
+    {
+      "hook": "enforce-loop.sh",
+      "input": "{}",
+      "expected": {
+        "exit_code": 0
+      }
+    }
+  ]
+}

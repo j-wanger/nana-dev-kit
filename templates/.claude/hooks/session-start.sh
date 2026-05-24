@@ -65,8 +65,9 @@ if [ -f ".dev-wiki/.pending-commit" ]; then
   rm -f ".dev-wiki/.pending-commit"
 fi
 
-# --- Clear loop detection state ---
+# --- Clear session state ---
 rm -f .claude/.loop-state
+rm -f .claude/.memory-consulted
 
 # --- Memory consolidation nudge ---
 check_memory_consolidation "$HOME/.claude/memory_server/memory.db" "$HOME/.claude/.memory-nudge-ts"
