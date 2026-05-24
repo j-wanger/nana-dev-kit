@@ -1,10 +1,14 @@
 # Active Phase Context
 
-Phase: 28 - DX Discoverability (COMPLETED)
-Status: All 6 tasks done, all exit criteria met
-Objective: Normalize hook messages to [nana:<hook>] prefix across 11 hooks, add install.sh --status, enrich MANIFEST with skill descriptions, add session-start [nana:kit] summary line.
+Phase: 29 - v0.5.1 Grade Push
+Status: Active, 0/7 tasks done
+Objective: Close 5 v0.5.0 critique gaps: root-skip test fix, dev-plan companion extraction, /nana + /memory-consolidate skills, spec provenance marker, enforcement hardening with event logging.
 
-Next: Run /dev-plan to plan Phase 29. Candidates: language-agnostic core (Gap 4.1, last OPEN gap), dev-wiki-hooks rules templating, MANIFEST automation.
+Constraints:
+- enforce-spec.sh backward compat: OR logic (provenance marker OR exit-criteria)
+- No vendored memory_server/ Python changes
+- Enforcement log capped at 500 lines (tail truncation)
+- dev-plan SKILL.md target <=330 lines post-extraction
 
 Tests: 169 passing. Eval: 43/43. Budget: ~300/300.
 

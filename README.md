@@ -62,6 +62,8 @@ The kit includes a persistent memory MCP server (registered globally by `install
 
 After scaffolding, run `/dev-init` to set up dev-wiki lifecycle tracking (phases, tasks, decisions). The session-start hook loads dev-wiki state, memory guidance, and enforcement status automatically.
 
+For memory maintenance, use `/memory-consolidate` to identify and merge duplicate entries. This uses Claude's own intelligence via MCP tools — no external LLM sidecar required.
+
 ## Eval
 
 ```bash

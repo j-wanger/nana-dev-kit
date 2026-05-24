@@ -15,7 +15,7 @@ e5ddfb7b67241d37ad55fe475faff05f  templates/.claude/skills/dev-init/SKILL.md
 3be778e3010c88993d63a4af7b9eb1c0  templates/.claude/skills/dev-init/scaffold-claude-md.md
 e7214f7710cfe23b1cc38596b26dfbfa  templates/.claude/skills/dev-init/templates/AGENTS.md
 c78c7501c48cf53dfc39dfd53fd282ba  templates/.claude/skills/dev-init/templates/project-CLAUDE.md
-4db58c3c02038f859a12b8144f3002c3  templates/.claude/skills/dev-plan/SKILL.md
+bf74b0c348e60caad5f75fd63f644087  templates/.claude/skills/dev-plan/SKILL.md
 2204ed430494fe8da956807873fcc5ae  templates/.claude/skills/dev-plan/approach-reviewer-prompt.md
 b519291412e12f7f72d242fb559a80ab  templates/.claude/skills/dev-plan/artifact-writer-prompt.md
 5178edaa94512bce877d87090936eccc  templates/.claude/skills/dev-plan/compaction-anchors-spec.md
@@ -32,6 +32,7 @@ c31bfed279f549c2ee2b0aec9b9e77ce  templates/.claude/skills/dev-plan/self-check-c
 e0cea1d0005482805228f2e46435d669  templates/.claude/skills/dev-scan/file-prompt.md
 5afbe077dd1be1d415f53b9d4e0d02b4  templates/.claude/skills/dev-scan/module-prompt.md
 80e727f718b9be8002566adad5169dd8  templates/.claude/skills/dev-scan/python-memory-checks.md
+6173f4da98614bbc9f53a03623cec9f0  templates/.claude/skills/spec/SKILL.md
 63afa64c4479a49845948c5af184d47c  templates/.claude/skills/dev-scan/python-scan-profile.md
 a7839f37fd21c135c721464791b510d0  templates/.claude/skills/dev-scan/refresh-flow.md
 41125684ad58854680378bc6c6b01032  templates/.claude/skills/dev-wiki/SKILL.md
@@ -66,7 +67,6 @@ ca0529f9494d79de5a966808f6e3e5f8  templates/.claude/skills/py-init/transform.md
 c27991e337470cd89df485d6fd9011af  templates/.claude/skills/py-lint/SKILL.md
 cefb4a1bd5cf707c9b062640fb353221  templates/.claude/skills/py-review/SKILL.md
 f9dcecfa3ba6af91de1813c40909c982  templates/.claude/skills/py-test/SKILL.md
-34932124505ad02562681c326172f272  templates/.claude/skills/spec/SKILL.md
 77155f417a78b26dd1c0748830843777  templates/.claude/skills/spec/adversarial-constraints-prompt.md
 97e94cc6db62f5a5b5cc1eb30b513b58  templates/.claude/skills/spec/spec-reviewer-prompt.md
 e25689dcabb6ba8d44906315d4740663  templates/.claude/skills/wiki-absorb/SKILL.md
@@ -99,6 +99,9 @@ cbf169fa7abde108e9e4dde86f1f2d06  templates/.claude/skills/wiki-health/dashboard
 6b819dc8b2c8a16c2e1312efd9c99ef4  templates/.claude/skills/wiki-index/requirements.txt
 7eaabddd2d04853ab15bb0aae7e233ff  templates/.claude/skills/wiki-index/search.py
 b704bc29cbcfc2f22e4b7890fe5a13ff  templates/.claude/skills/wiki-index/wikilib.py
+65a073824e8bdd0981d5e67696f9768d  templates/.claude/skills/nana/SKILL.md
+793ff7ba68bb46f5732fc339a69ff5ac  templates/.claude/skills/memory-consolidate/SKILL.md
+90da7b959f470a84cb61d444a15847f3  templates/.claude/skills/dev-plan/scope-exploration-spec.md
 43fe2c2516199426a650ddfbad0fffc7  templates/.claude/skills/wiki-init/SKILL.md
 a3e12fcf4b26948f718da0410b2316fe  templates/.claude/skills/wiki-init/analyst-prompt.md
 5eb6676be22cb6709bb6f2f73422e68e  templates/.claude/skills/wiki-init/reviewer-prompt.md
@@ -121,6 +124,8 @@ ec297f639a856b595197ac37a26ded8f  templates/.claude/skills/wiki-reorg/SKILL.md
 # dev-scan: Deep codebase analysis producing structural knowledge for the dev-wiki.
 # dev-wiki: Route dev wiki operations and enforce development lifecycle discipline.
 # knowledge-wiki: Route wiki operations and enforce wiki workflow discipline.
+# memory-consolidate: Consolidate duplicate/overlapping memory entries using Claude.
+# nana: Show installed nana-dev-kit skills grouped by module.
 # py-init: Scaffold or retrofit the Nana Dev Kit harness into the current directory.
 # py-lint: Run linting, formatting, and type checking (ruff + mypy).
 # py-review: Review the current diff against the 8-point AI PR checklist.

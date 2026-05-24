@@ -163,18 +163,7 @@ Read `~/.claude/skills/dev-plan/iterative-retrieval-spec.md` for the full loop p
 
 ### Step 3: Explore Phase Scope (Bounded)
 
-Extract the `scope` field (file globs) from the phase article. Glob each pattern to identify files in scope.
-
-**Code article path (preferred):** Glob `$WIKI/articles/files/*.md` and `$WIKI/articles/modules/*.md`. If articles exist, use them instead of raw file reads:
-
-1. Read module articles matching the phase scope — extract `internal_deps`, `dependents`, `files` for structural overview
-2. Read file article frontmatter for scope files — extract `exports`, `imports`, `imported_by` for dependency data
-3. **Blast radius (bidirectional, 2-level):** Follow both `imports` (upstream risk: could dependencies break us?) and `imported_by` (downstream risk: will changes break consumers?) chains 2 levels deep. Include files whose `data_reads` overlap with scope files' `data_writes`. Flag high-fanout files (5+ in either direction) for careful task ordering.
-4. **Refactor advisory + task priorities:** If any scope file has imports≥5 AND imported_by≥5, emit: *"Coupling nexus: <file> (N upstream, M downstream). Consider splitting before modifying."* Cross-reference module `## Key Patterns` and `## Issues` for task ordering (HIGH issues → early tasks).
-
-**Raw file fallback:** If no code articles exist, Read at most 10 files, 150 lines each. Note code structure, test coverage, naming conventions, dependencies. If greenfield, note "no existing code."
-
-**Budget:** Cap total exploration at ~5000 tokens.
+Read `~/.claude/skills/dev-plan/scope-exploration-spec.md` for the full scope exploration protocol. Inputs: phase article `scope` field, `$WIKI/articles/files/*.md`, `$WIKI/articles/modules/*.md`. Budget: ~5000 tokens.
 
 ### Step 3.5: Pre-Implementation Validation Gate *(Lite: skip)*
 

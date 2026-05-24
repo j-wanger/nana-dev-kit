@@ -121,7 +121,7 @@ Present the spec. Wait for explicit approval before any execution begins.
 
 ## Step 6: Persist
 
-Write to `specs/<slug>.md` (`mkdir -p specs/` first). Slug: kebab-case from Objective, ≤40 chars.
+Write to `specs/<slug>.md` (`mkdir -p specs/` first). Slug: kebab-case from Objective, ≤40 chars. Prepend `<!-- nana:approved YYYY-MM-DD -->` as the first line of the file (before the `# Spec:` heading). This provenance marker is checked by `enforce-spec.sh` to verify the spec went through the two-tier review process.
 
 ## Step 6.5: Memory Bridge (fail-open)
 

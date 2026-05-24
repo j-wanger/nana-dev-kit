@@ -1,24 +1,24 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-23 by /dev-debrief (Phase 28 completed)
+> Last updated: 2026-05-23 by /dev-plan (Phase 29 planned)
 
 ## Recommended Next Action
 
-Run /dev-plan to plan Phase 29. Candidates: language-agnostic core (Gap 4.1, last OPEN gap), dev-wiki-hooks rules templating, MANIFEST automation.
+Start Task 1 of Phase 29: add `id -u` root-skip guard to writability tests in test_sync_rules.sh. Follow TDD cycle in tasks.md.
 
 ## Active Phase
 
-**[[phase-28-dx-discoverability|Phase 28: DX Discoverability]]** (status: completed)
+**[[phase-29-v051-grade-push|Phase 29: v0.5.1 Grade Push]]** (status: active)
 
-Entry criteria: MET (Phase 27 complete, 163 tests passing, 43/43 eval, v0.5.0 tagged)
-Exit criteria: All met -- hooks prefixed, --status works, MANIFEST enriched, [nana:kit] line, make test + make eval pass
+Entry criteria: MET (Phase 28 complete, 169 tests passing, 43/43 eval, v0.5.0 tagged)
+Exit criteria: Root-skip guards, dev-plan <=330 lines, /nana + /memory-consolidate skills, spec provenance, enforcement logging, tests + MANIFEST + README updated
 
-Progress: 100% (6/6 tasks done)
+Progress: ~0% (0/7 tasks done)
 
 ## Active Phase Contract
 
-Phase: 28 - DX Discoverability
-Tasks: 6 (all complete)
+Phase: 29 - v0.5.1 Grade Push
+Tasks: 7 (see tasks.md)
 Transition: continue
 Abort: if blocked >3 attempts, ask user: skip or abort
 
@@ -26,12 +26,13 @@ Abort: if blocked >3 attempts, ask user: skip or abort
 
 | Decision | Confidence | Date |
 |----------|------------|------|
-| [[hook-prefix-nana-namespace]] | high | 2026-05-23 |
-| [[status-in-install-sh]] | high | 2026-05-23 |
+| [[skill-based-memory-consolidation]] | medium | 2026-05-23 |
+| [[spec-provenance-html-comment]] | medium | 2026-05-23 |
+| [[dev-plan-scope-extraction]] | medium | 2026-05-23 |
 
 ## Blockers and Open Questions
 
-None
+None currently.
 
 ## Key Artifacts
 

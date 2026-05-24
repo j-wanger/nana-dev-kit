@@ -406,4 +406,40 @@ else
   test_fail "$BROKEN_REFS broken cross-skill reference(s)"
 fi
 
+# --- MANIFEST freshness (every skill dir has a description) ---
+test_start "manifest_freshness: all skill dirs have MANIFEST descriptions"
+MANIFEST="$PROJECT_ROOT/templates/.claude/skills/MANIFEST"
+MISSING_DESCS=0
+MISSING_LIST=""
+while IFS= read -r skill_dir; do
+  DIR_NAME=$(basename "$skill_dir")
+  if ! grep -q "^# ${DIR_NAME}:" "$MANIFEST" 2>/dev/null; then
+    MISSING_LIST="${MISSING_LIST}  MISSING: ${DIR_NAME}"$'\n'
+    MISSING_DESCS=$((MISSING_DESCS + 1))
+  fi
+done < <(find "$PROJECT_ROOT/templates/.claude/skills" -name 'SKILL.md' -exec dirname {} \; | sort)
+if [ "$MISSING_DESCS" -eq 0 ]; then
+  test_pass
+else
+  echo ""
+  printf '%s' "$MISSING_LIST"
+  test_fail "$MISSING_DESCS skill(s) missing MANIFEST descriptions"
+fi
+
+# --- Phase 29 new skills ---
+test_start "nana/SKILL.md exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/nana/SKILL.md"
+
+test_start "memory-consolidate/SKILL.md exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/memory-consolidate/SKILL.md"
+
+test_start "scope-exploration-spec.md exists in dev-plan"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/dev-plan/scope-exploration-spec.md"
+
+test_start "dev-plan SKILL.md references scope-exploration-spec"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md" 'scope-exploration-spec'
+
+test_start "spec SKILL.md has provenance marker instruction"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/spec/SKILL.md" 'nana:approved'
+
 test_summary "test_templates"

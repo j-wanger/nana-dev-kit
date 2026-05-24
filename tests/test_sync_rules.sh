@@ -69,28 +69,32 @@ EDIR=$(mktemp -d)
 assert_exit_code 1 bash "$PROJECT_ROOT/scripts/sync-rules.sh" "$EDIR" "$EDIR"
 rm -rf "$EDIR"
 
-# Edge case: unwritable target directory
-test_start "exits non-zero on unwritable target"
-WDIR=$(mktemp -d)
-echo "# Test" > "$WDIR/AGENTS.md"
-WDIR2=$(mktemp -d)
-chmod a-w "$WDIR2"
-assert_exit_code 1 bash "$PROJECT_ROOT/scripts/sync-rules.sh" "$WDIR" "$WDIR2"
-chmod u+w "$WDIR2"
-rm -rf "$WDIR" "$WDIR2"
-
-test_start "reports error on unwritable target"
-WDIR=$(mktemp -d)
-echo "# Test" > "$WDIR/AGENTS.md"
-WDIR2=$(mktemp -d)
-chmod a-w "$WDIR2"
-ERR_OUTPUT=$(bash "$PROJECT_ROOT/scripts/sync-rules.sh" "$WDIR" "$WDIR2" 2>&1 || true)
-chmod u+w "$WDIR2"
-rm -rf "$WDIR" "$WDIR2"
-if echo "$ERR_OUTPUT" | grep -qi 'error.*writ\|not writable'; then
-  test_pass
+# Edge case: unwritable target directory (skip as root — kernel bypasses permission bits)
+if [ "$(id -u)" = "0" ]; then
+  echo "  [skip] writability tests (running as root)"
 else
-  test_fail "no writability error in output"
+  test_start "exits non-zero on unwritable target"
+  WDIR=$(mktemp -d)
+  echo "# Test" > "$WDIR/AGENTS.md"
+  WDIR2=$(mktemp -d)
+  chmod a-w "$WDIR2"
+  assert_exit_code 1 bash "$PROJECT_ROOT/scripts/sync-rules.sh" "$WDIR" "$WDIR2"
+  chmod u+w "$WDIR2"
+  rm -rf "$WDIR" "$WDIR2"
+
+  test_start "reports error on unwritable target"
+  WDIR=$(mktemp -d)
+  echo "# Test" > "$WDIR/AGENTS.md"
+  WDIR2=$(mktemp -d)
+  chmod a-w "$WDIR2"
+  ERR_OUTPUT=$(bash "$PROJECT_ROOT/scripts/sync-rules.sh" "$WDIR" "$WDIR2" 2>&1 || true)
+  chmod u+w "$WDIR2"
+  rm -rf "$WDIR" "$WDIR2"
+  if echo "$ERR_OUTPUT" | grep -qi 'error.*writ\|not writable'; then
+    test_pass
+  else
+    test_fail "no writability error in output"
+  fi
 fi
 
 test_summary "test_sync_rules"

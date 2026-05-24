@@ -7,6 +7,15 @@ set -euo pipefail
 
 INPUT=$(cat)
 
+LOG=".dev-wiki/enforcement.log"
+
+log_event() {
+  [ -d ".dev-wiki" ] || return 0
+  local action="$1" reason="$2"
+  echo "{\"ts\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"hook\":\"enforce-loop\",\"action\":\"$action\",\"reason\":\"$reason\"}" >> "$LOG"
+  tail -n 500 "$LOG" > "$LOG.tmp" && mv "$LOG.tmp" "$LOG"
+}
+
 # --- Opt-in check: enforcement disabled without marker ---
 if [ ! -f "$HOME/.claude/enforce" ]; then
   exit 0
@@ -63,6 +72,7 @@ if [ -f "$SPEC_FILE" ]; then
   done < <(grep -E '^\- \[ \] `' "$SPEC_FILE" 2>/dev/null || true)
 
   if [ -n "$FAILED" ]; then
+    log_event "block" "deliverable-missing"
     echo "[nana:enforce-loop] Deliverable missing. Exit criterion not met: $FAILED" >&2
     exit 2
   fi
@@ -93,4 +103,5 @@ if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/n
   fi
 fi
 
+log_event "allow" "all-checks-passed"
 exit 0

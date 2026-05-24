@@ -1,6 +1,8 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
+- [uses: 1] /memory-consolidate is a skill-based alternative to vendored Qwen sidecar consolidator.py; uses memory_search/memory_store/memory_forget MCP tools with 10-merge budget cap. No Python changes to memory_server/ — skill-level solution avoids fork divergence.
+  source: [[decision:skill-based-memory-consolidation]] | activated: 2026-05-23
 - [uses: 1] All hooks use [nana:<hook-name>] prefix for messages; exception: [dev-wiki:post-commit] kept as semantic trigger. session-start uses sub-prefixes: [nana:gate], [nana:memory], [nana:recovery], [nana:pending], [nana:enforce], [nana:kit]. Future hooks must follow convention.
   source: [[decision:hook-prefix-nana-namespace]] | activated: 2026-05-23
 - [uses: 1] install.sh --status shows runtime inventory: counts skills, hooks, rules, checks memory venv, reads VERSION, checks enforcement marker. Grouped by module category. No separate nana-status.sh script.

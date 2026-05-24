@@ -31,6 +31,7 @@
 - [[phase-26-memory-harness-hardening|Phase 26: Memory & Harness Hardening]] -- completed
 - [[phase-27-dx-ship|Phase 27: DX + Ship]] -- completed
 - [[phase-28-dx-discoverability|Phase 28: DX Discoverability]] -- completed
+- [[phase-29-v051-grade-push|Phase 29: v0.5.1 Grade Push]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -73,6 +74,9 @@
 - [[cross-skill-ref-test-time|Cross-skill reference validation at test time]] -- high confidence, accepted
 - [[hook-prefix-nana-namespace|Hook prefix [nana:<hook>] namespace]] -- medium confidence, accepted
 - [[status-in-install-sh|Status command in install.sh]] -- medium confidence, accepted
+- [[skill-based-memory-consolidation|Skill-based memory consolidation]] -- medium confidence, accepted
+- [[spec-provenance-html-comment|Spec provenance via HTML comment]] -- medium confidence, accepted
+- [[dev-plan-scope-extraction|Dev-plan Step 3 scope extraction]] -- medium confidence, accepted
 - [[gap-43-wont-build|Worktree/parallel development won't-build]] -- high confidence, accepted
 - [[monorepo-skill-distribution|Monorepo Skill Distribution]] -- high confidence, accepted
 - [[import-source-canonical-installed|Import Source -- Canonical Installed Versions]] -- high confidence, accepted
@@ -156,6 +160,7 @@
 
 ## Recent
 
+- 2026-05-23: Phase 29 planned -- 7 tasks (2S 5M), 3 decisions (skill-based-memory-consolidation, spec-provenance-html-comment, dev-plan-scope-extraction), v0.5.1 grade push
 - 2026-05-23: Phase 28 completed -- hook prefix normalization, install.sh --status, MANIFEST descriptions, [nana:kit] summary, 169 tests, 43/43 eval
 - 2026-05-23: Phase 28 planned -- 6 tasks (2M 4S), 2 decisions (hook-prefix-nana-namespace, status-in-install-sh), DX discoverability
 - 2026-05-23: Phase 27 completed -- README refresh (5 stale numbers), 3 staleness regression tests, install.sh summary polish, v0.5.0 shipped, 163 tests, 43/43 eval
