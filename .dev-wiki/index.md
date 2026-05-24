@@ -30,7 +30,7 @@
 - [[phase-25-postcommit-hook|Phase 25: PostCommit Hook]] -- completed
 - [[phase-26-memory-harness-hardening|Phase 26: Memory & Harness Hardening]] -- completed
 - [[phase-27-dx-ship|Phase 27: DX + Ship]] -- completed
-- [[phase-28-dx-discoverability|Phase 28: DX Discoverability]] -- active
+- [[phase-28-dx-discoverability|Phase 28: DX Discoverability]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -105,6 +105,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-23-phase-28-dx-discoverability-complete|Phase 28 complete]] -- 2026-05-23
 - [[2026-05-23-phase-27-dx-ship-complete|Phase 27 complete]] -- 2026-05-23
 - [[2026-05-23-phase-26-memory-harness-hardening-complete|Phase 26 complete]] -- 2026-05-23
 - [[2026-05-22-phase-25-postcommit-hook-complete|Phase 25 complete]] -- 2026-05-22
@@ -155,6 +156,7 @@
 
 ## Recent
 
+- 2026-05-23: Phase 28 completed -- hook prefix normalization, install.sh --status, MANIFEST descriptions, [nana:kit] summary, 169 tests, 43/43 eval
 - 2026-05-23: Phase 28 planned -- 6 tasks (2M 4S), 2 decisions (hook-prefix-nana-namespace, status-in-install-sh), DX discoverability
 - 2026-05-23: Phase 27 completed -- README refresh (5 stale numbers), 3 staleness regression tests, install.sh summary polish, v0.5.0 shipped, 163 tests, 43/43 eval
 - 2026-05-23: Phase 27 planned -- 4 tasks, 0 decisions, README refresh + staleness regression tests + install.sh polish + v0.5.0 ship

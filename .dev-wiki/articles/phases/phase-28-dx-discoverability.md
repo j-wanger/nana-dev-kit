@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-23
 updated: 2026-05-23
 source: plan
-status: active
+status: completed
 scope: ["templates/.claude/hooks/*.sh", "install.sh", "templates/.claude/skills/MANIFEST", "tests/", "eval/corpus/"]
 entry_criteria: "Phase 27 complete, 163 tests passing, 43/43 eval, v0.5.0 tagged"
 exit_criteria: "Hook message format normalized across 11 hooks, install.sh --status command works, MANIFEST enriched with descriptions, make test + make eval pass"
@@ -47,6 +47,10 @@ Files and modules affected:
 
 - All 11 hooks have identifiable echo/printf output lines. If false: some hooks may be silent-only and need no prefix.
 - Eval scenarios use `stdout_contains`/`stderr_contains` for assertion matching. If false: check assertion type before modifying.
+
+## Outcome
+
+All 6 tasks completed. 11 hooks normalized to `[nana:<hook>]` prefix, `install.sh --status` implemented, MANIFEST enriched with 22 skill descriptions, session-start emits `[nana:kit]` summary. Tests: 163 -> 169. Eval: 43/43 (5 assertion strings updated).
 
 ## Notes
 

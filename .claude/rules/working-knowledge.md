@@ -1,6 +1,12 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
+- [uses: 1] All hooks use [nana:<hook-name>] prefix for messages; exception: [dev-wiki:post-commit] kept as semantic trigger. session-start uses sub-prefixes: [nana:gate], [nana:memory], [nana:recovery], [nana:pending], [nana:enforce], [nana:kit]. Future hooks must follow convention.
+  source: [[decision:hook-prefix-nana-namespace]] | activated: 2026-05-23
+- [uses: 1] install.sh --status shows runtime inventory: counts skills, hooks, rules, checks memory venv, reads VERSION, checks enforcement marker. Grouped by module category. No separate nana-status.sh script.
+  source: [[decision:status-in-install-sh]] | activated: 2026-05-23
+- [uses: 1] MANIFEST descriptions are additive comment section (# <skill-dir>: <first sentence from SKILL.md>) after existing md5+path checksums. Manually maintained -- no automation.
+  source: [[journal:2026-05-23-phase-28-dx-discoverability-complete]] | activated: 2026-05-23
 - [uses: 1] memory_forget(memory_id, superseded_by="", scope="project") for soft delete with optional supersession chain; memory_prune only targets trust='low' + strength=1 so is dead code for bridge/harvest entries (trust='medium'/'high')
   source: [[decision:memory-supersede-harness-layer]] + [[wiki:memory-mcp-api]] | activated: 2026-05-23
 - [uses: 1] Crash recovery dual condition: commits newer than _CURRENT_STATE.md mtime AND no debrief commit in recent history. Advisory only (exit 0). Guarded by test -f .dev-wiki/_CURRENT_STATE.md. Case-insensitive Debrief grep on git log.
@@ -11,7 +17,7 @@
   source: [[decision:jq-hook-migration]] + [[journal:2026-05-22-phase-25-postcommit-hook-complete]] | activated: 2026-05-22
 - [uses: 1] PostCommit hook writes .dev-wiki/.pending-commit sidecar (one-line JSON: hash, message, files). Advisory only (exit 0). Claude processes via [dev-wiki:post-commit] trigger in dev-wiki-hooks rules.
   source: [[decision:postcommit-hook-architecture]] | activated: 2026-05-22
-- [uses: 2] Eval design: binary scoring only (pass=1.0, fail=0.0), jq hard dependency, eval/ top-level directory separate from tests/; make eval never called by make test; 41 scenarios in 4 categories (hook, skill, context, lifecycle)
+- [uses: 2] Eval design: binary scoring only (pass=1.0, fail=0.0), jq hard dependency, eval/ top-level directory separate from tests/; make eval never called by make test; 43 scenarios in 4 categories (hook, skill, context, lifecycle)
   source: [[decision:eval-binary-scoring-only]] + [[decision:eval-jq-hard-dependency]] + [[decision:eval-top-level-directory]] | activated: 2026-05-22
 - [uses: 1] Context eval is a new runner category (not folded into hook/skill); eval report shows "context 4/4" directly answering "do rules reach the model?"; checks array with file_exists, section_present, hook_output types
   source: [[decision:context-eval-new-category]] | activated: 2026-05-22

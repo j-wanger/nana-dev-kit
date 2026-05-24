@@ -1,9 +1,9 @@
 # Tasks
 
-> Last updated: 2026-05-23 by /dev-plan (Phase 28 planned)
+> Last updated: 2026-05-23 by /dev-debrief (Phase 28 completed)
 
 <details>
-<summary>Phases 1-27 (all completed, 146 tasks, collapsed)</summary>
+<summary>Phases 1-28 (all completed, 152 tasks, collapsed)</summary>
 
 
 
@@ -264,8 +264,6 @@
 - [x] [XS] install.sh summary polish — update echo lines to list all 5 global hooks: grep -q 'detect-loop' install.sh summary section fails (RED), update hook description lines to cover enforce-spec, enforce-loop, detect-loop, post-commit, pre-compact (GREEN), REFACTOR: n/a | scope: install.sh | success: bash install.sh --dry-run 2>&1 | grep -qi 'hook' && make test | size: XS
 - [x] [S] VERSION bump + tag + push — bump and ship: grep -qx '0.5.0' VERSION fails (RED), write 0.5.0 to VERSION, run make test && make eval, commit, tag v0.5.0, push (GREEN), REFACTOR: n/a | scope: VERSION | success: grep -qx '0.5.0' VERSION && make test && make eval && git tag -l 'v0.5.0' | grep -q 'v0.5.0' | size: S
 
-</details>
-
 <!-- phase:phase-28-dx-discoverability -->
 <!-- gates: spec=9/10(revised) approach=yes plan-review=8/10 tasks=yes -->
 ## Phase 28: DX Discoverability
@@ -276,3 +274,5 @@
 - [x] [S] MANIFEST enrichment: append # descriptions section. One line per skill: # <skill-dir>: <first sentence from SKILL.md>. Existing checksum lines untouched. Add test assertion. RED: grep -c '^# [a-z]' templates/.claude/skills/MANIFEST returns 0. GREEN: extract descriptions, append section. REFACTOR: n/a. | scope: templates/.claude/skills/MANIFEST, tests/test_templates.sh | success: grep -c '^# [a-z]' templates/.claude/skills/MANIFEST | grep -qE '^[1-9][0-9]' && make test | size: S
 - [x] [S] Session-start kit summary line: add [nana:kit] dynamic summary line as final output. Counts skills/hooks, checks memory, reads VERSION. <=120 chars. Depends: Task 2. RED: grep -q '\[nana:kit\]' templates/.claude/hooks/session-start.sh fails. GREEN: add dynamic count block (~8-10 lines). REFACTOR: verify output <=120 chars. | scope: templates/.claude/hooks/session-start.sh, tests/test_templates.sh | success: grep -q '\[nana:kit\]' templates/.claude/hooks/session-start.sh && bash -n templates/.claude/hooks/session-start.sh && make test | size: S
 - [x] [S] Final verify: run full test + eval suite. Verify all 6 spec exit criteria. RED: not all verified in one pass. GREEN: run each criterion. REFACTOR: review for regressions. | scope: tests/, eval/, install.sh, templates/.claude/hooks/, templates/.claude/skills/MANIFEST | success: make test && make eval && bash install.sh --status 2>&1 | grep -q 'skills' && grep -rL '\[nana:\|dev-wiki:' templates/.claude/hooks/*.sh | wc -l | grep -q '^0$' && grep -c '^# [a-z]' templates/.claude/skills/MANIFEST | grep -qE '^[1-9][0-9]' && grep -q '\[nana:kit\]' templates/.claude/hooks/session-start.sh | size: S
+
+</details>

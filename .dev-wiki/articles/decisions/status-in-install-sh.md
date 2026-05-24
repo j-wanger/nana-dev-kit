@@ -7,7 +7,7 @@ parents: [phase-28-dx-discoverability]
 created: 2026-05-23
 updated: 2026-05-23
 source: plan
-confidence: medium
+confidence: high
 ---
 
 ## Context
