@@ -34,6 +34,7 @@
 - [[phase-29-v051-grade-push|Phase 29: v0.5.1 Grade Push]] -- completed
 - [[phase-30-data-driven-report-generators|Phase 30: Data-Driven Report Generators]] -- completed
 - [[phase-31-integration-eval-memory-gating|Phase 31: Integration Eval + Memory Gating]] -- completed
+- [[phase-32-longmemeval-s-benchmark|Phase 32: LongMemEval-S Memory Benchmark]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -83,6 +84,7 @@
 - [[memory-enforcement-auto-create|Memory enforcement auto-create]] -- medium confidence, accepted
 - [[trust-based-memory-gate|Trust-based memory gate]] -- medium confidence, accepted
 - [[settings-registration-global-only|Settings registration: global only]] -- high confidence, accepted
+- [[diagnostic-first-benchmark|Diagnostic-first benchmark]] -- high confidence, accepted
 - [[monorepo-skill-distribution|Monorepo Skill Distribution]] -- high confidence, accepted
 - [[import-source-canonical-installed|Import Source -- Canonical Installed Versions]] -- high confidence, accepted
 - [[t0-wording-over-structural-subagent|T0 wording over structural subagent]] -- high confidence
@@ -114,6 +116,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-24-phase-32-longmemeval-s-benchmark-complete|Phase 32 complete]] -- 2026-05-24
 - [[2026-05-24-phase-31-integration-eval-memory-gating-complete|Phase 31 complete]] -- 2026-05-24
 - [[2026-05-23-phase-30-data-driven-reports-complete|Phase 30 complete]] -- 2026-05-23
 - [[2026-05-23-phase-29-grade-push-complete|Phase 29 complete]] -- 2026-05-23
@@ -168,6 +171,8 @@
 
 ## Recent
 
+- 2026-05-24: Phase 32 completed -- LongMemEval-S benchmark, FTS5 recall@5 91.0%, benchmark/longmemeval.py, README updated, 190 tests, 47/47 eval
+- 2026-05-24: Phase 32 planned -- 3 tasks (1M 1L 1S), 1 decision (diagnostic-first-benchmark), LongMemEval-S memory benchmark
 - 2026-05-24: Phase 31 completed -- lifecycle eval scenario, enforce-memory.sh hook, install.sh registration, 3 eval scenarios, 190 tests, 47/47 eval
 - 2026-05-23: Phase 31 planned -- 5 tasks (3M 2S), 3 decisions (memory-enforcement-auto-create, trust-based-memory-gate, settings-registration-global-only), integration eval + memory gating
 - 2026-05-23: Phase 30 completed -- generate-report.py + generate-workflow.py 7-Layer updates, Enforcement + Memory Bridge sections, 6 staleness regression tests, 181 tests, 43/43 eval

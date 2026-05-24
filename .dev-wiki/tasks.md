@@ -1,9 +1,9 @@
 # Tasks
 
-> Last updated: 2026-05-24 by /dev-debrief (Phase 31 completed)
+> Last updated: 2026-05-24 by /dev-debrief (Phase 32 completed)
 
 <details>
-<summary>Phases 1-31 (all completed, 168 tasks, collapsed)</summary>
+<summary>Phases 1-32 (all completed, 174 tasks, collapsed)</summary>
 
 
 
@@ -305,5 +305,13 @@
 - [x] [S] install.sh registration (depends: Task 2): `bash install.sh --dry-run 2>&1 | grep -q 'enforce-memory'` fails (RED), add enforce-memory.sh to dev-wiki hooks module: copy to ~/.claude/hooks/, chmod +x, dry-run output line, Python JSON merge for PreToolUse (flat {matcher: 'Write|Edit', command} format), create ~/.claude/enforce-memory marker (GREEN) | scope: install.sh | success: `bash install.sh --dry-run 2>&1 | grep -q 'enforce-memory' && THOME=$(mktemp -d) && HOME="$THOME" bash install.sh && test -f "$THOME/.claude/hooks/enforce-memory.sh" && test -f "$THOME/.claude/enforce-memory" && grep -q 'enforce-memory' "$THOME/.claude/settings.json" && rm -rf "$THOME"` | size: S
 - [x] [M] Eval scenarios for enforce-memory (depends: Task 2): `[ $(find eval/corpus/hook-enforce-memory-* -name 'scenario.json' 2>/dev/null | wc -l) -ge 3 ]` fails (RED), create 3-4 scenario dirs: hook-enforce-memory-block (marker + no .memory-consulted -> exit 2), hook-enforce-memory-allow (marker + .memory-consulted present -> exit 0), hook-enforce-memory-inactive (no marker -> exit 0), optionally hook-enforce-memory-no-jq if PATH manipulation works (GREEN), verify make eval 100% (REFACTOR) | scope: eval/corpus/hook-enforce-memory-*/ | success: `[ $(find eval/corpus/hook-enforce-memory-* -name 'scenario.json' 2>/dev/null | wc -l) -ge 3 ] && make eval 2>&1 | grep -qE 'Score.*100'` | size: M
 - [x] [S] Tests + final verify (depends: Tasks 1-4): `grep -q 'enforce.memory\|enforce-memory' tests/test_templates.sh` fails (RED), add test assertions: enforce-memory.sh exists + bash -n, session-start.sh has memory-consulted, install.sh has enforce-memory + PreToolUse, jq guard pattern present. test_install.sh: hook copied + marker created + JSON registered (GREEN), run make test && make eval (REFACTOR) | scope: tests/test_templates.sh, tests/test_install.sh | success: `make test && make eval 2>&1 | grep -qE 'Score.*100'` | size: S
+
+<!-- phase:phase-32-longmemeval-s-benchmark -->
+<!-- gates: spec=approved approach=yes plan-review=yes tasks=yes -->
+## Phase 32: LongMemEval-S Memory Benchmark
+
+- [x] [M] Dataset exploration + scaffold: `test -f benchmark/longmemeval.py` fails (RED), download LongMemEval-S dataset, inspect JSON structure (confirm session ID format, gold answer fields, category taxonomy), validate `memory_server/storage.py` importable via sys.path, create `benchmark/` dir with skeleton `longmemeval.py` implementing `--smoke-test` flag: downloads 3 questions, indexes sessions, queries, asserts recall > 0. Hardcode DATASET_REVISION constant. Add `benchmark/data/` and `benchmark/results.json` to .gitignore (GREEN), verify `python3 benchmark/longmemeval.py --smoke-test` exits 0 (REFACTOR) | scope: benchmark/longmemeval.py, .gitignore | success: `test -f benchmark/longmemeval.py && python3 -c "import ast; ast.parse(open('benchmark/longmemeval.py').read())" && grep -q 'benchmark/results' .gitignore && grep -q 'benchmark/data' .gitignore && grep -qE 'REVISION|revision' benchmark/longmemeval.py` | size: M
+- [x] [L] Full benchmark implementation (depends: Task 1): `python3 benchmark/longmemeval.py --help 2>&1 | grep -q 'dry-run'` fails (RED), implement full 500-question benchmark: per-question DB isolation (tempfile), FTS5 search with verbatim question text, recall@5 and recall@10 scoring per category and overall, hybrid mode detection (fastembed + sqlite-vec availability check), hybrid search path with embedding generation, --dry-run N flag (runs N real questions with full pipeline), JSON results output to benchmark/results.json, human-readable summary to stdout, progress reporting every 50 questions. Add `benchmark/README.md` with usage instructions and interpretation guide (GREEN), verify --dry-run 3 exits 0 and produces valid output (REFACTOR) | scope: benchmark/longmemeval.py, benchmark/README.md | success: `python3 benchmark/longmemeval.py --smoke-test && python3 benchmark/longmemeval.py --dry-run 3 && test -f benchmark/README.md && python3 -c "import ast; ast.parse(open('benchmark/longmemeval.py').read())"` | size: L
+- [x] [S] README + final verify (depends: Tasks 1-2): `grep -q 'recall@5' README.md` fails (RED), add Memory Benchmark section to README.md with recall numbers placeholder, retrieval unit caveat, baseline comparison note, link to benchmark/README.md for details. Run make test to verify no regressions (GREEN) | scope: README.md | success: `grep -q 'recall@5\|LongMemEval' README.md && make test` | size: S
 
 </details>

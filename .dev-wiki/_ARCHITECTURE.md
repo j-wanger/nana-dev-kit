@@ -1,10 +1,10 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-05-24 by /dev-debrief (Phase 31 completed)
+> Last updated: 2026-05-24 by /dev-debrief (Phase 32 completed)
 
 ## Project Shape
 
-Shell/Markdown/Python scaffolding kit (190+ files: 18 .sh, 112 skill .md, 20+ template .md, 14 memory_server .py, 4 wiki-index .py, 47 eval scenarios, 4 eval schemas, 4 eval validators, 2 .json, 2 .txt, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3 + jq (hooks + eval). Scaffolds a 5-layer Python dev harness + dev-wiki lifecycle + knowledge-wiki pipeline into new/existing projects via two operational modes: `install.sh` (one-time global, module-group architecture with --all/--core-only/--no-python/--dry-run/--status flags) and `make sync-rules` (per-project). 190 automated tests via `make test` + 47 eval scenarios via `make eval`. v0.5.0 on GitHub.
+Shell/Markdown/Python scaffolding kit (195+ files: 18 .sh, 112 skill .md, 20+ template .md, 14 memory_server .py, 4 wiki-index .py, 47 eval scenarios, 4 eval schemas, 4 eval validators, 2 benchmark .py/.md, 2 .json, 2 .txt, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3 + jq (hooks + eval). Scaffolds a 5-layer Python dev harness + dev-wiki lifecycle + knowledge-wiki pipeline into new/existing projects via two operational modes: `install.sh` (one-time global, module-group architecture with --all/--core-only/--no-python/--dry-run/--status flags) and `make sync-rules` (per-project). 190 automated tests via `make test` + 47 eval scenarios via `make eval`. LongMemEval-S benchmark: FTS5 recall@5 91.0%. v0.5.0 on GitHub.
 
 ## Directory Layout
 
@@ -14,6 +14,10 @@ nana-dev-kit/
   .github/workflows/kit-ci.yml        # Kit CI: shellcheck + make test
   memory_server/                       # Vendored MCP memory server (12 .py, nanaclaw)
   docs/                                # Generated HTML reports (report.html, workflow.html)
+  benchmark/                             # LongMemEval-S memory retrieval benchmark
+    longmemeval.py                     # Benchmark script (FTS5+hybrid, per-question DB isolation, recall@5/10)
+    README.md                          # Usage instructions + interpretation guide
+    data/, results.json, .venv/        # Gitignored: dataset cache, results, Python venv
   eval/                                # Eval harness: corpus, schemas, validators
     corpus/                            # Scenario directories (hook-*, skill-*, lifecycle-*)
     schemas/                           # JSON input schemas for hook contracts
@@ -52,6 +56,7 @@ nana-dev-kit/
 | root | Global installer and project targets | install.sh, Makefile, VERSION | templates/.claude/ | ~/.claude/skills/ (24 dirs), ~/.claude/rules/ (3 files), ~/.claude/hooks/ (6 global hooks: enforce-spec, enforce-loop, enforce-memory, detect-loop, post-commit, pre-compact), ~/.claude/memory_server/, ~/.claude/memory_server/.venv/, .claude/enforce (marker), ~/.claude/enforce-memory (marker) |
 | memory_server/ | Vendored MCP memory server (nanaclaw, 2,373 LOC) | server.py, storage.py, embedding.py, *.py | MCP stdio | Memory CRUD via MCP protocol |
 | .github/workflows/ | Kit CI (shellcheck + make test) | kit-ci.yml | .sh files, Makefile | CI pass/fail |
+| benchmark/ | LongMemEval-S retrieval benchmark (FTS5 recall@5 91.0%, recall@10 95.2%) | longmemeval.py, README.md | memory_server/storage.py, HuggingFace dataset | benchmark/results.json, stdout summary |
 | eval/ | Eval harness: benchmark corpus + scoring (47 scenarios) | corpus/*/scenario.json, schemas/*.json, validators/*.sh | templates/.claude/hooks/*, skill outputs | Scored eval report (text) |
 | docs/ | Generated reports (7-Layer architecture) | report.html (package inventory, Eval/Specs categories), workflow.html (12-hook table, Enforcement + Memory Bridge sections) | Project files, templates/.claude/skills/MANIFEST, templates/.claude/settings.json | HTML package inventory + workflow breakdown |
 | scripts/ | Multi-agent sync + report generation + eval | sync-rules.sh, generate-report.py (~350 lines, 7-Layer, MANIFEST, test_start counting), generate-workflow.py (~800 lines, 7-Layer, 12-hook table, Enforcement + Memory Bridge sections), eval-runner.sh (~310 lines, init_git/touch_old support) | AGENTS.md, project tree, eval/corpus/, templates/.claude/skills/MANIFEST, templates/.claude/settings.json | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md, docs/report.html, docs/workflow.html, eval report (text) |

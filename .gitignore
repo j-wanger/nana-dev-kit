@@ -4,3 +4,6 @@
 *.pyc
 __pycache__/
 .venv/
+benchmark/data/
+benchmark/results.json
+benchmark/.venv/

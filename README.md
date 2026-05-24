@@ -72,6 +72,17 @@ make eval    # runs 47 scenarios, binary scoring, requires jq
 
 Four categories: hook fidelity (31), skill artifact validation (6), lifecycle compliance (6), context injection (4). Separate from `make test` — eval benchmarks the harness, tests verify the kit.
 
+## Memory Benchmark
+
+The vendored memory server's retrieval quality is benchmarked against [LongMemEval-S](https://huggingface.co/datasets/xiaowu0162/longmemeval-cleaned) (500 questions, 6 categories). Each question indexes ~50 conversation sessions as memory entries and measures recall@5/recall@10.
+
+```bash
+benchmark/.venv/bin/python benchmark/longmemeval.py --smoke-test  # verify setup
+benchmark/.venv/bin/python benchmark/longmemeval.py --full        # full run
+```
+
+Published baselines: BM25 86.2% recall@5, hybrid 95.2% recall@5. Note: baselines use different retrieval units (chunks vs. full sessions). See `benchmark/README.md` for interpretation guide.
+
 ## Enforcement
 
 Enforcement hooks install globally and activate per-project via a marker file:
@@ -94,6 +105,6 @@ Re-run `~/nana-dev-kit/install.sh` to update. Existing files are overwritten; `n
 
 ```bash
 make test    # 190 tests across 5 scripts
-make eval    # 43 eval scenarios (requires jq)
+make eval    # 47 eval scenarios (requires jq)
 make report  # package inventory at docs/report.html
 ```
