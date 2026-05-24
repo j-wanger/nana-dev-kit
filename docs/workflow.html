@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nana Dev Kit &mdash; Workflow Breakdown v0.3.0</title>
+<title>Nana Dev Kit &mdash; Workflow Breakdown v0.5.0</title>
 <style>:root { --bg: #0d1117; --fg: #c9d1d9; --accent: #58a6ff; --border: #30363d;
          --card: #161b22; --green: #3fb950; --yellow: #d29922; --red: #f85149;
          --dim: #8b949e; --code-bg: #1c2128; }
@@ -55,7 +55,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <body>
 
 <h1>Nana Dev Kit &mdash; Workflow Breakdown</h1>
-<p class="subtitle">5-Layer Python Development Harness &mdash; v0.3.0 &mdash; Generated 2026-05-20 13:12</p>
+<p class="subtitle">5-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-05-23 21:28</p>
 
 <div class="toc">
 <h3>Contents</h3>
@@ -319,9 +319,10 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <h2 id="templates">4. Template Inventory</h2>
 
 <p>Templates scaffolded by <code>/py-init</code>. Placeholders (<code>{{PACKAGE_NAME}}</code>, <code>{{PROJECT_DESCRIPTION}}</code>, <code>{{PROJECT_NAME}}</code>) are substituted at scaffold time.</p>
-<h3>Layer 1: Instructions <span class="badge badge-blue">3 files</span></h3>
+<h3>Layer 1: Instructions <span class="badge badge-blue">4 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
+<tr><td><code>.claude/skills/dev-init/AGENTS.md</code></td><td>50</td><td></td></tr>
 <tr><td><code>.github/instructions/nana.instructions.md</code></td><td>63</td><td>Nana identity for GitHub Copilot</td></tr>
 <tr><td><code>.github/instructions/workflow.instructions.md</code></td><td>37</td><td>Workflow instructions for Copilot</td></tr>
 <tr><td><code>AGENTS.md</code></td><td>86</td><td>Single source of truth for agent instructions</td></tr>
@@ -334,29 +335,147 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/rules/nana-soul.md</code></td><td>59</td><td>Development personality and technical posture</td></tr>
 <tr><td><code>.claude/rules/py-session-state.md</code></td><td>21</td><td>Compaction-safe session state template</td></tr>
 </table>
-<h3>Layer 3: Hooks <span class="badge badge-blue">8 files</span></h3>
+<h3>Layer 3: Hooks <span class="badge badge-blue">15 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
-<tr><td><code>.claude/hooks/audit-log.sh</code></td><td>21</td><td>PostToolUse: JSONL audit trail of all writes</td></tr>
-<tr><td><code>.claude/hooks/auto-ruff-format.sh</code></td><td>15</td><td>PostToolUse: auto-formats Python with ruff</td></tr>
-<tr><td><code>.claude/hooks/block-dangerous-bash.sh</code></td><td>35</td><td>PreToolUse: blocks rm -rf, force-push, --no-verify</td></tr>
-<tr><td><code>.claude/hooks/check-tests-were-run.sh</code></td><td>47</td><td>Stop: gates completion on pytest execution</td></tr>
+<tr><td><code>.claude/hooks/audit-log.sh</code></td><td>23</td><td>PostToolUse: JSONL audit trail of all writes</td></tr>
+<tr><td><code>.claude/hooks/auto-ruff-format.sh</code></td><td>17</td><td>PostToolUse: auto-formats Python with ruff</td></tr>
+<tr><td><code>.claude/hooks/block-dangerous-bash.sh</code></td><td>37</td><td>PreToolUse: blocks rm -rf, force-push, --no-verify</td></tr>
+<tr><td><code>.claude/hooks/check-tests-were-run.sh</code></td><td>28</td><td>Stop: gates completion on pytest execution</td></tr>
+<tr><td><code>.claude/hooks/detect-loop.sh</code></td><td>58</td><td></td></tr>
+<tr><td><code>.claude/hooks/enforce-loop.sh</code></td><td>107</td><td></td></tr>
+<tr><td><code>.claude/hooks/enforce-spec.sh</code></td><td>71</td><td></td></tr>
+<tr><td><code>.claude/hooks/post-commit.sh</code></td><td>60</td><td></td></tr>
+<tr><td><code>.claude/hooks/pre-compact.sh</code></td><td>50</td><td></td></tr>
 <tr><td><code>.claude/hooks/py-review-stop-prompt.md</code></td><td>10</td><td>Stop: 6-point code review checklist prompt</td></tr>
-<tr><td><code>.claude/hooks/scan-secrets.sh</code></td><td>24</td><td>PostToolUse: scans for hardcoded secrets</td></tr>
-<tr><td><code>.claude/hooks/session-start.sh</code></td><td>37</td><td>SessionStart: loads 4 context sources</td></tr>
-<tr><td><code>.claude/settings.json</code></td><td>58</td><td>Hook wiring: maps lifecycle events to scripts</td></tr>
+<tr><td><code>.claude/hooks/scan-secrets.sh</code></td><td>26</td><td>PostToolUse: scans for hardcoded secrets</td></tr>
+<tr><td><code>.claude/hooks/session-start.d/memory-nudge.sh</code></td><td>29</td><td></td></tr>
+<tr><td><code>.claude/hooks/session-start.d/wk-prune.sh</code></td><td>54</td><td></td></tr>
+<tr><td><code>.claude/hooks/session-start.sh</code></td><td>98</td><td>SessionStart: loads 4 context sources</td></tr>
+<tr><td><code>.claude/settings.json</code></td><td>77</td><td>Hook wiring: maps lifecycle events to scripts</td></tr>
 </table>
-<h3>Layer 3: Skills <span class="badge badge-blue">8 files</span></h3>
+<h3>Layer 3: Skills <span class="badge badge-blue">119 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
+<tr><td><code>.claude/skills/MANIFEST</code></td><td>143</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-check/SKILL.md</code></td><td>150</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-debrief/SKILL.md</code></td><td>310</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-debrief/active-knowledge-transition.md</code></td><td>19</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-debrief/architecture-staleness-check.md</code></td><td>19</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-debrief/claude-md-refresh.md</code></td><td>33</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-debrief/debrief-finalization.md</code></td><td>29</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-debrief/executor-prompt.md</code></td><td>136</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-debrief/memory-harvest.md</code></td><td>63</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-debrief/quick-debrief-flow.md</code></td><td>26</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-debrief/retro-check.md</code></td><td>41</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-debrief/review-gate.md</code></td><td>32</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-debrief/reviewer-prompt.md</code></td><td>45</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-init/SKILL.md</code></td><td>214</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-init/init-scaffolding.md</code></td><td>49</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-init/scaffold-claude-md.md</code></td><td>49</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-init/project-CLAUDE.md</code></td><td>37</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-plan/SKILL.md</code></td><td>330</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-plan/approach-reviewer-prompt.md</code></td><td>63</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-plan/artifact-writer-prompt.md</code></td><td>103</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-plan/compaction-anchors-spec.md</code></td><td>71</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-plan/implementation-guide.md</code></td><td>76</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-plan/iterative-retrieval-spec.md</code></td><td>36</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-plan/memory-bridge.md</code></td><td>67</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-plan/plan-reviewer-prompt.md</code></td><td>79</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-plan/research-pause-spec.md</code></td><td>52</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-plan/scope-exploration-spec.md</code></td><td>25</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-plan/self-check-checklist.md</code></td><td>84</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-plan/spec-auto-invoke.md</code></td><td>48</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-plan/state-loader-prompt.md</code></td><td>114</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-plan/task-schema.md</code></td><td>86</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-scan/SKILL.md</code></td><td>241</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-scan/architecture-prompt.md</code></td><td>42</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-scan/content-hashing.md</code></td><td>62</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-scan/file-prompt.md</code></td><td>92</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-scan/module-prompt.md</code></td><td>73</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-scan/python-memory-checks.md</code></td><td>58</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-scan/python-scan-profile.md</code></td><td>70</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-scan/refresh-flow.md</code></td><td>17</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-wiki/SKILL.md</code></td><td>132</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-wiki/active-knowledge-spec.md</code></td><td>60</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-wiki/architecture-template.md</code></td><td>56</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-wiki/claude-md-lifecycle.md</code></td><td>53</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-wiki/decision-template.md</code></td><td>48</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-wiki/journal-templates.md</code></td><td>60</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-wiki/phase-template.md</code></td><td>64</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-wiki/size-budgets.md</code></td><td>19</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-wiki/slugification.md</code></td><td>57</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-wiki/stale-queue-spec.md</code></td><td>68</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-wiki/state-template.md</code></td><td>74</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-wiki/working-knowledge-spec.md</code></td><td>33</td><td></td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/SKILL.md</code></td><td>112</td><td></td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/article-conventions.md</code></td><td>173</td><td></td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/claim-spec.md</code></td><td>5</td><td></td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/content-model.md</code></td><td>188</td><td></td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/conversion-spec.md</code></td><td>80</td><td></td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/domain-profiles/aml-compliance.md</code></td><td>43</td><td></td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/domain-profiles/general.md</code></td><td>29</td><td></td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/domain-profiles/machine-learning.md</code></td><td>42</td><td></td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/domain-profiles/trading.md</code></td><td>42</td><td></td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/pipeline-spec.md</code></td><td>308</td><td></td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/registry-schema.md</code></td><td>78</td><td></td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/reviewer-checklist.md</code></td><td>162</td><td></td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/search-spec.md</code></td><td>170</td><td></td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/session-context.md</code></td><td>35</td><td></td></tr>
+<tr><td><code>.claude/skills/memory-consolidate/SKILL.md</code></td><td>45</td><td></td></tr>
+<tr><td><code>.claude/skills/nana/SKILL.md</code></td><td>37</td><td></td></tr>
 <tr><td><code>.claude/skills/py-init/SKILL.md</code></td><td>168</td><td>/py-init skill: scaffold or retrofit harness</td></tr>
 <tr><td><code>.claude/skills/py-init/scanner.md</code></td><td>102</td><td>10-dimension feasibility scanner for existing projects</td></tr>
 <tr><td><code>.claude/skills/py-init/transform.md</code></td><td>98</td><td>Transform procedure for upgrading existing projects</td></tr>
 <tr><td><code>.claude/skills/py-lint/SKILL.md</code></td><td>37</td><td></td></tr>
 <tr><td><code>.claude/skills/py-review/SKILL.md</code></td><td>58</td><td></td></tr>
 <tr><td><code>.claude/skills/py-test/SKILL.md</code></td><td>41</td><td></td></tr>
-<tr><td><code>.claude/skills/spec/SKILL.md</code></td><td>113</td><td></td></tr>
+<tr><td><code>.claude/skills/spec/SKILL.md</code></td><td>128</td><td></td></tr>
+<tr><td><code>.claude/skills/spec/adversarial-constraints-prompt.md</code></td><td>41</td><td></td></tr>
 <tr><td><code>.claude/skills/spec/spec-reviewer-prompt.md</code></td><td>77</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-absorb/SKILL.md</code></td><td>142</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-absorb/analyst-prompt.md</code></td><td>66</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-absorb/reviewer-prompt.md</code></td><td>43</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-absorb/verifier-prompt.md</code></td><td>117</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-absorb/writer-prompt.md</code></td><td>99</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-add/SKILL.md</code></td><td>143</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-add/analyst-prompt.md</code></td><td>66</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-add/reviewer-prompt.md</code></td><td>55</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-add/writer-prompt.md</code></td><td>94</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-bootstrap/SKILL.md</code></td><td>248</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-bootstrap/analyst-prompt.md</code></td><td>135</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-bootstrap/research-agent-prompt.md</code></td><td>97</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-bootstrap/research-loop-spec.md</code></td><td>61</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-bootstrap/reviewer-prompt.md</code></td><td>66</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-bootstrap/writer-prompt.md</code></td><td>129</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-consolidate/SKILL.md</code></td><td>123</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-consolidate/analyst-prompt.md</code></td><td>54</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-consolidate/consolidate.py</code></td><td>337</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-consolidate/reviewer-prompt.md</code></td><td>46</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-consolidate/writer-prompt.md</code></td><td>62</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-health/SKILL.md</code></td><td>218</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-health/dashboard-spec.md</code></td><td>80</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-health/empirical-anchor-spec.md</code></td><td>35</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-index/SKILL.md</code></td><td>65</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-index/convert.py</code></td><td>202</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-index/indexer.py</code></td><td>277</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-index/requirements-convert.txt</code></td><td>1</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-index/requirements.txt</code></td><td>3</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-index/search.py</code></td><td>200</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-index/wikilib.py</code></td><td>42</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-init/SKILL.md</code></td><td>217</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-init/analyst-prompt.md</code></td><td>42</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-init/reviewer-prompt.md</code></td><td>56</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-init/writer-prompt.md</code></td><td>115</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-query/SKILL.md</code></td><td>243</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-query/analyst-prompt.md</code></td><td>70</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-query/reviewer-prompt.md</code></td><td>76</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-query/writer-prompt.md</code></td><td>77</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-registry/SKILL.md</code></td><td>91</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-reorg/SKILL.md</code></td><td>94</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-reorg/analyst-prompt.md</code></td><td>74</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-reorg/reviewer-prompt.md</code></td><td>61</td><td></td></tr>
+<tr><td><code>.claude/skills/wiki-reorg/writer-prompt.md</code></td><td>93</td><td></td></tr>
 </table>
 <h3>Layer 4: Pre-commit <span class="badge badge-blue">1 files</span></h3>
 <table>
@@ -425,11 +544,13 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <div class="quality-card">
 <h4>Test Coverage</h4>
 <table>
-<tr><td><code>test_install.sh</code></td><td>16 assertions, 137 lines</td></tr>
-<tr><td><code>test_sync_rules.sh</code></td><td>15 assertions, 96 lines</td></tr>
-<tr><td><code>test_templates.sh</code></td><td>25 assertions, 132 lines</td></tr>
+<tr><td><code>test_enforce.sh</code></td><td>9 assertions, 137 lines</td></tr>
+<tr><td><code>test_harden.sh</code></td><td>0 assertions, 138 lines</td></tr>
+<tr><td><code>test_install.sh</code></td><td>33 assertions, 303 lines</td></tr>
+<tr><td><code>test_sync_rules.sh</code></td><td>15 assertions, 100 lines</td></tr>
+<tr><td><code>test_templates.sh</code></td><td>64 assertions, 445 lines</td></tr>
 </table>
-<p style="margin-top:0.5rem;font-size:0.85rem">Total: <strong>56 assertions</strong> across 3 test scripts. Run with <code>make test</code>.</p>
+<p style="margin-top:0.5rem;font-size:0.85rem">Total: <strong>121 assertions</strong> across 5 test scripts. Run with <code>make test</code>.</p>
 <p style="font-size:0.85rem">Edge cases covered: missing source files, unwritable directories, MCP registration (no file / partial / complete), venv fallback, idempotency (diff between runs).</p>
 </div>
 
@@ -577,7 +698,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 </pre>
 
 <footer>
-  Nana Dev Kit v0.3.0 &mdash; Workflow Breakdown &mdash; Generated 2026-05-20 13:12<br>
+  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-05-23 21:28<br>
   <code>scripts/generate-workflow.py</code> &mdash; run <code>make workflow</code> to regenerate
 </footer>
 
