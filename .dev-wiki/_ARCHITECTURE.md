@@ -1,10 +1,10 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-05-23 by /dev-debrief (Phase 28 completed)
+> Last updated: 2026-05-23 by /dev-debrief (Phase 29 completed)
 
 ## Project Shape
 
-Shell/Markdown/Python scaffolding kit (180+ files: 18 .sh, 107 skill .md, 20+ template .md, 14 memory_server .py, 4 wiki-index .py, 43 eval scenarios, 4 eval schemas, 4 eval validators, 2 .json, 2 .txt, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3 + jq (hooks + eval). Scaffolds a 5-layer Python dev harness + dev-wiki lifecycle + knowledge-wiki pipeline into new/existing projects via two operational modes: `install.sh` (one-time global, module-group architecture with --all/--core-only/--no-python/--dry-run/--status flags) and `make sync-rules` (per-project). 169 automated tests via `make test` + 43 eval scenarios via `make eval`. v0.5.0 on GitHub.
+Shell/Markdown/Python scaffolding kit (190+ files: 18 .sh, 112 skill .md, 20+ template .md, 14 memory_server .py, 4 wiki-index .py, 43 eval scenarios, 4 eval schemas, 4 eval validators, 2 .json, 2 .txt, 1 .yaml, 1 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore). Runtime: bash + python3 + jq (hooks + eval). Scaffolds a 5-layer Python dev harness + dev-wiki lifecycle + knowledge-wiki pipeline into new/existing projects via two operational modes: `install.sh` (one-time global, module-group architecture with --all/--core-only/--no-python/--dry-run/--status flags) and `make sync-rules` (per-project). 175 automated tests via `make test` + 43 eval scenarios via `make eval`. v0.5.0 on GitHub.
 
 ## Directory Layout
 
@@ -27,12 +27,14 @@ nana-dev-kit/
       hooks/                           # 12 lifecycle hooks (session-start, pre-compact, post-commit, audit-log, enforce-spec, enforce-loop, detect-loop, etc.)
         session-start.d/               # Sourced modules (wk-prune.sh, memory-nudge.sh)
       rules/                           # 4 identity + lifecycle rules (soul, personal, lifecycle, session-state)
-      skills/                          # 22 dirs + MANIFEST (115 files, ~630KB)
+      skills/                          # 24 dirs + MANIFEST (120 files, ~650KB)
         dev-{check,debrief,init,plan,scan,wiki}/  # Dev-wiki lifecycle (6 dirs)
         wiki-{absorb,add,bootstrap,consolidate,health,index,init,query,registry,reorg}/  # Knowledge-wiki (10 dirs)
         knowledge-wiki/                # Knowledge-wiki routing
         py-{init,lint,review,test}/    # Python quality (4 dirs)
         spec/                          # Spec creation + adversarial
+        nana/                          # In-session skill discovery (reads MANIFEST)
+        memory-consolidate/            # Claude-powered memory consolidation
     .github/                           # CI, PR template, CODEOWNERS, instructions
 
 ## Entry Points
@@ -53,10 +55,10 @@ nana-dev-kit/
 | eval/ | Eval harness: benchmark corpus + scoring (43 scenarios) | corpus/*/scenario.json, schemas/*.json, validators/*.sh | templates/.claude/hooks/*, skill outputs | Scored eval report (text) |
 | docs/ | Generated reports | report.html, workflow.html | Project files (scanned) | HTML package inventory + workflow breakdown |
 | scripts/ | Multi-agent sync + report generation + eval | sync-rules.sh, generate-report.py, generate-workflow.py, eval-runner.sh (~310 lines, init_git/touch_old support) | AGENTS.md, project tree, eval/corpus/ | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md, docs/report.html, docs/workflow.html, eval report (text) |
-| tests/ | Automated bash test suite (169 tests, including 3 README accuracy regression tests) | helpers.sh, test_*.sh | install.sh, scripts/, templates/ | stdout (pass/fail) |
-| templates/.claude/hooks/ | Claude Code lifecycle hook templates (12 files + session-start.d/ with 2 modules). All hooks use `[nana:<hook>]` message prefix (exception: `[dev-wiki:post-commit]` kept as semantic trigger). 8 hooks use jq for JSON parsing; detect-loop.sh is pure bash. | session-start.sh, session-start.d/{wk-prune,memory-nudge}.sh, pre-compact.sh, post-commit.sh, audit-log.sh, enforce-spec.sh, enforce-loop.sh, detect-loop.sh, scan-secrets.sh, etc. | .dev-wiki/ state, .claude/rules/, specs/*.md, .claude/enforce | stdout (context injection, safety gates, enforcement blocking, loop detection, commit notification) |
+| tests/ | Automated bash test suite (175 tests, including 3 README accuracy regression tests) | helpers.sh, test_*.sh | install.sh, scripts/, templates/ | stdout (pass/fail) |
+| templates/.claude/hooks/ | Claude Code lifecycle hook templates (12 files + session-start.d/ with 2 modules). All hooks use `[nana:<hook>]` message prefix (exception: `[dev-wiki:post-commit]` kept as semantic trigger). 8 hooks use jq for JSON parsing; detect-loop.sh is pure bash. enforce-spec.sh + enforce-loop.sh write enforcement.log (JSONL, 500-line cap). | session-start.sh, session-start.d/{wk-prune,memory-nudge}.sh, pre-compact.sh, post-commit.sh, audit-log.sh, enforce-spec.sh, enforce-loop.sh, detect-loop.sh, scan-secrets.sh, etc. | .dev-wiki/ state, .claude/rules/, specs/*.md, .claude/enforce | stdout (context injection, safety gates, enforcement blocking, loop detection, commit notification), .dev-wiki/enforcement.log |
 | templates/.claude/rules/ | Identity + lifecycle rules (4 files) | nana-soul.md (59 lines), nana-personal.md, file-lifecycle.md, py-session-state.md | -- | -- |
-| templates/.claude/skills/ | 22 skill directories + MANIFEST with descriptions (115 files) | SKILL.md files + companion .md files | -- | -- |
+| templates/.claude/skills/ | 24 skill directories + MANIFEST with descriptions (~120 files) | SKILL.md files + companion .md files | -- | -- |
 | templates/.github/ | GitHub config templates (5 files) | workflows/ci.yml, PULL_REQUEST_TEMPLATE.md, CODEOWNERS, instructions/* | -- | -- |
 
 ## Cross-File Dependencies
@@ -78,7 +80,7 @@ Bash + python3 + jq (hooks + eval). memory_server requires pip deps (mcp, pydant
 
 ## Test Organization
 
-169 automated tests (6 scripts) + 43 eval scenarios (4 categories). `make test` runs regression tests fail-fast in temp dirs. `make eval` runs scored eval separately (requires jq).
+175 automated tests (6 scripts) + 43 eval scenarios (4 categories). `make test` runs regression tests fail-fast in temp dirs. `make eval` runs scored eval separately (requires jq).
 
 ## Known Issues
 

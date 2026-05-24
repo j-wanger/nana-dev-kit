@@ -59,3 +59,4 @@
 [2026-05-23T17:00:00] PLAN -- Phase 29 planned, 7 tasks (2S 5M), 3 decisions (skill-based-memory-consolidation, spec-provenance-html-comment, dev-plan-scope-extraction)
 [2026-05-23T15:00:00] PLAN -- Phase 28 planned, 6 tasks (2M 4S), 2 decisions (hook-prefix-nana-namespace, status-in-install-sh)
 [2026-05-22T29:00:00] PLAN -- Phase 23 planned, 6 tasks (2M 4S), 2 decisions (pre-compact-dev-wiki-module, readme-budget-superseded), bug fixes + README rewrite
+[2026-05-23T21:20:35] DEBRIEF -- 3 decisions, 1 journal, tasks verified, state refreshed, Phase 29 completed

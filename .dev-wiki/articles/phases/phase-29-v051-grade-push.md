@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-23
 updated: 2026-05-23
 source: plan
-status: active
+status: completed
 scope: ["tests/test_sync_rules.sh", "templates/.claude/skills/dev-plan/SKILL.md", "templates/.claude/skills/dev-plan/scope-exploration-spec.md", "templates/.claude/skills/nana/SKILL.md", "templates/.claude/skills/memory-consolidate/SKILL.md", "templates/.claude/skills/spec/SKILL.md", "templates/.claude/hooks/enforce-spec.sh", "templates/.claude/hooks/enforce-loop.sh", "tests/test_templates.sh", "templates/.claude/skills/MANIFEST", "README.md"]
 entry_criteria: "Phase 28 complete, 169 tests passing, 43/43 eval, v0.5.0 tagged"
 exit_criteria: "Root-skip guards in writability tests, dev-plan SKILL.md <=330 lines with companion, /nana + /memory-consolidate skills created, spec provenance marker in /spec, enforce-spec.sh provenance OR + event logging, MANIFEST + README updated, make test + make eval pass"
@@ -32,13 +32,13 @@ Close 5 remaining gaps from the v0.5.0 five-lens critique: test robustness (root
 
 ## Exit Criteria
 
-- [ ] `grep -q 'id -u' tests/test_sync_rules.sh` -- root-skip guards present
-- [ ] `[ $(wc -l < templates/.claude/skills/dev-plan/SKILL.md) -le 330 ]` -- ceiling headroom
-- [ ] `test -f templates/.claude/skills/nana/SKILL.md` -- /nana skill exists
-- [ ] `test -f templates/.claude/skills/memory-consolidate/SKILL.md` -- /memory-consolidate skill exists
-- [ ] `grep -q 'nana:approved' templates/.claude/skills/spec/SKILL.md` -- spec provenance
-- [ ] `grep -q 'enforcement.log' templates/.claude/hooks/enforce-spec.sh` -- event logging
-- [ ] `make test && make eval` -- no regressions
+- [x] `grep -q 'id -u' tests/test_sync_rules.sh` -- root-skip guards present
+- [x] `[ $(wc -l < templates/.claude/skills/dev-plan/SKILL.md) -le 330 ]` -- ceiling headroom
+- [x] `test -f templates/.claude/skills/nana/SKILL.md` -- /nana skill exists
+- [x] `test -f templates/.claude/skills/memory-consolidate/SKILL.md` -- /memory-consolidate skill exists
+- [x] `grep -q 'nana:approved' templates/.claude/skills/spec/SKILL.md` -- spec provenance
+- [x] `grep -q 'enforcement.log' templates/.claude/hooks/enforce-spec.sh` -- event logging
+- [x] `make test && make eval` -- no regressions
 
 ## Approach
 
