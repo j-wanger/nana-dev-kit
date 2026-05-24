@@ -1,6 +1,6 @@
 # Tasks
 
-> Last updated: 2026-05-23 by /dev-plan (Phase 29 planned)
+> Last updated: 2026-05-23 by /dev-plan (Phase 30 planned)
 
 <details>
 <summary>Phases 1-28 (all completed, 152 tasks, collapsed)</summary>
@@ -276,6 +276,15 @@
 - [x] [S] Final verify: run full test + eval suite. Verify all 6 spec exit criteria. RED: not all verified in one pass. GREEN: run each criterion. REFACTOR: review for regressions. | scope: tests/, eval/, install.sh, templates/.claude/hooks/, templates/.claude/skills/MANIFEST | success: make test && make eval && bash install.sh --status 2>&1 | grep -q 'skills' && grep -rL '\[nana:\|dev-wiki:' templates/.claude/hooks/*.sh | wc -l | grep -q '^0$' && grep -c '^# [a-z]' templates/.claude/skills/MANIFEST | grep -qE '^[1-9][0-9]' && grep -q '\[nana:kit\]' templates/.claude/hooks/session-start.sh | size: S
 
 </details>
+
+<!-- phase:phase-30-data-driven-report-generators -->
+<!-- gates: spec=7/10(revised) approach=yes plan-review=n/a(4-tasks) tasks=yes -->
+## Phase 30: Data-Driven Report Generators
+
+- [x] [M] generate-report.py updates — LAYERS 5→7, WORKFLOWS v0.5.0, categorize_files() adds Eval/Specs, replace count_tests() with test_start counting, read MANIFEST: grep -q '7\.' scripts/generate-report.py on LAYERS fails (RED), update all hardcoded content (GREEN), regenerate + verify no stale strings (REFACTOR) | scope: scripts/generate-report.py, docs/report.html | success: `! grep -q '5-Layer' docs/report.html && grep -q '7-Layer\|7 Layer' docs/report.html && ! grep -q 'MEMORY.md' docs/report.html && ! grep -q 'make.*test' scripts/generate-report.py` | size: M
+- [x] [L] generate-workflow.py updates — subtitle 7-Layer, rewrite 5 flows, add Enforcement + Memory Bridge sections with diagrams, parse settings.json hooks dynamically, read MANIFEST for template purposes, document global hooks: grep -q '5-Layer' scripts/generate-workflow.py succeeds (RED), rewrite flows + add sections + dynamic hooks + MANIFEST (GREEN), regenerate + verify section headers + no stale strings (REFACTOR) | scope: scripts/generate-workflow.py, docs/workflow.html | success: `! grep -q '5-Layer' docs/workflow.html && grep -q '7-Layer\|7 Layer' docs/workflow.html && ! grep -q 'MEMORY.md' docs/workflow.html && grep -q '<h[23].*[Ee]nforcement' docs/workflow.html && grep -q '<h[23].*[Mm]emory.*[Bb]ridge' docs/workflow.html` | size: L
+- [x] [M] Staleness regression test — Depends Tasks 1-2. grep -q 'report_staleness' tests/test_templates.sh fails (RED), add test function (GREEN), run and verify (REFACTOR) | scope: tests/test_templates.sh | success: `grep -q 'report_staleness' tests/test_templates.sh && make test` | size: M
+- [x] [S] Final verify + README fix — Depends Tasks 1-3. Fix README stale test counts, full verify. | scope: README.md | success: `make test && make eval && grep -q '175\|17[0-9]' README.md` | size: S
 
 <!-- phase:phase-29-v051-grade-push -->
 <!-- gates: spec=7/10(revised) approach=yes plan-review=8/10(revised) tasks=yes -->

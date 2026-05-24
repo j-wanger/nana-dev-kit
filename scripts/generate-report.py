@@ -32,17 +32,22 @@ def get_file_tree():
 
 
 def count_tests():
-    result = subprocess.run(
-        ["make", "test"], capture_output=True, text=True, cwd=ROOT
-    )
     total = 0
-    for line in result.stdout.split("\n"):
-        if "run," in line and "passed" in line:
-            parts = line.strip().split()
-            for i, p in enumerate(parts):
-                if p == "run,":
-                    total += int(parts[i - 1])
+    for f in sorted((ROOT / "tests").glob("test_*.sh")):
+        total += f.read_text().count("test_start ")
     return total
+
+
+def get_manifest_descriptions():
+    manifest = ROOT / "templates" / ".claude" / "skills" / "MANIFEST"
+    import re
+    descs = {}
+    if manifest.is_file():
+        for line in manifest.read_text().splitlines():
+            m = re.match(r'^# (\S+): (.+)$', line)
+            if m:
+                descs[m.group(1)] = m.group(2)
+    return descs
 
 
 def get_git_info():
@@ -74,11 +79,13 @@ def categorize_files(files):
         "Templates — Layer 2: Identity": [],
         "Templates — Layer 3: Hooks": [],
         "Templates — Layer 3: Skills": [],
-        "Templates — Layer 4: Pre-commit": [],
-        "Templates — Layer 5: CI & GitHub": [],
+        "Templates — Layer 6: Pre-commit": [],
+        "Templates — Layer 7: CI & GitHub": [],
         "Templates — Config": [],
         "Documentation": [],
         "CI & Build": [],
+        "Eval Harness": [],
+        "Specs": [],
         "Other": [],
     }
     for f in files:
@@ -88,6 +95,10 @@ def categorize_files(files):
             categories["Memory Server"].append(entry)
         elif f.startswith("tests/"):
             categories["Test Suite"].append(entry)
+        elif f.startswith("eval/"):
+            categories["Eval Harness"].append(entry)
+        elif f.startswith("specs/"):
+            categories["Specs"].append(entry)
         elif f.startswith("templates/.claude/hooks/") or f == "templates/.claude/settings.json":
             categories["Templates — Layer 3: Hooks"].append(entry)
         elif f.startswith("templates/.claude/skills/"):
@@ -98,9 +109,9 @@ def categorize_files(files):
                     "templates/.github/instructions/workflow.instructions.md"):
             categories["Templates — Layer 1: Instructions"].append(entry)
         elif f == "templates/.pre-commit-config.yaml":
-            categories["Templates — Layer 4: Pre-commit"].append(entry)
+            categories["Templates — Layer 6: Pre-commit"].append(entry)
         elif f.startswith("templates/.github/") or f == "templates/pyproject.toml":
-            categories["Templates — Layer 5: CI & GitHub"].append(entry)
+            categories["Templates — Layer 7: CI & GitHub"].append(entry)
         elif f.startswith("templates/"):
             categories["Templates — Config"].append(entry)
         elif f.startswith("scripts/") or f == "Makefile":
@@ -119,24 +130,29 @@ def categorize_files(files):
 LAYERS = [
     ("1. Instructions", "Agent-surface config synced to CLAUDE.md, Copilot, Cursor, Gemini",
      "AGENTS.md, scripts/sync-rules.sh"),
-    ("2. Identity", "Development personality and technical posture",
-     ".claude/rules/nana-soul.md"),
-    ("3. Hooks & Skills", "Claude Code lifecycle hooks + /py-init, /py-lint, /py-test, /py-review",
+    ("2. Identity", "Development personality, technical posture, file lifecycle routing",
+     ".claude/rules/nana-soul.md, nana-personal.md, file-lifecycle.md"),
+    ("3. Hooks & Skills", "24 Claude Code skills + 12 lifecycle hooks across 5 event types",
      ".claude/hooks/, .claude/skills/, .claude/settings.json"),
-    ("4. Pre-commit", "Commit-time guardrails: ruff, mypy, gitleaks, sync-rules",
+    ("4. Enforcement", "Spec gating (PreToolUse), deliverable checks (Stop), loop detection (PostToolUse)",
+     "enforce-spec.sh, enforce-loop.sh, detect-loop.sh — installed globally by install.sh"),
+    ("5. Eval", "43-scenario binary-scored eval harness across hooks, skills, lifecycle, context",
+     "eval/corpus/, scripts/eval-runner.sh"),
+    ("6. Pre-commit", "Commit-time guardrails: ruff, mypy, gitleaks, sync-rules",
      ".pre-commit-config.yaml"),
-    ("5. CI", "GitHub Actions: lint, typecheck, test, security audit",
+    ("7. CI", "GitHub Actions: lint, typecheck, test, security audit",
      ".github/workflows/ci.yml"),
 ]
 
 WORKFLOWS = [
-    ("Install", "git clone → install.sh", "Copies py-init skill, nana-soul identity, memory server to ~/.claude/. Creates venv, installs deps, registers MCP server."),
-    ("Scaffold", "/py-init in a project", "New: full 5-layer scaffold. Existing: 10-dimension feasibility scan → approval gate → transform → validation."),
-    ("Develop", "Daily coding with Claude Code", "Session-start loads dev-wiki state + memory snapshot. Hooks auto-format, block dangerous ops, audit, gate tests."),
-    ("Lifecycle", "/dev-init → /dev-plan → implement → /dev-debrief", "Phase-based planning, TDD task execution, session capture. Decisions and journal tracked in .dev-wiki/."),
-    ("Memory", "Persistent cross-session context", "MCP server stores project decisions, conventions, user preferences. FTS5 search. Optional vector similarity via fastembed."),
+    ("Install", "git clone → install.sh", "Modular installer (--all/--core-only/--no-python/--dry-run/--status). Copies 24 skills across 4 modules, 3 identity rules, 5 global enforcement hooks, memory server. Creates venv, registers MCP server."),
+    ("Scaffold", "/py-init in a project", "New: full 7-layer scaffold. Existing: 10-dimension feasibility scan → approval gate → transform → validation."),
+    ("Develop", "Daily coding with Claude Code", "Session-start loads dev-wiki state, checks enforcement, detects crash recovery, clears stale sidecars. Hooks auto-format, block dangerous ops, audit, detect loops."),
+    ("Lifecycle", "/dev-init → /spec → /dev-plan → implement → /dev-debrief", "Phase-based planning with spec review gate, TDD tasks, session capture. Decisions, journal, and memory harvest tracked in .dev-wiki/."),
+    ("Memory", "Persistent cross-session context", "MCP server stores project decisions, conventions, corrections. FTS5 search. Memory-bridge channels: dev-plan stores, wiki-query reads, dev-debrief harvests. /memory-consolidate for maintenance."),
+    ("Enforcement", "Spec + deliverable gating", "enforce-spec.sh blocks writes without approved spec (provenance marker or exit criteria). enforce-loop.sh checks deliverables at stop. detect-loop.sh warns on repeated failures. Events logged to .dev-wiki/enforcement.log."),
     ("Sync", "make sync-rules", "Propagates AGENTS.md to CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md."),
-    ("Test", "make test", "Runs 40 automated bash tests across install, sync, and template verification."),
+    ("Test + Eval", "make test && make eval", "175+ bash tests across 6 scripts (install, sync, templates, enforce, harden). 43-scenario eval harness with binary scoring across 4 categories."),
 ]
 
 
@@ -192,18 +208,18 @@ def generate_html():
 <body>
 
 <h1>Nana Dev Kit</h1>
-<p class="subtitle">5-Layer Python Development Harness Scaffolder &mdash; Package Report v{version} &mdash; Generated {now}</p>
+<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v{version} &mdash; Generated {now}</p>
 
 <div class="stats">
   <div class="stat"><div class="num">{len(files)}</div><div class="label">Files</div></div>
   <div class="stat"><div class="num">{total_lines:,}</div><div class="label">Lines of Code</div></div>
   <div class="stat"><div class="num">{test_count}</div><div class="label">Automated Tests</div></div>
-  <div class="stat"><div class="num">5</div><div class="label">Harness Layers</div></div>
+  <div class="stat"><div class="num">7</div><div class="label">Harness Layers</div></div>
   <div class="stat"><div class="num">{tag}</div><div class="label">Latest Tag</div></div>
 </div>
 
-<h2>Architecture: The 5 Layers</h2>
-<p>Every scaffolded project receives all 5 layers, configured and wired together.</p>
+<h2>Architecture: The 7 Layers</h2>
+<p>Every scaffolded project receives all 7 layers, configured and wired together.</p>
 <table>
   <tr><th>Layer</th><th>Purpose</th><th>Key Files</th></tr>
 """
@@ -246,13 +262,16 @@ def generate_html():
 </table>
 
 <h2>Session Context Injection</h2>
-<p>The session-start hook composes context from 4 sources (frozen snapshot pattern &mdash; read once, never edited mid-session):</p>
+<p>The session-start hook (<code>session-start.sh</code>) composes context from multiple sources and dynamic checks:</p>
 <table>
-  <tr><th>#</th><th>Source</th><th>What It Provides</th></tr>
+  <tr><th>#</th><th>Source / Check</th><th>What It Provides</th></tr>
   <tr><td>1</td><td><code>.dev-wiki/_CURRENT_STATE.md</code></td><td>Active phase, recommended next action</td></tr>
-  <tr><td>2</td><td><code>.memory/MEMORY.md</code></td><td>Project memory snapshot (decisions, conventions)</td></tr>
-  <tr><td>3</td><td><code>PROJECT_STATE.md</code></td><td>Manual cross-session notes</td></tr>
-  <tr><td>4</td><td><code>.claude/rules/py-session-state.md</code></td><td>Compaction-safe session state</td></tr>
+  <tr><td>2</td><td><code>.claude/rules/active-phase.md</code></td><td>Gate compliance check (unchecked gates → warning)</td></tr>
+  <tr><td>3</td><td><code>.claude/rules/py-session-state.md</code></td><td>Compaction-safe session state</td></tr>
+  <tr><td>4</td><td><code>.dev-wiki/tasks.md</code></td><td>Active task topic → memory_search guidance</td></tr>
+  <tr><td>5</td><td><code>.dev-wiki/.pending-commit</code></td><td>Stale PostCommit sidecar detection</td></tr>
+  <tr><td>6</td><td>Crash recovery</td><td>Compares _CURRENT_STATE.md mtime vs latest commit timestamp</td></tr>
+  <tr><td>7</td><td>Enforcement status</td><td>Reports <code>[nana:enforce]</code> active/inactive + <code>[nana:kit]</code> summary line</td></tr>
 </table>
 
 """
@@ -270,10 +289,21 @@ def generate_html():
     html += """<h2>Test Coverage</h2>
 <table>
   <tr><th>Suite</th><th>File</th><th>Focus</th></tr>
-  <tr><td>Install</td><td><code>tests/test_install.sh</code></td><td>Idempotency, MCP registration, venv bootstrap, edge cases</td></tr>
-  <tr><td>Sync</td><td><code>tests/test_sync_rules.sh</code></td><td>4 output files, headers, content propagation, error cases</td></tr>
-  <tr><td>Templates</td><td><code>tests/test_templates.sh</code></td><td>Placeholder presence in AGENTS.md and pyproject.toml</td></tr>
-  <tr><td>Manual</td><td><code>self-test.md</code></td><td>13 scenarios across all 5 layers + retrofit</td></tr>
+  <tr><td>Install</td><td><code>tests/test_install.sh</code></td><td>Idempotency, module flags (--all, --core-only, --no-python), MCP registration, hooks, enforcement marker</td></tr>
+  <tr><td>Sync</td><td><code>tests/test_sync_rules.sh</code></td><td>4 output files, headers, content propagation, error cases, root-skip writability</td></tr>
+  <tr><td>Templates</td><td><code>tests/test_templates.sh</code></td><td>Placeholders, soul/instructions sync, skill line budgets, cross-skill refs, MANIFEST freshness, report staleness</td></tr>
+  <tr><td>Enforce</td><td><code>tests/test_enforce.sh</code></td><td>Spec enforcement (allow/block), loop enforcement (deliverables), enforcement marker</td></tr>
+  <tr><td>Harden</td><td><code>tests/test_harden.sh</code></td><td>Loop detection, memory nudge, working-knowledge pruning</td></tr>
+</table>
+
+<h2>Eval Harness</h2>
+<p>43 binary-scored scenarios across 4 categories, run via <code>make eval</code> (requires jq). Separate from <code>make test</code>.</p>
+<table>
+  <tr><th>Category</th><th>Count</th><th>What It Validates</th></tr>
+  <tr><td>Hook fidelity</td><td>28</td><td>Per-hook input/output contracts, exit codes, edge cases</td></tr>
+  <tr><td>Skill artifacts</td><td>6</td><td>Spec, phase article, decision article structural validity</td></tr>
+  <tr><td>Lifecycle</td><td>5</td><td>Multi-hook chain behavior, end-to-end flows</td></tr>
+  <tr><td>Context injection</td><td>4</td><td>Rules reach the model, sections present, hooks fire</td></tr>
 </table>
 
 <h2>Recent Git History</h2>

@@ -32,6 +32,7 @@
 - [[phase-27-dx-ship|Phase 27: DX + Ship]] -- completed
 - [[phase-28-dx-discoverability|Phase 28: DX Discoverability]] -- completed
 - [[phase-29-v051-grade-push|Phase 29: v0.5.1 Grade Push]] -- completed
+- [[phase-30-data-driven-report-generators|Phase 30: Data-Driven Report Generators]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -161,6 +162,7 @@
 
 ## Recent
 
+- 2026-05-23: Phase 30 planned -- 4 tasks (1S 2M 1L), 0 decisions, data-driven report generators
 - 2026-05-23: Phase 29 completed -- root-skip, companion extraction, /nana + /memory-consolidate skills, spec provenance, enforcement logging, 175 tests, 43/43 eval
 - 2026-05-23: Phase 29 planned -- 7 tasks (2S 5M), 3 decisions (skill-based-memory-consolidation, spec-provenance-html-comment, dev-plan-scope-extraction), v0.5.1 grade push
 - 2026-05-23: Phase 28 completed -- hook prefix normalization, install.sh --status, MANIFEST descriptions, [nana:kit] summary, 169 tests, 43/43 eval

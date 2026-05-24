@@ -213,13 +213,13 @@ def generate_html():
 <body>
 
 <h1>Nana Dev Kit &mdash; Workflow Breakdown</h1>
-<p class="subtitle">5-Layer Python Development Harness &mdash; v{version} &mdash; Generated {now}</p>
+<p class="subtitle">7-Layer Python Development Harness &mdash; v{version} &mdash; Generated {now}</p>
 
 <div class="toc">
 <h3>Contents</h3>
 <ol>
 <li><a href="#flows">End-to-End Flows</a></li>
-<li><a href="#layers">The 5 Layers &mdash; Deep Dive</a></li>
+<li><a href="#layers">The 7 Layers &mdash; Deep Dive</a></li>
 <li><a href="#hooks">Hook System Walkthrough</a></li>
 <li><a href="#templates">Template Inventory</a></li>
 <li><a href="#quality">Quality Signals</a></li>
@@ -233,16 +233,17 @@ def generate_html():
 
 <div class="flow">
 <div class="flow-title">Install Flow</div>
-<div class="flow-trigger">Trigger: <code>git clone &hellip; &amp;&amp; ~/nana-dev-kit/install.sh</code> &mdash; run once per machine</div>
+<div class="flow-trigger">Trigger: <code>git clone &hellip; &amp;&amp; ~/nana-dev-kit/install.sh [--all|--core-only|--no-python|--dry-run|--status]</code></div>
 <ol>
-<li>Validates source files exist (SKILL.md, nana-soul.md, memory_server/)</li>
-<li>Copies <code>/py-init</code> skill &rarr; <code>~/.claude/skills/py-init/SKILL.md</code></li>
-<li>Copies identity rule &rarr; <code>~/.claude/rules/nana-soul.md</code></li>
-<li>Writes kit path &rarr; <code>~/.claude/.nana-dev-kit-path</code></li>
-<li>Copies memory server &rarr; <code>~/.claude/memory_server/</code> (12 .py + requirements.txt)</li>
-<li>Creates isolated venv at <code>~/.claude/memory_server/.venv/</code> (graceful fallback if <code>python3 -m venv</code> unavailable)</li>
-<li>Pip-installs required deps: mcp, pydantic, pyyaml, nanoid, httpx</li>
-<li>Registers MCP server in <code>~/.claude/settings.json</code> via idempotent JSON merge (handles: no file, existing without mcpServers, existing with mcpServers)</li>
+<li>Validates source files exist. Parses module flags (default: <code>--all</code>)</li>
+<li><strong>Core module:</strong> copies 3 identity rules (nana-soul.md, nana-personal.md, file-lifecycle.md) + kit path marker + memory_server/</li>
+<li><strong>Python module:</strong> copies py-init + spec skills (skip with <code>--no-python</code>)</li>
+<li><strong>Dev-wiki module:</strong> copies 6 dev-lifecycle skill dirs + 5 global enforcement hooks to <code>~/.claude/hooks/</code></li>
+<li><strong>Knowledge-wiki module:</strong> copies 11 wiki skill dirs</li>
+<li>Creates isolated venv at <code>~/.claude/memory_server/.venv/</code>, installs deps</li>
+<li>Registers MCP server + hook events in <code>~/.claude/settings.json</code> via idempotent JSON merge</li>
+<li>Creates <code>.claude/enforce</code> marker for project opt-in</li>
+<li>Outputs &ldquo;Getting Started&rdquo; with 3 paths: <code>/dev-init</code>, <code>/py-init</code>, <code>/wiki-init</code></li>
 </ol>
 </div>
 
@@ -283,30 +284,35 @@ def generate_html():
 <div class="flow-title">Development Flow</div>
 <div class="flow-trigger">Trigger: opening Claude Code in a scaffolded project</div>
 <ol>
-<li><strong>SessionStart hook</strong> fires &rarr; loads context from 4 sources (all optional, graceful skip):
+<li><strong>SessionStart hook</strong> fires &rarr; loads context and runs checks:
   <ul>
   <li><code>.dev-wiki/_CURRENT_STATE.md</code> &mdash; active phase + recommended action</li>
-  <li><code>.memory/MEMORY.md</code> &mdash; project memory snapshot</li>
-  <li><code>PROJECT_STATE.md</code> &mdash; manual cross-session notes</li>
+  <li><code>.claude/rules/active-phase.md</code> &mdash; gate compliance check</li>
   <li><code>.claude/rules/py-session-state.md</code> &mdash; compaction-safe session state</li>
+  <li>Memory search guidance from active task topic</li>
+  <li>Stale <code>.pending-commit</code> sidecar detection</li>
+  <li>Crash recovery (commit mtime vs state mtime)</li>
+  <li>Enforcement status + <code>[nana:kit]</code> summary line</li>
   </ul></li>
 <li><strong>During coding</strong>: hooks fire on tool use:
   <ul>
-  <li>Every file write &rarr; auto-ruff-format + secret scan + audit log</li>
-  <li>Every bash command &rarr; dangerous command blocker</li>
+  <li>Every file write &rarr; auto-ruff-format + secret scan + audit log + post-commit detection</li>
+  <li>Every bash command &rarr; dangerous command blocker + loop detection</li>
+  <li>Implementation writes &rarr; enforce-spec blocks without approved spec</li>
   </ul></li>
-<li><strong>On stop</strong>: test gate checks if pytest ran (blocks if Python files modified but no test run) + 6-point code review prompt</li>
+<li><strong>On stop</strong>: enforce-loop checks deliverables, test gate checks pytest, 6-point code review prompt</li>
 </ol>
 </div>
 
 <div class="flow">
 <div class="flow-title">Lifecycle Flow</div>
-<div class="flow-trigger">Trigger: <code>/dev-init</code> &rarr; <code>/dev-plan</code> &rarr; implement &rarr; <code>/dev-debrief</code></div>
+<div class="flow-trigger">Trigger: <code>/dev-init</code> &rarr; <code>/spec</code> &rarr; <code>/dev-plan</code> &rarr; implement &rarr; <code>/dev-debrief</code></div>
 <ol>
 <li><code>/dev-init</code> &mdash; bootstraps <code>.dev-wiki/</code> with phases, architecture, state, tasks</li>
-<li><code>/dev-plan</code> &mdash; plans one phase at a time: loads state &rarr; asks questions &rarr; proposes approach &rarr; reviews &rarr; writes tasks</li>
+<li><code>/spec</code> &mdash; structured contract with adversarial constraints and two-tier review (Tier 0 structural lint + Tier 1 semantic subagent). Provenance marker <code>&lt;!-- nana:approved --&gt;</code></li>
+<li><code>/dev-plan</code> &mdash; plans one phase: state loader &rarr; cross-wiki knowledge &rarr; T0 thinking &rarr; approach reviewer &rarr; plan reviewer &rarr; artifact writer</li>
 <li><strong>Implement</strong> &mdash; follows task order with TDD cycle (RED &rarr; GREEN &rarr; REFACTOR &rarr; VERIFY). Success criteria verified per task. Blocked after 3 failed attempts.</li>
-<li><code>/dev-debrief</code> &mdash; captures session work: decisions, journal, state refresh</li>
+<li><code>/dev-debrief</code> &mdash; significance-scored capture: decisions, journal, memory harvest, review gate, state refresh</li>
 </ol>
 </div>
 
@@ -327,7 +333,7 @@ def generate_html():
 </div>
 
 <!-- ============================================================ -->
-<h2 id="layers">2. The 5 Layers &mdash; Deep Dive</h2>
+<h2 id="layers">2. The 7 Layers &mdash; Deep Dive</h2>
 
 <table>
 <tr><th>Layer</th><th>What</th><th>When It Fires</th><th>Effect</th><th>Key Files</th></tr>
@@ -340,27 +346,41 @@ def generate_html():
 </tr>
 <tr>
   <td><strong>2. Identity</strong></td>
-  <td>Development personality</td>
+  <td>Development personality + file lifecycle</td>
   <td>Loaded as global Claude Code rule (always active)</td>
-  <td>Sets technical posture: simplicity over cleverness, measurement before optimization, terse communication, honest uncertainty</td>
-  <td><code>.claude/rules/nana-soul.md</code></td>
+  <td>Sets technical posture, voice, thinking protocol, memory discipline. File lifecycle routing table.</td>
+  <td><code>.claude/rules/nana-soul.md</code>, <code>nana-personal.md</code>, <code>file-lifecycle.md</code></td>
 </tr>
 <tr>
   <td><strong>3. Hooks &amp; Skills</strong></td>
-  <td>Claude Code lifecycle automation</td>
-  <td>SessionStart, PreToolUse (Bash), PostToolUse (Write/Edit), Stop</td>
-  <td>Auto-format, block dangerous commands, scan secrets, audit writes, gate tests, review code</td>
-  <td><code>.claude/hooks/*</code>, <code>.claude/settings.json</code></td>
+  <td>24 skills + 12 lifecycle hooks</td>
+  <td>SessionStart, PreToolUse, PostToolUse, PreCompact, Stop</td>
+  <td>Auto-format, block dangerous commands, scan secrets, audit writes, post-commit detection, loop detection, crash recovery, gate tests, review code. 24 skills including dev lifecycle, wiki, scaffold, spec, /nana, /memory-consolidate.</td>
+  <td><code>.claude/hooks/*</code>, <code>.claude/skills/*</code>, <code>.claude/settings.json</code></td>
 </tr>
 <tr>
-  <td><strong>4. Pre-commit</strong></td>
+  <td><strong>4. Enforcement</strong></td>
+  <td>Spec + deliverable gating</td>
+  <td>PreToolUse (writes), Stop (session end), PostToolUse (failures)</td>
+  <td>Blocks writes without approved spec. Checks deliverables at stop. Detects repeated failure loops. Events logged to <code>.dev-wiki/enforcement.log</code>.</td>
+  <td><code>enforce-spec.sh</code>, <code>enforce-loop.sh</code>, <code>detect-loop.sh</code> (global)</td>
+</tr>
+<tr>
+  <td><strong>5. Eval</strong></td>
+  <td>43-scenario binary-scored harness</td>
+  <td>On demand (<code>make eval</code>)</td>
+  <td>Validates hook contracts, skill artifacts, lifecycle compliance, context injection. Requires jq.</td>
+  <td><code>eval/corpus/*</code>, <code>scripts/eval-runner.sh</code></td>
+</tr>
+<tr>
+  <td><strong>6. Pre-commit</strong></td>
   <td>Commit-time guardrails</td>
   <td>On <code>git commit</code> (via pre-commit framework)</td>
   <td>Enforces ruff lint+format, mypy strict, gitleaks secret scan, notebook hygiene, AGENTS.md sync</td>
   <td><code>.pre-commit-config.yaml</code></td>
 </tr>
 <tr>
-  <td><strong>5. CI</strong></td>
+  <td><strong>7. CI</strong></td>
   <td>GitHub Actions pipeline</td>
   <td>On push/PR to main</td>
   <td>4 parallel jobs: lint (ruff), typecheck (mypy), test (pytest 85% coverage gate), security (pip audit + gitleaks)</td>
@@ -375,16 +395,27 @@ def generate_html():
        │
        ▼
   ┌─── Layer 3: Hooks ───────────────────────────────────────┐
-  │ PostToolUse → auto-ruff-format (instant fix)             │
-  │ PostToolUse → scan-secrets (warn on write)               │
-  │ PostToolUse → audit-log (record every change)            │
-  │ PreToolUse  → block-dangerous-bash (prevent rm -rf, etc) │
-  │ Stop        → check-tests-were-run (gate completion)     │
-  │ Stop        → py-review (6-point checklist)              │
+  │ SessionStart → session-start.sh (context + crash recovery)│
+  │ PreToolUse   → block-dangerous-bash (prevent rm -rf, etc) │
+  │ PostToolUse  → auto-ruff-format (instant fix)             │
+  │ PostToolUse  → scan-secrets (warn on write)               │
+  │ PostToolUse  → audit-log (record every change)            │
+  │ PostToolUse  → post-commit (detect git commits)           │
+  │ PostToolUse  → detect-loop (warn on repeated failures)    │
+  │ PreCompact   → pre-compact (inject state before compact)  │
+  │ Stop         → check-tests-were-run (gate completion)     │
+  │ Stop         → py-review (6-point checklist)              │
   └──────────────────────────────────────────────────────────┘
        │
        ▼
-  ┌─── Layer 4: Pre-commit ───────────────┐
+  ┌─── Layer 4: Enforcement (global hooks) ──────────────────┐
+  │ PreToolUse  → enforce-spec (block writes without spec)    │
+  │ Stop        → enforce-loop (check deliverables + debrief) │
+  │ Events logged to .dev-wiki/enforcement.log (500-line cap) │
+  └──────────────────────────────────────────────────────────┘
+       │
+       ▼
+  ┌─── Layer 6: Pre-commit ───────────────┐
   │ ruff lint + format (catch what hooks   │
   │   missed or human edits introduced)    │
   │ mypy strict (type safety)              │
@@ -393,7 +424,7 @@ def generate_html():
   └────────────────────────────────────────┘
        │
        ▼
-  ┌─── Layer 5: CI ──────────────────────────────┐
+  ┌─── Layer 7: CI ──────────────────────────────┐
   │ 4 parallel jobs: lint, typecheck, test,       │
   │ security — final gate before merge to main    │
   │ 85% coverage floor enforced                   │
@@ -411,26 +442,41 @@ def generate_html():
 
     hook_details = [
         ("SessionStart", "—", "session-start.sh",
-         "Loads project context from 4 sources (dev-wiki, memory, project state, session state). All optional — missing files silently skipped.",
+         "Loads context (dev-wiki state, gate check, session state), checks enforcement status, detects crash recovery, clears stale sidecars, emits <code>[nana:kit]</code> summary.",
          "0 = success (always)"),
         ("PreToolUse", "Bash", "block-dangerous-bash.sh",
-         "Blocks: <code>rm -rf /|~|..</code>, <code>git push --force</code>, <code>--no-verify</code>, <code>git reset --hard</code>. Pattern-matched via grep.",
-         "0 = allow, 2 = block (stderr shown to AI)"),
+         "Blocks: <code>rm -rf /|~|..</code>, <code>git push --force</code>, <code>--no-verify</code>, <code>git reset --hard</code>, <code>chmod 777</code>. Pattern-matched via jq + grep.",
+         "0 = allow, 2 = block"),
+        ("PreToolUse", "Write|Edit", "enforce-spec.sh",
+         "Blocks implementation writes without approved spec. Checks provenance marker (<code>&lt;!-- nana:approved --&gt;</code>) or exit criteria. Path allowlist for meta/test/docs. Events logged.",
+         "0 = allow, 2 = block (global hook)"),
         ("PostToolUse", "Write|Edit|MultiEdit", "auto-ruff-format.sh",
-         "Auto-formats .py files with <code>uv run ruff check --fix</code> + <code>ruff format</code>. Silent on non-Python files. Requires uv.",
-         "0 = success (always, errors suppressed)"),
+         "Auto-formats .py files with <code>ruff check --fix</code> + <code>ruff format</code>. Silent on non-Python files.",
+         "0 = success (always)"),
         ("PostToolUse", "Write|Edit|MultiEdit", "scan-secrets.sh",
-         "Scans written files via gitleaks (preferred) or fallback regex for API keys, tokens, passwords. Warns on stderr, does not block.",
-         "0 = success (always, warning only)"),
+         "Scans written files via gitleaks (preferred) or fallback regex for API keys, tokens, passwords.",
+         "0 = success (warning only)"),
         ("PostToolUse", "Write|Edit|MultiEdit", "audit-log.sh",
-         "Appends JSONL record to <code>.nana/audit.jsonl</code>: timestamp, tool name, file path, model. Creates .nana/ if needed.",
+         "Appends JSONL record to <code>.nana/audit.jsonl</code>: timestamp, tool name, file path. Requires jq.",
+         "0 = success (always)"),
+        ("PostToolUse", "Bash", "post-commit.sh",
+         "Detects <code>git commit</code> (not amend/fixup). Writes <code>.dev-wiki/.pending-commit</code> sidecar JSON. Emits <code>[dev-wiki:post-commit]</code>.",
+         "0 = success (advisory)"),
+        ("PostToolUse", "Bash", "detect-loop.sh",
+         "Tracks consecutive identical failed commands. Warns after 3 repeats. Pure bash, no jq.",
+         "0 = success (advisory)"),
+        ("PreCompact", "—", "pre-compact.sh",
+         "Reads dev-wiki state and active-phase.md. Outputs structured summary injected into compacted context.",
          "0 = success (always)"),
         ("Stop", "—", "check-tests-were-run.sh",
-         "If Python files were modified in session, checks if <code>pytest</code> was run. Blocks stop if not — forces test execution.",
-         "0 = allow stop, 2 = force continue"),
+         "If Python files were modified, checks if <code>pytest</code> was run. Blocks stop if not.",
+         "0 = allow, 2 = force continue"),
+        ("Stop", "—", "enforce-loop.sh",
+         "Checks file-existence exit criteria from spec. Advisories: open tasks, debrief status. Events logged.",
+         "0 = allow, 2 = block (global hook)"),
         ("Stop", "—", "py-review-stop-prompt.md",
-         "Prompt-type hook: 6-point review checklist (duplicates, missing imports, bare excepts, test coverage, API usage, hardcoded secrets).",
-         "n/a (prompt, not script)"),
+         "Prompt-type hook: 6-point review checklist.",
+         "n/a (prompt)"),
     ]
 
     for event, matcher, script, behavior, exits in hook_details:
@@ -481,7 +527,7 @@ def generate_html():
         html += "</table>\n"
 
     # Pre-commit hooks detail
-    html += """<h3>Pre-commit Hooks (Layer 4 Detail)</h3>
+    html += """<h3>Pre-commit Hooks (Layer 6 Detail)</h3>
 <table>
 <tr><th>Hook ID</th><th>Source</th><th>Purpose</th></tr>
 """
@@ -503,7 +549,7 @@ def generate_html():
     html += "</table>\n"
 
     # CI jobs detail
-    html += """<h3>CI Pipeline (Layer 5 Detail)</h3>
+    html += """<h3>CI Pipeline (Layer 7 Detail)</h3>
 <table>
 <tr><th>Job</th><th>Steps</th></tr>
 """
@@ -564,7 +610,7 @@ def generate_html():
 <div class="quality-card">
 <h4>Graceful Degradation</h4>
 <ul>
-<li>Session-start hook: each of 4 sources independently optional — missing files silently skipped</li>
+<li>Session-start hook: each context source independently optional — missing files silently skipped</li>
 <li>auto-ruff-format: requires uv + ruff — silently no-ops if unavailable</li>
 <li>scan-secrets: falls back from gitleaks to regex if gitleaks not installed</li>
 <li>Venv bootstrap: warns and continues if python3 -m venv unavailable — memory is optional</li>
@@ -607,15 +653,17 @@ def generate_html():
 <pre>
   Session start
        │
-       ├── session-start.sh reads 4 optional sources
+       ├── session-start.sh loads context + enforcement + crash recovery
        │
   Tool use
        │
-       ├── Bash command ──→ block-dangerous-bash.sh (PreToolUse)
+       ├── Bash command ──→ block-dangerous-bash.sh (PreToolUse, jq)
+       │               └──→ detect-loop.sh (PostToolUse, pure bash)
        │
-       └── File write ───→ auto-ruff-format.sh ──→ requires: uv, ruff
-                      ├──→ scan-secrets.sh ───────→ prefers: gitleaks
-                      └──→ audit-log.sh ──────────→ requires: python3 (json)
+       ├── File write ───→ enforce-spec.sh ──────→ requires: jq (global)
+       │              ├──→ auto-ruff-format.sh ──→ requires: ruff
+       │              ├──→ scan-secrets.sh ───────→ prefers: gitleaks
+       │              └──→ audit-log.sh ──────────→ requires: jq
 
   git commit ──→ .pre-commit-config.yaml
        │
@@ -663,10 +711,10 @@ def generate_html():
   │                        Session Start                            │
   │                                                                 │
   │   .dev-wiki/_CURRENT_STATE.md ──┐                               │
-  │   .memory/MEMORY.md ────────────┤                               │
-  │   PROJECT_STATE.md ─────────────┼──→ session-start.sh ──→ stdout│
-  │   .claude/rules/py-session-     │    (frozen snapshot)          │
-  │        state.md ────────────────┘                               │
+  │   .claude/rules/active-phase.md ┤                               │
+  │   py-session-state.md ──────────┼──→ session-start.sh ──→ stdout│
+  │   crash recovery check ─────────┤    + [nana:kit] summary      │
+  │   enforcement status ───────────┘                               │
   │                                                                 │
   │   Claude Code ingests stdout as session context                 │
   └─────────────────────────────────────────────────────────────────┘
@@ -688,9 +736,61 @@ def generate_html():
   │                                                                 │
   │   Decisions ──→ .dev-wiki/articles/decisions/                   │
   │   Journal ────→ .dev-wiki/articles/journal/                     │
+  │   Memory ─────→ memory_store (harvest corrections/preferences)  │
   │   State ──────→ .dev-wiki/_CURRENT_STATE.md                     │
   │   Tasks ──────→ .dev-wiki/tasks.md                              │
   └─────────────────────────────────────────────────────────────────┘
+</pre>
+
+<h3>Enforcement Layer</h3>
+<pre>
+  Implementation write attempt
+       │
+       ▼
+  ┌─── enforce-spec.sh (PreToolUse) ─────────────────────────┐
+  │ 1. Check .claude/enforce marker (opt-in per project)      │
+  │ 2. Check path allowlist (meta/test/docs always allowed)   │
+  │ 3. Check active-phase.md gate ([x] spec)                  │
+  │ 4. Check specs/<slug>.md:                                 │
+  │    ├── &lt;!-- nana:approved --&gt; marker → allow            │
+  │    └── exit criteria present → allow (backward compat)    │
+  │ 5. No valid spec → EXIT 2 (block)                         │
+  │ All decisions logged to .dev-wiki/enforcement.log         │
+  └──────────────────────────────────────────────────────────┘
+
+  Session stop
+       │
+       ▼
+  ┌─── enforce-loop.sh (Stop) ───────────────────────────────┐
+  │ 1. Run file-existence exit criteria from spec             │
+  │ 2. Count open tasks (advisory)                            │
+  │ 3. Check debrief status (advisory)                        │
+  │ Missing deliverable → EXIT 2 (block)                      │
+  └──────────────────────────────────────────────────────────┘
+</pre>
+
+<h3>Memory Bridge Flow</h3>
+<pre>
+  /dev-plan (planning)
+       │
+       ├── memory_store ──→ bridge-decision entries
+       │                    (category: custom, tags: [bridge-decision])
+       │
+  /wiki-query (retrieval)
+       │
+       ├── memory_search ──→ includes memory results in analysis
+       │                     alongside wiki articles
+       │
+  /dev-debrief (capture)
+       │
+       ├── memory_store ──→ harvest corrections, preferences, lessons
+       │                    (auto-supersession of conflicting entries)
+       │
+  /memory-consolidate (maintenance)
+       │
+       └── memory_search + memory_store + memory_forget
+           ──→ Claude-powered cluster identification and merge
+               (10-merge cap, dry-run mode, no Qwen sidecar needed)
 </pre>
 
 <footer>
@@ -710,25 +810,47 @@ def _template_purpose(path):
         ".github/instructions/nana.instructions.md": "Nana identity for GitHub Copilot",
         ".github/instructions/workflow.instructions.md": "Workflow instructions for Copilot",
         ".claude/rules/nana-soul.md": "Development personality and technical posture",
+        ".claude/rules/nana-personal.md": "User profile template (preserved on re-install)",
+        ".claude/rules/file-lifecycle.md": "File ownership routing table (user/agent/skill/hook)",
         ".claude/rules/py-session-state.md": "Compaction-safe session state template",
-        ".claude/hooks/session-start.sh": "SessionStart: loads 4 context sources",
+        ".claude/hooks/session-start.sh": "SessionStart: loads context, crash recovery, enforcement, [nana:kit]",
         ".claude/hooks/block-dangerous-bash.sh": "PreToolUse: blocks rm -rf, force-push, --no-verify",
+        ".claude/hooks/enforce-spec.sh": "PreToolUse: blocks writes without approved spec (global)",
         ".claude/hooks/auto-ruff-format.sh": "PostToolUse: auto-formats Python with ruff",
         ".claude/hooks/scan-secrets.sh": "PostToolUse: scans for hardcoded secrets",
         ".claude/hooks/audit-log.sh": "PostToolUse: JSONL audit trail of all writes",
+        ".claude/hooks/post-commit.sh": "PostToolUse: detects git commits, writes .pending-commit",
+        ".claude/hooks/detect-loop.sh": "PostToolUse: warns on 3+ identical failed commands",
+        ".claude/hooks/pre-compact.sh": "PreCompact: injects dev-wiki state before context compaction",
         ".claude/hooks/check-tests-were-run.sh": "Stop: gates completion on pytest execution",
+        ".claude/hooks/enforce-loop.sh": "Stop: checks deliverables + debrief status (global)",
         ".claude/hooks/py-review-stop-prompt.md": "Stop: 6-point code review checklist prompt",
         ".claude/settings.json": "Hook wiring: maps lifecycle events to scripts",
-        ".claude/skills/py-init/SKILL.md": "/py-init skill: scaffold or retrofit harness",
-        ".claude/skills/py-init/scanner.md": "10-dimension feasibility scanner for existing projects",
-        ".claude/skills/py-init/transform.md": "Transform procedure for upgrading existing projects",
         ".pre-commit-config.yaml": "9 pre-commit hooks: ruff, mypy, gitleaks, sync-rules, notebooks",
         ".github/workflows/ci.yml": "4-job CI: lint, typecheck, test (85% gate), security",
         ".github/PULL_REQUEST_TEMPLATE.md": "PR template with checklist",
         ".github/CODEOWNERS": "Code ownership for review assignment",
         "pyproject.toml": "Python project config with ruff + mypy settings",
     }
-    return purposes.get(path, "")
+    if path in purposes:
+        return purposes[path]
+    manifest_descs = get_manifest_descriptions()
+    for skill_dir, desc in manifest_descs.items():
+        if skill_dir in path:
+            return desc
+    return ""
+
+
+def get_manifest_descriptions():
+    import re
+    manifest = ROOT / "templates" / ".claude" / "skills" / "MANIFEST"
+    descs = {}
+    if manifest.is_file():
+        for line in manifest.read_text().splitlines():
+            m = re.match(r'^# (\S+): (.+)$', line)
+            if m:
+                descs[m.group(1)] = m.group(2)
+    return descs
 
 
 if __name__ == "__main__":

@@ -55,13 +55,13 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <body>
 
 <h1>Nana Dev Kit &mdash; Workflow Breakdown</h1>
-<p class="subtitle">5-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-05-23 21:28</p>
+<p class="subtitle">7-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-05-23 22:30</p>
 
 <div class="toc">
 <h3>Contents</h3>
 <ol>
 <li><a href="#flows">End-to-End Flows</a></li>
-<li><a href="#layers">The 5 Layers &mdash; Deep Dive</a></li>
+<li><a href="#layers">The 7 Layers &mdash; Deep Dive</a></li>
 <li><a href="#hooks">Hook System Walkthrough</a></li>
 <li><a href="#templates">Template Inventory</a></li>
 <li><a href="#quality">Quality Signals</a></li>
@@ -75,16 +75,17 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 
 <div class="flow">
 <div class="flow-title">Install Flow</div>
-<div class="flow-trigger">Trigger: <code>git clone &hellip; &amp;&amp; ~/nana-dev-kit/install.sh</code> &mdash; run once per machine</div>
+<div class="flow-trigger">Trigger: <code>git clone &hellip; &amp;&amp; ~/nana-dev-kit/install.sh [--all|--core-only|--no-python|--dry-run|--status]</code></div>
 <ol>
-<li>Validates source files exist (SKILL.md, nana-soul.md, memory_server/)</li>
-<li>Copies <code>/py-init</code> skill &rarr; <code>~/.claude/skills/py-init/SKILL.md</code></li>
-<li>Copies identity rule &rarr; <code>~/.claude/rules/nana-soul.md</code></li>
-<li>Writes kit path &rarr; <code>~/.claude/.nana-dev-kit-path</code></li>
-<li>Copies memory server &rarr; <code>~/.claude/memory_server/</code> (12 .py + requirements.txt)</li>
-<li>Creates isolated venv at <code>~/.claude/memory_server/.venv/</code> (graceful fallback if <code>python3 -m venv</code> unavailable)</li>
-<li>Pip-installs required deps: mcp, pydantic, pyyaml, nanoid, httpx</li>
-<li>Registers MCP server in <code>~/.claude/settings.json</code> via idempotent JSON merge (handles: no file, existing without mcpServers, existing with mcpServers)</li>
+<li>Validates source files exist. Parses module flags (default: <code>--all</code>)</li>
+<li><strong>Core module:</strong> copies 3 identity rules (nana-soul.md, nana-personal.md, file-lifecycle.md) + kit path marker + memory_server/</li>
+<li><strong>Python module:</strong> copies py-init + spec skills (skip with <code>--no-python</code>)</li>
+<li><strong>Dev-wiki module:</strong> copies 6 dev-lifecycle skill dirs + 5 global enforcement hooks to <code>~/.claude/hooks/</code></li>
+<li><strong>Knowledge-wiki module:</strong> copies 11 wiki skill dirs</li>
+<li>Creates isolated venv at <code>~/.claude/memory_server/.venv/</code>, installs deps</li>
+<li>Registers MCP server + hook events in <code>~/.claude/settings.json</code> via idempotent JSON merge</li>
+<li>Creates <code>.claude/enforce</code> marker for project opt-in</li>
+<li>Outputs &ldquo;Getting Started&rdquo; with 3 paths: <code>/dev-init</code>, <code>/py-init</code>, <code>/wiki-init</code></li>
 </ol>
 </div>
 
@@ -125,30 +126,35 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <div class="flow-title">Development Flow</div>
 <div class="flow-trigger">Trigger: opening Claude Code in a scaffolded project</div>
 <ol>
-<li><strong>SessionStart hook</strong> fires &rarr; loads context from 4 sources (all optional, graceful skip):
+<li><strong>SessionStart hook</strong> fires &rarr; loads context and runs checks:
   <ul>
   <li><code>.dev-wiki/_CURRENT_STATE.md</code> &mdash; active phase + recommended action</li>
-  <li><code>.memory/MEMORY.md</code> &mdash; project memory snapshot</li>
-  <li><code>PROJECT_STATE.md</code> &mdash; manual cross-session notes</li>
+  <li><code>.claude/rules/active-phase.md</code> &mdash; gate compliance check</li>
   <li><code>.claude/rules/py-session-state.md</code> &mdash; compaction-safe session state</li>
+  <li>Memory search guidance from active task topic</li>
+  <li>Stale <code>.pending-commit</code> sidecar detection</li>
+  <li>Crash recovery (commit mtime vs state mtime)</li>
+  <li>Enforcement status + <code>[nana:kit]</code> summary line</li>
   </ul></li>
 <li><strong>During coding</strong>: hooks fire on tool use:
   <ul>
-  <li>Every file write &rarr; auto-ruff-format + secret scan + audit log</li>
-  <li>Every bash command &rarr; dangerous command blocker</li>
+  <li>Every file write &rarr; auto-ruff-format + secret scan + audit log + post-commit detection</li>
+  <li>Every bash command &rarr; dangerous command blocker + loop detection</li>
+  <li>Implementation writes &rarr; enforce-spec blocks without approved spec</li>
   </ul></li>
-<li><strong>On stop</strong>: test gate checks if pytest ran (blocks if Python files modified but no test run) + 6-point code review prompt</li>
+<li><strong>On stop</strong>: enforce-loop checks deliverables, test gate checks pytest, 6-point code review prompt</li>
 </ol>
 </div>
 
 <div class="flow">
 <div class="flow-title">Lifecycle Flow</div>
-<div class="flow-trigger">Trigger: <code>/dev-init</code> &rarr; <code>/dev-plan</code> &rarr; implement &rarr; <code>/dev-debrief</code></div>
+<div class="flow-trigger">Trigger: <code>/dev-init</code> &rarr; <code>/spec</code> &rarr; <code>/dev-plan</code> &rarr; implement &rarr; <code>/dev-debrief</code></div>
 <ol>
 <li><code>/dev-init</code> &mdash; bootstraps <code>.dev-wiki/</code> with phases, architecture, state, tasks</li>
-<li><code>/dev-plan</code> &mdash; plans one phase at a time: loads state &rarr; asks questions &rarr; proposes approach &rarr; reviews &rarr; writes tasks</li>
+<li><code>/spec</code> &mdash; structured contract with adversarial constraints and two-tier review (Tier 0 structural lint + Tier 1 semantic subagent). Provenance marker <code>&lt;!-- nana:approved --&gt;</code></li>
+<li><code>/dev-plan</code> &mdash; plans one phase: state loader &rarr; cross-wiki knowledge &rarr; T0 thinking &rarr; approach reviewer &rarr; plan reviewer &rarr; artifact writer</li>
 <li><strong>Implement</strong> &mdash; follows task order with TDD cycle (RED &rarr; GREEN &rarr; REFACTOR &rarr; VERIFY). Success criteria verified per task. Blocked after 3 failed attempts.</li>
-<li><code>/dev-debrief</code> &mdash; captures session work: decisions, journal, state refresh</li>
+<li><code>/dev-debrief</code> &mdash; significance-scored capture: decisions, journal, memory harvest, review gate, state refresh</li>
 </ol>
 </div>
 
@@ -169,7 +175,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 </div>
 
 <!-- ============================================================ -->
-<h2 id="layers">2. The 5 Layers &mdash; Deep Dive</h2>
+<h2 id="layers">2. The 7 Layers &mdash; Deep Dive</h2>
 
 <table>
 <tr><th>Layer</th><th>What</th><th>When It Fires</th><th>Effect</th><th>Key Files</th></tr>
@@ -182,27 +188,41 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 </tr>
 <tr>
   <td><strong>2. Identity</strong></td>
-  <td>Development personality</td>
+  <td>Development personality + file lifecycle</td>
   <td>Loaded as global Claude Code rule (always active)</td>
-  <td>Sets technical posture: simplicity over cleverness, measurement before optimization, terse communication, honest uncertainty</td>
-  <td><code>.claude/rules/nana-soul.md</code></td>
+  <td>Sets technical posture, voice, thinking protocol, memory discipline. File lifecycle routing table.</td>
+  <td><code>.claude/rules/nana-soul.md</code>, <code>nana-personal.md</code>, <code>file-lifecycle.md</code></td>
 </tr>
 <tr>
   <td><strong>3. Hooks &amp; Skills</strong></td>
-  <td>Claude Code lifecycle automation</td>
-  <td>SessionStart, PreToolUse (Bash), PostToolUse (Write/Edit), Stop</td>
-  <td>Auto-format, block dangerous commands, scan secrets, audit writes, gate tests, review code</td>
-  <td><code>.claude/hooks/*</code>, <code>.claude/settings.json</code></td>
+  <td>24 skills + 12 lifecycle hooks</td>
+  <td>SessionStart, PreToolUse, PostToolUse, PreCompact, Stop</td>
+  <td>Auto-format, block dangerous commands, scan secrets, audit writes, post-commit detection, loop detection, crash recovery, gate tests, review code. 24 skills including dev lifecycle, wiki, scaffold, spec, /nana, /memory-consolidate.</td>
+  <td><code>.claude/hooks/*</code>, <code>.claude/skills/*</code>, <code>.claude/settings.json</code></td>
 </tr>
 <tr>
-  <td><strong>4. Pre-commit</strong></td>
+  <td><strong>4. Enforcement</strong></td>
+  <td>Spec + deliverable gating</td>
+  <td>PreToolUse (writes), Stop (session end), PostToolUse (failures)</td>
+  <td>Blocks writes without approved spec. Checks deliverables at stop. Detects repeated failure loops. Events logged to <code>.dev-wiki/enforcement.log</code>.</td>
+  <td><code>enforce-spec.sh</code>, <code>enforce-loop.sh</code>, <code>detect-loop.sh</code> (global)</td>
+</tr>
+<tr>
+  <td><strong>5. Eval</strong></td>
+  <td>43-scenario binary-scored harness</td>
+  <td>On demand (<code>make eval</code>)</td>
+  <td>Validates hook contracts, skill artifacts, lifecycle compliance, context injection. Requires jq.</td>
+  <td><code>eval/corpus/*</code>, <code>scripts/eval-runner.sh</code></td>
+</tr>
+<tr>
+  <td><strong>6. Pre-commit</strong></td>
   <td>Commit-time guardrails</td>
   <td>On <code>git commit</code> (via pre-commit framework)</td>
   <td>Enforces ruff lint+format, mypy strict, gitleaks secret scan, notebook hygiene, AGENTS.md sync</td>
   <td><code>.pre-commit-config.yaml</code></td>
 </tr>
 <tr>
-  <td><strong>5. CI</strong></td>
+  <td><strong>7. CI</strong></td>
   <td>GitHub Actions pipeline</td>
   <td>On push/PR to main</td>
   <td>4 parallel jobs: lint (ruff), typecheck (mypy), test (pytest 85% coverage gate), security (pip audit + gitleaks)</td>
@@ -217,16 +237,27 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
        │
        ▼
   ┌─── Layer 3: Hooks ───────────────────────────────────────┐
-  │ PostToolUse → auto-ruff-format (instant fix)             │
-  │ PostToolUse → scan-secrets (warn on write)               │
-  │ PostToolUse → audit-log (record every change)            │
-  │ PreToolUse  → block-dangerous-bash (prevent rm -rf, etc) │
-  │ Stop        → check-tests-were-run (gate completion)     │
-  │ Stop        → py-review (6-point checklist)              │
+  │ SessionStart → session-start.sh (context + crash recovery)│
+  │ PreToolUse   → block-dangerous-bash (prevent rm -rf, etc) │
+  │ PostToolUse  → auto-ruff-format (instant fix)             │
+  │ PostToolUse  → scan-secrets (warn on write)               │
+  │ PostToolUse  → audit-log (record every change)            │
+  │ PostToolUse  → post-commit (detect git commits)           │
+  │ PostToolUse  → detect-loop (warn on repeated failures)    │
+  │ PreCompact   → pre-compact (inject state before compact)  │
+  │ Stop         → check-tests-were-run (gate completion)     │
+  │ Stop         → py-review (6-point checklist)              │
   └──────────────────────────────────────────────────────────┘
        │
        ▼
-  ┌─── Layer 4: Pre-commit ───────────────┐
+  ┌─── Layer 4: Enforcement (global hooks) ──────────────────┐
+  │ PreToolUse  → enforce-spec (block writes without spec)    │
+  │ Stop        → enforce-loop (check deliverables + debrief) │
+  │ Events logged to .dev-wiki/enforcement.log (500-line cap) │
+  └──────────────────────────────────────────────────────────┘
+       │
+       ▼
+  ┌─── Layer 6: Pre-commit ───────────────┐
   │ ruff lint + format (catch what hooks   │
   │   missed or human edits introduced)    │
   │ mypy strict (type safety)              │
@@ -235,7 +266,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
   └────────────────────────────────────────┘
        │
        ▼
-  ┌─── Layer 5: CI ──────────────────────────────┐
+  ┌─── Layer 7: CI ──────────────────────────────┐
   │ 4 parallel jobs: lint, typecheck, test,       │
   │ security — final gate before merge to main    │
   │ 85% coverage floor enforced                   │
@@ -253,50 +284,85 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
   <td><code>SessionStart</code></td>
   <td><code>—</code></td>
   <td><code>session-start.sh</code></td>
-  <td>Loads project context from 4 sources (dev-wiki, memory, project state, session state). All optional — missing files silently skipped.</td>
+  <td>Loads context (dev-wiki state, gate check, session state), checks enforcement status, detects crash recovery, clears stale sidecars, emits <code>[nana:kit]</code> summary.</td>
   <td><span style="font-size:0.82rem">0 = success (always)</span></td>
 </tr>
 <tr>
   <td><code>PreToolUse</code></td>
   <td><code>Bash</code></td>
   <td><code>block-dangerous-bash.sh</code></td>
-  <td>Blocks: <code>rm -rf /|~|..</code>, <code>git push --force</code>, <code>--no-verify</code>, <code>git reset --hard</code>. Pattern-matched via grep.</td>
-  <td><span style="font-size:0.82rem">0 = allow, 2 = block (stderr shown to AI)</span></td>
+  <td>Blocks: <code>rm -rf /|~|..</code>, <code>git push --force</code>, <code>--no-verify</code>, <code>git reset --hard</code>, <code>chmod 777</code>. Pattern-matched via jq + grep.</td>
+  <td><span style="font-size:0.82rem">0 = allow, 2 = block</span></td>
+</tr>
+<tr>
+  <td><code>PreToolUse</code></td>
+  <td><code>Write|Edit</code></td>
+  <td><code>enforce-spec.sh</code></td>
+  <td>Blocks implementation writes without approved spec. Checks provenance marker (<code>&lt;!-- nana:approved --&gt;</code>) or exit criteria. Path allowlist for meta/test/docs. Events logged.</td>
+  <td><span style="font-size:0.82rem">0 = allow, 2 = block (global hook)</span></td>
 </tr>
 <tr>
   <td><code>PostToolUse</code></td>
   <td><code>Write|Edit|MultiEdit</code></td>
   <td><code>auto-ruff-format.sh</code></td>
-  <td>Auto-formats .py files with <code>uv run ruff check --fix</code> + <code>ruff format</code>. Silent on non-Python files. Requires uv.</td>
-  <td><span style="font-size:0.82rem">0 = success (always, errors suppressed)</span></td>
+  <td>Auto-formats .py files with <code>ruff check --fix</code> + <code>ruff format</code>. Silent on non-Python files.</td>
+  <td><span style="font-size:0.82rem">0 = success (always)</span></td>
 </tr>
 <tr>
   <td><code>PostToolUse</code></td>
   <td><code>Write|Edit|MultiEdit</code></td>
   <td><code>scan-secrets.sh</code></td>
-  <td>Scans written files via gitleaks (preferred) or fallback regex for API keys, tokens, passwords. Warns on stderr, does not block.</td>
-  <td><span style="font-size:0.82rem">0 = success (always, warning only)</span></td>
+  <td>Scans written files via gitleaks (preferred) or fallback regex for API keys, tokens, passwords.</td>
+  <td><span style="font-size:0.82rem">0 = success (warning only)</span></td>
 </tr>
 <tr>
   <td><code>PostToolUse</code></td>
   <td><code>Write|Edit|MultiEdit</code></td>
   <td><code>audit-log.sh</code></td>
-  <td>Appends JSONL record to <code>.nana/audit.jsonl</code>: timestamp, tool name, file path, model. Creates .nana/ if needed.</td>
+  <td>Appends JSONL record to <code>.nana/audit.jsonl</code>: timestamp, tool name, file path. Requires jq.</td>
+  <td><span style="font-size:0.82rem">0 = success (always)</span></td>
+</tr>
+<tr>
+  <td><code>PostToolUse</code></td>
+  <td><code>Bash</code></td>
+  <td><code>post-commit.sh</code></td>
+  <td>Detects <code>git commit</code> (not amend/fixup). Writes <code>.dev-wiki/.pending-commit</code> sidecar JSON. Emits <code>[dev-wiki:post-commit]</code>.</td>
+  <td><span style="font-size:0.82rem">0 = success (advisory)</span></td>
+</tr>
+<tr>
+  <td><code>PostToolUse</code></td>
+  <td><code>Bash</code></td>
+  <td><code>detect-loop.sh</code></td>
+  <td>Tracks consecutive identical failed commands. Warns after 3 repeats. Pure bash, no jq.</td>
+  <td><span style="font-size:0.82rem">0 = success (advisory)</span></td>
+</tr>
+<tr>
+  <td><code>PreCompact</code></td>
+  <td><code>—</code></td>
+  <td><code>pre-compact.sh</code></td>
+  <td>Reads dev-wiki state and active-phase.md. Outputs structured summary injected into compacted context.</td>
   <td><span style="font-size:0.82rem">0 = success (always)</span></td>
 </tr>
 <tr>
   <td><code>Stop</code></td>
   <td><code>—</code></td>
   <td><code>check-tests-were-run.sh</code></td>
-  <td>If Python files were modified in session, checks if <code>pytest</code> was run. Blocks stop if not — forces test execution.</td>
-  <td><span style="font-size:0.82rem">0 = allow stop, 2 = force continue</span></td>
+  <td>If Python files were modified, checks if <code>pytest</code> was run. Blocks stop if not.</td>
+  <td><span style="font-size:0.82rem">0 = allow, 2 = force continue</span></td>
+</tr>
+<tr>
+  <td><code>Stop</code></td>
+  <td><code>—</code></td>
+  <td><code>enforce-loop.sh</code></td>
+  <td>Checks file-existence exit criteria from spec. Advisories: open tasks, debrief status. Events logged.</td>
+  <td><span style="font-size:0.82rem">0 = allow, 2 = block (global hook)</span></td>
 </tr>
 <tr>
   <td><code>Stop</code></td>
   <td><code>—</code></td>
   <td><code>py-review-stop-prompt.md</code></td>
-  <td>Prompt-type hook: 6-point review checklist (duplicates, missing imports, bare excepts, test coverage, API usage, hardcoded secrets).</td>
-  <td><span style="font-size:0.82rem">n/a (prompt, not script)</span></td>
+  <td>Prompt-type hook: 6-point review checklist.</td>
+  <td><span style="font-size:0.82rem">n/a (prompt)</span></td>
 </tr>
 </table>
 
@@ -322,7 +388,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <h3>Layer 1: Instructions <span class="badge badge-blue">4 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
-<tr><td><code>.claude/skills/dev-init/AGENTS.md</code></td><td>50</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-init/AGENTS.md</code></td><td>50</td><td>Bootstrap a .dev-wiki/ directory for a project.</td></tr>
 <tr><td><code>.github/instructions/nana.instructions.md</code></td><td>63</td><td>Nana identity for GitHub Copilot</td></tr>
 <tr><td><code>.github/instructions/workflow.instructions.md</code></td><td>37</td><td>Workflow instructions for Copilot</td></tr>
 <tr><td><code>AGENTS.md</code></td><td>86</td><td>Single source of truth for agent instructions</td></tr>
@@ -330,8 +396,8 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <h3>Layer 2: Identity <span class="badge badge-blue">4 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
-<tr><td><code>.claude/rules/file-lifecycle.md</code></td><td>32</td><td></td></tr>
-<tr><td><code>.claude/rules/nana-personal.md</code></td><td>5</td><td></td></tr>
+<tr><td><code>.claude/rules/file-lifecycle.md</code></td><td>32</td><td>File ownership routing table (user/agent/skill/hook)</td></tr>
+<tr><td><code>.claude/rules/nana-personal.md</code></td><td>5</td><td>User profile template (preserved on re-install)</td></tr>
 <tr><td><code>.claude/rules/nana-soul.md</code></td><td>59</td><td>Development personality and technical posture</td></tr>
 <tr><td><code>.claude/rules/py-session-state.md</code></td><td>21</td><td>Compaction-safe session state template</td></tr>
 </table>
@@ -342,140 +408,140 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/hooks/auto-ruff-format.sh</code></td><td>17</td><td>PostToolUse: auto-formats Python with ruff</td></tr>
 <tr><td><code>.claude/hooks/block-dangerous-bash.sh</code></td><td>37</td><td>PreToolUse: blocks rm -rf, force-push, --no-verify</td></tr>
 <tr><td><code>.claude/hooks/check-tests-were-run.sh</code></td><td>28</td><td>Stop: gates completion on pytest execution</td></tr>
-<tr><td><code>.claude/hooks/detect-loop.sh</code></td><td>58</td><td></td></tr>
-<tr><td><code>.claude/hooks/enforce-loop.sh</code></td><td>107</td><td></td></tr>
-<tr><td><code>.claude/hooks/enforce-spec.sh</code></td><td>71</td><td></td></tr>
-<tr><td><code>.claude/hooks/post-commit.sh</code></td><td>60</td><td></td></tr>
-<tr><td><code>.claude/hooks/pre-compact.sh</code></td><td>50</td><td></td></tr>
+<tr><td><code>.claude/hooks/detect-loop.sh</code></td><td>58</td><td>PostToolUse: warns on 3+ identical failed commands</td></tr>
+<tr><td><code>.claude/hooks/enforce-loop.sh</code></td><td>107</td><td>Stop: checks deliverables + debrief status (global)</td></tr>
+<tr><td><code>.claude/hooks/enforce-spec.sh</code></td><td>71</td><td>PreToolUse: blocks writes without approved spec (global)</td></tr>
+<tr><td><code>.claude/hooks/post-commit.sh</code></td><td>60</td><td>PostToolUse: detects git commits, writes .pending-commit</td></tr>
+<tr><td><code>.claude/hooks/pre-compact.sh</code></td><td>50</td><td>PreCompact: injects dev-wiki state before context compaction</td></tr>
 <tr><td><code>.claude/hooks/py-review-stop-prompt.md</code></td><td>10</td><td>Stop: 6-point code review checklist prompt</td></tr>
 <tr><td><code>.claude/hooks/scan-secrets.sh</code></td><td>26</td><td>PostToolUse: scans for hardcoded secrets</td></tr>
 <tr><td><code>.claude/hooks/session-start.d/memory-nudge.sh</code></td><td>29</td><td></td></tr>
 <tr><td><code>.claude/hooks/session-start.d/wk-prune.sh</code></td><td>54</td><td></td></tr>
-<tr><td><code>.claude/hooks/session-start.sh</code></td><td>98</td><td>SessionStart: loads 4 context sources</td></tr>
+<tr><td><code>.claude/hooks/session-start.sh</code></td><td>98</td><td>SessionStart: loads context, crash recovery, enforcement, [nana:kit]</td></tr>
 <tr><td><code>.claude/settings.json</code></td><td>77</td><td>Hook wiring: maps lifecycle events to scripts</td></tr>
 </table>
 <h3>Layer 3: Skills <span class="badge badge-blue">119 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
 <tr><td><code>.claude/skills/MANIFEST</code></td><td>143</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-check/SKILL.md</code></td><td>150</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-debrief/SKILL.md</code></td><td>310</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-debrief/active-knowledge-transition.md</code></td><td>19</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-debrief/architecture-staleness-check.md</code></td><td>19</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-debrief/claude-md-refresh.md</code></td><td>33</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-debrief/debrief-finalization.md</code></td><td>29</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-debrief/executor-prompt.md</code></td><td>136</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-debrief/memory-harvest.md</code></td><td>63</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-debrief/quick-debrief-flow.md</code></td><td>26</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-debrief/retro-check.md</code></td><td>41</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-debrief/review-gate.md</code></td><td>32</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-debrief/reviewer-prompt.md</code></td><td>45</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-init/SKILL.md</code></td><td>214</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-init/init-scaffolding.md</code></td><td>49</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-init/scaffold-claude-md.md</code></td><td>49</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-init/project-CLAUDE.md</code></td><td>37</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-plan/SKILL.md</code></td><td>330</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-plan/approach-reviewer-prompt.md</code></td><td>63</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-plan/artifact-writer-prompt.md</code></td><td>103</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-plan/compaction-anchors-spec.md</code></td><td>71</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-plan/implementation-guide.md</code></td><td>76</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-plan/iterative-retrieval-spec.md</code></td><td>36</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-plan/memory-bridge.md</code></td><td>67</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-plan/plan-reviewer-prompt.md</code></td><td>79</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-plan/research-pause-spec.md</code></td><td>52</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-plan/scope-exploration-spec.md</code></td><td>25</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-plan/self-check-checklist.md</code></td><td>84</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-plan/spec-auto-invoke.md</code></td><td>48</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-plan/state-loader-prompt.md</code></td><td>114</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-plan/task-schema.md</code></td><td>86</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-scan/SKILL.md</code></td><td>241</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-scan/architecture-prompt.md</code></td><td>42</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-scan/content-hashing.md</code></td><td>62</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-scan/file-prompt.md</code></td><td>92</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-scan/module-prompt.md</code></td><td>73</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-scan/python-memory-checks.md</code></td><td>58</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-scan/python-scan-profile.md</code></td><td>70</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-scan/refresh-flow.md</code></td><td>17</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-wiki/SKILL.md</code></td><td>132</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-wiki/active-knowledge-spec.md</code></td><td>60</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-wiki/architecture-template.md</code></td><td>56</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-wiki/claude-md-lifecycle.md</code></td><td>53</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-wiki/decision-template.md</code></td><td>48</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-wiki/journal-templates.md</code></td><td>60</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-wiki/phase-template.md</code></td><td>64</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-wiki/size-budgets.md</code></td><td>19</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-wiki/slugification.md</code></td><td>57</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-wiki/stale-queue-spec.md</code></td><td>68</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-wiki/state-template.md</code></td><td>74</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-wiki/working-knowledge-spec.md</code></td><td>33</td><td></td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/SKILL.md</code></td><td>112</td><td></td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/article-conventions.md</code></td><td>173</td><td></td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/claim-spec.md</code></td><td>5</td><td></td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/content-model.md</code></td><td>188</td><td></td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/conversion-spec.md</code></td><td>80</td><td></td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/domain-profiles/aml-compliance.md</code></td><td>43</td><td></td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/domain-profiles/general.md</code></td><td>29</td><td></td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/domain-profiles/machine-learning.md</code></td><td>42</td><td></td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/domain-profiles/trading.md</code></td><td>42</td><td></td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/pipeline-spec.md</code></td><td>308</td><td></td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/registry-schema.md</code></td><td>78</td><td></td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/reviewer-checklist.md</code></td><td>162</td><td></td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/search-spec.md</code></td><td>170</td><td></td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/session-context.md</code></td><td>35</td><td></td></tr>
-<tr><td><code>.claude/skills/memory-consolidate/SKILL.md</code></td><td>45</td><td></td></tr>
-<tr><td><code>.claude/skills/nana/SKILL.md</code></td><td>37</td><td></td></tr>
-<tr><td><code>.claude/skills/py-init/SKILL.md</code></td><td>168</td><td>/py-init skill: scaffold or retrofit harness</td></tr>
-<tr><td><code>.claude/skills/py-init/scanner.md</code></td><td>102</td><td>10-dimension feasibility scanner for existing projects</td></tr>
-<tr><td><code>.claude/skills/py-init/transform.md</code></td><td>98</td><td>Transform procedure for upgrading existing projects</td></tr>
-<tr><td><code>.claude/skills/py-lint/SKILL.md</code></td><td>37</td><td></td></tr>
-<tr><td><code>.claude/skills/py-review/SKILL.md</code></td><td>58</td><td></td></tr>
-<tr><td><code>.claude/skills/py-test/SKILL.md</code></td><td>41</td><td></td></tr>
-<tr><td><code>.claude/skills/spec/SKILL.md</code></td><td>128</td><td></td></tr>
-<tr><td><code>.claude/skills/spec/adversarial-constraints-prompt.md</code></td><td>41</td><td></td></tr>
-<tr><td><code>.claude/skills/spec/spec-reviewer-prompt.md</code></td><td>77</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-absorb/SKILL.md</code></td><td>142</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-absorb/analyst-prompt.md</code></td><td>66</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-absorb/reviewer-prompt.md</code></td><td>43</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-absorb/verifier-prompt.md</code></td><td>117</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-absorb/writer-prompt.md</code></td><td>99</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-add/SKILL.md</code></td><td>143</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-add/analyst-prompt.md</code></td><td>66</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-add/reviewer-prompt.md</code></td><td>55</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-add/writer-prompt.md</code></td><td>94</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-bootstrap/SKILL.md</code></td><td>248</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-bootstrap/analyst-prompt.md</code></td><td>135</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-bootstrap/research-agent-prompt.md</code></td><td>97</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-bootstrap/research-loop-spec.md</code></td><td>61</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-bootstrap/reviewer-prompt.md</code></td><td>66</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-bootstrap/writer-prompt.md</code></td><td>129</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-consolidate/SKILL.md</code></td><td>123</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-consolidate/analyst-prompt.md</code></td><td>54</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-consolidate/consolidate.py</code></td><td>337</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-consolidate/reviewer-prompt.md</code></td><td>46</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-consolidate/writer-prompt.md</code></td><td>62</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-health/SKILL.md</code></td><td>218</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-health/dashboard-spec.md</code></td><td>80</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-health/empirical-anchor-spec.md</code></td><td>35</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-index/SKILL.md</code></td><td>65</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-index/convert.py</code></td><td>202</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-index/indexer.py</code></td><td>277</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-index/requirements-convert.txt</code></td><td>1</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-index/requirements.txt</code></td><td>3</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-index/search.py</code></td><td>200</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-index/wikilib.py</code></td><td>42</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-init/SKILL.md</code></td><td>217</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-init/analyst-prompt.md</code></td><td>42</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-init/reviewer-prompt.md</code></td><td>56</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-init/writer-prompt.md</code></td><td>115</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-query/SKILL.md</code></td><td>243</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-query/analyst-prompt.md</code></td><td>70</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-query/reviewer-prompt.md</code></td><td>76</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-query/writer-prompt.md</code></td><td>77</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-registry/SKILL.md</code></td><td>91</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-reorg/SKILL.md</code></td><td>94</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-reorg/analyst-prompt.md</code></td><td>74</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-reorg/reviewer-prompt.md</code></td><td>61</td><td></td></tr>
-<tr><td><code>.claude/skills/wiki-reorg/writer-prompt.md</code></td><td>93</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-check/SKILL.md</code></td><td>150</td><td>Diagnose dev wiki structural integrity and state consistency, then offer to auto-fix issues.</td></tr>
+<tr><td><code>.claude/skills/dev-debrief/SKILL.md</code></td><td>310</td><td>Tiered session capture with phase debriefs, decision logging, and memory harvesting.</td></tr>
+<tr><td><code>.claude/skills/dev-debrief/active-knowledge-transition.md</code></td><td>19</td><td>Tiered session capture with phase debriefs, decision logging, and memory harvesting.</td></tr>
+<tr><td><code>.claude/skills/dev-debrief/architecture-staleness-check.md</code></td><td>19</td><td>Tiered session capture with phase debriefs, decision logging, and memory harvesting.</td></tr>
+<tr><td><code>.claude/skills/dev-debrief/claude-md-refresh.md</code></td><td>33</td><td>Tiered session capture with phase debriefs, decision logging, and memory harvesting.</td></tr>
+<tr><td><code>.claude/skills/dev-debrief/debrief-finalization.md</code></td><td>29</td><td>Tiered session capture with phase debriefs, decision logging, and memory harvesting.</td></tr>
+<tr><td><code>.claude/skills/dev-debrief/executor-prompt.md</code></td><td>136</td><td>Tiered session capture with phase debriefs, decision logging, and memory harvesting.</td></tr>
+<tr><td><code>.claude/skills/dev-debrief/memory-harvest.md</code></td><td>63</td><td>Tiered session capture with phase debriefs, decision logging, and memory harvesting.</td></tr>
+<tr><td><code>.claude/skills/dev-debrief/quick-debrief-flow.md</code></td><td>26</td><td>Tiered session capture with phase debriefs, decision logging, and memory harvesting.</td></tr>
+<tr><td><code>.claude/skills/dev-debrief/retro-check.md</code></td><td>41</td><td>Tiered session capture with phase debriefs, decision logging, and memory harvesting.</td></tr>
+<tr><td><code>.claude/skills/dev-debrief/review-gate.md</code></td><td>32</td><td>Tiered session capture with phase debriefs, decision logging, and memory harvesting.</td></tr>
+<tr><td><code>.claude/skills/dev-debrief/reviewer-prompt.md</code></td><td>45</td><td>Tiered session capture with phase debriefs, decision logging, and memory harvesting.</td></tr>
+<tr><td><code>.claude/skills/dev-init/SKILL.md</code></td><td>214</td><td>Bootstrap a .dev-wiki/ directory for a project.</td></tr>
+<tr><td><code>.claude/skills/dev-init/init-scaffolding.md</code></td><td>49</td><td>Bootstrap a .dev-wiki/ directory for a project.</td></tr>
+<tr><td><code>.claude/skills/dev-init/scaffold-claude-md.md</code></td><td>49</td><td>Bootstrap a .dev-wiki/ directory for a project.</td></tr>
+<tr><td><code>.claude/skills/dev-init/project-CLAUDE.md</code></td><td>37</td><td>Bootstrap a .dev-wiki/ directory for a project.</td></tr>
+<tr><td><code>.claude/skills/dev-plan/SKILL.md</code></td><td>330</td><td>Plan one phase at a time, informed by accumulated wiki knowledge.</td></tr>
+<tr><td><code>.claude/skills/dev-plan/approach-reviewer-prompt.md</code></td><td>63</td><td>Plan one phase at a time, informed by accumulated wiki knowledge.</td></tr>
+<tr><td><code>.claude/skills/dev-plan/artifact-writer-prompt.md</code></td><td>103</td><td>Plan one phase at a time, informed by accumulated wiki knowledge.</td></tr>
+<tr><td><code>.claude/skills/dev-plan/compaction-anchors-spec.md</code></td><td>71</td><td>Plan one phase at a time, informed by accumulated wiki knowledge.</td></tr>
+<tr><td><code>.claude/skills/dev-plan/implementation-guide.md</code></td><td>76</td><td>Plan one phase at a time, informed by accumulated wiki knowledge.</td></tr>
+<tr><td><code>.claude/skills/dev-plan/iterative-retrieval-spec.md</code></td><td>36</td><td>Plan one phase at a time, informed by accumulated wiki knowledge.</td></tr>
+<tr><td><code>.claude/skills/dev-plan/memory-bridge.md</code></td><td>67</td><td>Plan one phase at a time, informed by accumulated wiki knowledge.</td></tr>
+<tr><td><code>.claude/skills/dev-plan/plan-reviewer-prompt.md</code></td><td>79</td><td>Plan one phase at a time, informed by accumulated wiki knowledge.</td></tr>
+<tr><td><code>.claude/skills/dev-plan/research-pause-spec.md</code></td><td>52</td><td>Plan one phase at a time, informed by accumulated wiki knowledge.</td></tr>
+<tr><td><code>.claude/skills/dev-plan/scope-exploration-spec.md</code></td><td>25</td><td>Plan one phase at a time, informed by accumulated wiki knowledge.</td></tr>
+<tr><td><code>.claude/skills/dev-plan/self-check-checklist.md</code></td><td>84</td><td>Plan one phase at a time, informed by accumulated wiki knowledge.</td></tr>
+<tr><td><code>.claude/skills/dev-plan/spec-auto-invoke.md</code></td><td>48</td><td>Plan one phase at a time, informed by accumulated wiki knowledge.</td></tr>
+<tr><td><code>.claude/skills/dev-plan/state-loader-prompt.md</code></td><td>114</td><td>Plan one phase at a time, informed by accumulated wiki knowledge.</td></tr>
+<tr><td><code>.claude/skills/dev-plan/task-schema.md</code></td><td>86</td><td>Plan one phase at a time, informed by accumulated wiki knowledge.</td></tr>
+<tr><td><code>.claude/skills/dev-scan/SKILL.md</code></td><td>241</td><td>Deep codebase analysis producing structural knowledge for the dev-wiki.</td></tr>
+<tr><td><code>.claude/skills/dev-scan/architecture-prompt.md</code></td><td>42</td><td>Deep codebase analysis producing structural knowledge for the dev-wiki.</td></tr>
+<tr><td><code>.claude/skills/dev-scan/content-hashing.md</code></td><td>62</td><td>Deep codebase analysis producing structural knowledge for the dev-wiki.</td></tr>
+<tr><td><code>.claude/skills/dev-scan/file-prompt.md</code></td><td>92</td><td>Deep codebase analysis producing structural knowledge for the dev-wiki.</td></tr>
+<tr><td><code>.claude/skills/dev-scan/module-prompt.md</code></td><td>73</td><td>Deep codebase analysis producing structural knowledge for the dev-wiki.</td></tr>
+<tr><td><code>.claude/skills/dev-scan/python-memory-checks.md</code></td><td>58</td><td>Deep codebase analysis producing structural knowledge for the dev-wiki.</td></tr>
+<tr><td><code>.claude/skills/dev-scan/python-scan-profile.md</code></td><td>70</td><td>Deep codebase analysis producing structural knowledge for the dev-wiki.</td></tr>
+<tr><td><code>.claude/skills/dev-scan/refresh-flow.md</code></td><td>17</td><td>Deep codebase analysis producing structural knowledge for the dev-wiki.</td></tr>
+<tr><td><code>.claude/skills/dev-wiki/SKILL.md</code></td><td>132</td><td>Route dev wiki operations and enforce development lifecycle discipline.</td></tr>
+<tr><td><code>.claude/skills/dev-wiki/active-knowledge-spec.md</code></td><td>60</td><td>Route dev wiki operations and enforce development lifecycle discipline.</td></tr>
+<tr><td><code>.claude/skills/dev-wiki/architecture-template.md</code></td><td>56</td><td>Route dev wiki operations and enforce development lifecycle discipline.</td></tr>
+<tr><td><code>.claude/skills/dev-wiki/claude-md-lifecycle.md</code></td><td>53</td><td>Route dev wiki operations and enforce development lifecycle discipline.</td></tr>
+<tr><td><code>.claude/skills/dev-wiki/decision-template.md</code></td><td>48</td><td>Route dev wiki operations and enforce development lifecycle discipline.</td></tr>
+<tr><td><code>.claude/skills/dev-wiki/journal-templates.md</code></td><td>60</td><td>Route dev wiki operations and enforce development lifecycle discipline.</td></tr>
+<tr><td><code>.claude/skills/dev-wiki/phase-template.md</code></td><td>64</td><td>Route dev wiki operations and enforce development lifecycle discipline.</td></tr>
+<tr><td><code>.claude/skills/dev-wiki/size-budgets.md</code></td><td>19</td><td>Route dev wiki operations and enforce development lifecycle discipline.</td></tr>
+<tr><td><code>.claude/skills/dev-wiki/slugification.md</code></td><td>57</td><td>Route dev wiki operations and enforce development lifecycle discipline.</td></tr>
+<tr><td><code>.claude/skills/dev-wiki/stale-queue-spec.md</code></td><td>68</td><td>Route dev wiki operations and enforce development lifecycle discipline.</td></tr>
+<tr><td><code>.claude/skills/dev-wiki/state-template.md</code></td><td>74</td><td>Route dev wiki operations and enforce development lifecycle discipline.</td></tr>
+<tr><td><code>.claude/skills/dev-wiki/working-knowledge-spec.md</code></td><td>33</td><td>Route dev wiki operations and enforce development lifecycle discipline.</td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/SKILL.md</code></td><td>112</td><td>Route wiki operations and enforce wiki workflow discipline.</td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/article-conventions.md</code></td><td>173</td><td>Route wiki operations and enforce wiki workflow discipline.</td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/claim-spec.md</code></td><td>5</td><td>Route wiki operations and enforce wiki workflow discipline.</td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/content-model.md</code></td><td>188</td><td>Route wiki operations and enforce wiki workflow discipline.</td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/conversion-spec.md</code></td><td>80</td><td>Route wiki operations and enforce wiki workflow discipline.</td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/domain-profiles/aml-compliance.md</code></td><td>43</td><td>Route wiki operations and enforce wiki workflow discipline.</td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/domain-profiles/general.md</code></td><td>29</td><td>Route wiki operations and enforce wiki workflow discipline.</td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/domain-profiles/machine-learning.md</code></td><td>42</td><td>Route wiki operations and enforce wiki workflow discipline.</td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/domain-profiles/trading.md</code></td><td>42</td><td>Route wiki operations and enforce wiki workflow discipline.</td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/pipeline-spec.md</code></td><td>308</td><td>Route wiki operations and enforce wiki workflow discipline.</td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/registry-schema.md</code></td><td>78</td><td>Route wiki operations and enforce wiki workflow discipline.</td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/reviewer-checklist.md</code></td><td>162</td><td>Route wiki operations and enforce wiki workflow discipline.</td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/search-spec.md</code></td><td>170</td><td>Route wiki operations and enforce wiki workflow discipline.</td></tr>
+<tr><td><code>.claude/skills/knowledge-wiki/session-context.md</code></td><td>35</td><td>Route wiki operations and enforce wiki workflow discipline.</td></tr>
+<tr><td><code>.claude/skills/memory-consolidate/SKILL.md</code></td><td>45</td><td>Consolidate duplicate/overlapping memory entries using Claude.</td></tr>
+<tr><td><code>.claude/skills/nana/SKILL.md</code></td><td>37</td><td>Show installed nana-dev-kit skills grouped by module.</td></tr>
+<tr><td><code>.claude/skills/py-init/SKILL.md</code></td><td>168</td><td>Scaffold or retrofit the Nana Dev Kit harness into the current directory.</td></tr>
+<tr><td><code>.claude/skills/py-init/scanner.md</code></td><td>102</td><td>Scaffold or retrofit the Nana Dev Kit harness into the current directory.</td></tr>
+<tr><td><code>.claude/skills/py-init/transform.md</code></td><td>98</td><td>Scaffold or retrofit the Nana Dev Kit harness into the current directory.</td></tr>
+<tr><td><code>.claude/skills/py-lint/SKILL.md</code></td><td>37</td><td>Run linting, formatting, and type checking (ruff + mypy).</td></tr>
+<tr><td><code>.claude/skills/py-review/SKILL.md</code></td><td>58</td><td>Review the current diff against the 8-point AI PR checklist.</td></tr>
+<tr><td><code>.claude/skills/py-test/SKILL.md</code></td><td>41</td><td>Run the full test suite with coverage and report failures concisely.</td></tr>
+<tr><td><code>.claude/skills/spec/SKILL.md</code></td><td>128</td><td>Write a structured spec/contract before execution to prevent ambiguous contracts.</td></tr>
+<tr><td><code>.claude/skills/spec/adversarial-constraints-prompt.md</code></td><td>41</td><td>Write a structured spec/contract before execution to prevent ambiguous contracts.</td></tr>
+<tr><td><code>.claude/skills/spec/spec-reviewer-prompt.md</code></td><td>77</td><td>Write a structured spec/contract before execution to prevent ambiguous contracts.</td></tr>
+<tr><td><code>.claude/skills/wiki-absorb/SKILL.md</code></td><td>142</td><td>Process raw entries in inbox/ into polished, cross-linked, tagged articles.</td></tr>
+<tr><td><code>.claude/skills/wiki-absorb/analyst-prompt.md</code></td><td>66</td><td>Process raw entries in inbox/ into polished, cross-linked, tagged articles.</td></tr>
+<tr><td><code>.claude/skills/wiki-absorb/reviewer-prompt.md</code></td><td>43</td><td>Process raw entries in inbox/ into polished, cross-linked, tagged articles.</td></tr>
+<tr><td><code>.claude/skills/wiki-absorb/verifier-prompt.md</code></td><td>117</td><td>Process raw entries in inbox/ into polished, cross-linked, tagged articles.</td></tr>
+<tr><td><code>.claude/skills/wiki-absorb/writer-prompt.md</code></td><td>99</td><td>Process raw entries in inbox/ into polished, cross-linked, tagged articles.</td></tr>
+<tr><td><code>.claude/skills/wiki-add/SKILL.md</code></td><td>143</td><td>Add content to inbox/ as raw entries for later processing by /wiki-absorb.</td></tr>
+<tr><td><code>.claude/skills/wiki-add/analyst-prompt.md</code></td><td>66</td><td>Add content to inbox/ as raw entries for later processing by /wiki-absorb.</td></tr>
+<tr><td><code>.claude/skills/wiki-add/reviewer-prompt.md</code></td><td>55</td><td>Add content to inbox/ as raw entries for later processing by /wiki-absorb.</td></tr>
+<tr><td><code>.claude/skills/wiki-add/writer-prompt.md</code></td><td>94</td><td>Add content to inbox/ as raw entries for later processing by /wiki-absorb.</td></tr>
+<tr><td><code>.claude/skills/wiki-bootstrap/SKILL.md</code></td><td>248</td><td>Seed the wiki with foundational domain knowledge via research and batch-generation.</td></tr>
+<tr><td><code>.claude/skills/wiki-bootstrap/analyst-prompt.md</code></td><td>135</td><td>Seed the wiki with foundational domain knowledge via research and batch-generation.</td></tr>
+<tr><td><code>.claude/skills/wiki-bootstrap/research-agent-prompt.md</code></td><td>97</td><td>Seed the wiki with foundational domain knowledge via research and batch-generation.</td></tr>
+<tr><td><code>.claude/skills/wiki-bootstrap/research-loop-spec.md</code></td><td>61</td><td>Write a structured spec/contract before execution to prevent ambiguous contracts.</td></tr>
+<tr><td><code>.claude/skills/wiki-bootstrap/reviewer-prompt.md</code></td><td>66</td><td>Seed the wiki with foundational domain knowledge via research and batch-generation.</td></tr>
+<tr><td><code>.claude/skills/wiki-bootstrap/writer-prompt.md</code></td><td>129</td><td>Seed the wiki with foundational domain knowledge via research and batch-generation.</td></tr>
+<tr><td><code>.claude/skills/wiki-consolidate/SKILL.md</code></td><td>123</td><td>Process unconsolidated episodic entries through dedup and fact extraction.</td></tr>
+<tr><td><code>.claude/skills/wiki-consolidate/analyst-prompt.md</code></td><td>54</td><td>Process unconsolidated episodic entries through dedup and fact extraction.</td></tr>
+<tr><td><code>.claude/skills/wiki-consolidate/consolidate.py</code></td><td>337</td><td>Process unconsolidated episodic entries through dedup and fact extraction.</td></tr>
+<tr><td><code>.claude/skills/wiki-consolidate/reviewer-prompt.md</code></td><td>46</td><td>Process unconsolidated episodic entries through dedup and fact extraction.</td></tr>
+<tr><td><code>.claude/skills/wiki-consolidate/writer-prompt.md</code></td><td>62</td><td>Process unconsolidated episodic entries through dedup and fact extraction.</td></tr>
+<tr><td><code>.claude/skills/wiki-health/SKILL.md</code></td><td>218</td><td>Combined wiki health tool: dashboard metrics, structural audit, and staleness marking.</td></tr>
+<tr><td><code>.claude/skills/wiki-health/dashboard-spec.md</code></td><td>80</td><td>Write a structured spec/contract before execution to prevent ambiguous contracts.</td></tr>
+<tr><td><code>.claude/skills/wiki-health/empirical-anchor-spec.md</code></td><td>35</td><td>Write a structured spec/contract before execution to prevent ambiguous contracts.</td></tr>
+<tr><td><code>.claude/skills/wiki-index/SKILL.md</code></td><td>65</td><td>Build a hybrid search index over wiki articles and episodic entries.</td></tr>
+<tr><td><code>.claude/skills/wiki-index/convert.py</code></td><td>202</td><td>Build a hybrid search index over wiki articles and episodic entries.</td></tr>
+<tr><td><code>.claude/skills/wiki-index/indexer.py</code></td><td>277</td><td>Build a hybrid search index over wiki articles and episodic entries.</td></tr>
+<tr><td><code>.claude/skills/wiki-index/requirements-convert.txt</code></td><td>1</td><td>Build a hybrid search index over wiki articles and episodic entries.</td></tr>
+<tr><td><code>.claude/skills/wiki-index/requirements.txt</code></td><td>3</td><td>Build a hybrid search index over wiki articles and episodic entries.</td></tr>
+<tr><td><code>.claude/skills/wiki-index/search.py</code></td><td>200</td><td>Build a hybrid search index over wiki articles and episodic entries.</td></tr>
+<tr><td><code>.claude/skills/wiki-index/wikilib.py</code></td><td>42</td><td>Build a hybrid search index over wiki articles and episodic entries.</td></tr>
+<tr><td><code>.claude/skills/wiki-init/SKILL.md</code></td><td>217</td><td>Initialize a project-specific wiki through interactive interview and scaffold.</td></tr>
+<tr><td><code>.claude/skills/wiki-init/analyst-prompt.md</code></td><td>42</td><td>Initialize a project-specific wiki through interactive interview and scaffold.</td></tr>
+<tr><td><code>.claude/skills/wiki-init/reviewer-prompt.md</code></td><td>56</td><td>Initialize a project-specific wiki through interactive interview and scaffold.</td></tr>
+<tr><td><code>.claude/skills/wiki-init/writer-prompt.md</code></td><td>115</td><td>Initialize a project-specific wiki through interactive interview and scaffold.</td></tr>
+<tr><td><code>.claude/skills/wiki-query/SKILL.md</code></td><td>243</td><td>Answer questions by navigating the project wiki's knowledge base.</td></tr>
+<tr><td><code>.claude/skills/wiki-query/analyst-prompt.md</code></td><td>70</td><td>Answer questions by navigating the project wiki's knowledge base.</td></tr>
+<tr><td><code>.claude/skills/wiki-query/reviewer-prompt.md</code></td><td>76</td><td>Answer questions by navigating the project wiki's knowledge base.</td></tr>
+<tr><td><code>.claude/skills/wiki-query/writer-prompt.md</code></td><td>77</td><td>Answer questions by navigating the project wiki's knowledge base.</td></tr>
+<tr><td><code>.claude/skills/wiki-registry/SKILL.md</code></td><td>91</td><td>Manage the wiki registry (~/.claude/wikis.json).</td></tr>
+<tr><td><code>.claude/skills/wiki-reorg/SKILL.md</code></td><td>94</td><td>Restructure wiki hierarchy, create hub articles, add cross-links, normalize tags.</td></tr>
+<tr><td><code>.claude/skills/wiki-reorg/analyst-prompt.md</code></td><td>74</td><td>Restructure wiki hierarchy, create hub articles, add cross-links, normalize tags.</td></tr>
+<tr><td><code>.claude/skills/wiki-reorg/reviewer-prompt.md</code></td><td>61</td><td>Restructure wiki hierarchy, create hub articles, add cross-links, normalize tags.</td></tr>
+<tr><td><code>.claude/skills/wiki-reorg/writer-prompt.md</code></td><td>93</td><td>Restructure wiki hierarchy, create hub articles, add cross-links, normalize tags.</td></tr>
 </table>
 <h3>Layer 4: Pre-commit <span class="badge badge-blue">1 files</span></h3>
 <table>
@@ -494,7 +560,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
 <tr><td><code>pyproject.toml</code></td><td>72</td><td>Python project config with ruff + mypy settings</td></tr>
 </table>
-<h3>Pre-commit Hooks (Layer 4 Detail)</h3>
+<h3>Pre-commit Hooks (Layer 6 Detail)</h3>
 <table>
 <tr><th>Hook ID</th><th>Source</th><th>Purpose</th></tr>
 <tr><td><code>sync-rules</code></td><td>local</td><td>Sync AGENTS.md to 4 agent surfaces on commit</td></tr>
@@ -507,7 +573,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>nbqa-mypy</code></td><td>nbQA</td><td>Type-check notebook cells</td></tr>
 <tr><td><code>validate-pyproject</code></td><td>validate-pyproject</td><td>Validate pyproject.toml schema</td></tr>
 </table>
-<h3>CI Pipeline (Layer 5 Detail)</h3>
+<h3>CI Pipeline (Layer 7 Detail)</h3>
 <table>
 <tr><th>Job</th><th>Steps</th></tr>
 <tr><td><strong>lint</strong></td><td><code>uv sync --frozen</code><br><code>uv run ruff check .</code><br><code>uv run ruff format --check .</code></td></tr>
@@ -548,7 +614,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>test_harden.sh</code></td><td>0 assertions, 138 lines</td></tr>
 <tr><td><code>test_install.sh</code></td><td>33 assertions, 303 lines</td></tr>
 <tr><td><code>test_sync_rules.sh</code></td><td>15 assertions, 100 lines</td></tr>
-<tr><td><code>test_templates.sh</code></td><td>64 assertions, 445 lines</td></tr>
+<tr><td><code>test_templates.sh</code></td><td>64 assertions, 488 lines</td></tr>
 </table>
 <p style="margin-top:0.5rem;font-size:0.85rem">Total: <strong>121 assertions</strong> across 5 test scripts. Run with <code>make test</code>.</p>
 <p style="font-size:0.85rem">Edge cases covered: missing source files, unwritable directories, MCP registration (no file / partial / complete), venv fallback, idempotency (diff between runs).</p>
@@ -568,7 +634,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <div class="quality-card">
 <h4>Graceful Degradation</h4>
 <ul>
-<li>Session-start hook: each of 4 sources independently optional — missing files silently skipped</li>
+<li>Session-start hook: each context source independently optional — missing files silently skipped</li>
 <li>auto-ruff-format: requires uv + ruff — silently no-ops if unavailable</li>
 <li>scan-secrets: falls back from gitleaks to regex if gitleaks not installed</li>
 <li>Venv bootstrap: warns and continues if python3 -m venv unavailable — memory is optional</li>
@@ -611,15 +677,17 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <pre>
   Session start
        │
-       ├── session-start.sh reads 4 optional sources
+       ├── session-start.sh loads context + enforcement + crash recovery
        │
   Tool use
        │
-       ├── Bash command ──→ block-dangerous-bash.sh (PreToolUse)
+       ├── Bash command ──→ block-dangerous-bash.sh (PreToolUse, jq)
+       │               └──→ detect-loop.sh (PostToolUse, pure bash)
        │
-       └── File write ───→ auto-ruff-format.sh ──→ requires: uv, ruff
-                      ├──→ scan-secrets.sh ───────→ prefers: gitleaks
-                      └──→ audit-log.sh ──────────→ requires: python3 (json)
+       ├── File write ───→ enforce-spec.sh ──────→ requires: jq (global)
+       │              ├──→ auto-ruff-format.sh ──→ requires: ruff
+       │              ├──→ scan-secrets.sh ───────→ prefers: gitleaks
+       │              └──→ audit-log.sh ──────────→ requires: jq
 
   git commit ──→ .pre-commit-config.yaml
        │
@@ -667,10 +735,10 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
   │                        Session Start                            │
   │                                                                 │
   │   .dev-wiki/_CURRENT_STATE.md ──┐                               │
-  │   .memory/MEMORY.md ────────────┤                               │
-  │   PROJECT_STATE.md ─────────────┼──→ session-start.sh ──→ stdout│
-  │   .claude/rules/py-session-     │    (frozen snapshot)          │
-  │        state.md ────────────────┘                               │
+  │   .claude/rules/active-phase.md ┤                               │
+  │   py-session-state.md ──────────┼──→ session-start.sh ──→ stdout│
+  │   crash recovery check ─────────┤    + [nana:kit] summary      │
+  │   enforcement status ───────────┘                               │
   │                                                                 │
   │   Claude Code ingests stdout as session context                 │
   └─────────────────────────────────────────────────────────────────┘
@@ -692,13 +760,65 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
   │                                                                 │
   │   Decisions ──→ .dev-wiki/articles/decisions/                   │
   │   Journal ────→ .dev-wiki/articles/journal/                     │
+  │   Memory ─────→ memory_store (harvest corrections/preferences)  │
   │   State ──────→ .dev-wiki/_CURRENT_STATE.md                     │
   │   Tasks ──────→ .dev-wiki/tasks.md                              │
   └─────────────────────────────────────────────────────────────────┘
 </pre>
 
+<h3>Enforcement Layer</h3>
+<pre>
+  Implementation write attempt
+       │
+       ▼
+  ┌─── enforce-spec.sh (PreToolUse) ─────────────────────────┐
+  │ 1. Check .claude/enforce marker (opt-in per project)      │
+  │ 2. Check path allowlist (meta/test/docs always allowed)   │
+  │ 3. Check active-phase.md gate ([x] spec)                  │
+  │ 4. Check specs/<slug>.md:                                 │
+  │    ├── &lt;!-- nana:approved --&gt; marker → allow            │
+  │    └── exit criteria present → allow (backward compat)    │
+  │ 5. No valid spec → EXIT 2 (block)                         │
+  │ All decisions logged to .dev-wiki/enforcement.log         │
+  └──────────────────────────────────────────────────────────┘
+
+  Session stop
+       │
+       ▼
+  ┌─── enforce-loop.sh (Stop) ───────────────────────────────┐
+  │ 1. Run file-existence exit criteria from spec             │
+  │ 2. Count open tasks (advisory)                            │
+  │ 3. Check debrief status (advisory)                        │
+  │ Missing deliverable → EXIT 2 (block)                      │
+  └──────────────────────────────────────────────────────────┘
+</pre>
+
+<h3>Memory Bridge Flow</h3>
+<pre>
+  /dev-plan (planning)
+       │
+       ├── memory_store ──→ bridge-decision entries
+       │                    (category: custom, tags: [bridge-decision])
+       │
+  /wiki-query (retrieval)
+       │
+       ├── memory_search ──→ includes memory results in analysis
+       │                     alongside wiki articles
+       │
+  /dev-debrief (capture)
+       │
+       ├── memory_store ──→ harvest corrections, preferences, lessons
+       │                    (auto-supersession of conflicting entries)
+       │
+  /memory-consolidate (maintenance)
+       │
+       └── memory_search + memory_store + memory_forget
+           ──→ Claude-powered cluster identification and merge
+               (10-merge cap, dry-run mode, no Qwen sidecar needed)
+</pre>
+
 <footer>
-  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-05-23 21:28<br>
+  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-05-23 22:30<br>
   <code>scripts/generate-workflow.py</code> &mdash; run <code>make workflow</code> to regenerate
 </footer>
 

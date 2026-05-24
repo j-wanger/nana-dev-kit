@@ -1,24 +1,24 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-23 by /dev-debrief (Phase 29 complete)
+> Last updated: 2026-05-23 by /dev-plan (Phase 30 planned)
 
 ## Recommended Next Action
 
-Run /dev-plan to plan Phase 30. Candidates: language-agnostic core (Gap 4.1, last OPEN gap), dev-wiki-hooks rules templating, MANIFEST automation, enforcement.log eval scenarios.
+Begin Task 1: generate-report.py updates (LAYERS 5→7, WORKFLOWS v0.5.0, categorize_files() Eval/Specs, test_start counting, MANIFEST reading).
 
 ## Active Phase
 
-**[[phase-29-v051-grade-push|Phase 29: v0.5.1 Grade Push]]** (status: completed)
+**[[phase-30-data-driven-report-generators|Phase 30: Data-Driven Report Generators]]** (status: active)
 
-Entry criteria: MET (Phase 28 complete, 169 tests passing, 43/43 eval, v0.5.0 tagged)
-Exit criteria: ALL MET (root-skip guards, dev-plan <=330 lines, /nana + /memory-consolidate skills, spec provenance, enforcement logging, tests + MANIFEST + README updated)
+Entry criteria: MET (Phase 29 complete, 175 tests passing, 43/43 eval)
+Exit criteria: reports show 7-Layer, no stale strings, Enforcement + Memory Bridge sections in workflow, staleness regression test, README numbers fixed
 
-Progress: 100% (7/7 tasks done)
+Progress: 0% (0/4 tasks done)
 
 ## Active Phase Contract
 
-Phase: 29 - v0.5.1 Grade Push
-Tasks: 7 (see tasks.md)
+Phase: 30 - Data-Driven Report Generators
+Tasks: 4 (1S + 2M + 1L, see tasks.md)
 Transition: continue
 Abort: if blocked >3 attempts, ask user: skip or abort
 
@@ -26,9 +26,7 @@ Abort: if blocked >3 attempts, ask user: skip or abort
 
 | Decision | Confidence | Date |
 |----------|------------|------|
-| [[skill-based-memory-consolidation]] | high | 2026-05-23 |
-| [[spec-provenance-html-comment]] | high | 2026-05-23 |
-| [[dev-plan-scope-extraction]] | high | 2026-05-23 |
+| None new — spec decisions from Phase 29 carry forward | — | — |
 
 ## Blockers and Open Questions
 

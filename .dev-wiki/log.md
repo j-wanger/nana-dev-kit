@@ -60,3 +60,4 @@
 [2026-05-23T15:00:00] PLAN -- Phase 28 planned, 6 tasks (2M 4S), 2 decisions (hook-prefix-nana-namespace, status-in-install-sh)
 [2026-05-22T29:00:00] PLAN -- Phase 23 planned, 6 tasks (2M 4S), 2 decisions (pre-compact-dev-wiki-module, readme-budget-superseded), bug fixes + README rewrite
 [2026-05-23T21:20:35] DEBRIEF -- 3 decisions, 1 journal, tasks verified, state refreshed, Phase 29 completed
+[2026-05-23T21:30:00] PLAN -- Phase 30 planned, 4 tasks (1S 2M 1L), 0 decisions, data-driven report generators

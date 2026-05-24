@@ -442,4 +442,47 @@ assert_contains "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md" 'scop
 test_start "spec SKILL.md has provenance marker instruction"
 assert_contains "$PROJECT_ROOT/templates/.claude/skills/spec/SKILL.md" 'nana:approved'
 
+# --- Report staleness regression ---
+test_start "report_staleness: no stale 5-Layer in reports"
+if grep -q '5-Layer' "$PROJECT_ROOT/docs/report.html" 2>/dev/null || grep -q '5-Layer' "$PROJECT_ROOT/docs/workflow.html" 2>/dev/null; then
+  test_fail "reports still reference 5-Layer (should be 7-Layer)"
+else
+  test_pass
+fi
+
+test_start "report_staleness: reports have 7-Layer"
+if grep -q '7-Layer\|7 Layer' "$PROJECT_ROOT/docs/report.html" 2>/dev/null && grep -q '7-Layer\|7 Layer' "$PROJECT_ROOT/docs/workflow.html" 2>/dev/null; then
+  test_pass
+else
+  test_fail "reports missing 7-Layer reference"
+fi
+
+test_start "report_staleness: no MEMORY.md in reports"
+if grep -q 'MEMORY\.md' "$PROJECT_ROOT/docs/report.html" 2>/dev/null || grep -q 'MEMORY\.md' "$PROJECT_ROOT/docs/workflow.html" 2>/dev/null; then
+  test_fail "reports reference deleted .memory/MEMORY.md"
+else
+  test_pass
+fi
+
+test_start "report_staleness: no python3 (json) in reports"
+if grep -q 'python3 (json)' "$PROJECT_ROOT/docs/workflow.html" 2>/dev/null; then
+  test_fail "workflow.html references python3 (json) — hooks use jq since Phase 24"
+else
+  test_pass
+fi
+
+test_start "report_staleness: enforcement section in workflow"
+if grep -q '<h[23].*[Ee]nforcement' "$PROJECT_ROOT/docs/workflow.html" 2>/dev/null; then
+  test_pass
+else
+  test_fail "workflow.html missing Enforcement section header"
+fi
+
+test_start "report_staleness: memory bridge section in workflow"
+if grep -q '<h[23].*[Mm]emory.*[Bb]ridge' "$PROJECT_ROOT/docs/workflow.html" 2>/dev/null; then
+  test_pass
+else
+  test_fail "workflow.html missing Memory Bridge section header"
+fi
+
 test_summary "test_templates"
