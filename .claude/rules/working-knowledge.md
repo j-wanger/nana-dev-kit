@@ -1,6 +1,12 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
+- [uses: 1] install.sh CORE_SKILLS: nana + memory-consolidate (language-agnostic). PYTHON_SKILLS: py-lint + py-review + py-test (excluded by --no-python, --core-only). Module assignment determines which skills install under each flag combination.
+  source: [[decision:install-skill-module-assignment]] | activated: 2026-05-25
+- [uses: 1] MCP memory server CWD must point to ~/.claude (parent), not ~/.claude/memory_server (package dir). Was broken since Phase 4. install.sh now has import-check verification after MCP registration.
+  source: [[decision:mcp-memory-server-cwd-fix]] | activated: 2026-05-25
+- [uses: 1] PostToolUse hooks: 3 use .input.file_path (audit-log, auto-ruff, scan-secrets), 2 use .tool_input (post-commit, stale-queue). Both work. PreToolUse confirmed: .input.file_path. PostToolUse needs live verification before normalizing.
+  source: [[decision:posttooluse-field-path-inconsistency]] | activated: 2026-05-25
 - [uses: 1] 2-gate ceremony model: direction gate (Step 7, user confirms intent/scope) + delivery gate (HTML report before commit, user accepts/rejects). Agent operates autonomously between gates. Subagent reviewers still execute but findings auto-incorporated.
   source: [[decision:ceremony-streamlining-2-gate-model]] | activated: 2026-05-25
 - [uses: 1] Spec --internal mode: when invoked with --internal, auto-runs Steps 2-4 + Tier 0/1, incorporates findings, persists with marker, skips Step 5 user approval. Direct /spec unchanged. Honors spec-always-mandatory.
@@ -13,7 +19,7 @@
   source: [[decision:hook-reconciliation]] | activated: 2026-05-25
 - [uses: 1] Hook fixes require tmpdir testing (mktemp -d) before touching live state — prevents self-lockout via enforce-spec.sh regression. Evidence-pinned: every fix needs quoted error string or lint finding in commit message.
   source: [[decision:hook-reconciliation-approach]] | activated: 2026-05-25
-- [uses: 1] install.sh ~508 lines with module-group architecture, --all/--core-only/--no-python/--no-typescript/--project-local/--dry-run/--status flags. --project-local copies 6 per-project hooks to CWD .claude/hooks/ with settings.json merge.
+- [uses: 1] install.sh ~535 lines with module-group architecture, --all/--core-only/--no-python/--no-typescript/--project-local/--dry-run/--status flags. --project-local copies 6 per-project hooks to CWD .claude/hooks/ with settings.json merge.
   source: [[decision:hook-reconciliation]] + [[journal:2026-05-25-phase-36-hooks-audit-housekeeping-complete]] | activated: 2026-05-25
 - [uses: 1] store() dedup is a hygiene mechanism with 7 corruption modes. _find_near_duplicate is the core dedup gate — threshold changes must preserve exact semantics (cosine >0.90 reinforce, >0.85 warn; word overlap >0.90 warn). Word-overlap is the production fallback when embeddings unavailable.
   source: [[decision:store-opt-indexed-lookups]] + [[active-knowledge:phase-34]] | activated: 2026-05-24

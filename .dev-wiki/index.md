@@ -40,6 +40,7 @@
 - [[phase-35-ts-init-implementation|Phase 35: ts-init Implementation]] -- completed
 - [[phase-36-hooks-audit-housekeeping|Phase 36: Hooks Audit & Housekeeping]] -- completed
 - [[phase-37-ceremony-streamlining-autonomous-flow|Phase 37: Ceremony Streamlining & Autonomous Flow]] -- completed
+- [[phase-38-install-integrity-functional-verification|Phase 38: Install Integrity & Functional Verification]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -103,6 +104,11 @@
 - [[ceremony-streamlining-2-gate-model|Ceremony streamlining: 2-gate model]] -- medium confidence, accepted
 - [[spec-internal-mode|Spec --internal mode]] -- medium confidence, accepted
 - [[delivery-report-before-commit|Delivery report before commit]] -- high confidence, accepted
+- [[install-skill-module-assignment|Skills module assignment: nana/memory-consolidate to core, py-lint/py-review/py-test to python]] -- high confidence, accepted
+- [[posttooluse-field-path-inconsistency|PostToolUse field path inconsistency: document only]] -- medium confidence, accepted
+- [[no-eval-scope-check-scenarios|No eval scenario updates for scope-check fix]] -- high confidence, accepted
+- [[mcp-memory-server-cwd-fix|MCP memory server CWD fix]] -- high confidence, accepted
+- [[fail-loud-over-fail-silent-memory|Fail-loud over fail-silent for memory]] -- high confidence, accepted
 - [[turn-level-hybrid-recommended|Turn-level hybrid RRF is the winning strategy]] -- high confidence, accepted
 - [[diagnostic-first-benchmark|Diagnostic-first benchmark]] -- high confidence, accepted
 - [[monorepo-skill-distribution|Monorepo Skill Distribution]] -- high confidence, accepted
@@ -136,6 +142,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-25-phase-38-install-integrity-complete|Phase 38 complete]] -- 2026-05-25
 - [[2026-05-25-phase-37-ceremony-streamlining-complete|Phase 37 complete]] -- 2026-05-25
 - [[2026-05-25-phase-36-hooks-audit-housekeeping-complete|Phase 36 complete]] -- 2026-05-25
 - [[2026-05-25-phase-35-ts-init-implementation-complete|Phase 35 complete]] -- 2026-05-25
@@ -198,6 +205,8 @@
 
 ## Recent
 
+- 2026-05-25: Phase 38 completed -- MCP CWD fix, 5 skills added, MultiEdit matchers, scope-check fix, 23 functional tests, 2 decisions (mcp-memory-server-cwd-fix, fail-loud-over-fail-silent-memory), 283 tests, 47/47 eval
+- 2026-05-25: Phase 38 planned -- 6 tasks (5S 1M), 3 decisions (install-skill-module-assignment, posttooluse-field-path-inconsistency, no-eval-scope-check-scenarios), install integrity & functional verification
 - 2026-05-25: Phase 37 completed -- ceremony streamlining: 4-gate to 2-gate, --internal spec, delivery report, auto-commit/push, 3 decisions confirmed high, 259 tests, 47/47 eval
 - 2026-05-25: Phase 37 planned -- 7 tasks (2S 5M), 3 decisions (ceremony-streamlining-2-gate-model, spec-internal-mode, delivery-report-before-commit), ceremony streamlining & autonomous flow
 - 2026-05-25: Phase 36 completed -- hooks audit, 5 backports + 1 delete, install.sh nested schema + --project-local, nanaclaw PR, 4 decisions, 240 tests, 47/47 eval

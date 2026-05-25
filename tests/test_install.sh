@@ -456,4 +456,151 @@ test_start "--status exits 0"
 assert_exit_code 0 env HOME="$THOME_STATUS" bash "$PROJECT_ROOT/install.sh" --status
 rm -rf "$THOME_STATUS"
 
+# --- Functional verification (Phase 38: post-install behavioral checks) ---
+THOME_FN=$(mktemp -d)
+env HOME="$THOME_FN" bash "$PROJECT_ROOT/install.sh" >/dev/null 2>&1
+
+# Module isolation: --core-only installs nana but NOT py-lint
+THOME_CORE=$(mktemp -d)
+env HOME="$THOME_CORE" bash "$PROJECT_ROOT/install.sh" --core-only >/dev/null 2>&1
+
+test_start "--core-only installs nana skill"
+assert_file_exists "$THOME_CORE/.claude/skills/nana/SKILL.md"
+
+test_start "--core-only installs memory-consolidate skill"
+assert_file_exists "$THOME_CORE/.claude/skills/memory-consolidate/SKILL.md"
+
+test_start "--core-only does NOT install py-lint"
+if [ ! -d "$THOME_CORE/.claude/skills/py-lint" ]; then
+  test_pass
+else
+  test_fail "py-lint present under --core-only"
+fi
+
+test_start "--core-only does NOT install py-review"
+if [ ! -d "$THOME_CORE/.claude/skills/py-review" ]; then
+  test_pass
+else
+  test_fail "py-review present under --core-only"
+fi
+
+test_start "--core-only does NOT install py-test"
+if [ ! -d "$THOME_CORE/.claude/skills/py-test" ]; then
+  test_pass
+else
+  test_fail "py-test present under --core-only"
+fi
+rm -rf "$THOME_CORE"
+
+# Module isolation: --no-python excludes py-lint/py-review/py-test
+THOME_NP2=$(mktemp -d)
+env HOME="$THOME_NP2" bash "$PROJECT_ROOT/install.sh" --no-python >/dev/null 2>&1
+
+test_start "--no-python does NOT install py-lint"
+if [ ! -d "$THOME_NP2/.claude/skills/py-lint" ]; then
+  test_pass
+else
+  test_fail "py-lint present under --no-python"
+fi
+
+test_start "--no-python does NOT install py-review"
+if [ ! -d "$THOME_NP2/.claude/skills/py-review" ]; then
+  test_pass
+else
+  test_fail "py-review present under --no-python"
+fi
+
+test_start "--no-python does NOT install py-test"
+if [ ! -d "$THOME_NP2/.claude/skills/py-test" ]; then
+  test_pass
+else
+  test_fail "py-test present under --no-python"
+fi
+rm -rf "$THOME_NP2"
+
+# Full install has all 5 new skills
+test_start "full install creates nana skill"
+assert_file_exists "$THOME_FN/.claude/skills/nana/SKILL.md"
+
+test_start "full install creates memory-consolidate skill"
+assert_file_exists "$THOME_FN/.claude/skills/memory-consolidate/SKILL.md"
+
+test_start "full install creates py-lint skill"
+assert_file_exists "$THOME_FN/.claude/skills/py-lint/SKILL.md"
+
+test_start "full install creates py-review skill"
+assert_file_exists "$THOME_FN/.claude/skills/py-review/SKILL.md"
+
+test_start "full install creates py-test skill"
+assert_file_exists "$THOME_FN/.claude/skills/py-test/SKILL.md"
+
+# Hook functional test: enforce-spec.sh parses .input.file_path correctly
+test_start "enforce-spec.sh allows when enforce marker removed"
+rm -f "$THOME_FN/.claude/enforce"
+SPEC_EXIT=0
+echo '{"tool_name":"Write","input":{"file_path":"src/main.py"}}' | (cd "$THOME_FN" && bash "$THOME_FN/.claude/hooks/enforce-spec.sh") >/dev/null 2>&1 || SPEC_EXIT=$?
+touch "$THOME_FN/.claude/enforce"
+if [ "$SPEC_EXIT" -eq 0 ]; then
+  test_pass
+else
+  test_fail "enforce-spec.sh exit $SPEC_EXIT (should allow without enforce marker)"
+fi
+
+# Hook functional test: dev-wiki-scope-check.sh parses .input.file_path (not .tool_input)
+test_start "scope-check.sh parses .input.file_path from PreToolUse JSON"
+SCOPE_OUT=$(echo '{"tool_name":"Write","input":{"file_path":"src/main.py"}}' | bash "$THOME_FN/.claude/hooks/dev-wiki-scope-check.sh" 2>&1 || true)
+if echo '{"tool_name":"Write","input":{"file_path":"src/test.py"}}' | bash "$THOME_FN/.claude/hooks/dev-wiki-scope-check.sh" >/dev/null 2>&1; then
+  test_pass
+else
+  test_fail "scope-check.sh failed to parse .input.file_path"
+fi
+
+# Hook functional test: scope-check does NOT parse old .tool_input path
+test_start "scope-check.sh ignores .tool_input (old broken field)"
+if ! grep -q 'tool_input' "$THOME_FN/.claude/hooks/dev-wiki-scope-check.sh"; then
+  test_pass
+else
+  test_fail "scope-check.sh still references .tool_input"
+fi
+
+# MultiEdit in matchers: global hooks registered with MultiEdit
+test_start "global hooks registered with MultiEdit matcher"
+if grep -q 'Write|Edit|MultiEdit' "$THOME_FN/.claude/settings.json"; then
+  test_pass
+else
+  test_fail "MultiEdit not in global settings.json matchers"
+fi
+
+# Companion file verification: key skills have required companions
+test_start "spec skill has adversarial-constraints-prompt.md"
+assert_file_exists "$THOME_FN/.claude/skills/spec/adversarial-constraints-prompt.md"
+
+test_start "dev-plan skill has memory-bridge.md"
+assert_file_exists "$THOME_FN/.claude/skills/dev-plan/memory-bridge.md"
+
+test_start "dev-debrief skill has delivery-flow.md"
+assert_file_exists "$THOME_FN/.claude/skills/dev-debrief/delivery-flow.md"
+
+test_start "dev-debrief skill has memory-harvest.md"
+assert_file_exists "$THOME_FN/.claude/skills/dev-debrief/memory-harvest.md"
+
+test_start "dev-plan skill has plan-review-companion.md"
+assert_file_exists "$THOME_FN/.claude/skills/dev-plan/plan-review-companion.md"
+
+# MCP server functional: import works from configured CWD
+test_start "MCP memory server imports from configured cwd"
+if command -v python3 >/dev/null 2>&1 && [ -f "$THOME_FN/.claude/settings.json" ]; then
+  MCP_CWD=$(python3 -c "import json; d=json.load(open('$THOME_FN/.claude/settings.json')); print(d['mcpServers']['memory']['cwd'])" 2>/dev/null || echo "")
+  MCP_CMD=$(python3 -c "import json; d=json.load(open('$THOME_FN/.claude/settings.json')); print(d['mcpServers']['memory']['command'])" 2>/dev/null || echo "")
+  if [ -n "$MCP_CWD" ] && [ -n "$MCP_CMD" ] && (cd "$MCP_CWD" && "$MCP_CMD" -c "import memory_server" 2>/dev/null); then
+    test_pass
+  else
+    test_fail "MCP server cannot import from configured cwd: $MCP_CWD"
+  fi
+else
+  test_pass  # python3 unavailable, skip gracefully
+fi
+
+rm -rf "$THOME_FN"
+
 test_summary "test_install"

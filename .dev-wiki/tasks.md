@@ -1,6 +1,6 @@
 # Tasks
 
-> Last updated: 2026-05-25 by /dev-debrief (Phase 37 completed)
+> Last updated: 2026-05-25 by /dev-plan (Phase 38 planned)
 
 <details>
 <summary>Phases 1-37 (all completed, 214 tasks, collapsed)</summary>
@@ -374,3 +374,14 @@
 - [x] Tests + MANIFEST + final verify: grep -q 'plan-review-companion' templates/.claude/skills/MANIFEST fails (RED), regenerate MANIFEST, add test assertions for new companion files + --internal mode + delivery report + 2-gate model + auto-commit references in test_templates.sh (GREEN), run make test && make eval, verify all pass (REFACTOR) | scope: templates/.claude/skills/MANIFEST, tests/test_templates.sh, tests/test_install.sh | success: grep -q 'plan-review-companion' templates/.claude/skills/MANIFEST && grep -q 'delivery.report\|delivery-report' tests/test_templates.sh && make test && make eval 2>&1 | grep -qE 'Score.*100' | size: M
 
 </details>
+
+<!-- gate-log:phase-38 spec=approved(internal) approach=approved plan-review=8/10(accepted) tasks=approved -->
+<!-- phase:phase-38-install-integrity-functional-verification -->
+## Phase 38: Install Integrity & Functional Verification
+
+- [x] [S] Add 5 skills to install.sh — grep -q 'memory-consolidate' install.sh fails (RED), add nana+memory-consolidate to CORE_SKILLS, add py-lint+py-review+py-test to PYTHON_SKILLS (GREEN) | scope: install.sh | success: bash install.sh --dry-run 2>&1 | grep -q 'nana' && bash install.sh --dry-run 2>&1 | grep -q 'py-lint' && bash install.sh --dry-run 2>&1 | grep -q 'memory-consolidate' && THOME=$(mktemp -d) && HOME="$THOME" bash install.sh && test -d "$THOME/.claude/skills/nana" && test -d "$THOME/.claude/skills/py-lint" && test -d "$THOME/.claude/skills/memory-consolidate" && rm -rf "$THOME" | size: S
+- [x] [S] Fix MultiEdit matchers in all code sites — test $(grep -c "Edit|Write'" install.sh) -eq 0 fails (RED), update all 7 upsert matcher strings from Write|Edit / Edit|Write to Write|Edit|MultiEdit in global hooks (~line 467: enforce-spec, enforce-memory, dev-wiki-scope-check, stale-queue) and project-local hooks (~line 127: audit-log, auto-ruff-format, scan-secrets). Also update 3 display strings in the --project-local summary output (GREEN) | scope: install.sh | success: test $(grep -c "Edit|Write'" install.sh) -eq 0 && grep -c "Write|Edit|MultiEdit" install.sh | grep -qE '^[7-9]' | size: S
+- [x] [S] Fix dev-wiki-scope-check.sh field path — grep -q '.tool_input.file_path' shows bug present (RED), change .tool_input.file_path to .input.file_path (GREEN) | scope: templates/.claude/hooks/dev-wiki-scope-check.sh | success: grep -q '.input.file_path' templates/.claude/hooks/dev-wiki-scope-check.sh && ! grep -q '.tool_input.file_path' templates/.claude/hooks/dev-wiki-scope-check.sh | size: S
+- [x] [S] Regenerate MANIFEST — grep -q 'nana/SKILL.md' templates/.claude/skills/MANIFEST fails (RED), regenerate with checksums + descriptions for all skills (GREEN). Depends: Task 1. | scope: templates/.claude/skills/MANIFEST | success: grep -q 'nana' templates/.claude/skills/MANIFEST && grep -q 'py-lint' templates/.claude/skills/MANIFEST && grep -q 'memory-consolidate' templates/.claude/skills/MANIFEST | size: S
+- [x] [M] Add functional verification tests — new assertions fail (RED), add ~15-20 tests to test_install.sh: (a) --core-only installs nana but NOT py-lint, (b) --no-python excludes py-lint/py-review/py-test, (c) pipe fixture JSON through installed enforce-spec.sh verify exit code, (d) pipe fixture JSON through installed scope-check.sh verify .input.file_path parsed, (e) verify companion files (spec/adversarial-constraints-prompt.md, dev-plan/memory-bridge.md), (f) verify MCP cwd. Note: no eval scenario updates needed — confirmed no existing scope-check eval scenarios (GREEN). Depends: Tasks 1-4. | scope: tests/test_install.sh | success: make test && make eval 2>&1 | grep -qE 'Score.*100' | size: M
+- [x] [S] Document PostToolUse inconsistency + final verify — add to Known Issues in _ARCHITECTURE.md: 3 PostToolUse hooks use .input.file_path (audit-log, auto-ruff, scan-secrets), 2 use .tool_input (post-commit, stale-queue), needs live verification (GREEN). | scope: .dev-wiki/_ARCHITECTURE.md | success: grep -qi 'PostToolUse.*field.*inconsisten\|field.*path.*PostToolUse' .dev-wiki/_ARCHITECTURE.md && make test && make eval 2>&1 | grep -qE 'Score.*100' | size: S

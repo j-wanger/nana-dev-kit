@@ -1,5 +1,7 @@
 # Dev Wiki Log
 
+[2026-05-25T25:00:00] DEBRIEF -- 2 decisions (mcp-memory-server-cwd-fix, fail-loud-over-fail-silent-memory), 1 journal, tasks verified, state refreshed, Phase 38 completed, 283 tests, 47/47 eval
+[2026-05-25T24:00:00] PLAN -- Phase 38 planned, 6 tasks, 3 decisions (install-skill-module-assignment, posttooluse-field-path-inconsistency, no-eval-scope-check-scenarios)
 [2026-05-25T23:59:00] DEBRIEF -- 3 decisions (confidence upgraded to high), 1 journal, tasks updated, state refreshed, phase 37 completed, 259 tests, 47/47 eval
 [2026-05-25T23:00:00] PLAN -- Phase 37 planned, 7 tasks, 3 decisions (ceremony-streamlining-2-gate-model, spec-internal-mode, delivery-report-before-commit)
 [2026-05-15T23:30:00] PLAN -- Phase 4 planned, 5 tasks, 2 decisions (vendor-memory-server, install-sh-scope-expansion)

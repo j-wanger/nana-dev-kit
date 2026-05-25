@@ -124,11 +124,11 @@ def upsert(event, matcher, hook_file):
     hooks[event].append(entry)
 
 upsert('SessionStart', '', 'session-start.sh')
-upsert('PostToolUse', 'Edit|Write', 'audit-log.sh')
-upsert('PostToolUse', 'Edit|Write', 'auto-ruff-format.sh')
+upsert('PostToolUse', 'Write|Edit|MultiEdit', 'audit-log.sh')
+upsert('PostToolUse', 'Write|Edit|MultiEdit', 'auto-ruff-format.sh')
 upsert('PreToolUse', 'Bash', 'block-dangerous-bash.sh')
 upsert('Stop', '', 'check-tests-were-run.sh')
-upsert('PostToolUse', 'Edit|Write', 'scan-secrets.sh')
+upsert('PostToolUse', 'Write|Edit|MultiEdit', 'scan-secrets.sh')
 
 with open(path, 'w') as f:
     json.dump(data, f, indent=2)
@@ -136,11 +136,11 @@ with open(path, 'w') as f:
 "
     echo ""
     echo "Project-local hooks installed in $PROJ_HOOKS_DIR/"
-    echo "  - audit-log.sh           — PostToolUse:Edit|Write — JSONL audit"
-    echo "  - auto-ruff-format.sh    — PostToolUse:Edit|Write — Python ruff format"
+    echo "  - audit-log.sh           — PostToolUse:Write|Edit|MultiEdit — JSONL audit"
+    echo "  - auto-ruff-format.sh    — PostToolUse:Write|Edit|MultiEdit — Python ruff format"
     echo "  - block-dangerous-bash.sh — PreToolUse:Bash       — block rm -rf etc"
     echo "  - check-tests-were-run.sh — Stop                  — test reminder"
-    echo "  - scan-secrets.sh        — PostToolUse:Edit|Write — gitleaks/secrets"
+    echo "  - scan-secrets.sh        — PostToolUse:Write|Edit|MultiEdit — gitleaks/secrets"
     echo "  - session-start.sh       — SessionStart           — dev-wiki + memory nudge"
   fi
   exit 0
@@ -210,8 +210,8 @@ if [ "$INSTALL_KNOWLEDGE" = true ] && [ "$INSTALL_CORE" = false ]; then
 fi
 
 # --- Skill directory definitions ---
-CORE_SKILLS="spec"
-PYTHON_SKILLS="py-init"
+CORE_SKILLS="spec nana memory-consolidate"
+PYTHON_SKILLS="py-init py-lint py-review py-test"
 TYPESCRIPT_SKILLS="ts-init"
 DEVWIKI_SKILLS="dev-wiki dev-check dev-debrief dev-init dev-plan dev-scan"
 KNOWLEDGE_SKILLS="knowledge-wiki wiki-absorb wiki-add wiki-bootstrap wiki-consolidate wiki-health wiki-index wiki-init wiki-query wiki-reorg wiki-registry"
@@ -246,7 +246,7 @@ install_skill_dir() {
 # --- Source validation (based on selected modules) ---
 missing=0
 if [ "$INSTALL_CORE" = true ]; then
-  for src in "$RULES_SRC/nana-soul.md" "$RULES_SRC/nana-personal.md" "$RULES_SRC/file-lifecycle.md" "$SKILLS_SRC/spec/SKILL.md"; do
+  for src in "$RULES_SRC/nana-soul.md" "$RULES_SRC/nana-personal.md" "$RULES_SRC/file-lifecycle.md"; do
     if [ ! -f "$src" ]; then
       echo "Error: source file not found: $src" >&2
       missing=1
@@ -293,8 +293,10 @@ if [ "$INSTALL_CORE" = true ]; then
     cp "$RULES_SRC/file-lifecycle.md" ~/.claude/rules/file-lifecycle.md
   fi
 
-  # Spec skill
-  install_skill_dir "spec"
+  # Core skills (spec, nana, memory-consolidate)
+  for skill in $CORE_SKILLS; do
+    install_skill_dir "$skill"
+  done
 
   # Kit path marker
   if $DRY_RUN; then
@@ -464,14 +466,14 @@ def upsert(event, matcher, hook_file):
     hooks[event].append(entry)
 
 # PreToolUse
-upsert('PreToolUse', 'Write|Edit', 'enforce-spec.sh')
-upsert('PreToolUse', 'Write|Edit', 'enforce-memory.sh')
-upsert('PreToolUse', 'Write|Edit', 'dev-wiki-scope-check.sh')
+upsert('PreToolUse', 'Write|Edit|MultiEdit', 'enforce-spec.sh')
+upsert('PreToolUse', 'Write|Edit|MultiEdit', 'enforce-memory.sh')
+upsert('PreToolUse', 'Write|Edit|MultiEdit', 'dev-wiki-scope-check.sh')
 
 # PostToolUse
 upsert('PostToolUse', 'Bash', 'detect-loop.sh')
 upsert('PostToolUse', 'Bash', 'post-commit.sh')
-upsert('PostToolUse', 'Edit|Write', 'stale-queue.sh')
+upsert('PostToolUse', 'Write|Edit|MultiEdit', 'stale-queue.sh')
 
 # Stop
 upsert('Stop', '', 'enforce-loop.sh')
@@ -506,7 +508,7 @@ if ! $DRY_RUN; then
   echo ""
   echo "Installed:"
   [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/rules/                    — identity (soul, personal, file-lifecycle)"
-  [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/skills/spec/              — /spec contract creation"
+  [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/skills/{spec,nana,memory-consolidate}/ — core skills"
   [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/memory_server/            — persistent memory MCP server"
   [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/.nana-dev-kit-path        — kit location marker"
   [ "$INSTALL_PYTHON" = true ] && echo "  ~/.claude/skills/py-init/           — /py-init Python scaffolding"
