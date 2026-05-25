@@ -110,6 +110,10 @@ def upsert(event, matcher, hook_file):
     for e in hooks[event]:
         for h in e.get('hooks', []):
             if h.get('command', '').endswith(hook_file):
+                if matcher and e.get('matcher') != matcher:
+                    e['matcher'] = matcher
+                elif not matcher and 'matcher' in e:
+                    del e['matcher']
                 return
         if e.get('command', '').endswith(hook_file) and 'hooks' not in e:
             new = {'type': 'command', 'command': cmd}
@@ -446,10 +450,14 @@ def upsert(event, matcher, hook_file):
     cmd = cmd_path(hook_file)
     if event not in hooks:
         hooks[event] = []
-    # Already present in nested shape?
+    # Already present in nested shape? Update matcher if changed.
     for e in hooks[event]:
         for inner in e.get('hooks', []):
             if inner.get('command', '').endswith(hook_file):
+                if matcher and e.get('matcher') != matcher:
+                    e['matcher'] = matcher
+                elif not matcher and 'matcher' in e:
+                    del e['matcher']
                 return
     # Pre-existing flat-shape entry? Migrate it.
     for e in hooks[event]:
@@ -485,6 +493,12 @@ upsert('PostCompact', '', 'post-compact.sh')
 
 # UserPromptSubmit
 upsert('UserPromptSubmit', '', 'context-size-check.sh')
+
+# Remove ghost registrations for superseded hooks
+for event in list(hooks.keys()):
+    hooks[event] = [e for e in hooks[event] if not any(
+        'dev-wiki-post-commit' in h.get('command', '') for h in e.get('hooks', [])
+    )]
 
 with open(path, 'w') as f:
     json.dump(data, f, indent=2)
