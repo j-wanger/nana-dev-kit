@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Delivery Report: Phase 37</title>
+<style>
+  body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
+  h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
+  h2 { color: #2c3e50; margin-top: 1.5em; }
+  .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1em; margin: 1.5em 0; }
+  .card { background: #f8f9fa; border-radius: 8px; padding: 1em; text-align: center; }
+  .card .num { font-size: 2em; font-weight: bold; }
+  .card .label { font-size: 0.85em; color: #666; }
+  table { width: 100%; border-collapse: collapse; margin: 1em 0; }
+  th, td { text-align: left; padding: 0.5em 0.8em; border-bottom: 1px solid #eee; }
+  th { background: #f0f0f0; font-weight: 600; }
+  ul { padding-left: 1.5em; }
+  code { background: #f0f0f0; padding: 0.15em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  .status { display: inline-block; padding: 0.2em 0.6em; border-radius: 4px; color: white; font-weight: bold; }
+  .footer { margin-top: 3em; padding-top: 1em; border-top: 1px solid #ddd; color: #999; font-size: 0.85em; }
+</style>
+</head>
+<body>
+<h1>Delivery Report: Phase 37 &mdash; Ceremony Streamlining &amp; Autonomous Flow</h1>
+
+<div class="summary">
+  <div class="card"><div class="num">7/7</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">23</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (0 passed)</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">47/47</div><div class="label">Eval</div></div>
+</div>
+
+<div class="summary">
+  <div class="card"><div class="num" style="color:#2d7d2d">+1021</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-299</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">7</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">12:31</div><div class="label">Generated</div></div>
+</div>
+
+<h2>Tasks</h2>
+<table>
+<tr><th width="30"></th><th>Description</th></tr>
+<tr><td>&#x2705;</td><td>Extract plan-review Steps 7.5/7.6 to companion: test -f templates/.claude/skills/dev-plan/plan-review-companion.md fa...</td></tr>
+<tr><td>&#x2705;</td><td>Rewrite dev-plan ceremony — direction-only approval: grep -q 'agent-internal' templates/.claude/skills/dev-plan/SKILL...</td></tr>
+<tr><td>&#x2705;</td><td>Add --internal mode to spec SKILL.md: grep -q '\-\-internal' templates/.claude/skills/spec/SKILL.md fails (RED), add ...</td></tr>
+<tr><td>&#x2705;</td><td>Create delivery report script: test -f scripts/generate-delivery-report.py fails (RED), create Python script (~200-30...</td></tr>
+<tr><td>&#x2705;</td><td>Modify dev-debrief — delivery gate + auto-commit/push: grep -q 'delivery.*report\</td></tr>
+<tr><td>&#x2705;</td><td>Update gate enforcement — 2-gate model: grep -q 'Spec reviewed' templates/.claude/skills/dev-plan/implementation-guid...</td></tr>
+<tr><td>&#x2705;</td><td>Tests + MANIFEST + final verify: grep -q 'plan-review-companion' templates/.claude/skills/MANIFEST fails (RED), regen...</td></tr>
+
+</table>
+
+<h2>Decisions</h2>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Spec --internal mode</td><td>high</td></tr>
+<tr><td>Ceremony streamlining: 2-gate model</td><td>high</td></tr>
+<tr><td>Delivery report before commit</td><td>high</td></tr>
+<tr><td>Hook Reconciliation: Per-Hook Disposition for 6 Global-Only Hooks</td><td>high</td></tr>
+<tr><td>Nanaclaw Upstream PR: _sanitize_fts_query Fix</td><td>high</td></tr>
+<tr><td>Hook Error Evidence (Phase 36 Task 1)</td><td>high</td></tr>
+<tr><td>Hook Reconciliation Approach for Phase 36</td><td>medium</td></tr>
+</table>
+
+<h2>Files Changed</h2>
+<ul>
+<li><code>.claude/rules/active-phase.md</code></li>
+<li><code>.claude/rules/working-knowledge.md</code></li>
+<li><code>.dev-wiki/.stale-queue</code></li>
+<li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
+<li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
+<li><code>.dev-wiki/index.md</code></li>
+<li><code>.dev-wiki/log.md</code></li>
+<li><code>.dev-wiki/tasks.md</code></li>
+<li><code>.gitignore</code></li>
+<li><code>Makefile</code></li>
+<li><code>README.md</code></li>
+<li><code>benchmark/README.md</code></li>
+<li><code>benchmark/longmemeval.py</code></li>
+<li><code>install.sh</code></li>
+<li><code>memory_server/storage.py</code></li>
+<li><code>templates/.claude/skills/MANIFEST</code></li>
+<li><code>templates/.claude/skills/dev-debrief/SKILL.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/SKILL.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/implementation-guide.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/task-schema.md</code></li>
+<li><code>templates/.claude/skills/spec/SKILL.md</code></li>
+<li><code>tests/test_install.sh</code></li>
+<li><code>tests/test_templates.sh</code></li>
+
+
+</ul>
+
+<h2>Test Results</h2>
+<p><span class="status" style="background:#2d7d2d">PASS</span> 0 passed, 0 failed</p>
+<pre>  exact_duplicate: reinforces regardless of mode     OK
+
+memory: 11 run, 11 passed, 0 failed
+
+All tests passed.</pre>
+
+<h2>Eval Results</h2>
+<p><span class="status" style="background:#2d7d2d">47/47</span></p>
+<pre>Score: 47/47 (100%)</pre>
+
+<div class="footer">
+  Generated 2026-05-25 12:31:40 by generate-delivery-report.py
+</div>
+</body>
+</html>

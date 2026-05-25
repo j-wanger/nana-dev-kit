@@ -4,7 +4,7 @@ End-to-end development harness for Claude Code. Installs 22 skills, 11 hooks, id
 
 ## Requirements
 
-Bash, [jq](https://jqlang.github.io/jq/) 1.5+, Python 3.8+ (for memory server). macOS or Linux — hooks are bash scripts, not portable to native Windows. **Windows users:** use WSL2 (recommended) or install [Git for Windows](https://git-scm.com/downloads/win) for Git Bash hook support.
+Bash, [jq](https://jqlang.github.io/jq/) 1.5+, Python 3.8+ (for memory server). Node ≥20 + pnpm only if you use `/ts-init` (TypeScript scaffolding). macOS or Linux — hooks are bash scripts, not portable to native Windows. **Windows users:** use WSL2 (recommended) or install [Git for Windows](https://git-scm.com/downloads/win) for Git Bash hook support.
 
 ## Quick Start
 
@@ -17,16 +17,20 @@ Then in any project:
 
 ```
 /dev-init     # bootstrap dev-wiki lifecycle tracking
-/py-init      # scaffold Python toolchain (or use /dev-init alone for non-Python)
+/py-init      # scaffold Python toolchain
+/ts-init      # scaffold TypeScript toolchain (pnpm/Biome/Vitest/tsc)
+              # (or use /dev-init alone for non-language-specific projects)
 ```
 
 ### Installer Flags
 
 | Flag | What it installs |
 |------|-----------------|
-| `--all` (default) | Everything: identity, memory, Python skills, lifecycle, knowledge wiki, hooks |
+| `--all` (default) | Everything: identity, memory, Python + TypeScript skills, lifecycle, knowledge wiki, hooks |
 | `--core-only` | Identity rules + memory server only |
 | `--no-python` | Everything except Python-specific skills (py-init, py-lint, py-test, py-review) |
+| `--no-typescript` | Everything except `/ts-init` |
+| `--project-local` | Per-project hooks (audit-log, auto-ruff-format, block-dangerous-bash, check-tests-were-run, scan-secrets, session-start) into `./.claude/hooks/`. No global writes. |
 | `--dry-run` | Preview what would be installed |
 
 ## The 7 Layers
@@ -45,6 +49,9 @@ Then in any project:
 
 **Python Quality** — `/py-init`, `/py-lint`, `/py-test`, `/py-review`
 Scaffold, lint (ruff + mypy), test (pytest + coverage), and review (8-point PR checklist).
+
+**TypeScript Quality** — `/ts-init`
+Scaffold the Nana 5-layer TS dev harness: pnpm + Biome (lint + format) + tsc (typecheck) + Vitest (test). Two modes: new-project scaffold or existing-project retrofit via 10-dimension scanner.
 
 **Development Lifecycle** — `/dev-init`, `/dev-plan`, `/dev-debrief`, `/dev-check`, `/dev-scan`, `/spec`
 Phase-based planning with TDD task schemas, automated debriefs, spec contracts with adversarial constraints and two-tier review gates.
@@ -74,14 +81,14 @@ Four categories: hook fidelity (31), skill artifact validation (6), lifecycle co
 
 ## Memory Benchmark
 
-The vendored memory server's retrieval quality is benchmarked against [LongMemEval-S](https://huggingface.co/datasets/xiaowu0162/longmemeval-cleaned) (500 questions, 6 categories). Each question indexes ~50 conversation sessions as memory entries and measures recall@5/recall@10.
+The memory server's retrieval quality is benchmarked against [LongMemEval-S](https://huggingface.co/datasets/xiaowu0162/longmemeval-cleaned) (500 questions, 6 categories).
 
-```bash
-benchmark/.venv/bin/python benchmark/longmemeval.py --smoke-test  # verify setup
-benchmark/.venv/bin/python benchmark/longmemeval.py --full        # full run
-```
+| Mode | recall@5 | recall@10 |
+|------|----------|-----------|
+| FTS5 (session-level, 500 questions) | 91.0% | 95.2% |
+| Hybrid RRF (turn-level, 40-question diagnostic) | +27.6% lift on failures | no degradation on easy |
 
-Published baselines: BM25 86.2% recall@5, hybrid 95.2% recall@5. Note: baselines use different retrieval units (chunks vs. full sessions). See `benchmark/README.md` for interpretation guide.
+Turn-level indexing (each conversation turn as a separate entry) produces high-quality embeddings that lift recall on hard multi-session questions without degrading easy ones. See `benchmark/README.md` for the full analysis.
 
 ## Enforcement
 
@@ -104,7 +111,7 @@ Re-run `~/nana-dev-kit/install.sh` to update. Existing files are overwritten; `n
 ## Testing
 
 ```bash
-make test    # 190 tests across 5 scripts
+make test    # 240 tests across 6 scripts
 make eval    # 47 eval scenarios (requires jq)
 make report  # package inventory at docs/report.html
 ```

@@ -3,10 +3,14 @@
 # Run once per machine. Then use /py-init in any project to scaffold the harness.
 #
 # Flags:
-#   --all          Install everything (default)
-#   --core-only    Identity rules + spec + memory server only
-#   --no-python    Skip py-init skill
-#   --dry-run      Print actions without copying
+#   --all            Install everything (default)
+#   --core-only      Identity rules + spec + memory server only
+#   --no-python      Skip py-init skill
+#   --no-typescript  Skip ts-init skill
+#   --project-local  Install per-project hooks (audit-log, auto-ruff-format,
+#                    block-dangerous-bash, check-tests-were-run, scan-secrets,
+#                    session-start) into $PWD/.claude/hooks/. No global writes.
+#   --dry-run        Print actions without copying
 
 set -euo pipefail
 
@@ -18,8 +22,10 @@ MEMORY_SRC="$SCRIPT_DIR/memory_server"
 # --- Flag parsing ---
 DRY_RUN=false
 SHOW_STATUS=false
+PROJECT_LOCAL=false
 INSTALL_CORE=true
 INSTALL_PYTHON=true
+INSTALL_TYPESCRIPT=true
 INSTALL_DEVWIKI=true
 INSTALL_KNOWLEDGE=true
 
@@ -29,24 +35,110 @@ while [[ $# -gt 0 ]]; do
       DRY_RUN=true ;;
     --status)
       SHOW_STATUS=true ;;
+    --project-local)
+      PROJECT_LOCAL=true ;;
     --core-only)
       INSTALL_PYTHON=false
+      INSTALL_TYPESCRIPT=false
       INSTALL_DEVWIKI=false
       INSTALL_KNOWLEDGE=false ;;
     --no-python)
       INSTALL_PYTHON=false ;;
+    --no-typescript)
+      INSTALL_TYPESCRIPT=false ;;
     --all)
       INSTALL_CORE=true
       INSTALL_PYTHON=true
+      INSTALL_TYPESCRIPT=true
       INSTALL_DEVWIKI=true
       INSTALL_KNOWLEDGE=true ;;
     *)
       echo "Error: unknown flag: $1" >&2
-      echo "Usage: install.sh [--all|--core-only|--no-python] [--dry-run] [--status]" >&2
+      echo "Usage: install.sh [--all|--core-only|--no-python|--no-typescript] [--project-local] [--dry-run] [--status]" >&2
       exit 1 ;;
   esac
   shift
 done
+
+# --- Project-local install (short-circuit, no global writes) ---
+if $PROJECT_LOCAL; then
+  HOOKS_SRC="$SCRIPT_DIR/templates/.claude/hooks"
+  PROJ_HOOKS_DIR=".claude/hooks"
+  PROJ_SETTINGS=".claude/settings.local.json"
+  PROJECT_HOOKS=(
+    "audit-log.sh"
+    "auto-ruff-format.sh"
+    "block-dangerous-bash.sh"
+    "check-tests-were-run.sh"
+    "scan-secrets.sh"
+    "session-start.sh"
+  )
+  for h in "${PROJECT_HOOKS[@]}"; do
+    [ -f "$HOOKS_SRC/$h" ] || { echo "Error: source missing: $HOOKS_SRC/$h" >&2; exit 1; }
+  done
+  if $DRY_RUN; then
+    echo "[dry-run] --- Mode: project-local ---"
+    echo "[dry-run] install hooks to $PROJ_HOOKS_DIR/: ${PROJECT_HOOKS[*]}"
+    echo "[dry-run] register hooks in $PROJ_SETTINGS (nested schema)"
+  else
+    mkdir -p "$PROJ_HOOKS_DIR"
+    for h in "${PROJECT_HOOKS[@]}"; do
+      cp "$HOOKS_SRC/$h" "$PROJ_HOOKS_DIR/$h"
+      chmod +x "$PROJ_HOOKS_DIR/$h"
+    done
+    python3 -c "
+import json, os
+path = '$PROJ_SETTINGS'
+data = {}
+if os.path.isfile(path):
+    with open(path) as f:
+        data = json.load(f)
+if 'hooks' not in data:
+    data['hooks'] = {}
+hooks = data['hooks']
+
+def upsert(event, matcher, hook_file):
+    cmd = '.claude/hooks/' + hook_file
+    if event not in hooks:
+        hooks[event] = []
+    for e in hooks[event]:
+        for h in e.get('hooks', []):
+            if h.get('command', '').endswith(hook_file):
+                return
+        if e.get('command', '').endswith(hook_file) and 'hooks' not in e:
+            new = {'type': 'command', 'command': cmd}
+            keep_matcher = e.get('matcher')
+            e.clear()
+            if keep_matcher: e['matcher'] = keep_matcher
+            e['hooks'] = [new]
+            return
+    entry = {}
+    if matcher: entry['matcher'] = matcher
+    entry['hooks'] = [{'type': 'command', 'command': cmd}]
+    hooks[event].append(entry)
+
+upsert('SessionStart', '', 'session-start.sh')
+upsert('PostToolUse', 'Edit|Write', 'audit-log.sh')
+upsert('PostToolUse', 'Edit|Write', 'auto-ruff-format.sh')
+upsert('PreToolUse', 'Bash', 'block-dangerous-bash.sh')
+upsert('Stop', '', 'check-tests-were-run.sh')
+upsert('PostToolUse', 'Edit|Write', 'scan-secrets.sh')
+
+with open(path, 'w') as f:
+    json.dump(data, f, indent=2)
+    f.write('\n')
+"
+    echo ""
+    echo "Project-local hooks installed in $PROJ_HOOKS_DIR/"
+    echo "  - audit-log.sh           — PostToolUse:Edit|Write — JSONL audit"
+    echo "  - auto-ruff-format.sh    — PostToolUse:Edit|Write — Python ruff format"
+    echo "  - block-dangerous-bash.sh — PreToolUse:Bash       — block rm -rf etc"
+    echo "  - check-tests-were-run.sh — Stop                  — test reminder"
+    echo "  - scan-secrets.sh        — PostToolUse:Edit|Write — gitleaks/secrets"
+    echo "  - session-start.sh       — SessionStart           — dev-wiki + memory nudge"
+  fi
+  exit 0
+fi
 
 # --- Status check (early return, no writes) ---
 if $SHOW_STATUS; then
@@ -76,7 +168,9 @@ if $SHOW_STATUS; then
   PY_SKILLS=$(ls -d "$HOME/.claude/skills"/py-*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
   DEV_SKILLS=$(ls -d "$HOME/.claude/skills"/dev-*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
   WIKI_SKILLS=$(ls -d "$HOME/.claude/skills"/wiki-*/SKILL.md "$HOME/.claude/skills"/knowledge-wiki/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+  TS_SKILLS=$(ls -d "$HOME/.claude/skills"/ts-*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
   echo "    python:    $PY_SKILLS"
+  echo "    typescript: $TS_SKILLS"
   echo "    lifecycle: $DEV_SKILLS"
   echo "    wiki:      $WIKI_SKILLS"
   echo ""
@@ -96,6 +190,10 @@ if [ "$INSTALL_PYTHON" = true ] && [ "$INSTALL_CORE" = false ]; then
   echo "Error: module 'python' requires 'core' but it is not selected." >&2
   exit 1
 fi
+if [ "$INSTALL_TYPESCRIPT" = true ] && [ "$INSTALL_CORE" = false ]; then
+  echo "Error: module 'typescript' requires 'core' but it is not selected." >&2
+  exit 1
+fi
 if [ "$INSTALL_DEVWIKI" = true ] && [ "$INSTALL_CORE" = false ]; then
   echo "Error: module 'dev-wiki' requires 'core' but it is not selected." >&2
   exit 1
@@ -108,6 +206,7 @@ fi
 # --- Skill directory definitions ---
 CORE_SKILLS="spec"
 PYTHON_SKILLS="py-init"
+TYPESCRIPT_SKILLS="ts-init"
 DEVWIKI_SKILLS="dev-wiki dev-check dev-debrief dev-init dev-plan dev-scan"
 KNOWLEDGE_SKILLS="knowledge-wiki wiki-absorb wiki-add wiki-bootstrap wiki-consolidate wiki-health wiki-index wiki-init wiki-query wiki-reorg wiki-registry"
 
@@ -154,6 +253,10 @@ if [ "$INSTALL_CORE" = true ]; then
 fi
 if [ "$INSTALL_PYTHON" = true ] && [ ! -f "$SKILLS_SRC/py-init/SKILL.md" ]; then
   echo "Error: source file not found: $SKILLS_SRC/py-init/SKILL.md" >&2
+  missing=1
+fi
+if [ "$INSTALL_TYPESCRIPT" = true ] && [ ! -f "$SKILLS_SRC/ts-init/SKILL.md" ]; then
+  echo "Error: source file not found: $SKILLS_SRC/ts-init/SKILL.md" >&2
   missing=1
 fi
 [ "$missing" -eq 0 ] || exit 1
@@ -250,6 +353,16 @@ if [ "$INSTALL_PYTHON" = true ]; then
   done
 fi
 
+# === TypeScript module ===
+if [ "$INSTALL_TYPESCRIPT" = true ]; then
+  if $DRY_RUN; then
+    echo "[dry-run] --- Module: typescript ---"
+  fi
+  for skill in $TYPESCRIPT_SKILLS; do
+    install_skill_dir "$skill"
+  done
+fi
+
 # === Dev-wiki module ===
 if [ "$INSTALL_DEVWIKI" = true ]; then
   if $DRY_RUN; then
@@ -259,25 +372,41 @@ if [ "$INSTALL_DEVWIKI" = true ]; then
     install_skill_dir "$skill"
   done
 
-  # Enforcement hooks
+  # Global hooks: enforcement + lifecycle (11 total)
   HOOKS_SRC="$SCRIPT_DIR/templates/.claude/hooks"
+  GLOBAL_HOOKS=(
+    "enforce-spec.sh"
+    "enforce-loop.sh"
+    "enforce-memory.sh"
+    "detect-loop.sh"
+    "pre-compact.sh"
+    "post-commit.sh"
+    "context-size-check.sh"
+    "dev-wiki-scope-check.sh"
+    "post-compact.sh"
+    "session-stop.sh"
+    "stale-queue.sh"
+  )
   if $DRY_RUN; then
-    echo "[dry-run] install hooks: enforce-spec.sh, enforce-loop.sh, enforce-memory.sh, detect-loop.sh, pre-compact.sh, post-commit.sh"
-    echo "[dry-run] register hooks in settings.json"
+    echo "[dry-run] install hooks (11): ${GLOBAL_HOOKS[*]}"
+    echo "[dry-run] remove superseded: dev-wiki-post-commit.sh (replaced by post-commit.sh)"
+    echo "[dry-run] register hooks in settings.json (nested {matcher, hooks:[{type, command}]} schema)"
     echo "[dry-run] create enforce marker: ~/.claude/enforce"
   else
     mkdir -p ~/.claude/hooks
-    cp "$HOOKS_SRC/enforce-spec.sh" ~/.claude/hooks/enforce-spec.sh
-    cp "$HOOKS_SRC/enforce-loop.sh" ~/.claude/hooks/enforce-loop.sh
-    cp "$HOOKS_SRC/enforce-memory.sh" ~/.claude/hooks/enforce-memory.sh
-    cp "$HOOKS_SRC/detect-loop.sh" ~/.claude/hooks/detect-loop.sh
-    cp "$HOOKS_SRC/pre-compact.sh" ~/.claude/hooks/pre-compact.sh
-    cp "$HOOKS_SRC/post-commit.sh" ~/.claude/hooks/post-commit.sh
-    chmod +x ~/.claude/hooks/enforce-spec.sh ~/.claude/hooks/enforce-loop.sh ~/.claude/hooks/enforce-memory.sh ~/.claude/hooks/detect-loop.sh ~/.claude/hooks/pre-compact.sh ~/.claude/hooks/post-commit.sh
+    for h in "${GLOBAL_HOOKS[@]}"; do
+      [ -f "$HOOKS_SRC/$h" ] || { echo "Error: source missing: $HOOKS_SRC/$h" >&2; exit 1; }
+      cp "$HOOKS_SRC/$h" ~/.claude/hooks/"$h"
+      chmod +x ~/.claude/hooks/"$h"
+    done
+    # Remove superseded duplicate (kit's post-commit.sh replaces this — same trigger, more robust)
+    rm -f ~/.claude/hooks/dev-wiki-post-commit.sh
     touch ~/.claude/enforce
     touch ~/.claude/enforce-memory
 
-    # Register hooks in settings.json (idempotent JSON merge)
+    # Register hooks in settings.json using Claude Code's nested schema:
+    # {matcher, hooks:[{type:"command", command}]} — NOT the legacy flat {matcher, command}.
+    # Migrates any pre-existing flat-shape entries to the nested shape.
     SETTINGS=~/.claude/settings.json
     python3 -c "
 import json, os
@@ -289,32 +418,54 @@ if os.path.isfile(path):
 if 'hooks' not in data:
     data['hooks'] = {}
 hooks = data['hooks']
-spec_hook = {'matcher': 'Write|Edit', 'command': os.path.expanduser('~/.claude/hooks/enforce-spec.sh')}
-loop_hook = {'command': os.path.expanduser('~/.claude/hooks/enforce-loop.sh')}
-if 'PreToolUse' not in hooks:
-    hooks['PreToolUse'] = []
-detect_hook = {'matcher': 'Bash', 'command': os.path.expanduser('~/.claude/hooks/detect-loop.sh')}
-memory_hook = {'matcher': 'Write|Edit', 'command': os.path.expanduser('~/.claude/hooks/enforce-memory.sh')}
-if not any(h.get('command','').endswith('enforce-spec.sh') for h in hooks['PreToolUse']):
-    hooks['PreToolUse'].append(spec_hook)
-if not any(h.get('command','').endswith('enforce-memory.sh') for h in hooks['PreToolUse']):
-    hooks['PreToolUse'].append(memory_hook)
-if 'PostToolUse' not in hooks:
-    hooks['PostToolUse'] = []
-if not any(h.get('command','').endswith('detect-loop.sh') for h in hooks['PostToolUse']):
-    hooks['PostToolUse'].append(detect_hook)
-postcommit_hook = {'matcher': 'Bash', 'command': os.path.expanduser('~/.claude/hooks/post-commit.sh')}
-if not any(h.get('command','').endswith('post-commit.sh') for h in hooks['PostToolUse']):
-    hooks['PostToolUse'].append(postcommit_hook)
-if 'Stop' not in hooks:
-    hooks['Stop'] = []
-if not any(h.get('command','').endswith('enforce-loop.sh') for h in hooks['Stop']):
-    hooks['Stop'].append(loop_hook)
-compact_hook = {'command': os.path.expanduser('~/.claude/hooks/pre-compact.sh')}
-if 'PreCompact' not in hooks:
-    hooks['PreCompact'] = []
-if not any(h.get('command','').endswith('pre-compact.sh') for h in hooks['PreCompact']):
-    hooks['PreCompact'].append(compact_hook)
+
+def cmd_path(name):
+    return os.path.expanduser('~/.claude/hooks/' + name)
+
+def upsert(event, matcher, hook_file):
+    cmd = cmd_path(hook_file)
+    if event not in hooks:
+        hooks[event] = []
+    # Already present in nested shape?
+    for e in hooks[event]:
+        for inner in e.get('hooks', []):
+            if inner.get('command', '').endswith(hook_file):
+                return
+    # Pre-existing flat-shape entry? Migrate it.
+    for e in hooks[event]:
+        if e.get('command', '').endswith(hook_file) and 'hooks' not in e:
+            keep_matcher = e.get('matcher')
+            e.clear()
+            if keep_matcher: e['matcher'] = keep_matcher
+            e['hooks'] = [{'type': 'command', 'command': cmd}]
+            return
+    # New entry.
+    entry = {}
+    if matcher: entry['matcher'] = matcher
+    entry['hooks'] = [{'type': 'command', 'command': cmd}]
+    hooks[event].append(entry)
+
+# PreToolUse
+upsert('PreToolUse', 'Write|Edit', 'enforce-spec.sh')
+upsert('PreToolUse', 'Write|Edit', 'enforce-memory.sh')
+upsert('PreToolUse', 'Write|Edit', 'dev-wiki-scope-check.sh')
+
+# PostToolUse
+upsert('PostToolUse', 'Bash', 'detect-loop.sh')
+upsert('PostToolUse', 'Bash', 'post-commit.sh')
+upsert('PostToolUse', 'Edit|Write', 'stale-queue.sh')
+
+# Stop
+upsert('Stop', '', 'enforce-loop.sh')
+upsert('Stop', '', 'session-stop.sh')
+
+# PreCompact + PostCompact
+upsert('PreCompact', '', 'pre-compact.sh')
+upsert('PostCompact', '', 'post-compact.sh')
+
+# UserPromptSubmit
+upsert('UserPromptSubmit', '', 'context-size-check.sh')
+
 with open(path, 'w') as f:
     json.dump(data, f, indent=2)
     f.write('\n')
@@ -341,6 +492,7 @@ if ! $DRY_RUN; then
   [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/memory_server/            — persistent memory MCP server"
   [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/.nana-dev-kit-path        — kit location marker"
   [ "$INSTALL_PYTHON" = true ] && echo "  ~/.claude/skills/py-init/           — /py-init Python scaffolding"
+  [ "$INSTALL_TYPESCRIPT" = true ] && echo "  ~/.claude/skills/ts-init/           — /ts-init TypeScript scaffolding"
   [ "$INSTALL_DEVWIKI" = true ] && echo "  ~/.claude/skills/dev-*/             — dev-wiki lifecycle (6 skills)"
   [ "$INSTALL_DEVWIKI" = true ] && echo "  ~/.claude/hooks/                    — lifecycle hooks (enforce, detect-loop, post-commit, pre-compact)"
   [ "$INSTALL_KNOWLEDGE" = true ] && echo "  ~/.claude/skills/wiki-*/            — knowledge-wiki pipeline (11 skills)"
@@ -348,8 +500,9 @@ if ! $DRY_RUN; then
   echo "Getting started (open a project, then run one of these):"
   echo "  /dev-init     — bootstrap dev-wiki lifecycle tracking"
   echo "  /py-init      — scaffold Python project with full toolchain"
+  echo "  /ts-init      — scaffold TypeScript project with full toolchain"
   echo "  /wiki-init    — start a knowledge wiki for your domain"
 else
   echo ""
-  echo "[dry-run] Getting started: /dev-init (lifecycle), /py-init (Python), /wiki-init (knowledge)"
+  echo "[dry-run] Getting started: /dev-init (lifecycle), /py-init (Python), /ts-init (TypeScript), /wiki-init (knowledge)"
 fi

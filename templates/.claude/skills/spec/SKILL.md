@@ -17,6 +17,12 @@ If BOTH true (dev-wiki exists AND uncompleted tasks): "Active dev-wiki phase det
 
 If dev-wiki exists but no uncompleted tasks, or no dev-wiki: proceed.
 
+## Agent-Internal Mode (`--internal`)
+
+When invoked with `--internal` (e.g., from dev-plan Step 0.6): run Steps 1-4 and the two-tier review gate normally, auto-incorporate all Tier 0/1 findings, persist the spec with the `<!-- nana:approved -->` marker (Step 6), and return. **Skip Step 5** (no user approval gate). The spec is an agent-internal quality artifact — the user reviews output via the delivery report at phase end, not the spec itself.
+
+When invoked directly by the user (`/spec`): follow the full interactive flow below unchanged.
+
 ## Step 1: Gather Context
 
 Read available project state (all optional — use `test -f` guards):

@@ -1,74 +1,72 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-24 by /dev-debrief (Phase 32 completed)
+> Last updated: 2026-05-25 by /dev-debrief (Phase 37 completed)
 
 ## Recommended Next Action
 
-Run /dev-plan to plan Phase 33. Candidates: language-agnostic core (Gap 4.1, last OPEN gap), hybrid retrieval benchmark (fastembed + sqlite-vec), memory_server upstream fixes (_sanitize_fts_query `?` handling), generator refactoring, generalized MCP enforcement.
+Run /dev-plan for Phase 38. Phase 37 (Ceremony Streamlining) is complete. Consider soft observations: stale installed skill files at ~/.claude/skills/, context-size-check.sh python3 vs jq inconsistency, delivery report diff content enhancement.
 
 ## Active Phase
 
-**[[phase-32-longmemeval-s-benchmark|Phase 32: LongMemEval-S Memory Benchmark]]** (status: active)
+**[[phase-37-ceremony-streamlining-autonomous-flow|Phase 37: Ceremony Streamlining & Autonomous Flow]]** (status: completed)
 
-Entry criteria: MET (Phase 31 complete, 190 tests passing, 47/47 eval)
-Exit criteria: benchmark/longmemeval.py exists + parses, --smoke-test exits 0, --dry-run 3 exits 0, benchmark/README.md exists, .gitignore updated, make test passes
+Entry criteria: MET -- Phase 36 complete, 240 tests, 47/47 eval, approach approved by user
+Exit criteria: All 10 items met. 259 tests, 47/47 eval.
 
-Progress: 100% (3/3 tasks done)
+Progress: 100% (7/7 tasks done)
 
 ## Active Phase Contract
 
-Phase: 32 - LongMemEval-S Memory Benchmark
-Tasks: 3 (1M + 1L + 1S, see tasks.md)
-Transition: continue
-Abort: if blocked >3 attempts, ask user: skip or abort
+Phase: 37 - Ceremony Streamlining & Autonomous Flow (COMPLETED)
+Tasks: 7 (all done)
+Transition: run /dev-plan for Phase 38
+Abort: n/a
 
 ## Recent Decisions
 
 | Decision | Confidence | Date |
 |----------|------------|------|
-| [[diagnostic-first-benchmark]] | high | 2026-05-24 |
+| [[ceremony-streamlining-2-gate-model]] | high | 2026-05-25 |
+| [[spec-internal-mode]] | high | 2026-05-25 |
+| [[delivery-report-before-commit]] | high | 2026-05-25 |
 
 ## Blockers and Open Questions
 
-None currently.
+None.
 
 ## Key Artifacts
 
 | Path | Purpose | Last Modified |
 |------|---------|---------------|
-| `benchmark/longmemeval.py` | LongMemEval-S memory retrieval benchmark (FTS5+hybrid, per-question DB isolation, recall@5/10 scoring) | 2026-05-24 |
-| `benchmark/README.md` | Benchmark usage instructions and interpretation guide | 2026-05-24 |
-| `scripts/generate-report.py` | Package inventory report generator (7-Layer, v0.5.0, Eval/Specs categories, test_start counting) | 2026-05-23 |
-| `scripts/generate-workflow.py` | Workflow breakdown generator (~800 lines, 7-Layer, 12-hook table, Enforcement + Memory Bridge sections) | 2026-05-23 |
-| `scripts/eval-runner.sh` | Eval corpus runner (~310 lines, jq, HOME isolation, binary scoring, 4 categories) | 2026-05-23 |
-| `eval/corpus/` | 47 scenario directories (31 hook-*, 6 skill-*, 6 lifecycle-*, 4 context-*) | 2026-05-24 |
-| `install.sh` | Module-group installer (~320 lines, --all/--core-only/--no-python/--dry-run/--status, hooks module, 6 global hooks) | 2026-05-24 |
-| `templates/.claude/hooks/` | 13 lifecycle hooks + session-start.d/ (all use [nana:<hook>] prefix, 9 use jq, enforce-spec + enforce-loop + enforce-memory write enforcement.log) | 2026-05-24 |
-| `templates/.claude/hooks/session-start.d/` | Sourced modules (wk-prune.sh, memory-nudge.sh) | 2026-05-22 |
-| `templates/.claude/skills/` | 24 skill dirs + MANIFEST with descriptions (~120 files, ~650KB) | 2026-05-23 |
-| `templates/.claude/rules/nana-soul.md` | Cognitive identity (59 lines, 3 protocols + Voice & presence + H8/H9) | 2026-05-20 |
-| `memory_server/` | Vendored MCP memory server (12 .py, 2,373 LOC from nanaclaw) | 2026-05-15 |
-| `tests/` | 6 test scripts, 190 tests (helpers.sh + test_*.sh) | 2026-05-24 |
-| `docs/report.html` | Generated package inventory report (7-Layer, Eval/Specs categories) | 2026-05-23 |
-| `docs/workflow.html` | Generated workflow breakdown (7-Layer, 12-hook table, Enforcement + Memory Bridge) | 2026-05-23 |
-| `README.md` | v0.5.1 documentation (~100 lines, 7 sections + Requirements + Windows note + Memory Benchmark) | 2026-05-24 |
+| `templates/.claude/skills/dev-plan/SKILL.md` | Dev-plan orchestrator with 2-gate ceremony (direction + delivery), agent-internal flow | 2026-05-25 |
+| `templates/.claude/skills/dev-plan/plan-review-companion.md` | Extracted plan-review Steps 7.5/7.6 | 2026-05-25 |
+| `templates/.claude/skills/spec/SKILL.md` | Spec skill with --internal mode for autonomous flow | 2026-05-25 |
+| `templates/.claude/skills/dev-debrief/SKILL.md` | Dev-debrief with delivery gate + auto-commit/push | 2026-05-25 |
+| `templates/.claude/skills/dev-debrief/delivery-flow.md` | Delivery gate companion (report + accept/reject) | 2026-05-25 |
+| `scripts/generate-delivery-report.py` | HTML delivery report generator (196 lines) | 2026-05-25 |
+| `install.sh` | Module-group installer (~508 lines, 5 module groups, --project-local flag, 11 global hooks) | 2026-05-25 |
+| `templates/.claude/skills/MANIFEST` | Skill checksums + descriptions (regenerated for Phase 37) | 2026-05-25 |
+| `tests/` | 6 test scripts, 259 tests (helpers.sh + test_*.sh) | 2026-05-25 |
+| `memory_server/storage.py` | MCP memory storage (_find_near_duplicate uses indexed lookups: vec0 KNN + FTS5 MATCH) | 2026-05-24 |
+| `benchmark/longmemeval.py` | LongMemEval-S benchmark (FTS5+hybrid, turn-level indexing, per-question DB isolation, recall@5/10) | 2026-05-24 |
 | `VERSION` | Semantic version (0.5.0) | 2026-05-23 |
 
 ## Session Journal (last 5)
 
-- [2026-05-24] [[2026-05-24-phase-32-longmemeval-s-benchmark-complete|Phase 32 complete]] -- LongMemEval-S benchmark, FTS5 recall@5 91.0%, benchmark/longmemeval.py, README updated, 190 tests, 47/47 eval
-- [2026-05-24] [[2026-05-24-phase-31-integration-eval-memory-gating-complete|Phase 31 complete]] -- lifecycle eval scenario, enforce-memory.sh hook, install.sh registration, 3 eval scenarios, 190 tests, 47/47 eval
-- [2026-05-23] [[2026-05-23-phase-30-data-driven-reports-complete|Phase 30 complete]] -- generate-report.py + generate-workflow.py 7-Layer updates, Enforcement + Memory Bridge sections, 6 staleness regression tests, 181 tests
-- [2026-05-23] [[2026-05-23-phase-29-grade-push-complete|Phase 29 complete]] -- root-skip, companion extraction, /nana + /memory-consolidate skills, spec provenance, enforcement logging, 175 tests
-- [2026-05-23] [[2026-05-23-phase-28-dx-discoverability-complete|Phase 28 complete]] -- hook prefix normalization, install.sh --status, MANIFEST descriptions, [nana:kit] summary, 169 tests
+- [2026-05-25] [[2026-05-25-phase-37-ceremony-streamlining-complete|Phase 37 complete]] -- ceremony streamlining: 4-gate to 2-gate, --internal spec, delivery report, auto-commit/push, 259 tests, 47/47 eval
+- [2026-05-25] [[2026-05-25-phase-36-hooks-audit-housekeeping-complete|Phase 36 complete]] -- hooks audit, 5 backports + 1 delete, install.sh nested schema + --project-local, nanaclaw PR, 240 tests, 47/47 eval
+- [2026-05-25] [[2026-05-25-phase-35-ts-init-implementation-complete|Phase 35 complete]] -- ts-init implementation (SKILL.md + scanner.md + transform.md), AGENTS-ts.md, ci-ts.yml, install.sh typescript module, 23 new tests, 224 tests, 47/47 eval
+- [2026-05-24] [[2026-05-24-phase-34-upstream-sync-store-opt-ts-design-complete|Phase 34 complete]] -- upstream sync, store() optimization (indexed lookups), ts-init design spec, 11 new memory tests, 201 tests, 47/47 eval
+- [2026-05-24] [[2026-05-24-phase-33-hybrid-retrieval-benchmark-complete|Phase 33 complete]] -- sanitizer fix, hybrid benchmark, turn-level RRF wins (+27.6% lift on failures, no degradation), 190 tests, 47/47 eval
 
 ## Cross-References
 
-- Status: [[2026-05-23-codebase-snapshot|Codebase Snapshot 2026-05-23]]
-- Phases 1-32: completed (see index.md)
-- Decision: [[diagnostic-first-benchmark|Diagnostic-first benchmark]] -- high confidence, validated (FTS5 recall@5 91.0%)
-- Decision: [[gap-43-wont-build|Gap 4.3 worktree/parallel won't-build]] -- high confidence, closed
+- Status: [[2026-05-25-codebase-snapshot|Codebase Snapshot 2026-05-25]]
+- Phases 1-37: completed (see index.md)
+- Decision: [[ceremony-streamlining-2-gate-model|Ceremony streamlining: 2-gate model]] -- high confidence
+- Decision: [[spec-internal-mode|Spec --internal mode]] -- high confidence
+- Decision: [[delivery-report-before-commit|Delivery report before commit]] -- high confidence
 - Roadmap: [[roadmap-gap-analysis|Engineering Gap Analysis]] -- 1 OPEN gap remains (4.1 language-agnostic core)
-- Retro: Phases 26-30 clean (0 blockers, 0 reversals, 0 user corrections)
+- Retro: Phases 31-35 clean (0 blockers, 0 reversals, 0 user corrections)
 - Release: v0.5.0 tagged and pushed
-- Benchmark: FTS5 recall@5 91.0%, recall@10 95.2% (500 questions, LongMemEval-S)
+- Benchmark: FTS5 recall@5 91.0%, hybrid/turn ~95% estimated (LongMemEval-S)

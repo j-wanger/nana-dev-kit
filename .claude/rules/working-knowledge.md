@@ -1,6 +1,30 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
+- [uses: 1] 2-gate ceremony model: direction gate (Step 7, user confirms intent/scope) + delivery gate (HTML report before commit, user accepts/rejects). Agent operates autonomously between gates. Subagent reviewers still execute but findings auto-incorporated.
+  source: [[decision:ceremony-streamlining-2-gate-model]] | activated: 2026-05-25
+- [uses: 1] Spec --internal mode: when invoked with --internal, auto-runs Steps 2-4 + Tier 0/1, incorporates findings, persists with marker, skips Step 5 user approval. Direct /spec unchanged. Honors spec-always-mandatory.
+  source: [[decision:spec-internal-mode]] | activated: 2026-05-25
+- [uses: 1] Delivery report generated BEFORE commit via scripts/generate-delivery-report.py (196 lines). Reads git diff + tasks.md + decisions, runs make test/eval, produces HTML. Auto-commit + push only after user acceptance.
+  source: [[decision:delivery-report-before-commit]] | activated: 2026-05-25
+- [uses: 1] install.sh hook schema uses nested format: {matcher, hooks:[{type:"command", command:"..."}]} per Claude Code /doctor validation. Legacy flat {matcher, command} triggers /doctor errors. Flat-to-nested migration logic in install.sh Python JSON merge block.
+  source: [[decision:hook-error-evidence]] + [[decision:hook-reconciliation]] | activated: 2026-05-25
+- [uses: 1] Kit hooks: 17 scripts in templates/.claude/hooks/; 11 installed globally by install.sh (enforce-spec, enforce-loop, enforce-memory, detect-loop, post-commit, pre-compact, context-size-check, dev-wiki-scope-check, post-compact, session-stop, stale-queue); 6 available via --project-local (audit-log, auto-ruff-format, block-dangerous-bash, check-tests-were-run, scan-secrets, session-start).
+  source: [[decision:hook-reconciliation]] | activated: 2026-05-25
+- [uses: 1] Hook fixes require tmpdir testing (mktemp -d) before touching live state — prevents self-lockout via enforce-spec.sh regression. Evidence-pinned: every fix needs quoted error string or lint finding in commit message.
+  source: [[decision:hook-reconciliation-approach]] | activated: 2026-05-25
+- [uses: 1] install.sh ~508 lines with module-group architecture, --all/--core-only/--no-python/--no-typescript/--project-local/--dry-run/--status flags. --project-local copies 6 per-project hooks to CWD .claude/hooks/ with settings.json merge.
+  source: [[decision:hook-reconciliation]] + [[journal:2026-05-25-phase-36-hooks-audit-housekeeping-complete]] | activated: 2026-05-25
+- [uses: 1] store() dedup is a hygiene mechanism with 7 corruption modes. _find_near_duplicate is the core dedup gate — threshold changes must preserve exact semantics (cosine >0.90 reinforce, >0.85 warn; word overlap >0.90 warn). Word-overlap is the production fallback when embeddings unavailable.
+  source: [[decision:store-opt-indexed-lookups]] + [[active-knowledge:phase-34]] | activated: 2026-05-24
+- [uses: 1] server.py:74 auto-embeds when embedding provider available. Word-overlap path is the fallback dedup mechanism when _vec_available=False.
+  source: [[active-knowledge:phase-34]] | activated: 2026-05-24
+- [uses: 1] _find_near_duplicate uses indexed lookups: vec0 KNN LIMIT 50 for cosine path (when _vec_available), FTS5 MATCH LIMIT 50 for word-overlap path. Both apply existing threshold logic (_cosine_similarity >0.90 reinforce, >0.85 warn; word overlap >0.90 warn) on candidates only. Replaces O(n^2) full table scans.
+  source: [[decision:store-opt-indexed-lookups]] | activated: 2026-05-24
+- [uses: 1] _sanitize_fts_query uses re.sub(r'[^\w\s]', ' ', query) + FTS5 keyword stripping (AND/NOT/NEAR). Aligns query preprocessing with index-time tokenization. Known limitation: C++ becomes C. OR-join semantics preserved.
+  source: [[decision:char-level-sanitizer-fts5]] | activated: 2026-05-24
+- [uses: 1] search_hybrid() uses RRF fusion (alpha=0.4, k=60); nomic-embed-text-v1.5 produces 768d vectors matching vec0 table. Turn-level hybrid RRF is winning strategy (+27.6% lift on FTS5-failure questions, no degradation). fastembed + sqlite-vec are benchmark-only deps, NOT in install.sh.
+  source: [[decision:turn-level-hybrid-recommended]] + [[decision:benchmark-only-hybrid-deps]] | activated: 2026-05-24
 - [uses: 1] enforce-spec.sh uses OR logic: `<!-- nana:approved -->` HTML comment marker OR exit-criteria presence. Backward compat for ~20 existing marker-less specs. New specs get marker via /spec Step 6. Both enforcement hooks write JSONL to .dev-wiki/enforcement.log with tail -n 500 truncation.
   source: [[decision:spec-provenance-html-comment]] + [[journal:2026-05-23-phase-29-grade-push-complete]] | activated: 2026-05-23
 - [uses: 1] dev-plan SKILL.md at 330/350 lines after Step 3 extraction to scope-exploration-spec.md companion. Next feature addition needs another extraction or ceiling raise. Companion pattern: 2-line Read pointer replaces inline content, cp -r auto-distributes.
@@ -70,8 +94,8 @@
   source: [[decision:v0-versioning-strategy]] | activated: 2026-05-15
 - [uses: 1] Kit CI at .github/workflows/kit-ci.yml is distinct from templates/.github/workflows/ci.yml; shellcheck is CI-only
   source: [[decision:kit-ci-separate-from-template]] | activated: 2026-05-15
-- [uses: 1] memory_server/ vendored from nanaclaw (12 .py, 2,373 LOC); runs via MCP stdio (python -m memory_server)
-  source: [[decision:vendor-memory-server]] | activated: 2026-05-15
+- [uses: 2] memory_server/ vendored from nanaclaw (12 .py, 2,376 LOC); runs via MCP stdio (python -m memory_server). Near-zero divergence from upstream (900 vs 903 lines, only _sanitize_fts_query differs). Patch at patches/nanaclaw-sanitize-fts.patch.
+  source: [[decision:vendor-memory-server]] + [[decision:nanaclaw-divergence-inventory]] | activated: 2026-05-24
 - [uses: 1] session-start.sh reads 2 sources: py-session-state.md, dev-wiki/_CURRENT_STATE.md; memory access is MCP-only (memory_search); MEMORY.md removed in Phase 10
   source: [[decision:memory-convergence-mcp-only]] | activated: 2026-05-19
 - [uses: 1] MCP registration uses idempotent python3 JSON merge; handles 3 cases: no settings.json, existing without mcpServers, existing with mcpServers

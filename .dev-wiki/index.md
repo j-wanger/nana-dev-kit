@@ -35,6 +35,11 @@
 - [[phase-30-data-driven-report-generators|Phase 30: Data-Driven Report Generators]] -- completed
 - [[phase-31-integration-eval-memory-gating|Phase 31: Integration Eval + Memory Gating]] -- completed
 - [[phase-32-longmemeval-s-benchmark|Phase 32: LongMemEval-S Memory Benchmark]] -- completed
+- [[phase-33-hybrid-retrieval-benchmark-memory-server-fixes|Phase 33: Hybrid Retrieval Benchmark + Memory Server Fixes]] -- completed
+- [[phase-34-upstream-sync-store-opt-ts-design|Phase 34: Upstream Sync + store() Optimization + TypeScript Design Spec]] -- completed
+- [[phase-35-ts-init-implementation|Phase 35: ts-init Implementation]] -- completed
+- [[phase-36-hooks-audit-housekeeping|Phase 36: Hooks Audit & Housekeeping]] -- completed
+- [[phase-37-ceremony-streamlining-autonomous-flow|Phase 37: Ceremony Streamlining & Autonomous Flow]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -84,6 +89,21 @@
 - [[memory-enforcement-auto-create|Memory enforcement auto-create]] -- medium confidence, accepted
 - [[trust-based-memory-gate|Trust-based memory gate]] -- medium confidence, accepted
 - [[settings-registration-global-only|Settings registration: global only]] -- high confidence, accepted
+- [[char-level-sanitizer-fts5|Char-level sanitizer for FTS5]] -- high confidence, accepted
+- [[benchmark-only-hybrid-deps|Benchmark-only hybrid deps]] -- high confidence, accepted
+- [[store-opt-indexed-lookups|Replace full table scans in _find_near_duplicate with indexed lookups]] -- high confidence, accepted
+- [[nanaclaw-upstream-surgical-patch|Nanaclaw upstream surgical patch]] -- high confidence, accepted
+- [[ts-design-spec-before-impl|TypeScript design spec before implementation]] -- high confidence, accepted
+- [[nanaclaw-divergence-inventory|Nanaclaw divergence inventory: near-zero]] -- high confidence, accepted
+- [[ts-init-design-resolutions|ts-init design question resolutions (Biome/tsc/ES2023/ESM)]] -- medium confidence, accepted
+- [[hook-reconciliation|Hook Reconciliation: 5 backport, 1 delete]] -- high confidence, accepted
+- [[hook-error-evidence|Hook error evidence from /doctor]] -- high confidence, accepted
+- [[nanaclaw-upstream-pr|Nanaclaw upstream PR]] -- high confidence, accepted
+- [[hook-reconciliation-approach|Hook reconciliation approach for Phase 36]] -- medium confidence, accepted
+- [[ceremony-streamlining-2-gate-model|Ceremony streamlining: 2-gate model]] -- medium confidence, accepted
+- [[spec-internal-mode|Spec --internal mode]] -- medium confidence, accepted
+- [[delivery-report-before-commit|Delivery report before commit]] -- high confidence, accepted
+- [[turn-level-hybrid-recommended|Turn-level hybrid RRF is the winning strategy]] -- high confidence, accepted
 - [[diagnostic-first-benchmark|Diagnostic-first benchmark]] -- high confidence, accepted
 - [[monorepo-skill-distribution|Monorepo Skill Distribution]] -- high confidence, accepted
 - [[import-source-canonical-installed|Import Source -- Canonical Installed Versions]] -- high confidence, accepted
@@ -116,6 +136,11 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-25-phase-37-ceremony-streamlining-complete|Phase 37 complete]] -- 2026-05-25
+- [[2026-05-25-phase-36-hooks-audit-housekeeping-complete|Phase 36 complete]] -- 2026-05-25
+- [[2026-05-25-phase-35-ts-init-implementation-complete|Phase 35 complete]] -- 2026-05-25
+- [[2026-05-24-phase-34-upstream-sync-store-opt-ts-design-complete|Phase 34 complete]] -- 2026-05-24
+- [[2026-05-24-phase-33-hybrid-retrieval-benchmark-complete|Phase 33 complete]] -- 2026-05-24
 - [[2026-05-24-phase-32-longmemeval-s-benchmark-complete|Phase 32 complete]] -- 2026-05-24
 - [[2026-05-24-phase-31-integration-eval-memory-gating-complete|Phase 31 complete]] -- 2026-05-24
 - [[2026-05-23-phase-30-data-driven-reports-complete|Phase 30 complete]] -- 2026-05-23
@@ -152,6 +177,8 @@
 - [[roadmap-gap-analysis|Engineering Gap Analysis & Roadmap]] -- active, tracks open/closed gaps and build order
 
 ### Status
+- [[2026-05-25-codebase-snapshot|Codebase Snapshot]] -- 2026-05-25
+- [[2026-05-24-codebase-snapshot|Codebase Snapshot]] -- 2026-05-24
 - [[2026-05-23-codebase-snapshot|Codebase Snapshot]] -- 2026-05-23
 - [[2026-05-22-codebase-snapshot|Codebase Snapshot]] -- 2026-05-22
 - [[2026-05-21-codebase-snapshot|Codebase Snapshot]] -- 2026-05-21
@@ -171,15 +198,21 @@
 
 ## Recent
 
-- 2026-05-24: Phase 32 completed -- LongMemEval-S benchmark, FTS5 recall@5 91.0%, benchmark/longmemeval.py, README updated, 190 tests, 47/47 eval
+- 2026-05-25: Phase 37 completed -- ceremony streamlining: 4-gate to 2-gate, --internal spec, delivery report, auto-commit/push, 3 decisions confirmed high, 259 tests, 47/47 eval
+- 2026-05-25: Phase 37 planned -- 7 tasks (2S 5M), 3 decisions (ceremony-streamlining-2-gate-model, spec-internal-mode, delivery-report-before-commit), ceremony streamlining & autonomous flow
+- 2026-05-25: Phase 36 completed -- hooks audit, 5 backports + 1 delete, install.sh nested schema + --project-local, nanaclaw PR, 4 decisions, 240 tests, 47/47 eval
+- 2026-05-25: Phase 36 planned -- 8 tasks (3S 5M), 1 decision (hook-reconciliation-approach), hooks audit & housekeeping
+- 2026-05-25: Phase 35 completed -- ts-init implementation (SKILL.md + scanner.md + transform.md), AGENTS-ts.md, ci-ts.yml, install.sh typescript module, 23 new tests (224 total), 47/47 eval
+- 2026-05-25: Phase 35 planned -- 7 tasks (3S 4M), 1 decision (ts-init-design-resolutions), ts-init implementation from design spec
+- 2026-05-24: Phase 34 completed -- upstream sync, store() optimization (indexed lookups), ts-init design spec, 4 decisions, 201 tests, 47/47 eval
+- 2026-05-24: Phase 34 planned -- 5 tasks (2S 3M), 3 decisions (store-opt-indexed-lookups, nanaclaw-upstream-surgical-patch, ts-design-spec-before-impl), upstream sync + store() optimization + TypeScript design spec
+- 2026-05-24: Phase 33 completed -- sanitizer fix, hybrid benchmark, turn-level RRF wins (+27.6% lift), 3 decisions, 190 tests, 47/47 eval
+- 2026-05-24: Phase 33 planned -- 4 tasks (1S 3M), 2 decisions (char-level-sanitizer-fts5, benchmark-only-hybrid-deps), hybrid retrieval benchmark + memory server fixes
 - 2026-05-24: Phase 32 planned -- 3 tasks (1M 1L 1S), 1 decision (diagnostic-first-benchmark), LongMemEval-S memory benchmark
-- 2026-05-24: Phase 31 completed -- lifecycle eval scenario, enforce-memory.sh hook, install.sh registration, 3 eval scenarios, 190 tests, 47/47 eval
-- 2026-05-23: Phase 31 planned -- 5 tasks (3M 2S), 3 decisions (memory-enforcement-auto-create, trust-based-memory-gate, settings-registration-global-only), integration eval + memory gating
 - 2026-05-23: Phase 30 completed -- generate-report.py + generate-workflow.py 7-Layer updates, Enforcement + Memory Bridge sections, 6 staleness regression tests, 181 tests, 43/43 eval
 - 2026-05-23: Phase 30 planned -- 4 tasks (1S 2M 1L), 0 decisions, data-driven report generators
 - 2026-05-23: Phase 29 completed -- root-skip, companion extraction, /nana + /memory-consolidate skills, spec provenance, enforcement logging, 175 tests, 43/43 eval
 - 2026-05-23: Phase 29 planned -- 7 tasks (2S 5M), 3 decisions (skill-based-memory-consolidation, spec-provenance-html-comment, dev-plan-scope-extraction), v0.5.1 grade push
-- 2026-05-23: Phase 28 completed -- hook prefix normalization, install.sh --status, MANIFEST descriptions, [nana:kit] summary, 169 tests, 43/43 eval
 - 2026-05-23: Phase 28 planned -- 6 tasks (2M 4S), 2 decisions (hook-prefix-nana-namespace, status-in-install-sh), DX discoverability
 - 2026-05-23: Phase 27 completed -- README refresh (5 stale numbers), 3 staleness regression tests, install.sh summary polish, v0.5.0 shipped, 163 tests, 43/43 eval
 - 2026-05-23: Phase 27 planned -- 4 tasks, 0 decisions, README refresh + staleness regression tests + install.sh polish + v0.5.0 ship

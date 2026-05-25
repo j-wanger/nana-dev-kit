@@ -57,7 +57,7 @@ Agent({
 ### After executor returns
 
 1. Parse the structured return (decisions_captured, journal, tasks, phase_status, etc.)
-2. If `phase_status` includes READY FOR COMPLETION, ask user to confirm
+2. If `phase_status` includes READY FOR COMPLETION: read `~/.claude/skills/dev-debrief/delivery-flow.md` and follow the delivery report + auto-commit protocol (Steps D1-D3). This is the **delivery gate** — the second boundary checkpoint.
 3. If `soft_observations > 0`, run capture check (Step 6b)
 4. If `retro: triggered`, surface retro findings
 5. Present a conversational summary — outcomes, not transcript
@@ -265,7 +265,7 @@ Read `~/.claude/skills/dev-debrief/retro-check.md` for the lightweight retrospec
 
 ### Step 12d: Gate Compliance Audit
 
-Parse the completed phase's gate comment in `tasks.md` (format: `<!-- gates: spec=N approach=yes|no plan-review=N tasks=yes|no -->`). Expected gates by ceremony: **standard** requires spec, approach, plan-review, tasks; **lite** requires approach, tasks. Flag any gate marked `SKIPPED` without justification or any expected gate missing entirely. Include findings in journal entry under `### Gate Compliance`. If no gate comment exists for the phase, emit: `"Gate comment missing for Phase N — audit skipped."` (non-blocking warning).
+Parse the completed phase's gate comment in `tasks.md` (format: `<!-- gate-log:phase-N direction=approved delivery=pending|accepted -->`). Under the 2-gate ceremony model, verify: `direction=approved` is present (required for all phases), `delivery=accepted` is present for completed phases. Flag missing direction gate. Include findings in journal entry under `### Gate Compliance`. If no gate comment exists for the phase, emit: `"Gate comment missing for Phase N — audit skipped."` (non-blocking warning).
 
 ### Steps 13-15: Index Rebuild, Log, Breadcrumb Cleanup
 

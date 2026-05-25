@@ -287,6 +287,57 @@ assert_contains "$PROJECT_ROOT/templates/.claude/skills/wiki-query/SKILL.md" 'me
 test_start "wiki-query SKILL.md has Memory Results section"
 assert_contains "$PROJECT_ROOT/templates/.claude/skills/wiki-query/SKILL.md" 'Memory Results'
 
+# --- Phase 37: Ceremony streamlining ---
+test_start "plan-review-companion.md exists in dev-plan skill"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/dev-plan/plan-review-companion.md"
+
+test_start "plan-review-companion.md referenced from dev-plan SKILL.md"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md" 'plan-review-companion'
+
+test_start "dev-plan SKILL.md has agent-internal flow"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md" 'agent-internal'
+
+test_start "dev-plan SKILL.md has direction gate"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md" 'direction'
+
+test_start "dev-plan SKILL.md has delivery gate reference"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md" 'delivery'
+
+test_start "dev-plan SKILL.md has no old 5-gate template"
+if grep -q 'Spec reviewed.*Tier' "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md"; then
+  test_fail "old 5-gate template still present"
+else
+  test_pass
+fi
+
+test_start "spec SKILL.md has --internal mode"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/spec/SKILL.md" '\-\-internal'
+
+test_start "delivery-flow.md exists in dev-debrief skill"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/dev-debrief/delivery-flow.md"
+
+test_start "dev-debrief SKILL.md references delivery report"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/dev-debrief/SKILL.md" 'delivery'
+
+test_start "delivery-flow.md has auto-commit protocol"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/dev-debrief/delivery-flow.md" 'auto-commit\|Auto-Commit'
+
+test_start "delivery report script exists"
+assert_file_exists "$PROJECT_ROOT/scripts/generate-delivery-report.py"
+
+test_start "implementation-guide.md has 2-gate model"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/dev-plan/implementation-guide.md" 'direction gate'
+
+test_start "implementation-guide.md no old 5-gate references"
+if grep -q 'Spec reviewed.*Tier\|Tasks approved by user' "$PROJECT_ROOT/templates/.claude/skills/dev-plan/implementation-guide.md"; then
+  test_fail "old 5-gate reference still present"
+else
+  test_pass
+fi
+
+test_start "task-schema.md has 2-gate log format"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/dev-plan/task-schema.md" 'direction='
+
 test_start "spec SKILL.md ≤350 lines"
 SPEC_LINES=$(wc -l < "$PROJECT_ROOT/templates/.claude/skills/spec/SKILL.md")
 if [ "$SPEC_LINES" -le 350 ]; then
@@ -502,6 +553,100 @@ if grep -q '<h[23].*[Mm]emory.*[Bb]ridge' "$PROJECT_ROOT/docs/workflow.html" 2>/
   test_pass
 else
   test_fail "workflow.html missing Memory Bridge section header"
+fi
+
+# --- ts-init skill ---
+test_start "ts-init SKILL.md exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/ts-init/SKILL.md"
+
+test_start "ts-init scanner.md exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/ts-init/scanner.md"
+
+test_start "ts-init transform.md exists"
+assert_file_exists "$PROJECT_ROOT/templates/.claude/skills/ts-init/transform.md"
+
+test_start "ts-init SKILL.md references scanner.md"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/ts-init/SKILL.md" "scanner.md"
+
+test_start "ts-init SKILL.md references transform.md"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/ts-init/SKILL.md" "transform.md"
+
+test_start "ts-init SKILL.md mentions ES2023"
+if grep -qi 'es2023' "$PROJECT_ROOT/templates/.claude/skills/ts-init/SKILL.md"; then
+  test_pass
+else
+  test_fail "ts-init SKILL.md missing ES2023 target"
+fi
+
+test_start "ts-init scanner has 10 dimensions + monorepo pre-check"
+if grep -qi 'monorepo' "$PROJECT_ROOT/templates/.claude/skills/ts-init/scanner.md" && grep -qi 'compatible' "$PROJECT_ROOT/templates/.claude/skills/ts-init/scanner.md"; then
+  test_pass
+else
+  test_fail "scanner missing monorepo or compatible"
+fi
+
+test_start "ts-init scanner warns about React + Biome"
+if grep -qi 'react.*biome\|biome.*react\|React/Next' "$PROJECT_ROOT/templates/.claude/skills/ts-init/scanner.md"; then
+  test_pass
+else
+  test_fail "scanner missing React/Biome warning"
+fi
+
+test_start "ts-init transform mentions biome, vitest, husky"
+if grep -qi 'biome' "$PROJECT_ROOT/templates/.claude/skills/ts-init/transform.md" && \
+   grep -qi 'vitest' "$PROJECT_ROOT/templates/.claude/skills/ts-init/transform.md" && \
+   grep -qi 'husky' "$PROJECT_ROOT/templates/.claude/skills/ts-init/transform.md"; then
+  test_pass
+else
+  test_fail "transform missing biome/vitest/husky"
+fi
+
+test_start "AGENTS-ts.md exists"
+assert_file_exists "$PROJECT_ROOT/templates/AGENTS-ts.md"
+
+test_start "AGENTS-ts.md references pnpm, biome, vitest, tsc"
+if grep -q 'pnpm' "$PROJECT_ROOT/templates/AGENTS-ts.md" && \
+   grep -q 'biome' "$PROJECT_ROOT/templates/AGENTS-ts.md" && \
+   grep -q 'vitest' "$PROJECT_ROOT/templates/AGENTS-ts.md" && \
+   grep -q 'tsc' "$PROJECT_ROOT/templates/AGENTS-ts.md"; then
+  test_pass
+else
+  test_fail "AGENTS-ts.md missing toolchain references"
+fi
+
+test_start "AGENTS-ts.md within budget (<=95 lines)"
+TS_AGENTS_LINES=$(wc -l < "$PROJECT_ROOT/templates/AGENTS-ts.md")
+if [ "$TS_AGENTS_LINES" -le 95 ]; then
+  test_pass
+else
+  test_fail "AGENTS-ts.md is $TS_AGENTS_LINES lines (max 95)"
+fi
+
+test_start "ci-ts.yml exists"
+assert_file_exists "$PROJECT_ROOT/templates/.github/workflows/ci-ts.yml"
+
+test_start "ci-ts.yml uses pnpm + biome + tsc + vitest"
+if grep -q 'pnpm' "$PROJECT_ROOT/templates/.github/workflows/ci-ts.yml" && \
+   grep -q 'biome' "$PROJECT_ROOT/templates/.github/workflows/ci-ts.yml" && \
+   grep -q 'tsc' "$PROJECT_ROOT/templates/.github/workflows/ci-ts.yml" && \
+   grep -q 'vitest' "$PROJECT_ROOT/templates/.github/workflows/ci-ts.yml"; then
+  test_pass
+else
+  test_fail "ci-ts.yml missing toolchain commands"
+fi
+
+test_start "ci-ts.yml has setup-node action"
+if grep -qi 'setup-node' "$PROJECT_ROOT/templates/.github/workflows/ci-ts.yml"; then
+  test_pass
+else
+  test_fail "ci-ts.yml missing setup-node action"
+fi
+
+test_start "MANIFEST has ts-init description"
+if grep -q '# ts-init:' "$PROJECT_ROOT/templates/.claude/skills/MANIFEST"; then
+  test_pass
+else
+  test_fail "MANIFEST missing ts-init description"
 fi
 
 test_summary "test_templates"

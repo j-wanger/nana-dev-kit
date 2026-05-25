@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 import sqlite3
 import struct
 from datetime import datetime, timedelta, timezone
@@ -267,16 +268,25 @@ def _find_near_duplicate(
     best_row: Optional[sqlite3.Row] = None
     best_action: Optional[str] = None
 
-    # Cosine-based dedup when embeddings available
+    # Cosine-based dedup via vec0 KNN candidate filtering
     if embedding and _vec_available:
-        candidates = conn.execute(
-            "SELECT * FROM memories WHERE active = 1 AND embedding IS NOT NULL"
-        ).fetchall()
-        for row in candidates:
-            blob = row["embedding"]
-            if not blob:
+        query_blob = _embedding_to_blob(embedding)
+        try:
+            vec_rows = conn.execute(
+                "SELECT rowid, distance FROM memories_vec "
+                "WHERE embedding MATCH ? ORDER BY distance LIMIT 50",
+                (query_blob,),
+            ).fetchall()
+        except Exception:
+            vec_rows = []
+        for vrow in vec_rows:
+            row = conn.execute(
+                "SELECT * FROM memories WHERE rowid = ? AND active = 1",
+                (vrow[0],),
+            ).fetchone()
+            if not row or not row["embedding"]:
                 continue
-            other_emb = list(struct.unpack(f"<{len(blob)//4}f", blob))
+            other_emb = list(struct.unpack(f"<{len(row['embedding'])//4}f", row["embedding"]))
             sim = _cosine_similarity(embedding, other_emb)
             if sim > 0.90:
                 return (row, "reinforce")
@@ -287,14 +297,31 @@ def _find_near_duplicate(
     if best_row is not None:
         return (best_row, best_action)
 
-    # Fallback: word-overlap based near-duplicate detection
+    # Fallback: word-overlap via FTS5 candidate pre-filtering
     words = set(content.strip().lower().split())
     if not words:
         return None
-    candidates = conn.execute(
-        "SELECT * FROM memories WHERE active = 1"
-    ).fetchall()
-    for row in candidates:
+
+    fts_query = _sanitize_fts_query(content)
+    candidate_rows: list = []
+    if fts_query:
+        try:
+            candidate_rows = conn.execute(
+                """SELECT m.* FROM memories_fts f
+                   JOIN memories m ON m.rowid = f.rowid
+                   WHERE memories_fts MATCH ? AND m.active = 1
+                   LIMIT 50""",
+                (fts_query,),
+            ).fetchall()
+        except Exception:
+            candidate_rows = []
+
+    if not candidate_rows:
+        candidate_rows = conn.execute(
+            "SELECT * FROM memories WHERE active = 1 LIMIT 50"
+        ).fetchall()
+
+    for row in candidate_rows:
         other_words = set(row["content"].strip().lower().split())
         if not other_words:
             continue
@@ -893,8 +920,10 @@ def _parse_export_markdown(markdown: str) -> list[dict]:
 
 
 def _sanitize_fts_query(query: str) -> str:
-    tokens = query.strip().split()
-    safe = [t for t in tokens if t and not any(c in t for c in '()"*:')]
+    cleaned = re.sub(r'[^\w\s]', ' ', query)
+    tokens = cleaned.split()
+    fts_keywords = {'AND', 'OR', 'NOT', 'NEAR'}
+    safe = [t for t in tokens if t and t.upper() not in fts_keywords]
     if not safe:
         return ""
     return " OR ".join(safe)

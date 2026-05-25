@@ -1,0 +1,23 @@
+--- /tmp/nanaclaw-upstream-storage.py	2026-05-24 23:21:24
++++ /Users/jwang/nana-dev-kit/memory_server/storage.py	2026-05-24 22:25:21
+@@ -2,6 +2,7 @@
+ 
+ import json
+ import logging
++import re
+ import sqlite3
+ import struct
+ from datetime import datetime, timedelta, timezone
+@@ -893,8 +894,10 @@
+ 
+ 
+ def _sanitize_fts_query(query: str) -> str:
+-    tokens = query.strip().split()
+-    safe = [t for t in tokens if t and not any(c in t for c in '()"*:')]
++    cleaned = re.sub(r'[^\w\s]', ' ', query)
++    tokens = cleaned.split()
++    fts_keywords = {'AND', 'OR', 'NOT', 'NEAR'}
++    safe = [t for t in tokens if t and t.upper() not in fts_keywords]
+     if not safe:
+         return ""
+     return " OR ".join(safe)

@@ -7,3 +7,10 @@ __pycache__/
 benchmark/data/
 benchmark/results.json
 benchmark/.venv/
+.dev-wiki/.hook-prefix-inventory.md
+.dev-wiki/.session-end
+.dev-wiki/.pending-commit
+.dev-wiki/.stale-queue
+.claude/.session-anchor
+.claude/.context-warned
+.claude/scheduled_tasks.lock

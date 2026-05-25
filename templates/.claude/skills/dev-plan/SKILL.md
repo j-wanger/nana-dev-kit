@@ -39,15 +39,15 @@ When it returns, you receive: project state summary, scope analysis, wiki knowle
 
 - **Step 5:** Ask user goal-oriented questions (informed by state loader's design questions + your own memory/knowledge recall)
 - **Step 6:** Propose approach (using state loader's wiki insights + your judgment)
-- **Step 6.5:** Dispatch approach reviewer (existing subagent pattern, unchanged)
-- **Step 7:** Present approach, get user approval
-- **Step 7.5-7.6:** Draft tasks, dispatch plan reviewer (existing subagent pattern), get user approval
+- **Step 6.5:** Dispatch approach reviewer (agent-internal quality check — incorporate findings, do not present to user)
+- **Step 7:** Present approach, get user approval — this is the **direction gate**
+- **Step 7.5:** Draft tasks, dispatch plan reviewer (agent-internal — incorporate findings, proceed to Step 8)
 
 Before formulating your approach (Step 6), search memory and knowledge for relevant prior context. Form a position — don't default to asking the user.
 
 ### Dispatch 2: Artifact Writing (Step 8)
 
-After user approves the plan, dispatch artifact writing:
+After user approves the direction (Step 7) and tasks are drafted (Step 7.5), dispatch artifact writing:
 
 ```
 Agent({
@@ -89,21 +89,15 @@ May SEED: `.claude/rules/working-knowledge.md` (Step 8f-ter, user-gated). wiki-q
 
 ---
 
-## Hard Gate
+## Direction Gate
 
 <HARD-GATE>
-Do NOT write any implementation code, scaffold any module, or invoke any
-implementation tool until the user has approved the approach in Step 7.
-This applies to EVERY phase regardless of perceived simplicity.
+Do NOT write any implementation code until the user has approved the direction in Step 7.
 </HARD-GATE>
 
 ---
 
-**Anti-pattern:** Every phase goes through this process -- even trivial ones. The plan can be short (3-5 tasks), but you MUST present it and get approval. Do NOT skip, combine, or shortcut steps.
-
 **Triggers:** `/dev context` suggests `/dev plan` when: active phase has 0 open tasks, all tasks are done, or user invokes it directly. If no `.dev-wiki/` exists: "No dev wiki found. Run `/dev init` first." STOP.
-
----
 
 ## Pre-checks
 
@@ -128,9 +122,9 @@ Throughout this flow, `$ROOT` is the project root. `$WIKI` is `$ROOT/.dev-wiki`.
 
 Read `$WIKI/config.md` for `ceremony:` value (lite or standard). If absent, default to `lite`. Check target phase article frontmatter for `ceremony:` override (frontmatter wins). Precedence: phase frontmatter > config.md > default (lite). Steps marked *(Lite: skip)* below are skipped under lite ceremony. Under lite, task schema is simplified: `- [ ] <Description> | scope: <globs> | success: <criterion>` (no TDD cycle fields).
 
-### Step 0.6: Spec Existence Check *(Lite: skip)*
+### Step 0.6: Spec Generation *(Lite: skip)*
 
-For standard ceremony: check if `$ROOT/specs/<phase-slug>.md` exists OR the target phase article has a `## Formal Spec` section. Derive `<phase-slug>` from the phase name (kebab-case, e.g., "phase-12-soul-enhancement"). If neither exists: read `~/.claude/skills/dev-plan/spec-auto-invoke.md` and follow the auto-invocation protocol (invoke /spec inline, handle terminal states, restart from Step 1 on approval).
+For standard ceremony: check if `$ROOT/specs/<phase-slug>.md` exists OR the target phase article has a `## Formal Spec` section. Derive `<phase-slug>` from the phase name (kebab-case, e.g., "phase-12-soul-enhancement"). If neither exists: read `~/.claude/skills/dev-plan/spec-auto-invoke.md` and invoke `/spec` with `--internal` flag (agent-internal — auto-run quality checks, persist spec, no user approval gate). On completion, restart from Step 1 with the new spec.
 
 ---
 
@@ -213,24 +207,21 @@ Search for wiki knowledge that might contradict the proposed approach. Serial in
 4. Read up to 3 new articles. Flag contradictions or better alternatives.
 5. If contradictions found, revise approach before dispatching the reviewer.
 
-### Step 6.5: Automatic Approach Critique *(Lite: skip)*
+### Step 6.5: Automatic Approach Critique *(Lite: skip)* — Agent-Internal
 
-Before presenting to the user, critique the approach using a subagent:
+Critique the approach using a subagent. This is an **agent-internal quality check** — incorporate findings automatically, do not present reviewer output to the user.
 
 1. **Read** `~/.claude/skills/dev-plan/approach-reviewer-prompt.md`.
 2. **Dispatch** Agent with: approach-reviewer prompt + proposed approach + phase article (objective, exit criteria) + top 3-5 articles from Steps 2/2.5 + prior decision articles (Step 1).
 3. **Collect** Score/Issues/Suggestions/Verdict. **Timeout:** 120 seconds.
 4. **Handle verdict:**
-   - Score 9-10 (accept): Proceed to Step 7 with approach as-is.
-   - Score 6-8 (revise): Incorporate reviewer feedback into approach, then proceed to Step 7.
-   - Score 1-5 (reject): Surface CRITICAL issues to user alongside the approach in Step 7.
-5. **Graceful fallback:** If companion file missing or subagent times out, proceed to Step 7 without critique. Warn: `"Approach reviewer unavailable — presenting uncritiqued approach."`
+   - Score 6-10: Incorporate feedback into approach, proceed to Step 7.
+   - Score 1-5: Revise approach to address CRITICAL issues, then proceed to Step 7. Note unresolved concerns in the phase article.
+5. **Graceful fallback:** If companion file missing or subagent times out, proceed to Step 7 without critique.
 
-Include the reviewer's findings (score + key issues) when presenting to the user in Step 7.
+### Step 7: User Approves Direction (Direction Gate)
 
-### Step 7: User Approves Approach
-
-Present the approach (with Step 6.5 reviewer findings, if available) and wait for explicit approval.
+Present the approach and wait for explicit approval. This is the **direction gate** — the only pre-implementation user approval point. The user confirms intent and scope, not technical details.
 
 <HARD-GATE>
 Do NOT write any implementation code until the user has approved.
@@ -241,18 +232,7 @@ If the user requests changes, revise, update the draft decision article, and re-
 
 ### Step 7.5: Draft Tasks and Review Plan Quality *(Lite: skip — merge into Step 7)*
 
-1. **Draft tasks** in conversation context (do NOT write to files yet). Follow `~/.claude/skills/dev-plan/task-schema.md` enriched task schema *(Lite: simplified — description+scope+success only)*: each task needs description, TDD cycle, scope, success, size.
-2. **Dispatch plan reviewer subagent.** Read `~/.claude/skills/dev-plan/plan-reviewer-prompt.md`. Launch Agent with the prompt + phase article (objective, exit criteria) + retrieved wiki articles + drafted tasks. Collect Score/Issues/Verdict. **Timeout:** 120 seconds. If subagent fails or times out: accept draft tasks without review score. Warn: `"Plan reviewer unavailable — proceeding without quality gate."`
-3. **Handle verdict:**
-   - Score 9-10 (accept): Proceed to Step 7.6.
-   - Score 6-8 (revise): Fix flagged issues in the draft, re-review once. If still ≤8, accept best version.
-   - Score 1-5 (reject): Surface specific CRITICAL issues to the user. Do NOT auto-accept. User decides: fix issues or proceed with acknowledged gaps.
-
-### Step 7.6: Present Reviewed Plan to User *(Lite: skip — single gate at Step 7)*
-
-Present the drafted tasks AND the reviewer's findings as a single report. This is a **second approval gate** — the user has already approved the approach (Step 7), now they approve the detailed plan.
-
-Wait for explicit approval before proceeding to Step 8. If user requests changes, revise tasks and run Step 7.5 once more (one additional subagent review). Present result. Proceed to Step 8 regardless of outcome.
+Read `~/.claude/skills/dev-plan/plan-review-companion.md` for the full protocol: draft tasks, dispatch plan reviewer subagent, handle verdict. This step is **agent-internal** — incorporate reviewer findings and proceed to Step 8 without blocking on user approval. The direction gate (Step 7) already confirmed the approach.
 
 ### Step 8: Write to Dev Wiki
 
@@ -279,18 +259,15 @@ Set `status: active`, `updated: <today>`. If creating a new phase article, read 
 #### 8f: Write Compaction Anchor -- active-phase.md
 Do NOT create any other hooks or rules files beyond `active-phase.md` and `active-knowledge.md` (Steps 8f and 8f-bis). Ensure `$ROOT/.claude/rules/` exists (`mkdir -p`). Write `$ROOT/.claude/rules/active-phase.md` with: Phase, Objective, Scope (file globs), Key constraints (from decisions), Exit criteria, Abort rule, **and a Gates section**. Size: 10-20 lines.
 
-The Gates section tracks mandatory checkpoints. Do NOT begin implementation until all pre-implementation gates are marked:
+The Gates section tracks the two boundary checkpoints (2-gate ceremony model):
 
 ```
 Gates:
-- [ ] Spec reviewed (Tier 0 + Tier 1)
-- [ ] Approach approved by user
-- [ ] Plan reviewed by subagent
-- [ ] Tasks approved by user
-- [ ] Memory: session-start search done
+- [ ] Direction confirmed by user (approach approved)
+- [ ] Delivery accepted (post-implementation report)
 ```
 
-Mark each gate as it is passed. If any gate is unmarked when implementation begins, STOP and complete it first.
+The direction gate must be marked before implementation begins. The delivery gate is marked post-implementation when the user accepts the delivery report (see dev-debrief).
 
 #### 8f-bis: Write Compaction Anchor -- active-knowledge.md *(Lite: skip)*
 
@@ -310,13 +287,15 @@ Write each task to TodoWrite with embedded constraints. Set all to `pending`. Se
 #### 8h: Append to log.md; 8i: Update index.md
 `[<ISO-timestamp>] PLAN -- Phase N planned, X tasks, Y decisions`. Add new decision articles and update the phase article entry in index.md.
 
-### Step 9: Implementation Transition Gate
+### Step 9: Auto-Transition to Implementation
 
-Present options: **A)** Continue this session (≤5 tasks), **B)** Fresh session with `/dev context` (6+ tasks), **C)** Subagent-driven parallel (independent tasks). Set `Transition:` in contract accordingly. For A/C, proceed to Step 10. For B, STOP.
+Report: "Phase N planned with X tasks. Beginning implementation." Set `Transition: continue` in contract. Proceed to Step 10 automatically — no user choice menu.
+
+For phases with 8+ tasks, note in the report that a fresh session may be beneficial, but do not block.
 
 ### Step 10: Begin Implementation
 
-Read `~/.claude/skills/dev-plan/implementation-guide.md` for Option A or C instructions.
+Read `~/.claude/skills/dev-plan/implementation-guide.md` for implementation instructions.
 
 ---
 

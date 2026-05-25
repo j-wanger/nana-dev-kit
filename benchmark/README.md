@@ -1,48 +1,77 @@
 # LongMemEval-S Memory Benchmark
 
-Measures retrieval quality of the vendored `memory_server/` against the [LongMemEval-S dataset](https://huggingface.co/datasets/xiaowu0162/longmemeval-cleaned) (500 questions, ~50 sessions per question, 6 categories).
+Measures retrieval quality of `memory_server/` against the [LongMemEval-S dataset](https://huggingface.co/datasets/xiaowu0162/longmemeval-cleaned) (500 questions, ~50 sessions per question, 6 categories).
 
 ## Setup
 
 ```bash
+# Base deps
 uv venv benchmark/.venv --python 3.11
 uv pip install --python benchmark/.venv/bin/python nanoid pydantic pyyaml huggingface_hub
-```
 
-For hybrid mode (optional):
-```bash
+# Hybrid mode (optional)
 uv pip install --python benchmark/.venv/bin/python fastembed sqlite-vec
 ```
 
 ## Usage
 
 ```bash
-# Verify setup (3 questions, asserts recall > 0)
+# Verify setup
 benchmark/.venv/bin/python benchmark/longmemeval.py --smoke-test
 
-# Quick validation (N questions)
+# Quick validation
 benchmark/.venv/bin/python benchmark/longmemeval.py --dry-run 10
 
-# Full benchmark (500 questions, ~10 minutes)
-benchmark/.venv/bin/python benchmark/longmemeval.py --full
-
-# Hybrid mode (requires fastembed + sqlite-vec)
+# Full benchmark — session-level (default)
 benchmark/.venv/bin/python benchmark/longmemeval.py --full --mode both
+
+# Full benchmark — turn-level indexing (recommended for hybrid)
+benchmark/.venv/bin/python benchmark/longmemeval.py --full --mode both --index turn
 ```
 
-## What it measures
+## Indexing strategies
 
-**Recall@K**: For each question, all ~50 conversation sessions are indexed as individual memory entries. The question is searched verbatim. Recall@K = proportion of gold sessions appearing in the top-K results.
+**`--index session`** (default): Each conversation session stored as one entry. FTS5 searches full text. For hybrid, embeddings are truncated to 512 chars.
 
-**Retrieval unit**: One memory entry = one full conversation session (all turns concatenated). This differs from some published baselines which use smaller chunks.
+**`--index turn`**: Each conversation turn stored as a separate entry with session context. Produces high-quality embeddings (short texts, ~100-500 chars) that match how `memory_server` stores data in production.
 
-## Interpreting results
+## Results (500 questions, session-level)
 
-| Metric | Meaning |
-|--------|---------|
-| recall@5 > 80% | Strong — most answers found in top 5 |
-| recall@5 50-80% | Acceptable — answers usually in top 10 |
-| recall@5 < 50% | Needs investigation — possible adapter issue |
+| Mode | recall@5 | recall@10 |
+|------|----------|-----------|
+| FTS5 | **91.0%** | **95.2%** |
+| Hybrid (RRF α=0.4) | 87.1% | 90.7% |
+
+Session-level hybrid hurts recall because 512-char truncated embeddings are misleading — they represent the session opener, not the full content. RRF fusion introduces wrong sessions and displaces correct FTS5 results.
+
+## Results (40-question diagnostic, session vs turn)
+
+Tested on 20 FTS5-failure questions + 20 easy questions:
+
+| Mode | Failures r@5 | Easy r@5 | Safe? |
+|------|-------------|---------|-------|
+| FTS5 session | 51.2% | 100% | baseline |
+| Hybrid RRF session | **82.9%** | **80%** ❌ | NO |
+| Rerank session | 60.1% | 100% | YES |
+| **Hybrid RRF turn** | **78.8%** | **100%** ✅ | **YES** |
+| FTS5 turn | 54.3% | 100% | YES |
+| Rerank turn | 61.9% | 100% | YES |
+
+**Winner: Turn-level hybrid RRF.** +27.6% lift on hard questions, no degradation on easy ones.
+
+### Why turn-level works
+
+- Turn entries are short (~100-500 chars) → high-quality embeddings
+- Embeddings align with FTS5 instead of fighting it
+- Matches production `memory_store` behavior (short facts, not full transcripts)
+- Session-level hybrid with truncated embeddings actively misleads the ranker
+
+### FTS5 failure analysis (87/500 questions)
+
+- 92% of failures are multi-session (45) or temporal-reasoning (35)
+- Failure pattern: counting queries ("How many X did I...?") needing 3-5 sessions
+- Different sessions use different vocabulary for the same activity → vocabulary mismatch
+- BM25 score predicts failures: avg top score 9.3 (failures) vs 19.5 (successes)
 
 ### Published baselines (rohitg00/agentmemory)
 
@@ -51,11 +80,10 @@ benchmark/.venv/bin/python benchmark/longmemeval.py --full --mode both
 | BM25 | 86.2% |
 | Hybrid (BM25 + embedding) | 95.2% |
 
-**Caveat**: These baselines use different retrieval units (conversation chunks vs. our full-session entries) and different BM25 implementations. Direct numeric comparison is informative but not apples-to-apples.
+**Caveat**: Different retrieval units (chunks vs. full sessions) and BM25 implementations.
 
 ## Categories
 
-The dataset has 6 question types:
 - `single-session-user` — answer in one session, about user info
 - `single-session-assistant` — answer in one session, about assistant behavior
 - `single-session-preference` — answer in one session, about preferences
@@ -65,15 +93,15 @@ The dataset has 6 question types:
 
 ## Output
 
-Results are saved to `benchmark/results.json` (gitignored). Format:
+Results saved to `benchmark/results.json` (gitignored):
 
 ```json
 {
-  "fts5": {
+  "fts5/session": {
     "mode": "fts5",
-    "total_questions": 500,
-    "overall_recall_at_5": 0.85,
-    "overall_recall_at_10": 0.92,
+    "index_strategy": "session",
+    "overall_recall_at_5": 0.91,
+    "overall_recall_at_10": 0.952,
     "per_category": { ... }
   }
 }

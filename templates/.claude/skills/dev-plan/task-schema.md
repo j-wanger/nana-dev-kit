@@ -57,13 +57,13 @@ Success criteria are the primary quality lever — they are spec-derived (writte
 
 ### Gate Log (required before tasks)
 
-Each phase section in tasks.md MUST begin with a gate log line recording approval status:
+Each phase section in tasks.md MUST begin with a gate log line recording the 2-gate ceremony status:
 
 ```
-<!-- gates: spec=9/10 approach=yes plan-review=8/10 tasks=yes -->
+<!-- gate-log:phase-N direction=approved delivery=pending -->
 ```
 
-Empty or missing gate values indicate skipped gates. The dev-debrief executor checks this line during post-phase audit.
+`direction=approved` records that the user confirmed the approach (direction gate). `delivery=pending|accepted` is updated by dev-debrief after the delivery report is accepted. The dev-debrief executor checks this line during post-phase audit.
 
 ### Task Ordering
 

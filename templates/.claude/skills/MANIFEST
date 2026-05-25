@@ -1,40 +1,61 @@
+
+# skills: 
+4a4a2cd35ac70802ddd0a84b8ff42564  templates/.claude/skills/MANIFEST
+
+# dev-check: Validate dev wiki integrity and fix drift. Run when state feels stale, after lon
 65ad8631aadb398bceb33691a7b56fb0  templates/.claude/skills/dev-check/SKILL.md
-a08c65a36677fefb34317bed009c9465  templates/.claude/skills/dev-debrief/SKILL.md
+
+# dev-debrief: Use when a session ends with meaningful work. Tiered capture: full (30-60s) or q
+f21b784dcd111bacef925adf3663d98b  templates/.claude/skills/dev-debrief/SKILL.md
 87e317dac5a2a2421c6ad23e2c6ad647  templates/.claude/skills/dev-debrief/active-knowledge-transition.md
 d15fa776bb4807be56fedc3e19158b53  templates/.claude/skills/dev-debrief/architecture-staleness-check.md
 a080e0e45e730708664040abf70e6985  templates/.claude/skills/dev-debrief/claude-md-refresh.md
 ad417605c170e78d178ca9e2f1e16d59  templates/.claude/skills/dev-debrief/debrief-finalization.md
+d92e7bebe926d69b1b5911e18a78cd04  templates/.claude/skills/dev-debrief/delivery-flow.md
 8af53d4896da90157bd06228b9ee16d7  templates/.claude/skills/dev-debrief/executor-prompt.md
-302fbe0516ab32ecea569b081cb55339  templates/.claude/skills/dev-debrief/memory-harvest.md
+cca98876abdd5579e86a1491fc89ba3b  templates/.claude/skills/dev-debrief/memory-harvest.md
 39b1fa770135920a62a1cb382971e288  templates/.claude/skills/dev-debrief/quick-debrief-flow.md
 3e6e6795dcc77e7125584f49cb534cca  templates/.claude/skills/dev-debrief/retro-check.md
 5c8187035ffcc03c38414959d65c5f97  templates/.claude/skills/dev-debrief/review-gate.md
 7ad2fd2b52bc31eca9a782202412f0a7  templates/.claude/skills/dev-debrief/reviewer-prompt.md
+
+# dev-init: Use when a project has no .dev-wiki/ yet. Bootstraps phases, architecture, state
 e5ddfb7b67241d37ad55fe475faff05f  templates/.claude/skills/dev-init/SKILL.md
 9289102da8a3041f9eb95ee90c5ec424  templates/.claude/skills/dev-init/init-scaffolding.md
 3be778e3010c88993d63a4af7b9eb1c0  templates/.claude/skills/dev-init/scaffold-claude-md.md
+
+# templates: 
 e7214f7710cfe23b1cc38596b26dfbfa  templates/.claude/skills/dev-init/templates/AGENTS.md
 c78c7501c48cf53dfc39dfd53fd282ba  templates/.claude/skills/dev-init/templates/project-CLAUDE.md
-bf74b0c348e60caad5f75fd63f644087  templates/.claude/skills/dev-plan/SKILL.md
+
+# dev-plan: Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstor
+45277c939204b5f52bbcf2c21038a345  templates/.claude/skills/dev-plan/SKILL.md
 2204ed430494fe8da956807873fcc5ae  templates/.claude/skills/dev-plan/approach-reviewer-prompt.md
 b519291412e12f7f72d242fb559a80ab  templates/.claude/skills/dev-plan/artifact-writer-prompt.md
 5178edaa94512bce877d87090936eccc  templates/.claude/skills/dev-plan/compaction-anchors-spec.md
-9ba75e943b89e210fedf6443410897a7  templates/.claude/skills/dev-plan/implementation-guide.md
+1650078d2683f63ee51b8dbd698efe31  templates/.claude/skills/dev-plan/implementation-guide.md
 766fcb38c147f83c51b51b5ac35f5dbb  templates/.claude/skills/dev-plan/iterative-retrieval-spec.md
+97fcdcda586b94120fcf56594672002c  templates/.claude/skills/dev-plan/memory-bridge.md
+13369bf52630e3c2e259d5096c21c43f  templates/.claude/skills/dev-plan/plan-review-companion.md
 add6039611d187286c1d0afd8c6cf5ba  templates/.claude/skills/dev-plan/plan-reviewer-prompt.md
 b839340a8882f204d8e60b1ce8b80284  templates/.claude/skills/dev-plan/research-pause-spec.md
+90da7b959f470a84cb61d444a15847f3  templates/.claude/skills/dev-plan/scope-exploration-spec.md
 c31bfed279f549c2ee2b0aec9b9e77ce  templates/.claude/skills/dev-plan/self-check-checklist.md
+ef7ce81e78f2cc81f06c0795f689d784  templates/.claude/skills/dev-plan/spec-auto-invoke.md
 5aab1fb17c0898c4fc6a932e0929bb14  templates/.claude/skills/dev-plan/state-loader-prompt.md
-94bdc3e406e999dc31f9d5dc55019be9  templates/.claude/skills/dev-plan/task-schema.md
+ad17829ed7689e16e18271d02f070dfb  templates/.claude/skills/dev-plan/task-schema.md
+
+# dev-scan: Use when adopting dev-wiki on an existing project, when _ARCHITECTURE.md is shal
 855ca2a2ffca19ab43011db337ed3df7  templates/.claude/skills/dev-scan/SKILL.md
 161f45e83ec22d058f6328f0740f4618  templates/.claude/skills/dev-scan/architecture-prompt.md
 388b0b8ff5107983bb5bd163dffa5705  templates/.claude/skills/dev-scan/content-hashing.md
 e0cea1d0005482805228f2e46435d669  templates/.claude/skills/dev-scan/file-prompt.md
 5afbe077dd1be1d415f53b9d4e0d02b4  templates/.claude/skills/dev-scan/module-prompt.md
 80e727f718b9be8002566adad5169dd8  templates/.claude/skills/dev-scan/python-memory-checks.md
-6173f4da98614bbc9f53a03623cec9f0  templates/.claude/skills/spec/SKILL.md
 63afa64c4479a49845948c5af184d47c  templates/.claude/skills/dev-scan/python-scan-profile.md
 a7839f37fd21c135c721464791b510d0  templates/.claude/skills/dev-scan/refresh-flow.md
+
+# dev-wiki: Route dev wiki operations and enforce development lifecycle discipline. Use when
 41125684ad58854680378bc6c6b01032  templates/.claude/skills/dev-wiki/SKILL.md
 c8e693f688e141edb24f38fa74379401  templates/.claude/skills/dev-wiki/active-knowledge-spec.md
 d085e8be5b93521a4c28e2fcb52ab880  templates/.claude/skills/dev-wiki/architecture-template.md
@@ -47,51 +68,89 @@ eeab846abd860f98f761228b60b2b2a1  templates/.claude/skills/dev-wiki/slugificatio
 43c8553ae8af8da520dd780a983427a0  templates/.claude/skills/dev-wiki/stale-queue-spec.md
 9537891ec30c95feeae48c7412fc51c2  templates/.claude/skills/dev-wiki/state-template.md
 ca3094fd6c356142652f9aeec6fad757  templates/.claude/skills/dev-wiki/working-knowledge-spec.md
+
+# knowledge-wiki: Route wiki operations and enforce wiki workflow discipline. Use when the user me
 62d52f32f8ae6efd237613e6d97a1dc7  templates/.claude/skills/knowledge-wiki/SKILL.md
 5be2a271de3cbd9706158de735d69142  templates/.claude/skills/knowledge-wiki/article-conventions.md
 d59531b29bc6127faf5a632d45edf87d  templates/.claude/skills/knowledge-wiki/claim-spec.md
 690c0078517816b0c20c31714ddb6380  templates/.claude/skills/knowledge-wiki/content-model.md
 9e4e466da04c637182934e39a76898e6  templates/.claude/skills/knowledge-wiki/conversion-spec.md
-d02959093aa5dc8027b9d0ab5833fd6d  templates/.claude/skills/knowledge-wiki/domain-profiles/aml-compliance.md
-202821b4fdc5167607d4b879358023fa  templates/.claude/skills/knowledge-wiki/domain-profiles/general.md
-0e2a9858ed169d4c73dff1ab9d1c35f6  templates/.claude/skills/knowledge-wiki/domain-profiles/machine-learning.md
-7e352e90fe52490d072c1d0745cf5e74  templates/.claude/skills/knowledge-wiki/domain-profiles/trading.md
 61ea577027c81db3f843815c48c18841  templates/.claude/skills/knowledge-wiki/pipeline-spec.md
 3885d4ebe21d7369f742c6a6cd09684a  templates/.claude/skills/knowledge-wiki/registry-schema.md
 55a6b600fa5d66b63fa0b22e3dddcde5  templates/.claude/skills/knowledge-wiki/reviewer-checklist.md
 11bfbb41fc0bd1905c55e71672f598c2  templates/.claude/skills/knowledge-wiki/search-spec.md
 932c5537324d73ef1cf69aa9982a573a  templates/.claude/skills/knowledge-wiki/session-context.md
+
+# domain-profiles: 
+d02959093aa5dc8027b9d0ab5833fd6d  templates/.claude/skills/knowledge-wiki/domain-profiles/aml-compliance.md
+202821b4fdc5167607d4b879358023fa  templates/.claude/skills/knowledge-wiki/domain-profiles/general.md
+0e2a9858ed169d4c73dff1ab9d1c35f6  templates/.claude/skills/knowledge-wiki/domain-profiles/machine-learning.md
+7e352e90fe52490d072c1d0745cf5e74  templates/.claude/skills/knowledge-wiki/domain-profiles/trading.md
+
+# memory-consolidate: Consolidate duplicate/overlapping memory entries using Claude. Use when memory_s
+793ff7ba68bb46f5732fc339a69ff5ac  templates/.claude/skills/memory-consolidate/SKILL.md
+
+# nana: Show installed nana-dev-kit skills grouped by module. Use when the user asks wha
+65a073824e8bdd0981d5e67696f9768d  templates/.claude/skills/nana/SKILL.md
+
+# py-init: Scaffold the Nana 5-layer Python dev harness. New projects get full scaffold; ex
 74c3351e6b568e1f18561031ea65c258  templates/.claude/skills/py-init/SKILL.md
 906f35b59f7143bd33bf72fb9af44440  templates/.claude/skills/py-init/scanner.md
 ca0529f9494d79de5a966808f6e3e5f8  templates/.claude/skills/py-init/transform.md
+
+# py-lint: Run linting, formatting, and type checking. Use after writing or modifying Pytho
 c27991e337470cd89df485d6fd9011af  templates/.claude/skills/py-lint/SKILL.md
+
+# py-review: Review code changes against the 8-point AI PR checklist. Use before committing, 
 cefb4a1bd5cf707c9b062640fb353221  templates/.claude/skills/py-review/SKILL.md
+
+# py-test: Run the full test suite with coverage and report failures concisely. Use wheneve
 f9dcecfa3ba6af91de1813c40909c982  templates/.claude/skills/py-test/SKILL.md
+
+# spec: Write a structured spec/contract before execution. Use when starting non-trivial
+9d1963773cfc689a70900d4f69686abf  templates/.claude/skills/spec/SKILL.md
 77155f417a78b26dd1c0748830843777  templates/.claude/skills/spec/adversarial-constraints-prompt.md
 97e94cc6db62f5a5b5cc1eb30b513b58  templates/.claude/skills/spec/spec-reviewer-prompt.md
+
+# ts-init: Scaffold the Nana 5-layer TypeScript dev harness. New projects get full scaffold
+e3bfc64c5dacf79b958a0e0ef04c6ae1  templates/.claude/skills/ts-init/SKILL.md
+8646c3d1c934f37824e86ec2d5b1f44f  templates/.claude/skills/ts-init/scanner.md
+475092ceffa0f367ceced3cec3aa703c  templates/.claude/skills/ts-init/transform.md
+
+# wiki-absorb: Use when the wiki inbox has 3+ unprocessed entries or before running query/lint/
 e25689dcabb6ba8d44906315d4740663  templates/.claude/skills/wiki-absorb/SKILL.md
 db27c2d554de12f99543f15befef3144  templates/.claude/skills/wiki-absorb/analyst-prompt.md
 ac3906e175292e90e4875d68987b9c88  templates/.claude/skills/wiki-absorb/reviewer-prompt.md
 6a5c04489abb2548258967573ca4806e  templates/.claude/skills/wiki-absorb/verifier-prompt.md
 c814755b94bcde8681dbfcf75c567789  templates/.claude/skills/wiki-absorb/writer-prompt.md
+
+# wiki-add: Use when adding content to the wiki inbox — either capturing insights from conve
 82633e6f9a0969be6f1ae1d4e10483f0  templates/.claude/skills/wiki-add/SKILL.md
 7db91629bb3ecb7f8d9d9326ebadf2c9  templates/.claude/skills/wiki-add/analyst-prompt.md
 e7866ec94320104791fadfd01e3c2d7e  templates/.claude/skills/wiki-add/reviewer-prompt.md
 ebafc0a8e6471e626f5636cdd25c85fa  templates/.claude/skills/wiki-add/writer-prompt.md
+
+# wiki-bootstrap: Use when seeding a new wiki OR researching specific topics to enrich a mature wi
 d4af02f954c859aa202b9a73d526b6d8  templates/.claude/skills/wiki-bootstrap/SKILL.md
 7c4de8ea298e80592aaf6de5f1f18fe8  templates/.claude/skills/wiki-bootstrap/analyst-prompt.md
 f7b5e8efc295713f10956d3602675fc9  templates/.claude/skills/wiki-bootstrap/research-agent-prompt.md
 87a9968c125a9dfd82c0c6abb4d8ec23  templates/.claude/skills/wiki-bootstrap/research-loop-spec.md
 f68f9a377f23068075d5627150dd9006  templates/.claude/skills/wiki-bootstrap/reviewer-prompt.md
 0d83c1b97d243067d575624459afd1e6  templates/.claude/skills/wiki-bootstrap/writer-prompt.md
+
+# wiki-consolidate: Use when episodic/ has 5+ unconsolidated entries. Converts raw episodic findings
 1ec521d03d914490c2c6a06ae8cdc535  templates/.claude/skills/wiki-consolidate/SKILL.md
 6a26fef3ee9c87a8b02bcf09f599731f  templates/.claude/skills/wiki-consolidate/analyst-prompt.md
 96f5192625d11ec6c45f1d8805ee5940  templates/.claude/skills/wiki-consolidate/consolidate.py
 6d39e1358541793d685d3782f349d48e  templates/.claude/skills/wiki-consolidate/reviewer-prompt.md
 0b2773580fd6bf52a67cb6e4d163ee61  templates/.claude/skills/wiki-consolidate/writer-prompt.md
+
+# wiki-health: Use for wiki health checks: dashboard metrics, structural audit, and staleness m
 7bf9bf5d5ef665018117c540d589bb66  templates/.claude/skills/wiki-health/SKILL.md
 cbf169fa7abde108e9e4dde86f1f2d06  templates/.claude/skills/wiki-health/dashboard-spec.md
 093dba883dd4470910e42885d160b8f4  templates/.claude/skills/wiki-health/empirical-anchor-spec.md
+
+# wiki-index: Build and manage the hybrid search index for a wiki. Creates a per-wiki SQLite d
 01d6ecb45feda312f343f6968e12bc5c  templates/.claude/skills/wiki-index/SKILL.md
 16e7ddc9031dbd434f37372f8d659cd8  templates/.claude/skills/wiki-index/convert.py
 5382663a9ff209ab6d30a5fd41585ba8  templates/.claude/skills/wiki-index/indexer.py
@@ -99,45 +158,24 @@ cbf169fa7abde108e9e4dde86f1f2d06  templates/.claude/skills/wiki-health/dashboard
 6b819dc8b2c8a16c2e1312efd9c99ef4  templates/.claude/skills/wiki-index/requirements.txt
 7eaabddd2d04853ab15bb0aae7e233ff  templates/.claude/skills/wiki-index/search.py
 b704bc29cbcfc2f22e4b7890fe5a13ff  templates/.claude/skills/wiki-index/wikilib.py
-65a073824e8bdd0981d5e67696f9768d  templates/.claude/skills/nana/SKILL.md
-793ff7ba68bb46f5732fc339a69ff5ac  templates/.claude/skills/memory-consolidate/SKILL.md
-90da7b959f470a84cb61d444a15847f3  templates/.claude/skills/dev-plan/scope-exploration-spec.md
+
+# wiki-init: Use when starting a wiki for a project that does not have one. Interviews the us
 43fe2c2516199426a650ddfbad0fffc7  templates/.claude/skills/wiki-init/SKILL.md
 a3e12fcf4b26948f718da0410b2316fe  templates/.claude/skills/wiki-init/analyst-prompt.md
 5eb6676be22cb6709bb6f2f73422e68e  templates/.claude/skills/wiki-init/reviewer-prompt.md
 f583917b2af2706820e4850cd6c4b705  templates/.claude/skills/wiki-init/writer-prompt.md
-7489f6f022cda091bc6b9e62f70f8c5f  templates/.claude/skills/wiki-query/SKILL.md
+
+# wiki-query: Use when the user asks a domain question that the wiki may already answer. Navig
+ed401a3d284fe55368a54fde7e95dcf8  templates/.claude/skills/wiki-query/SKILL.md
 4328ab40a06ef2cde65778c925d7719d  templates/.claude/skills/wiki-query/analyst-prompt.md
 6edc2a562353efb3c0d95467c209aef6  templates/.claude/skills/wiki-query/reviewer-prompt.md
 4026f7293a2d2110473b790949d3b9ec  templates/.claude/skills/wiki-query/writer-prompt.md
+
+# wiki-registry: Use when listing or renaming registered wikis. Default mode lists all wikis. Use
 d360281f7bf3ae782b0b6cb7e62d69ae  templates/.claude/skills/wiki-registry/SKILL.md
+
+# wiki-reorg: Use when the wiki has structural problems (missing hubs, weak hierarchy, stale o
 ec297f639a856b595197ac37a26ded8f  templates/.claude/skills/wiki-reorg/SKILL.md
 6fe7a2c0158973cf77ad249a59fb554e  templates/.claude/skills/wiki-reorg/analyst-prompt.md
 67c317cbb6953e04962d73cf44bb65eb  templates/.claude/skills/wiki-reorg/reviewer-prompt.md
 1d2493a774c26de198549f1243fd9bd4  templates/.claude/skills/wiki-reorg/writer-prompt.md
-
-# descriptions
-# dev-check: Diagnose dev wiki structural integrity and state consistency, then offer to auto-fix issues.
-# dev-debrief: Tiered session capture with phase debriefs, decision logging, and memory harvesting.
-# dev-init: Bootstrap a .dev-wiki/ directory for a project.
-# dev-plan: Plan one phase at a time, informed by accumulated wiki knowledge.
-# dev-scan: Deep codebase analysis producing structural knowledge for the dev-wiki.
-# dev-wiki: Route dev wiki operations and enforce development lifecycle discipline.
-# knowledge-wiki: Route wiki operations and enforce wiki workflow discipline.
-# memory-consolidate: Consolidate duplicate/overlapping memory entries using Claude.
-# nana: Show installed nana-dev-kit skills grouped by module.
-# py-init: Scaffold or retrofit the Nana Dev Kit harness into the current directory.
-# py-lint: Run linting, formatting, and type checking (ruff + mypy).
-# py-review: Review the current diff against the 8-point AI PR checklist.
-# py-test: Run the full test suite with coverage and report failures concisely.
-# spec: Write a structured spec/contract before execution to prevent ambiguous contracts.
-# wiki-absorb: Process raw entries in inbox/ into polished, cross-linked, tagged articles.
-# wiki-add: Add content to inbox/ as raw entries for later processing by /wiki-absorb.
-# wiki-bootstrap: Seed the wiki with foundational domain knowledge via research and batch-generation.
-# wiki-consolidate: Process unconsolidated episodic entries through dedup and fact extraction.
-# wiki-health: Combined wiki health tool: dashboard metrics, structural audit, and staleness marking.
-# wiki-index: Build a hybrid search index over wiki articles and episodic entries.
-# wiki-init: Initialize a project-specific wiki through interactive interview and scaffold.
-# wiki-query: Answer questions by navigating the project wiki's knowledge base.
-# wiki-registry: Manage the wiki registry (~/.claude/wikis.json).
-# wiki-reorg: Restructure wiki hierarchy, create hub articles, add cross-links, normalize tags.

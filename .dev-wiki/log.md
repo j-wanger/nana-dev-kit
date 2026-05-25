@@ -1,5 +1,7 @@
 # Dev Wiki Log
 
+[2026-05-25T23:59:00] DEBRIEF -- 3 decisions (confidence upgraded to high), 1 journal, tasks updated, state refreshed, phase 37 completed, 259 tests, 47/47 eval
+[2026-05-25T23:00:00] PLAN -- Phase 37 planned, 7 tasks, 3 decisions (ceremony-streamlining-2-gate-model, spec-internal-mode, delivery-report-before-commit)
 [2026-05-15T23:30:00] PLAN -- Phase 4 planned, 5 tasks, 2 decisions (vendor-memory-server, install-sh-scope-expansion)
 [2026-05-15T23:00:00] DEBRIEF -- 0 decisions (2 existing verified), 1 journal, tasks updated, state refreshed, phase 3 READY FOR COMPLETION
 [2026-05-15T14:42:31] PLAN -- Phase 3 planned, 6 tasks, 2 decisions
@@ -62,6 +64,14 @@
 [2026-05-23T21:20:35] DEBRIEF -- 3 decisions, 1 journal, tasks verified, state refreshed, Phase 29 completed
 [2026-05-23T21:30:00] PLAN -- Phase 30 planned, 4 tasks (1S 2M 1L), 0 decisions, data-driven report generators
 [2026-05-23T22:00:00] DEBRIEF -- 0 decisions, 1 journal, tasks verified, state refreshed, Phase 30 completed, retro triggered (Phases 26-30: clean)
+[2026-05-25T12:00:00] DEBRIEF -- 0 decisions (1 existing verified medium), 1 journal, tasks verified, state refreshed, Phase 35 completed, retro triggered (Phases 31-35: clean)
+[2026-05-25T22:00:00] DEBRIEF -- 4 decisions (1 upgraded medium->high, 3 existing verified), 1 journal, tasks verified, state refreshed, Phase 36 completed
+[2026-05-25T180000Z] PLAN -- Phase 36 planned, 8 tasks, 1 decision (hook-reconciliation-approach)
+[2026-05-25T00:00:00] PLAN -- Phase 35 planned, 7 tasks (3S 4M), 1 decision (ts-init-design-resolutions), ts-init implementation from design spec
+[2026-05-24T23:30:00] DEBRIEF -- 0 decisions (4 existing verified), 1 journal, tasks verified, state refreshed, Phase 34 completed
+[2026-05-24T22:00:00] PLAN -- Phase 34 planned, 5 tasks (2S 3M), 3 decisions (store-opt-indexed-lookups, nanaclaw-upstream-surgical-patch, ts-design-spec-before-impl), upstream sync + store() optimization + TypeScript design spec
+[2026-05-24T21:00:00] DEBRIEF -- 1 decision (turn-level-hybrid-recommended), 1 journal, tasks verified, state refreshed, Phase 33 completed
+[2026-05-24T19:00:00] PLAN -- Phase 33 planned, 4 tasks (1S 3M), 2 decisions (char-level-sanitizer-fts5, benchmark-only-hybrid-deps), hybrid retrieval benchmark + memory server fixes
 [2026-05-24T18:00:00] DEBRIEF -- 1 decision (diagnostic-first-benchmark medium->high), 1 journal, tasks verified, state refreshed, Phase 32 completed
 [2026-05-24T12:00:00] PLAN -- Phase 32 planned, 3 tasks (1M 1L 1S), 1 decision (diagnostic-first-benchmark), LongMemEval-S memory benchmark
 [2026-05-24T00:00:00] DEBRIEF -- 3 decisions (3 existing confirmed, 1 upgraded medium->high), 1 journal, tasks verified, state refreshed, Phase 31 completed

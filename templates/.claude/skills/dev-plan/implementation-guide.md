@@ -1,10 +1,10 @@
 # Implementation Guide
 
-Extracted from dev-plan Step 10. Read when the user chooses option A or C in Step 9.
+Extracted from dev-plan Step 10. Read when beginning implementation.
 
 ## Pre-Flight Gate Verification
 
-Before starting ANY task, read `$ROOT/.claude/rules/active-phase.md` and check the `Gates:` section. If any gate is unchecked `[ ]`: STOP. Name the unchecked gate and refuse to proceed until it is resolved. Do NOT begin implementation with unchecked gates — this is the enforcement point for the approval workflow.
+Before starting ANY task, read `$ROOT/.claude/rules/active-phase.md` and check the `Gates:` section. Under the 2-gate ceremony model, verify the **direction gate** is marked `[x]` (user confirmed approach). The **delivery gate** is post-implementation and should be unchecked `[ ]` at this point — that is expected.
 
 If `active-phase.md` has no `Gates:` section (legacy phases), proceed without gate check.
 
