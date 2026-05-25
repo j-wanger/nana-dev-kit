@@ -98,7 +98,7 @@ The question may arrive as:
 
 If neither search nor keyword scoring returns results, omit both sections entirely — do not include placeholder text.
 
-**Memory bridge (fail-open):** After wiki search, call `memory_search(query: "<question>", limit: 5)`. If results are non-empty, include them as a `### Memory Results` section in the analyst's Runtime Context. If `memory_search` is unavailable or returns empty, skip silently — do not add placeholder text.
+**Memory bridge:** After wiki search, call `memory_search(query: "<question>", limit: 5)`. If results are non-empty, include them as a `### Memory Results` section in the analyst's Runtime Context. If `memory_search` is unavailable, emit `"⚠ Wiki-query memory bridge: memory_search failed. Results may be incomplete. Run install.sh --status to diagnose."` If it returns empty, omit the section (no warning needed for empty results).
 
 ### Steps 2-6: Orchestration (Analyst -> Writer -> Reviewer pipeline)
 

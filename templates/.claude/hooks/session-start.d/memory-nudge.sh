@@ -5,7 +5,13 @@ check_memory_consolidation() {
   local MEMORY_DB="$1"
   local NUDGE_TS="$2"
 
-  [ -f "$MEMORY_DB" ] && command -v sqlite3 >/dev/null 2>&1 || return 0
+  if [ ! -f "$MEMORY_DB" ]; then
+    if [ -f "$HOME/.claude/settings.json" ] && python3 -c "import json; d=json.load(open('$HOME/.claude/settings.json')); assert 'memory' in d.get('mcpServers',{})" 2>/dev/null; then
+      echo "[nana:memory] No memory database found. MCP server is registered but has never stored data. Verify with: install.sh --status"
+    fi
+    return 0
+  fi
+  command -v sqlite3 >/dev/null 2>&1 || return 0
 
   local SUPPRESS=false
   if [ -f "$NUDGE_TS" ]; then

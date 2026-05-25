@@ -116,6 +116,19 @@ else
   test_fail "MCP config does not point to venv Python"
 fi
 
+test_start "MCP config cwd is parent of memory_server (not inside package)"
+if python3 -c "
+import json
+d = json.load(open('$THOME/.claude/settings.json'))
+cwd = d['mcpServers']['memory']['cwd']
+assert not cwd.endswith('memory_server'), f'cwd inside package: {cwd}'
+assert cwd.endswith('.claude'), f'cwd should end with .claude, got {cwd}'
+" 2>/dev/null; then
+  test_pass
+else
+  test_fail "MCP cwd points inside memory_server package (python -m will fail)"
+fi
+
 # Edge case: missing SKILL.md source (currently swallowed by || true)
 test_start "exits non-zero when SKILL.md source is missing"
 ETEMP=$(mktemp -d)

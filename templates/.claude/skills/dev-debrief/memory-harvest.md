@@ -52,7 +52,7 @@ For each result tagged with a `harvest-*` tag whose content the new entry revers
 memory_forget(memory_id=old_result["memory"]["id"], superseded_by=new_id)
 ```
 
-This soft-deletes the old entry (active=False) and links it to the replacement. The old entry remains in the database for audit trail. If `memory_forget` fails, log and continue (fail-open).
+This soft-deletes the old entry (active=False) and links it to the replacement. The old entry remains in the database for audit trail. If `memory_forget` fails, emit `"⚠ Memory harvest: memory_forget failed for entry <id>. Stale entry not superseded."` and continue.
 
 If a prior correction is no longer relevant (code was rewritten, decision was reversed) but no new entry replaces it, call `memory_forget(memory_id=old_id)` without superseded_by to deactivate it.
 
@@ -60,4 +60,4 @@ If a prior correction is no longer relevant (code was rewritten, decision was re
 
 - Quick debrief mode: skip entirely (insufficient conversation depth).
 - No corrections, preferences, or lessons detected: skip. Emit: "Memory harvest: nothing to extract."
-- MCP tools unavailable (subagent context): skip. Emit: "Memory harvest: skipped (no MCP access)."
+- MCP tools unavailable: emit `"⚠ Memory harvest: MCP memory server unreachable. Corrections and preferences will NOT be persisted. Run install.sh --status to diagnose."` Do NOT skip silently.

@@ -79,6 +79,7 @@ if $PROJECT_LOCAL; then
   if $DRY_RUN; then
     echo "[dry-run] --- Mode: project-local ---"
     echo "[dry-run] install hooks to $PROJ_HOOKS_DIR/: ${PROJECT_HOOKS[*]}"
+    echo "[dry-run] install session-start.d/ modules (wk-prune.sh, memory-nudge.sh)"
     echo "[dry-run] register hooks in $PROJ_SETTINGS (nested schema)"
   else
     mkdir -p "$PROJ_HOOKS_DIR"
@@ -86,6 +87,11 @@ if $PROJECT_LOCAL; then
       cp "$HOOKS_SRC/$h" "$PROJ_HOOKS_DIR/$h"
       chmod +x "$PROJ_HOOKS_DIR/$h"
     done
+    # Copy session-start.d/ modules (sourced by session-start.sh)
+    if [ -d "$HOOKS_SRC/session-start.d" ]; then
+      mkdir -p "$PROJ_HOOKS_DIR/session-start.d"
+      cp "$HOOKS_SRC/session-start.d"/*.sh "$PROJ_HOOKS_DIR/session-start.d/"
+    fi
     python3 -c "
 import json, os
 path = '$PROJ_SETTINGS'
@@ -334,12 +340,24 @@ if 'mcpServers' not in data:
 data['mcpServers']['memory'] = {
     'command': venv_python,
     'args': ['-m', 'memory_server'],
-    'cwd': os.path.expanduser('~/.claude/memory_server')
+    'cwd': os.path.expanduser('~/.claude')
 }
 with open(path, 'w') as f:
     json.dump(data, f, indent=2)
     f.write('\n')
 "
+
+    # Verify MCP server can start
+    if (cd ~/.claude && "$VENV_DIR/bin/python3" -c "import memory_server" 2>/dev/null); then
+      echo "  MCP memory server: verified"
+    else
+      echo ""
+      echo "WARNING: MCP memory server installed but cannot start."
+      echo "  python: $VENV_DIR/bin/python3"
+      echo "  cwd: ~/.claude"
+      echo "  Try: cd ~/.claude && $VENV_DIR/bin/python3 -m memory_server"
+      echo ""
+    fi
   fi
 fi
 

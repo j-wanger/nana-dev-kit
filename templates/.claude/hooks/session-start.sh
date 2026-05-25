@@ -82,13 +82,31 @@ else
   echo "[nana:enforce] inactive (touch ~/.claude/enforce to enable)"
 fi
 
+# --- MCP memory server health check ---
+MEM="absent"
+if [ -f "$HOME/.claude/settings.json" ] && command -v python3 >/dev/null 2>&1; then
+  MCP_CMD=$(python3 -c "import json; d=json.load(open('$HOME/.claude/settings.json')); print(d.get('mcpServers',{}).get('memory',{}).get('command',''))" 2>/dev/null || true)
+  if [ -n "$MCP_CMD" ]; then
+    if [ ! -x "$MCP_CMD" ] && [ ! -f "$MCP_CMD" ]; then
+      echo "[nana:memory] WARNING: MCP memory server registered but python not found at $MCP_CMD. Run install.sh to fix."
+      MEM="broken"
+    else
+      MCP_CWD=$(python3 -c "import json; d=json.load(open('$HOME/.claude/settings.json')); print(d.get('mcpServers',{}).get('memory',{}).get('cwd',''))" 2>/dev/null || true)
+      if ! (cd "$MCP_CWD" 2>/dev/null && "$MCP_CMD" -c "import memory_server" 2>/dev/null); then
+        echo "[nana:memory] WARNING: MCP memory server cannot start (cwd: $MCP_CWD). Run install.sh to fix."
+        MEM="broken"
+      else
+        MEM="active"
+      fi
+    fi
+  fi
+fi
+
 # --- Kit summary ---
 SKILL_N=0
 HOOK_N=0
 [ -d "$HOME/.claude/skills" ] && SKILL_N=$(find "$HOME/.claude/skills" -maxdepth 2 -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
 [ -d "$HOME/.claude/hooks" ] && HOOK_N=$(find "$HOME/.claude/hooks" -maxdepth 1 -name "*.sh" 2>/dev/null | wc -l | tr -d ' ')
-MEM="absent"
-[ -d "$HOME/.claude/memory_server/.venv" ] && MEM="active"
 KIT_VER=""
 if [ -f "$HOME/.claude/.nana-dev-kit-path" ]; then
   KP=$(cat "$HOME/.claude/.nana-dev-kit-path" 2>/dev/null || true)

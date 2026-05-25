@@ -12,7 +12,7 @@ This companion stores DECISIONS (approach choices, constraints, trade-offs) with
 
 Call `memory_stats`. If total active entries ≥ 400 (of 500 advisory ceiling): emit `"Memory bridge: budget guard triggered (N/500 entries). Skipping store."` and STOP. Do not store.
 
-If `memory_stats` is unavailable (MCP error): fall back to `memory_search(query="bridge-decision", limit=50)` and count results. If fallback also fails: skip silently.
+If `memory_stats` is unavailable (MCP error): fall back to `memory_search(query="bridge-decision", limit=50)` and count results. If fallback also fails: emit `"⚠ Memory bridge: MCP memory server unreachable. Decisions will NOT be persisted to memory. Check MCP server status with install.sh --status."` and STOP (do not silently continue).
 
 ### 1.5. Auto-Supersede Check
 
@@ -60,7 +60,7 @@ Dedup for non-superseded entries is handled by memory_store's built-in near-dupl
 
 ### 4. Fail-Open
 
-If any MCP call fails (memory_search, memory_store, memory_forget — MCP unavailable, timeout, ValueError): log `"Memory bridge: <operation> failed for '<decision>'. Continuing."` and proceed. Memory bridge is additive — never block dev-plan flow.
+If any MCP call fails (memory_search, memory_store, memory_forget — MCP unavailable, timeout, ValueError): emit `"⚠ Memory bridge: <operation> failed for '<decision>'. MCP memory server may be down."` and continue with remaining decisions. At the end, if ANY call failed, emit: `"⚠ Memory bridge: N operations failed. Run install.sh --status to diagnose."`
 
 ### 5. Report
 
