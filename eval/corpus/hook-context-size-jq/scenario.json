@@ -1,0 +1,13 @@
+{
+  "name": "context-size-check uses jq for transcript_path extraction",
+  "category": "hook",
+  "hook": "context-size-check.sh",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {}
+  },
+  "input": "{\"transcript_path\":\"/tmp/fake-transcript.jsonl\"}",
+  "expected": {
+    "exit_code": 0
+  }
+}

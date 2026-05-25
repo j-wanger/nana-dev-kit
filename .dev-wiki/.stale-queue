@@ -16,3 +16,10 @@ templates/.claude/hooks/session-stop.sh
 templates/.claude/hooks/stale-queue.sh
 .gitignore
 scripts/generate-delivery-report.py
+templates/.claude/hooks/session-start.d/memory-nudge.sh
+templates/.claude/hooks/audit-log.sh
+templates/.claude/hooks/auto-ruff-format.sh
+templates/.claude/hooks/scan-secrets.sh
+eval/corpus/hook-context-size-jq/scenario.json
+eval/corpus/hook-session-start-memory-healthy/scenario.json
+eval/corpus/hook-session-start-memory-broken/scenario.json

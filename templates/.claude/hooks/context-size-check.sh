@@ -4,8 +4,11 @@
 
 set -euo pipefail
 
+# --- jq fail-open guard ---
+command -v jq >/dev/null 2>&1 || exit 0
+
 INPUT=$(cat)
-TRANSCRIPT=$(echo "$INPUT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('transcript_path',''))" 2>/dev/null || echo "")
+TRANSCRIPT=$(echo "$INPUT" | jq -r '.transcript_path // empty' 2>/dev/null || echo "")
 
 if [ -z "$TRANSCRIPT" ] || [ ! -f "$TRANSCRIPT" ]; then
   exit 0

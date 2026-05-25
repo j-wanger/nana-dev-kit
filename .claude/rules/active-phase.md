@@ -1,12 +1,12 @@
 # Active Phase Context
 
-Phase: 38 - Install Integrity & Functional Verification
+Phase: 39 - Resilience & Health Probes
 Status: COMPLETED (6/6 tasks done, all 7 exit criteria met)
-Objective: Fix install gaps (5 missing skills, MultiEdit matchers, scope-check field path), add functional verification tests, document PostToolUse inconsistency.
+Objective: Migrate python3 JSON parsing to jq, add 3-state memory health probe, resolve PostToolUse field path inconsistency, add /init language router.
 
-Next action: Run /dev-plan for Phase 39. Consider soft observations from journal:
-- Installed skill files at ~/.claude/skills/ are stale (need re-install)
-- context-size-check.sh python3 vs jq inconsistency (carried from Phase 36)
-- delivery-flow.md companion exists in templates but not installed (stale skills)
+Next action: Run /dev-plan for Phase 40. Consider soft observations from journal:
+- install.sh Getting Started output doesn't mention /init (shows py-init, ts-init, dev-init, wiki-init but not init)
+- README doesn't document /init yet (deferred to next phase per spec out-of-scope)
+- PostToolUse .tool_input finding should be added to working-knowledge
 
 Gates: [x] direction=approved [x] delivery=approved

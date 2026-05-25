@@ -4,7 +4,7 @@
   "hook": "audit-log.sh",
   "scoring": "binary",
   "setup": {},
-  "input": "{\"tool_name\":\"Write\",\"input\":{\"file_path\":\"\"}}",
+  "input": "{\"tool_name\":\"Write\",\"tool_input\":{\"file_path\":\"\"}}",
   "expected": {
     "exit_code": 0
   }

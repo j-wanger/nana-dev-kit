@@ -8,7 +8,7 @@
       "settings.py": "API_KEY = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456'"
     }
   },
-  "input": "{\"tool_name\":\"Write\",\"input\":{\"file_path\":\"settings.py\"}}",
+  "input": "{\"tool_name\":\"Write\",\"tool_input\":{\"file_path\":\"settings.py\"}}",
   "expected": {
     "exit_code": 0,
     "stderr_contains": ["potential.*secret"]

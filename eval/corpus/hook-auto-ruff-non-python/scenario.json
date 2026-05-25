@@ -8,7 +8,7 @@
       "README.md": "# Hello"
     }
   },
-  "input": "{\"tool_name\":\"Write\",\"input\":{\"file_path\":\"README.md\"}}",
+  "input": "{\"tool_name\":\"Write\",\"tool_input\":{\"file_path\":\"README.md\"}}",
   "expected": {
     "exit_code": 0
   }

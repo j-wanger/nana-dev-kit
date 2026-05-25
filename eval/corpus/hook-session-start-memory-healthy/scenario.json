@@ -1,0 +1,17 @@
+{
+  "name": "session-start emits healthy when MCP configured with valid server",
+  "category": "hook",
+  "hook": "session-start.sh",
+  "scoring": "binary",
+  "setup": {
+    "home_files": {
+      ".claude/settings.json": "{\"mcpServers\":{\"memory\":{\"command\":\"/usr/bin/true\",\"cwd\":\"/tmp\"}}}",
+      ".claude/enforce": ""
+    }
+  },
+  "input": "",
+  "expected": {
+    "exit_code": 0,
+    "stdout_contains": "[nana:memory]"
+  }
+}

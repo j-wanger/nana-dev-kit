@@ -8,7 +8,7 @@ set -euo pipefail
 command -v jq >/dev/null 2>&1 || { echo "[nana:audit] jq not found, hook skipped" >&2; exit 0; }
 
 INPUT=$(cat)
-FILE_PATH=$(echo "$INPUT" | jq -r '.input.file_path // empty' 2>/dev/null || echo "")
+FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // .input.file_path // empty' 2>/dev/null || echo "")
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // "unknown"' 2>/dev/null || echo "unknown")
 
 [ -z "$FILE_PATH" ] && exit 0

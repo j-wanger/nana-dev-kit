@@ -1,0 +1,15 @@
+{"ts":"2026-05-25T17:33:50Z","hook":"enforce-spec","action":"block","reason":"no-approved-spec"}
+{"ts":"2026-05-25T17:34:06Z","hook":"enforce-spec","action":"block","reason":"no-approved-spec"}
+{"ts":"2026-05-25T17:54:14Z","hook":"enforce-loop","action":"allow","reason":"all-checks-passed"}
+{"ts":"2026-05-25T17:57:08Z","hook":"enforce-loop","action":"allow","reason":"all-checks-passed"}
+{"ts":"2026-05-25T17:57:51Z","hook":"enforce-loop","action":"allow","reason":"all-checks-passed"}
+{"ts":"2026-05-25T17:58:28Z","hook":"enforce-loop","action":"allow","reason":"all-checks-passed"}
+{"ts":"2026-05-25T18:01:09Z","hook":"enforce-loop","action":"allow","reason":"all-checks-passed"}
+{"ts":"2026-05-25T18:01:30Z","hook":"enforce-loop","action":"allow","reason":"all-checks-passed"}
+{"ts":"2026-05-25T18:48:02Z","hook":"enforce-loop","action":"allow","reason":"all-checks-passed"}
+{"ts":"2026-05-25T18:59:17Z","hook":"enforce-loop","action":"allow","reason":"all-checks-passed"}
+{"ts":"2026-05-25T19:12:51Z","hook":"enforce-loop","action":"allow","reason":"all-checks-passed"}
+{"ts":"2026-05-25T19:26:11Z","hook":"enforce-loop","action":"allow","reason":"all-checks-passed"}
+{"event":"debrief","phase":"39","status":"completed","tasks_done":6,"tasks_total":6,"tests":291,"eval":"50/50","timestamp":"2026-05-25T19:30:36Z"}
+{"ts":"2026-05-25T19:31:52Z","hook":"enforce-loop","action":"allow","reason":"all-checks-passed"}
+{"ts":"2026-05-25T19:34:01Z","hook":"enforce-loop","action":"allow","reason":"all-checks-passed"}

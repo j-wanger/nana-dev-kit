@@ -1,0 +1,17 @@
+{
+  "name": "session-start emits broken when MCP server cannot import",
+  "category": "hook",
+  "hook": "session-start.sh",
+  "scoring": "binary",
+  "setup": {
+    "home_files": {
+      ".claude/settings.json": "{\"mcpServers\":{\"memory\":{\"command\":\"/usr/bin/python3\",\"cwd\":\"/tmp/nonexistent-cwd\"}}}",
+      ".claude/enforce": ""
+    }
+  },
+  "input": "",
+  "expected": {
+    "exit_code": 0,
+    "stdout_contains": "server broken"
+  }
+}

@@ -83,23 +83,33 @@ else
 fi
 
 # --- MCP memory server health check ---
-MEM="absent"
-if [ -f "$HOME/.claude/settings.json" ] && command -v python3 >/dev/null 2>&1; then
-  MCP_CMD=$(python3 -c "import json; d=json.load(open('$HOME/.claude/settings.json')); print(d.get('mcpServers',{}).get('memory',{}).get('command',''))" 2>/dev/null || true)
+MEM="not configured"
+if [ -f "$HOME/.claude/settings.json" ] && command -v jq >/dev/null 2>&1; then
+  MCP_CMD=$(jq -r '.mcpServers.memory.command // empty' "$HOME/.claude/settings.json" 2>/dev/null || true)
   if [ -n "$MCP_CMD" ]; then
     if [ ! -x "$MCP_CMD" ] && [ ! -f "$MCP_CMD" ]; then
-      echo "[nana:memory] WARNING: MCP memory server registered but python not found at $MCP_CMD. Run install.sh to fix."
+      echo "[nana:memory] server broken (python not found at $MCP_CMD). Run install.sh to fix."
       MEM="broken"
     else
-      MCP_CWD=$(python3 -c "import json; d=json.load(open('$HOME/.claude/settings.json')); print(d.get('mcpServers',{}).get('memory',{}).get('cwd',''))" 2>/dev/null || true)
+      MCP_CWD=$(jq -r '.mcpServers.memory.cwd // empty' "$HOME/.claude/settings.json" 2>/dev/null || true)
       if ! (cd "$MCP_CWD" 2>/dev/null && "$MCP_CMD" -c "import memory_server" 2>/dev/null); then
-        echo "[nana:memory] WARNING: MCP memory server cannot start (cwd: $MCP_CWD). Run install.sh to fix."
+        echo "[nana:memory] server broken (cannot import from cwd: $MCP_CWD). Run install.sh to fix."
         MEM="broken"
       else
-        MEM="active"
+        MEM="healthy"
+        DB_PATH="$HOME/.claude/memory_server/memory.db"
+        if [ -f "$DB_PATH" ] && command -v sqlite3 >/dev/null 2>&1; then
+          ENTRY_COUNT=$(sqlite3 "$DB_PATH" "SELECT COUNT(*) FROM memories WHERE active = 1;" 2>/dev/null || echo "?")
+          echo "[nana:memory] server healthy ($ENTRY_COUNT entries)"
+        else
+          echo "[nana:memory] server healthy (db check skipped)"
+        fi
       fi
     fi
   fi
+fi
+if [ "$MEM" = "not configured" ]; then
+  echo "[nana:memory] not configured"
 fi
 
 # --- Kit summary ---

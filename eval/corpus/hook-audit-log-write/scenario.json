@@ -8,7 +8,7 @@
       "src/app.py": "print('hello')"
     }
   },
-  "input": "{\"tool_name\":\"Write\",\"input\":{\"file_path\":\"src/app.py\"}}",
+  "input": "{\"tool_name\":\"Write\",\"tool_input\":{\"file_path\":\"src/app.py\"}}",
   "expected": {
     "exit_code": 0
   }

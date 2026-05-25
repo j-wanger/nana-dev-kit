@@ -649,4 +649,69 @@ else
   test_fail "MANIFEST missing ts-init description"
 fi
 
+# --- Phase 39: Resilience & Health Probes ---
+
+test_start "context-size-check.sh uses jq (not python3)"
+if grep -q 'jq' "$PROJECT_ROOT/templates/.claude/hooks/context-size-check.sh" && \
+   ! grep -q 'python3' "$PROJECT_ROOT/templates/.claude/hooks/context-size-check.sh"; then
+  test_pass
+else
+  test_fail "context-size-check.sh still uses python3"
+fi
+
+test_start "context-size-check.sh has jq fail-open guard"
+if grep -q 'command -v jq' "$PROJECT_ROOT/templates/.claude/hooks/context-size-check.sh"; then
+  test_pass
+else
+  test_fail "context-size-check.sh missing jq fail-open guard"
+fi
+
+test_start "session-start.sh no python3 for JSON parsing"
+if ! grep 'python3 -c' "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" >/dev/null 2>&1; then
+  test_pass
+else
+  test_fail "session-start.sh still uses python3 -c for JSON parsing"
+fi
+
+test_start "session-start.sh has 3-state memory health probe"
+if grep -q 'memory.*healthy' "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" && \
+   grep -q 'memory.*broken' "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" && \
+   grep -q 'memory.*configured' "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh"; then
+  test_pass
+else
+  test_fail "session-start.sh missing 3-state health probe"
+fi
+
+test_start "PostToolUse hooks use .tool_input canonical path"
+POSTTOOLUSE_HOOKS="audit-log auto-ruff-format scan-secrets stale-queue"
+ALL_CANONICAL=true
+for hook in $POSTTOOLUSE_HOOKS; do
+  if ! grep -q 'tool_input.file_path' "$PROJECT_ROOT/templates/.claude/hooks/${hook}.sh" 2>/dev/null; then
+    ALL_CANONICAL=false
+    break
+  fi
+done
+if $ALL_CANONICAL; then
+  test_pass
+else
+  test_fail "Not all PostToolUse hooks use .tool_input canonical path"
+fi
+
+test_start "init/SKILL.md exists with language markers"
+if test -f "$PROJECT_ROOT/templates/.claude/skills/init/SKILL.md" && \
+   grep -qi 'py-init' "$PROJECT_ROOT/templates/.claude/skills/init/SKILL.md" && \
+   grep -qi 'ts-init' "$PROJECT_ROOT/templates/.claude/skills/init/SKILL.md" && \
+   grep -qi 'pyproject' "$PROJECT_ROOT/templates/.claude/skills/init/SKILL.md"; then
+  test_pass
+else
+  test_fail "init/SKILL.md missing or incomplete"
+fi
+
+test_start "MANIFEST has init description"
+if grep -q '# init:' "$PROJECT_ROOT/templates/.claude/skills/MANIFEST"; then
+  test_pass
+else
+  test_fail "MANIFEST missing init description"
+fi
+
 test_summary "test_templates"

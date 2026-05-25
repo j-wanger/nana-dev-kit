@@ -8,7 +8,7 @@
       "config.py": "DEBUG = True\nLOG_LEVEL = 'info'"
     }
   },
-  "input": "{\"tool_name\":\"Write\",\"input\":{\"file_path\":\"config.py\"}}",
+  "input": "{\"tool_name\":\"Write\",\"tool_input\":{\"file_path\":\"config.py\"}}",
   "expected": {
     "exit_code": 0
   }

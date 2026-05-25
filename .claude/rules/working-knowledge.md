@@ -1,12 +1,16 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
-- [uses: 1] install.sh CORE_SKILLS: nana + memory-consolidate (language-agnostic). PYTHON_SKILLS: py-lint + py-review + py-test (excluded by --no-python, --core-only). Module assignment determines which skills install under each flag combination.
-  source: [[decision:install-skill-module-assignment]] | activated: 2026-05-25
+- [uses: 1] install.sh CORE_SKILLS: nana + memory-consolidate + init (language-agnostic). PYTHON_SKILLS: py-lint + py-review + py-test (excluded by --no-python, --core-only). Module assignment determines which skills install under each flag combination. 26 total skill dirs.
+  source: [[decision:install-skill-module-assignment]] + [[decision:init-router-in-core]] | activated: 2026-05-25
+- [uses: 1] session-start.sh MCP health probe uses 3 layers: jq config read (settings.json .mcpServers.memory), $MCP_CMD import check, sqlite3 entry count. Emits 3-state output: healthy (N entries) / broken (reason) / not configured. All hooks now use jq for JSON parsing (python3 eliminated).
+  source: [[decision:health-probe-3-layer]] | activated: 2026-05-25
+- [uses: 1] /init router skill (44 lines) in CORE_SKILLS: detects pyproject.toml/setup.py → Python, package.json/tsconfig.json → TypeScript. Handles polyglot (both → user choice) and empty (no markers → prompt). Dispatches via Skill(skill="py-init") or Skill(skill="ts-init").
+  source: [[decision:init-router-in-core]] | activated: 2026-05-25
 - [uses: 1] MCP memory server CWD must point to ~/.claude (parent), not ~/.claude/memory_server (package dir). Was broken since Phase 4. install.sh now has import-check verification after MCP registration.
   source: [[decision:mcp-memory-server-cwd-fix]] | activated: 2026-05-25
-- [uses: 1] PostToolUse hooks: 3 use .input.file_path (audit-log, auto-ruff, scan-secrets), 2 use .tool_input (post-commit, stale-queue). Both work. PreToolUse confirmed: .input.file_path. PostToolUse needs live verification before normalizing.
-  source: [[decision:posttooluse-field-path-inconsistency]] | activated: 2026-05-25
+- [uses: 1] PostToolUse canonical field path is .tool_input (verified via live stale-queue.sh production evidence). All 5 PostToolUse Edit/Write hooks normalized to .tool_input.file_path // .input.file_path defensive fallback. PreToolUse uses .input.file_path. 6 eval fixtures updated.
+  source: [[decision:posttooluse-normalize-after-verification]] | activated: 2026-05-25
 - [uses: 1] 2-gate ceremony model: direction gate (Step 7, user confirms intent/scope) + delivery gate (HTML report before commit, user accepts/rejects). Agent operates autonomously between gates. Subagent reviewers still execute but findings auto-incorporated.
   source: [[decision:ceremony-streamlining-2-gate-model]] | activated: 2026-05-25
 - [uses: 1] Spec --internal mode: when invoked with --internal, auto-runs Steps 2-4 + Tier 0/1, incorporates findings, persists with marker, skips Step 5 user approval. Direct /spec unchanged. Honors spec-always-mandatory.

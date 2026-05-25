@@ -41,6 +41,7 @@
 - [[phase-36-hooks-audit-housekeeping|Phase 36: Hooks Audit & Housekeeping]] -- completed
 - [[phase-37-ceremony-streamlining-autonomous-flow|Phase 37: Ceremony Streamlining & Autonomous Flow]] -- completed
 - [[phase-38-install-integrity-functional-verification|Phase 38: Install Integrity & Functional Verification]] -- completed
+- [[phase-39-resilience-health-probes|Phase 39: Resilience & Health Probes]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -109,6 +110,9 @@
 - [[no-eval-scope-check-scenarios|No eval scenario updates for scope-check fix]] -- high confidence, accepted
 - [[mcp-memory-server-cwd-fix|MCP memory server CWD fix]] -- high confidence, accepted
 - [[fail-loud-over-fail-silent-memory|Fail-loud over fail-silent for memory]] -- high confidence, accepted
+- [[health-probe-3-layer|Health probe uses 3 layers: jq config, import check, sqlite3 count]] -- medium confidence, accepted
+- [[posttooluse-normalize-after-verification|PostToolUse normalization: verify then normalize]] -- medium confidence, accepted
+- [[init-router-in-core|/init router belongs in CORE_SKILLS]] -- medium confidence, accepted
 - [[turn-level-hybrid-recommended|Turn-level hybrid RRF is the winning strategy]] -- high confidence, accepted
 - [[diagnostic-first-benchmark|Diagnostic-first benchmark]] -- high confidence, accepted
 - [[monorepo-skill-distribution|Monorepo Skill Distribution]] -- high confidence, accepted
@@ -142,6 +146,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-25-phase-39-resilience-health-probes-complete|Phase 39 complete]] -- 2026-05-25
 - [[2026-05-25-phase-38-install-integrity-complete|Phase 38 complete]] -- 2026-05-25
 - [[2026-05-25-phase-37-ceremony-streamlining-complete|Phase 37 complete]] -- 2026-05-25
 - [[2026-05-25-phase-36-hooks-audit-housekeeping-complete|Phase 36 complete]] -- 2026-05-25
@@ -205,6 +210,8 @@
 
 ## Recent
 
+- 2026-05-25: Phase 39 completed -- 3-state health probe, jq migration complete, PostToolUse .tool_input canonical, /init router, 3 decisions confirmed high, 291 tests, 50/50 eval
+- 2026-05-25: Phase 39 planned -- 6 tasks (2S 4M), 3 decisions (health-probe-3-layer, posttooluse-normalize-after-verification, init-router-in-core), resilience & health probes
 - 2026-05-25: Phase 38 completed -- MCP CWD fix, 5 skills added, MultiEdit matchers, scope-check fix, 23 functional tests, 2 decisions (mcp-memory-server-cwd-fix, fail-loud-over-fail-silent-memory), 283 tests, 47/47 eval
 - 2026-05-25: Phase 38 planned -- 6 tasks (5S 1M), 3 decisions (install-skill-module-assignment, posttooluse-field-path-inconsistency, no-eval-scope-check-scenarios), install integrity & functional verification
 - 2026-05-25: Phase 37 completed -- ceremony streamlining: 4-gate to 2-gate, --internal spec, delivery report, auto-commit/push, 3 decisions confirmed high, 259 tests, 47/47 eval

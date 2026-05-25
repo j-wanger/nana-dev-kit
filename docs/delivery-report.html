@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 37</title>
+<title>Delivery Report: Phase 39</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,43 +21,45 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 37 &mdash; Ceremony Streamlining &amp; Autonomous Flow</h1>
+<h1>Delivery Report: Phase 39 &mdash; Resilience &amp; Health Probes</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">7/7</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">23</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">6/6</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">24</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (0 passed)</div></div>
-  <div class="card"><div class="num" style="color:#2d7d2d">47/47</div><div class="label">Eval</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">50/50</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+1021</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-299</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">7</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">12:31</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+222</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-123</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">10</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">15:31</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>Extract plan-review Steps 7.5/7.6 to companion: test -f templates/.claude/skills/dev-plan/plan-review-companion.md fa...</td></tr>
-<tr><td>&#x2705;</td><td>Rewrite dev-plan ceremony — direction-only approval: grep -q 'agent-internal' templates/.claude/skills/dev-plan/SKILL...</td></tr>
-<tr><td>&#x2705;</td><td>Add --internal mode to spec SKILL.md: grep -q '\-\-internal' templates/.claude/skills/spec/SKILL.md fails (RED), add ...</td></tr>
-<tr><td>&#x2705;</td><td>Create delivery report script: test -f scripts/generate-delivery-report.py fails (RED), create Python script (~200-30...</td></tr>
-<tr><td>&#x2705;</td><td>Modify dev-debrief — delivery gate + auto-commit/push: grep -q 'delivery.*report\</td></tr>
-<tr><td>&#x2705;</td><td>Update gate enforcement — 2-gate model: grep -q 'Spec reviewed' templates/.claude/skills/dev-plan/implementation-guid...</td></tr>
-<tr><td>&#x2705;</td><td>Tests + MANIFEST + final verify: grep -q 'plan-review-companion' templates/.claude/skills/MANIFEST fails (RED), regen...</td></tr>
+<tr><td>&#x2705;</td><td>[M] Session-start.sh MCP block rewrite (health probe + jq migration): grep 'python3 -c' session-start.sh succeeds (RE...</td></tr>
+<tr><td>&#x2705;</td><td>[S] context-size-check.sh jq migration: grep -q 'python3' context-size-check.sh succeeds (RED), replace python3 -c "i...</td></tr>
+<tr><td>&#x2705;</td><td>[M] PostToolUse field path live verification + fix: grep -c '.tool_input' templates/.claude/hooks/{post-commit,stale-...</td></tr>
+<tr><td>&#x2705;</td><td>[M] /init router skill: test -f templates/.claude/skills/init/SKILL.md fails (RED), create SKILL.md (~30-50 lines): d...</td></tr>
+<tr><td>&#x2705;</td><td>[S] install.sh + MANIFEST update: bash install.sh --dry-run 2&gt;&amp;1</td></tr>
+<tr><td>&#x2705;</td><td>[M] Tests + eval scenarios: new test assertions fail (RED), add test_templates.sh assertions: context-size-check has ...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Spec --internal mode</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>/init router belongs in CORE_SKILLS</td><td>high</td></tr>
+<tr><td>PostToolUse normalization: verify then normalize</td><td>high</td></tr>
+<tr><td>Health probe uses 3 layers: jq config, import check, sqlite3 count</td><td>high</td></tr>
+<tr><td>Fail-loud over fail-silent for memory MCP failures</td><td>high</td></tr>
+<tr><td>MCP memory server CWD fix: install.sh set wrong working directory</td><td>high</td></tr>
+<tr><td>No eval scenario updates needed for scope-check fix</td><td>high</td></tr>
+<tr><td>PostToolUse field path inconsistency: document only, don't fix</td><td>medium</td></tr>
+<tr><td>Skills module assignment: nana/memory-consolidate to core, py-lint/py-review/py-test to python</td><td>high</td></tr>
+<tr><td>Spec --internal mode</td><td>high</td></tr>
 <tr><td>Ceremony streamlining: 2-gate model</td><td>high</td></tr>
-<tr><td>Delivery report before commit</td><td>high</td></tr>
-<tr><td>Hook Reconciliation: Per-Hook Disposition for 6 Global-Only Hooks</td><td>high</td></tr>
-<tr><td>Nanaclaw Upstream PR: _sanitize_fts_query Fix</td><td>high</td></tr>
-<tr><td>Hook Error Evidence (Phase 36 Task 1)</td><td>high</td></tr>
-<tr><td>Hook Reconciliation Approach for Phase 36</td><td>medium</td></tr>
 </table>
 
 <h2>Files Changed</h2>
@@ -70,19 +72,20 @@
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
-<li><code>.gitignore</code></li>
-<li><code>Makefile</code></li>
 <li><code>README.md</code></li>
-<li><code>benchmark/README.md</code></li>
-<li><code>benchmark/longmemeval.py</code></li>
+<li><code>eval/corpus/hook-audit-log-no-file/scenario.json</code></li>
+<li><code>eval/corpus/hook-audit-log-write/scenario.json</code></li>
+<li><code>eval/corpus/hook-auto-ruff-non-python/scenario.json</code></li>
+<li><code>eval/corpus/hook-auto-ruff-py-file/scenario.json</code></li>
+<li><code>eval/corpus/hook-scan-secrets-clean/scenario.json</code></li>
+<li><code>eval/corpus/hook-scan-secrets-pattern/scenario.json</code></li>
 <li><code>install.sh</code></li>
-<li><code>memory_server/storage.py</code></li>
+<li><code>templates/.claude/hooks/audit-log.sh</code></li>
+<li><code>templates/.claude/hooks/auto-ruff-format.sh</code></li>
+<li><code>templates/.claude/hooks/context-size-check.sh</code></li>
+<li><code>templates/.claude/hooks/scan-secrets.sh</code></li>
+<li><code>templates/.claude/hooks/session-start.sh</code></li>
 <li><code>templates/.claude/skills/MANIFEST</code></li>
-<li><code>templates/.claude/skills/dev-debrief/SKILL.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/SKILL.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/implementation-guide.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/task-schema.md</code></li>
-<li><code>templates/.claude/skills/spec/SKILL.md</code></li>
 <li><code>tests/test_install.sh</code></li>
 <li><code>tests/test_templates.sh</code></li>
 
@@ -98,11 +101,11 @@ memory: 11 run, 11 passed, 0 failed
 All tests passed.</pre>
 
 <h2>Eval Results</h2>
-<p><span class="status" style="background:#2d7d2d">47/47</span></p>
-<pre>Score: 47/47 (100%)</pre>
+<p><span class="status" style="background:#2d7d2d">50/50</span></p>
+<pre>Score: 50/50 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-05-25 12:31:40 by generate-delivery-report.py
+  Generated 2026-05-25 15:31:30 by generate-delivery-report.py
 </div>
 </body>
 </html>

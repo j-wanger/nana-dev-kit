@@ -214,7 +214,7 @@ if [ "$INSTALL_KNOWLEDGE" = true ] && [ "$INSTALL_CORE" = false ]; then
 fi
 
 # --- Skill directory definitions ---
-CORE_SKILLS="spec nana memory-consolidate"
+CORE_SKILLS="spec nana memory-consolidate init"
 PYTHON_SKILLS="py-init py-lint py-review py-test"
 TYPESCRIPT_SKILLS="ts-init"
 DEVWIKI_SKILLS="dev-wiki dev-check dev-debrief dev-init dev-plan dev-scan"
