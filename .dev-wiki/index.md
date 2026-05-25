@@ -42,6 +42,7 @@
 - [[phase-37-ceremony-streamlining-autonomous-flow|Phase 37: Ceremony Streamlining & Autonomous Flow]] -- completed
 - [[phase-38-install-integrity-functional-verification|Phase 38: Install Integrity & Functional Verification]] -- completed
 - [[phase-39-resilience-health-probes|Phase 39: Resilience & Health Probes]] -- completed
+- [[phase-40-install-extraction-anti-pattern-hardening|Phase 40: install.sh Extraction & Anti-Pattern Hardening]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -113,6 +114,8 @@
 - [[health-probe-3-layer|Health probe uses 3 layers: jq config, import check, sqlite3 count]] -- medium confidence, accepted
 - [[posttooluse-normalize-after-verification|PostToolUse normalization: verify then normalize]] -- medium confidence, accepted
 - [[init-router-in-core|/init router belongs in CORE_SKILLS]] -- medium confidence, accepted
+- [[install-sh-extraction-approach|install.sh extraction: modules.json + register-settings.py]] -- high confidence, accepted
+- [[functional-smoke-invariant-rule|Functional smoke invariant: every registered component needs functional test]] -- high confidence, accepted
 - [[turn-level-hybrid-recommended|Turn-level hybrid RRF is the winning strategy]] -- high confidence, accepted
 - [[diagnostic-first-benchmark|Diagnostic-first benchmark]] -- high confidence, accepted
 - [[monorepo-skill-distribution|Monorepo Skill Distribution]] -- high confidence, accepted
@@ -146,6 +149,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-25-phase-40-install-extraction-complete|Phase 40 complete]] -- 2026-05-25
 - [[2026-05-25-phase-39-resilience-health-probes-complete|Phase 39 complete]] -- 2026-05-25
 - [[2026-05-25-phase-38-install-integrity-complete|Phase 38 complete]] -- 2026-05-25
 - [[2026-05-25-phase-37-ceremony-streamlining-complete|Phase 37 complete]] -- 2026-05-25
@@ -210,6 +214,8 @@
 
 ## Recent
 
+- 2026-05-25: Phase 40 completed -- install.sh extraction: 542 to 318 lines, zero inline Python, modules.json + register-settings.py, functional smoke invariant codified, 2 decisions (confidence upgraded), ~301 tests, 50/50 eval
+- 2026-05-25: Phase 40 planned -- 7 tasks (3S 4M), 2 decisions (install-sh-extraction-approach, functional-smoke-invariant-rule), install.sh extraction & anti-pattern hardening
 - 2026-05-25: Phase 39 completed -- 3-state health probe, jq migration complete, PostToolUse .tool_input canonical, /init router, 3 decisions confirmed high, 291 tests, 50/50 eval
 - 2026-05-25: Phase 39 planned -- 6 tasks (2S 4M), 3 decisions (health-probe-3-layer, posttooluse-normalize-after-verification, init-router-in-core), resilience & health probes
 - 2026-05-25: Phase 38 completed -- MCP CWD fix, 5 skills added, MultiEdit matchers, scope-check fix, 23 functional tests, 2 decisions (mcp-memory-server-cwd-fix, fail-loud-over-fail-silent-memory), 283 tests, 47/47 eval

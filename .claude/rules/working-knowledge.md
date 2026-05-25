@@ -1,6 +1,10 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
+- [uses: 1] modules.json is single source of truth for 5 module groups (core, python, typescript, dev-wiki, knowledge-wiki). Defines skill lists, hook registrations, MCP config. Consumed by install.sh (jq), register-settings.py (Python), tests (filesystem consistency), MANIFEST, README.
+  source: [[decision:install-sh-extraction-approach]] | activated: 2026-05-25
+- [uses: 1] Functional smoke invariant: every component registered in settings.json or install.sh must have at least one functional test (pipe input, check output). Codified in spec SKILL.md Step 2.6 + dev-plan implementation-guide.md integration checklist. Evidence: 4 silent breakages lasting 8-33 phases.
+  source: [[decision:functional-smoke-invariant-rule]] | activated: 2026-05-25
 - [uses: 1] install.sh CORE_SKILLS: nana + memory-consolidate + init (language-agnostic). PYTHON_SKILLS: py-lint + py-review + py-test (excluded by --no-python, --core-only). Module assignment determines which skills install under each flag combination. 26 total skill dirs.
   source: [[decision:install-skill-module-assignment]] + [[decision:init-router-in-core]] | activated: 2026-05-25
 - [uses: 1] session-start.sh MCP health probe uses 3 layers: jq config read (settings.json .mcpServers.memory), $MCP_CMD import check, sqlite3 entry count. Emits 3-state output: healthy (N entries) / broken (reason) / not configured. All hooks now use jq for JSON parsing (python3 eliminated).
@@ -9,7 +13,7 @@
   source: [[decision:init-router-in-core]] | activated: 2026-05-25
 - [uses: 1] MCP memory server CWD must point to ~/.claude (parent), not ~/.claude/memory_server (package dir). Was broken since Phase 4. install.sh now has import-check verification after MCP registration.
   source: [[decision:mcp-memory-server-cwd-fix]] | activated: 2026-05-25
-- [uses: 1] PostToolUse canonical field path is .tool_input (verified via live stale-queue.sh production evidence). All 5 PostToolUse Edit/Write hooks normalized to .tool_input.file_path // .input.file_path defensive fallback. PreToolUse uses .input.file_path. 6 eval fixtures updated.
+- [uses: 2] PostToolUse canonical field path is .tool_input (verified via live stale-queue.sh production evidence). All 5 PostToolUse Edit/Write hooks normalized to .tool_input.file_path // .input.file_path defensive fallback. PreToolUse uses .input.file_path. 6 eval fixtures updated.
   source: [[decision:posttooluse-normalize-after-verification]] | activated: 2026-05-25
 - [uses: 1] 2-gate ceremony model: direction gate (Step 7, user confirms intent/scope) + delivery gate (HTML report before commit, user accepts/rejects). Agent operates autonomously between gates. Subagent reviewers still execute but findings auto-incorporated.
   source: [[decision:ceremony-streamlining-2-gate-model]] | activated: 2026-05-25
@@ -23,8 +27,8 @@
   source: [[decision:hook-reconciliation]] | activated: 2026-05-25
 - [uses: 1] Hook fixes require tmpdir testing (mktemp -d) before touching live state — prevents self-lockout via enforce-spec.sh regression. Evidence-pinned: every fix needs quoted error string or lint finding in commit message.
   source: [[decision:hook-reconciliation-approach]] | activated: 2026-05-25
-- [uses: 1] install.sh ~535 lines with module-group architecture, --all/--core-only/--no-python/--no-typescript/--project-local/--dry-run/--status flags. --project-local copies 6 per-project hooks to CWD .claude/hooks/ with settings.json merge.
-  source: [[decision:hook-reconciliation]] + [[journal:2026-05-25-phase-36-hooks-audit-housekeeping-complete]] | activated: 2026-05-25
+- [uses: 2] install.sh 318 lines (refactored Phase 40), zero inline Python. Reads modules.json via jq for skill lists, delegates JSON merges to scripts/register-settings.py. Flags: --all/--core-only/--no-python/--no-typescript/--project-local/--dry-run/--status. --project-local copies 6 per-project hooks.
+  source: [[decision:install-sh-extraction-approach]] + [[decision:hook-reconciliation]] | activated: 2026-05-25
 - [uses: 1] store() dedup is a hygiene mechanism with 7 corruption modes. _find_near_duplicate is the core dedup gate — threshold changes must preserve exact semantics (cosine >0.90 reinforce, >0.85 warn; word overlap >0.90 warn). Word-overlap is the production fallback when embeddings unavailable.
   source: [[decision:store-opt-indexed-lookups]] + [[active-knowledge:phase-34]] | activated: 2026-05-24
 - [uses: 1] server.py:74 auto-embeds when embedding provider available. Word-overlap path is the fallback dedup mechanism when _vec_available=False.
@@ -108,8 +112,8 @@
   source: [[decision:vendor-memory-server]] + [[decision:nanaclaw-divergence-inventory]] | activated: 2026-05-24
 - [uses: 1] session-start.sh reads 2 sources: py-session-state.md, dev-wiki/_CURRENT_STATE.md; memory access is MCP-only (memory_search); MEMORY.md removed in Phase 10
   source: [[decision:memory-convergence-mcp-only]] | activated: 2026-05-19
-- [uses: 1] MCP registration uses idempotent python3 JSON merge; handles 3 cases: no settings.json, existing without mcpServers, existing with mcpServers
-  source: [[decision:install-sh-scope-expansion]] | activated: 2026-05-15
+- [uses: 2] MCP registration uses idempotent JSON merge via scripts/register-settings.py (was inline python3, extracted Phase 40); handles 3 cases: no settings.json, existing without mcpServers, existing with mcpServers
+  source: [[decision:install-sh-scope-expansion]] + [[decision:install-sh-extraction-approach]] | activated: 2026-05-25
 - [uses: 1] memory_server pip deps auto-installed by install.sh in venv at ~/.claude/memory_server/.venv/ (updated Phase 5)
   source: [[journal:2026-05-19-phase-5-and-6-complete]] | activated: 2026-05-19
 - [uses: 1] scripts/generate-workflow.py (738 lines) generates docs/workflow.html; distinct from generate-report.py (package inventory)

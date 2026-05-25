@@ -1,12 +1,16 @@
 # Active Phase Context
 
-Phase: 39 - Resilience & Health Probes
-Status: COMPLETED (6/6 tasks done, all 7 exit criteria met)
-Objective: Migrate python3 JSON parsing to jq, add 3-state memory health probe, resolve PostToolUse field path inconsistency, add /init language router.
+Phase: 40 - install.sh Extraction & Anti-Pattern Hardening
+Status: COMPLETED (7/7 tasks done, all exit criteria verified)
+Objective: Decompose install.sh into modules.json + register-settings.py. Fix PostToolUse normalization gap. Codify functional smoke invariant. Clean up stale phase articles.
 
-Next action: Run /dev-plan for Phase 40. Consider soft observations from journal:
-- install.sh Getting Started output doesn't mention /init (shows py-init, ts-init, dev-init, wiki-init but not init)
-- README doesn't document /init yet (deferred to next phase per spec out-of-scope)
-- PostToolUse .tool_input finding should be added to working-knowledge
+Results:
+- install.sh: 542 to 318 lines (41% reduction), zero inline Python
+- modules.json: 5 module groups, single source of truth
+- register-settings.py: ~120 lines, hooks + mcp subcommands
+- PostToolUse normalization: stale-queue.sh + post-commit.sh fixed
+- Functional smoke invariant: codified in spec + dev-plan
 
-Gates: [x] direction=approved [x] delivery=approved
+Next: Run /dev-plan to start Phase 41.
+
+Gates: [x] direction=approved [ ] delivery=pending

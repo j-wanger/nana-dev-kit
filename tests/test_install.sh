@@ -606,4 +606,131 @@ fi
 
 rm -rf "$THOME_FN"
 
+# --- register-settings.py tests ---
+test_start "register-settings.py hooks --help works"
+if python3 "$PROJECT_ROOT/scripts/register-settings.py" hooks --help >/dev/null 2>&1; then
+  test_pass
+else
+  test_fail "register-settings.py hooks --help failed"
+fi
+
+test_start "register-settings.py mcp --help works"
+if python3 "$PROJECT_ROOT/scripts/register-settings.py" mcp --help >/dev/null 2>&1; then
+  test_pass
+else
+  test_fail "register-settings.py mcp --help failed"
+fi
+
+test_start "register-settings.py: hook upsert creates correct JSON"
+T_REG=$(mktemp -d)
+echo '{}' > "$T_REG/settings.json"
+python3 "$PROJECT_ROOT/scripts/register-settings.py" hooks "$T_REG/settings.json" "$PROJECT_ROOT/modules.json" --scope global
+if python3 -c "
+import json
+d = json.load(open('$T_REG/settings.json'))
+hooks = d['hooks']
+assert 'PreToolUse' in hooks, 'missing PreToolUse'
+assert 'PostToolUse' in hooks, 'missing PostToolUse'
+assert 'Stop' in hooks, 'missing Stop'
+total = sum(len(v) for v in hooks.values())
+assert total == 11, f'expected 11 hook entries, got {total}'
+print('OK')
+" 2>/dev/null | grep -q OK; then
+  test_pass
+else
+  test_fail "hook upsert produced incorrect JSON"
+fi
+
+test_start "register-settings.py: upsert is idempotent"
+python3 "$PROJECT_ROOT/scripts/register-settings.py" hooks "$T_REG/settings.json" "$PROJECT_ROOT/modules.json" --scope global
+TOTAL_AFTER=$(python3 -c "import json; d=json.load(open('$T_REG/settings.json')); print(sum(len(v) for v in d['hooks'].values()))")
+if [ "$TOTAL_AFTER" = "11" ]; then
+  test_pass
+else
+  test_fail "upsert not idempotent: expected 11, got $TOTAL_AFTER"
+fi
+
+test_start "register-settings.py: ghost cleanup removes entries"
+python3 -c "
+import json
+d = json.load(open('$T_REG/settings.json'))
+d['hooks']['PostToolUse'].append({'hooks': [{'type': 'command', 'command': '/old/dev-wiki-post-commit.sh'}]})
+with open('$T_REG/settings.json', 'w') as f: json.dump(d, f, indent=2); f.write('\n')
+"
+python3 "$PROJECT_ROOT/scripts/register-settings.py" hooks "$T_REG/settings.json" "$PROJECT_ROOT/modules.json" --scope global
+if python3 -c "
+import json
+d = json.load(open('$T_REG/settings.json'))
+for e in d['hooks'].get('PostToolUse', []):
+  for h in e.get('hooks', []):
+    assert 'dev-wiki-post-commit' not in h.get('command', ''), 'ghost not cleaned'
+print('OK')
+" 2>/dev/null | grep -q OK; then
+  test_pass
+else
+  test_fail "ghost cleanup failed"
+fi
+
+test_start "register-settings.py: MCP registration sets correct cwd"
+python3 "$PROJECT_ROOT/scripts/register-settings.py" mcp "$T_REG/settings.json" --python /usr/bin/python3 --cwd ~/.claude
+if python3 -c "
+import json, os
+d = json.load(open('$T_REG/settings.json'))
+cwd = d['mcpServers']['memory']['cwd']
+assert cwd == os.path.expanduser('~/.claude'), f'bad cwd: {cwd}'
+print('OK')
+" 2>/dev/null | grep -q OK; then
+  test_pass
+else
+  test_fail "MCP registration cwd incorrect"
+fi
+rm -rf "$T_REG"
+
+# --- modules.json consistency tests ---
+test_start "modules.json valid JSON (jq)"
+if jq empty "$PROJECT_ROOT/modules.json" 2>/dev/null; then
+  test_pass
+else
+  test_fail "modules.json invalid JSON"
+fi
+
+test_start "modules.json: all skill dirs exist on filesystem"
+MISSING_SKILLS=""
+for s in $(jq -r '.modules[].skills[]' "$PROJECT_ROOT/modules.json"); do
+  if [ ! -d "$PROJECT_ROOT/templates/.claude/skills/$s" ]; then
+    MISSING_SKILLS="$MISSING_SKILLS $s"
+  fi
+done
+if [ -z "$MISSING_SKILLS" ]; then
+  test_pass
+else
+  test_fail "missing skill dirs:$MISSING_SKILLS"
+fi
+
+test_start "modules.json: all hook scripts exist on filesystem"
+MISSING_HOOKS=""
+for h in $(jq -r '.modules[].hooks[].script' "$PROJECT_ROOT/modules.json"); do
+  if [ ! -f "$PROJECT_ROOT/templates/.claude/hooks/$h" ]; then
+    MISSING_HOOKS="$MISSING_HOOKS $h"
+  fi
+done
+if [ -z "$MISSING_HOOKS" ]; then
+  test_pass
+else
+  test_fail "missing hook scripts:$MISSING_HOOKS"
+fi
+
+test_start "modules.json: project-local hook scripts exist"
+MISSING_PL=""
+for h in $(jq -r '.project_local.hooks[].script' "$PROJECT_ROOT/modules.json"); do
+  if [ ! -f "$PROJECT_ROOT/templates/.claude/hooks/$h" ]; then
+    MISSING_PL="$MISSING_PL $h"
+  fi
+done
+if [ -z "$MISSING_PL" ]; then
+  test_pass
+else
+  test_fail "missing project-local hooks:$MISSING_PL"
+fi
+
 test_summary "test_install"

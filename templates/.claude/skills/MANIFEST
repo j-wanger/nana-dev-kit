@@ -21,7 +21,7 @@ c78c7501c48cf53dfc39dfd53fd282ba  templates/.claude/skills/dev-init/templates/pr
 2204ed430494fe8da956807873fcc5ae  templates/.claude/skills/dev-plan/approach-reviewer-prompt.md
 b519291412e12f7f72d242fb559a80ab  templates/.claude/skills/dev-plan/artifact-writer-prompt.md
 5178edaa94512bce877d87090936eccc  templates/.claude/skills/dev-plan/compaction-anchors-spec.md
-1650078d2683f63ee51b8dbd698efe31  templates/.claude/skills/dev-plan/implementation-guide.md
+bc5ebdf425adf43df5e4e3e3b6075e11  templates/.claude/skills/dev-plan/implementation-guide.md
 766fcb38c147f83c51b51b5ac35f5dbb  templates/.claude/skills/dev-plan/iterative-retrieval-spec.md
 291dfe5e3291ae9bbe1a0b8729afe744  templates/.claude/skills/dev-plan/memory-bridge.md
 13369bf52630e3c2e259d5096c21c43f  templates/.claude/skills/dev-plan/plan-review-companion.md
@@ -75,7 +75,7 @@ ca0529f9494d79de5a966808f6e3e5f8  templates/.claude/skills/py-init/transform.md
 c27991e337470cd89df485d6fd9011af  templates/.claude/skills/py-lint/SKILL.md
 cefb4a1bd5cf707c9b062640fb353221  templates/.claude/skills/py-review/SKILL.md
 f9dcecfa3ba6af91de1813c40909c982  templates/.claude/skills/py-test/SKILL.md
-49c1532a6069514a74aa7a7d64f2b798  templates/.claude/skills/spec/SKILL.md
+493cce530d35f0b20f21b06e64f2879d  templates/.claude/skills/spec/SKILL.md
 77155f417a78b26dd1c0748830843777  templates/.claude/skills/spec/adversarial-constraints-prompt.md
 97e94cc6db62f5a5b5cc1eb30b513b58  templates/.claude/skills/spec/spec-reviewer-prompt.md
 e3bfc64c5dacf79b958a0e0ef04c6ae1  templates/.claude/skills/ts-init/SKILL.md
@@ -126,29 +126,29 @@ ec297f639a856b595197ac37a26ded8f  templates/.claude/skills/wiki-reorg/SKILL.md
 1d2493a774c26de198549f1243fd9bd4  templates/.claude/skills/wiki-reorg/writer-prompt.md
 
 # Skill descriptions
-# dev-check: ---
-# dev-debrief: ---
-# dev-init: ---
-# dev-plan: ---
-# dev-scan: ---
-# dev-wiki: ---
+# dev-check: "Validate dev wiki integrity and fix drift. Run when state feels stale, after long breaks, or when drift warnings appear. Do NOT use for knowledge wiki health (use wiki-lint) or for session startup (use AGENTS.md)."
+# dev-debrief: "Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (use dev-context) or to fix wiki structural issues (use dev-check)."
+# dev-init: "Use when a project has no .dev-wiki/ yet. Bootstraps phases, architecture, state, and tasks. Do NOT use for knowledge wikis (use wiki-init) or if .dev-wiki/ already exists."
+# dev-plan: "Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."
+# dev-scan: "Use when adopting dev-wiki on an existing project, when _ARCHITECTURE.md is shallow, or after major structural changes. Scans code structure, modules, dependencies, entry points, and design patterns. Do NOT use for ad-hoc code questions — use Grep/Read directly."
+# dev-wiki: "Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-context, dev-plan, etc.)."
 # init: Detect the project language and route to the appropriate scaffolding skill.
-# knowledge-wiki: ---
-# memory-consolidate: ---
-# nana: ---
-# py-init: ---
-# py-lint: ---
-# py-review: ---
-# py-test: ---
-# spec: ---
-# ts-init: ---
-# wiki-absorb: ---
-# wiki-add: ---
-# wiki-bootstrap: ---
-# wiki-consolidate: ---
-# wiki-health: ---
-# wiki-index: ---
-# wiki-init: ---
-# wiki-query: ---
-# wiki-registry: ---
-# wiki-reorg: ---
+# knowledge-wiki: "Route wiki operations and enforce wiki workflow discipline. Use when the user mentions 'wiki', 'knowledge base', or wants to manage project knowledge. Also activated by SessionStart hook when a registered wiki applies to the current directory. Do NOT invoke directly when the user names a specific wiki command — invoke that command instead (wiki-query, wiki-add, etc.)."
+# memory-consolidate: "Consolidate duplicate/overlapping memory entries using Claude. Use when memory_search returns redundant results, after many phases, or for periodic memory maintenance."
+# nana: "Show installed nana-dev-kit skills grouped by module. Use when the user asks what skills are available, what the kit can do, or wants a quick reference."
+# py-init: Scaffold the Nana 5-layer Python dev harness. New projects get full scaffold; existing projects go through scan-approve-transform-validate. Use when the user says "init", "scaffold", or "set up a project".
+# py-lint: Run linting, formatting, and type checking. Use after writing or modifying Python code, before committing, or when the user asks to lint.
+# py-review: Review code changes against the 8-point AI PR checklist. Use before committing, before creating a PR, or when the user asks for a review. Also runs automatically as a Stop prompt hook.
+# py-test: Run the full test suite with coverage and report failures concisely. Use whenever the user asks to run tests, after writing code, or when verifying a change.
+# spec: Write a structured spec/contract before execution. Use when starting non-trivial work, when the user says "write a spec", "plan this task", or "contract for this". Produces a 9-section contract with two-tier review gate.
+# ts-init: Scaffold the Nana 5-layer TypeScript dev harness. New projects get full scaffold; existing projects go through scan-approve-transform-validate. Use when the user says "init", "scaffold", or "set up a project" in a TypeScript context.
+# wiki-absorb: "Use when the wiki inbox has 3+ unprocessed entries or before running query/lint/reorg. Converts raw captures into polished cross-linked articles. Do NOT use for capturing new insights (use wiki-add) or when the inbox is empty."
+# wiki-add: "Use when adding content to the wiki inbox — either capturing insights from conversation or ingesting external files, URLs, or pasted material. Do NOT use for processing inbox into articles — use wiki-absorb."
+# wiki-bootstrap: "Use when seeding a new wiki OR researching specific topics to enrich a mature wiki via online research. Focus-topic mode works at any wiki size; full-domain-gap-analysis mode is best for sparse wikis. Do NOT use when no wiki exists yet (use wiki-init) or for capturing a single insight (use wiki-add)."
+# wiki-consolidate: "Use when episodic/ has 5+ unconsolidated entries. Converts raw episodic findings into staged inbox entries via dedup + fact extraction. Do NOT use for capturing new insights (use wiki-add) or for processing inbox entries (use wiki-absorb)."
+# wiki-health: "Use for wiki health checks: dashboard metrics, structural audit, and staleness marking. Default mode shows full report. Use --audit-only for structural checks only, --mark-stale to detect and mark stale articles. Do NOT use for dev wiki validation (use dev-check) or for fixing issues (use wiki-reorg)."
+# wiki-index: "Build and manage the hybrid search index for a wiki. Creates a per-wiki SQLite database with FTS5 full-text search and optional vector embeddings. Use when wiki has 50+ articles or search quality needs improving. Do NOT use for querying — use wiki-query (which calls search automatically)."
+# wiki-init: "Use when starting a wiki for a project that does not have one. Interviews the user and scaffolds the wiki directory with schema.md. Do NOT use if a wiki already exists in the project — use wiki-bootstrap to seed content into an existing wiki."
+# wiki-query: "Use when the user asks a domain question that the wiki may already answer. Navigates articles and synthesizes an answer. Read-only. Do NOT use for structural wiki changes (use wiki-reorg) or health audits (use wiki-health)."
+# wiki-registry: "Use when listing or renaming registered wikis. Default mode lists all wikis. Use 'rename <old> <new>' to change a wiki's display name. Read-only for listing; registry-write for rename. Do NOT use for detailed wiki health — use wiki-health."
+# wiki-reorg: "Use when the wiki has structural problems (missing hubs, weak hierarchy, stale organization) and needs gardening. Restructures categories and links. Do NOT use for read-only diagnosis — run wiki-health --audit-only first to identify issues before reorganizing."

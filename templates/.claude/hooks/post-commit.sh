@@ -16,7 +16,7 @@ command -v jq >/dev/null 2>&1 || { echo "[nana:post-commit] jq not found, post-c
 INPUT=$(cat)
 
 # --- Parse command and exit code ---
-COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null || echo "")
+COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // .input.command // empty' 2>/dev/null || echo "")
 EXIT_CODE=$(echo "$INPUT" | jq -r '.exit_code // empty' 2>/dev/null || echo "")
 
 # --- Fast-path: not a git commit or failed ---

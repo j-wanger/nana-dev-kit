@@ -16,6 +16,7 @@ git clone https://github.com/j-wanger/nana-dev-kit.git ~/nana-dev-kit
 Then in any project:
 
 ```
+/init         # auto-detect language → scaffold Python or TypeScript
 /dev-init     # bootstrap dev-wiki lifecycle tracking
 /py-init      # scaffold Python toolchain
 /ts-init      # scaffold TypeScript toolchain (pnpm/Biome/Vitest/tsc)

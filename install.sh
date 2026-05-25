@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Install Nana Dev Kit — copies global pieces to ~/.claude/
-# Run once per machine. Then use /py-init in any project to scaffold the harness.
+# Run once per machine. Then use /init in any project to scaffold the harness.
 #
 # Flags:
 #   --all            Install everything (default)
@@ -18,6 +18,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILLS_SRC="$SCRIPT_DIR/templates/.claude/skills"
 RULES_SRC="$SCRIPT_DIR/templates/.claude/rules"
 MEMORY_SRC="$SCRIPT_DIR/memory_server"
+MODULES_JSON="$SCRIPT_DIR/modules.json"
+REGISTER_SCRIPT="$SCRIPT_DIR/scripts/register-settings.py"
 
 # --- Flag parsing ---
 DRY_RUN=false
@@ -65,87 +67,33 @@ if $PROJECT_LOCAL; then
   HOOKS_SRC="$SCRIPT_DIR/templates/.claude/hooks"
   PROJ_HOOKS_DIR=".claude/hooks"
   PROJ_SETTINGS=".claude/settings.local.json"
-  PROJECT_HOOKS=(
-    "audit-log.sh"
-    "auto-ruff-format.sh"
-    "block-dangerous-bash.sh"
-    "check-tests-were-run.sh"
-    "scan-secrets.sh"
-    "session-start.sh"
-  )
-  for h in "${PROJECT_HOOKS[@]}"; do
+  PROJECT_HOOKS=$(jq -r '.project_local.hooks[].script' "$MODULES_JSON")
+  EXTRA_DIRS=$(jq -r '.project_local.extra_dirs[]' "$MODULES_JSON" 2>/dev/null || true)
+  for h in $PROJECT_HOOKS; do
     [ -f "$HOOKS_SRC/$h" ] || { echo "Error: source missing: $HOOKS_SRC/$h" >&2; exit 1; }
   done
   if $DRY_RUN; then
     echo "[dry-run] --- Mode: project-local ---"
-    echo "[dry-run] install hooks to $PROJ_HOOKS_DIR/: ${PROJECT_HOOKS[*]}"
-    echo "[dry-run] install session-start.d/ modules (wk-prune.sh, memory-nudge.sh)"
+    echo "[dry-run] install hooks to $PROJ_HOOKS_DIR/: $PROJECT_HOOKS"
+    [ -n "$EXTRA_DIRS" ] && echo "[dry-run] install extra dirs: $EXTRA_DIRS"
     echo "[dry-run] register hooks in $PROJ_SETTINGS (nested schema)"
   else
     mkdir -p "$PROJ_HOOKS_DIR"
-    for h in "${PROJECT_HOOKS[@]}"; do
+    for h in $PROJECT_HOOKS; do
       cp "$HOOKS_SRC/$h" "$PROJ_HOOKS_DIR/$h"
       chmod +x "$PROJ_HOOKS_DIR/$h"
     done
-    # Copy session-start.d/ modules (sourced by session-start.sh)
-    if [ -d "$HOOKS_SRC/session-start.d" ]; then
-      mkdir -p "$PROJ_HOOKS_DIR/session-start.d"
-      cp "$HOOKS_SRC/session-start.d"/*.sh "$PROJ_HOOKS_DIR/session-start.d/"
-    fi
-    python3 -c "
-import json, os
-path = '$PROJ_SETTINGS'
-data = {}
-if os.path.isfile(path):
-    with open(path) as f:
-        data = json.load(f)
-if 'hooks' not in data:
-    data['hooks'] = {}
-hooks = data['hooks']
-
-def upsert(event, matcher, hook_file):
-    cmd = '.claude/hooks/' + hook_file
-    if event not in hooks:
-        hooks[event] = []
-    for e in hooks[event]:
-        for h in e.get('hooks', []):
-            if h.get('command', '').endswith(hook_file):
-                if matcher and e.get('matcher') != matcher:
-                    e['matcher'] = matcher
-                elif not matcher and 'matcher' in e:
-                    del e['matcher']
-                return
-        if e.get('command', '').endswith(hook_file) and 'hooks' not in e:
-            new = {'type': 'command', 'command': cmd}
-            keep_matcher = e.get('matcher')
-            e.clear()
-            if keep_matcher: e['matcher'] = keep_matcher
-            e['hooks'] = [new]
-            return
-    entry = {}
-    if matcher: entry['matcher'] = matcher
-    entry['hooks'] = [{'type': 'command', 'command': cmd}]
-    hooks[event].append(entry)
-
-upsert('SessionStart', '', 'session-start.sh')
-upsert('PostToolUse', 'Write|Edit|MultiEdit', 'audit-log.sh')
-upsert('PostToolUse', 'Write|Edit|MultiEdit', 'auto-ruff-format.sh')
-upsert('PreToolUse', 'Bash', 'block-dangerous-bash.sh')
-upsert('Stop', '', 'check-tests-were-run.sh')
-upsert('PostToolUse', 'Write|Edit|MultiEdit', 'scan-secrets.sh')
-
-with open(path, 'w') as f:
-    json.dump(data, f, indent=2)
-    f.write('\n')
-"
+    for d in $EXTRA_DIRS; do
+      if [ -d "$HOOKS_SRC/$d" ]; then
+        mkdir -p "$PROJ_HOOKS_DIR/$d"
+        cp "$HOOKS_SRC/$d"/*.sh "$PROJ_HOOKS_DIR/$d/"
+      fi
+    done
+    python3 "$REGISTER_SCRIPT" hooks "$PROJ_SETTINGS" "$MODULES_JSON" \
+      --scope project-local --hooks-dir "$PROJ_HOOKS_DIR"
     echo ""
     echo "Project-local hooks installed in $PROJ_HOOKS_DIR/"
-    echo "  - audit-log.sh           — PostToolUse:Write|Edit|MultiEdit — JSONL audit"
-    echo "  - auto-ruff-format.sh    — PostToolUse:Write|Edit|MultiEdit — Python ruff format"
-    echo "  - block-dangerous-bash.sh — PreToolUse:Bash       — block rm -rf etc"
-    echo "  - check-tests-were-run.sh — Stop                  — test reminder"
-    echo "  - scan-secrets.sh        — PostToolUse:Write|Edit|MultiEdit — gitleaks/secrets"
-    echo "  - session-start.sh       — SessionStart           — dev-wiki + memory nudge"
+    jq -r '.project_local.hooks[] | "  - \(.script) — \(.event):\(.matcher) "' "$MODULES_JSON" | sed 's/:  *$//'
   fi
   exit 0
 fi
@@ -213,22 +161,9 @@ if [ "$INSTALL_KNOWLEDGE" = true ] && [ "$INSTALL_CORE" = false ]; then
   exit 1
 fi
 
-# --- Skill directory definitions ---
-CORE_SKILLS="spec nana memory-consolidate init"
-PYTHON_SKILLS="py-init py-lint py-review py-test"
-TYPESCRIPT_SKILLS="ts-init"
-DEVWIKI_SKILLS="dev-wiki dev-check dev-debrief dev-init dev-plan dev-scan"
-KNOWLEDGE_SKILLS="knowledge-wiki wiki-absorb wiki-add wiki-bootstrap wiki-consolidate wiki-health wiki-index wiki-init wiki-query wiki-reorg wiki-registry"
-
-# --- Helper functions ---
-do_copy() {
-  local src="$1" dest="$2"
-  if $DRY_RUN; then
-    echo "[dry-run] copy $src → $dest"
-  else
-    mkdir -p "$(dirname "$dest")"
-    cp -r "$src" "$dest"
-  fi
+# --- Helper: read skill list from modules.json ---
+module_skills() {
+  jq -r --arg m "$1" '.modules[] | select(.name == $m) | .skills[]' "$MODULES_JSON"
 }
 
 install_skill_dir() {
@@ -247,77 +182,39 @@ install_skill_dir() {
   fi
 }
 
-# --- Source validation (based on selected modules) ---
+# --- Source validation ---
 missing=0
-if [ "$INSTALL_CORE" = true ]; then
-  for src in "$RULES_SRC/nana-soul.md" "$RULES_SRC/nana-personal.md" "$RULES_SRC/file-lifecycle.md"; do
-    if [ ! -f "$src" ]; then
-      echo "Error: source file not found: $src" >&2
-      missing=1
-    fi
-  done
-  if [ ! -d "$MEMORY_SRC" ]; then
-    echo "Error: memory_server directory not found: $MEMORY_SRC" >&2
-    missing=1
-  fi
-fi
-if [ "$INSTALL_PYTHON" = true ] && [ ! -f "$SKILLS_SRC/py-init/SKILL.md" ]; then
-  echo "Error: source file not found: $SKILLS_SRC/py-init/SKILL.md" >&2
-  missing=1
-fi
-if [ "$INSTALL_TYPESCRIPT" = true ] && [ ! -f "$SKILLS_SRC/ts-init/SKILL.md" ]; then
-  echo "Error: source file not found: $SKILLS_SRC/ts-init/SKILL.md" >&2
-  missing=1
-fi
+[ "$INSTALL_CORE" = true ] && for src in "$RULES_SRC/nana-soul.md" "$RULES_SRC/nana-personal.md" "$RULES_SRC/file-lifecycle.md"; do
+  [ -f "$src" ] || { echo "Error: source file not found: $src" >&2; missing=1; }
+done
+[ "$INSTALL_CORE" = true ] && [ ! -d "$MEMORY_SRC" ] && { echo "Error: memory_server directory not found: $MEMORY_SRC" >&2; missing=1; }
+[ "$INSTALL_PYTHON" = true ] && [ ! -f "$SKILLS_SRC/py-init/SKILL.md" ] && { echo "Error: source file not found: $SKILLS_SRC/py-init/SKILL.md" >&2; missing=1; }
+[ "$INSTALL_TYPESCRIPT" = true ] && [ ! -f "$SKILLS_SRC/ts-init/SKILL.md" ] && { echo "Error: source file not found: $SKILLS_SRC/ts-init/SKILL.md" >&2; missing=1; }
 [ "$missing" -eq 0 ] || exit 1
 
 # --- Execute ---
 if ! $DRY_RUN; then echo "Installing Nana Dev Kit..."; fi
 
-# === Core module: rules + spec + memory + kit path ===
+# === Core module: rules + skills + memory + kit path ===
 if [ "$INSTALL_CORE" = true ]; then
-  if $DRY_RUN; then
-    echo "[dry-run] --- Module: core ---"
-  fi
+  $DRY_RUN && echo "[dry-run] --- Module: core ---"
 
-  # Identity rules
   if $DRY_RUN; then
     echo "[dry-run] copy rules: nana-soul.md, file-lifecycle.md"
-    if [ ! -f "$HOME/.claude/rules/nana-personal.md" ]; then
-      echo "[dry-run] copy rules: nana-personal.md (new install)"
-    else
-      echo "[dry-run] skip: nana-personal.md (already exists)"
-    fi
+    [ ! -f "$HOME/.claude/rules/nana-personal.md" ] && echo "[dry-run] copy rules: nana-personal.md (new install)" || echo "[dry-run] skip: nana-personal.md (already exists)"
+    for skill in $(module_skills core); do install_skill_dir "$skill"; done
+    echo "[dry-run] write kit path marker + install memory_server + venv + MCP registration"
   else
     mkdir -p ~/.claude/rules
     cp "$RULES_SRC/nana-soul.md" ~/.claude/rules/nana-soul.md
-    if [ ! -f ~/.claude/rules/nana-personal.md ]; then
-      cp "$RULES_SRC/nana-personal.md" ~/.claude/rules/nana-personal.md
-    fi
+    [ ! -f ~/.claude/rules/nana-personal.md ] && cp "$RULES_SRC/nana-personal.md" ~/.claude/rules/nana-personal.md
     cp "$RULES_SRC/file-lifecycle.md" ~/.claude/rules/file-lifecycle.md
-  fi
-
-  # Core skills (spec, nana, memory-consolidate)
-  for skill in $CORE_SKILLS; do
-    install_skill_dir "$skill"
-  done
-
-  # Kit path marker
-  if $DRY_RUN; then
-    echo "[dry-run] write kit path marker: ~/.claude/.nana-dev-kit-path"
-  else
+    for skill in $(module_skills core); do install_skill_dir "$skill"; done
     echo "$SCRIPT_DIR" > ~/.claude/.nana-dev-kit-path
-  fi
-
-  # Memory MCP server
-  if $DRY_RUN; then
-    echo "[dry-run] install memory_server + venv + MCP registration"
-  else
     mkdir -p ~/.claude/memory_server
     cp "$MEMORY_SRC"/*.py ~/.claude/memory_server/
     cp "$MEMORY_SRC"/requirements.txt ~/.claude/memory_server/
 
-    # Create venv and install deps (graceful fallback)
     VENV_DIR=~/.claude/memory_server/.venv
     VENV_PYTHON="$VENV_DIR/bin/python3"
     if [ ! -f "$VENV_PYTHON" ]; then
@@ -331,29 +228,9 @@ if [ "$INSTALL_CORE" = true ]; then
       "$VENV_PYTHON" -m pip install --quiet -r ~/.claude/memory_server/requirements.txt 2>/dev/null || true
     fi
 
-    # Register MCP server in settings.json (idempotent JSON merge)
-    SETTINGS=~/.claude/settings.json
-    python3 -c "
-import json, os
-path = os.path.expanduser('$SETTINGS')
-venv_python = os.path.expanduser('$VENV_DIR/bin/python3')
-data = {}
-if os.path.isfile(path):
-    with open(path) as f:
-        data = json.load(f)
-if 'mcpServers' not in data:
-    data['mcpServers'] = {}
-data['mcpServers']['memory'] = {
-    'command': venv_python,
-    'args': ['-m', 'memory_server'],
-    'cwd': os.path.expanduser('~/.claude')
-}
-with open(path, 'w') as f:
-    json.dump(data, f, indent=2)
-    f.write('\n')
-"
+    python3 "$REGISTER_SCRIPT" mcp ~/.claude/settings.json \
+      --python "$VENV_DIR/bin/python3" --cwd ~/.claude
 
-    # Verify MCP server can start
     if (cd ~/.claude && "$VENV_DIR/bin/python3" -c "import memory_server" 2>/dev/null); then
       echo "  MCP memory server: verified"
     else
@@ -369,152 +246,50 @@ fi
 
 # === Python module ===
 if [ "$INSTALL_PYTHON" = true ]; then
-  if $DRY_RUN; then
-    echo "[dry-run] --- Module: python ---"
-  fi
-  for skill in $PYTHON_SKILLS; do
-    install_skill_dir "$skill"
-  done
+  $DRY_RUN && echo "[dry-run] --- Module: python ---"
+  for skill in $(module_skills python); do install_skill_dir "$skill"; done
 fi
 
 # === TypeScript module ===
 if [ "$INSTALL_TYPESCRIPT" = true ]; then
-  if $DRY_RUN; then
-    echo "[dry-run] --- Module: typescript ---"
-  fi
-  for skill in $TYPESCRIPT_SKILLS; do
-    install_skill_dir "$skill"
-  done
+  $DRY_RUN && echo "[dry-run] --- Module: typescript ---"
+  for skill in $(module_skills typescript); do install_skill_dir "$skill"; done
 fi
 
-# === Dev-wiki module ===
+# === Dev-wiki module: skills + hooks + markers ===
 if [ "$INSTALL_DEVWIKI" = true ]; then
-  if $DRY_RUN; then
-    echo "[dry-run] --- Module: dev-wiki ---"
-  fi
-  for skill in $DEVWIKI_SKILLS; do
-    install_skill_dir "$skill"
-  done
+  $DRY_RUN && echo "[dry-run] --- Module: dev-wiki ---"
+  for skill in $(module_skills dev-wiki); do install_skill_dir "$skill"; done
 
-  # Global hooks: enforcement + lifecycle (11 total)
   HOOKS_SRC="$SCRIPT_DIR/templates/.claude/hooks"
-  GLOBAL_HOOKS=(
-    "enforce-spec.sh"
-    "enforce-loop.sh"
-    "enforce-memory.sh"
-    "detect-loop.sh"
-    "pre-compact.sh"
-    "post-commit.sh"
-    "context-size-check.sh"
-    "dev-wiki-scope-check.sh"
-    "post-compact.sh"
-    "session-stop.sh"
-    "stale-queue.sh"
-  )
+  HOOK_SCRIPTS=$(jq -r '.modules[] | select(.name == "dev-wiki") | .hooks[].script' "$MODULES_JSON" | sort -u)
+  MARKERS=$(jq -r '.modules[] | select(.name == "dev-wiki") | .markers[]' "$MODULES_JSON")
+
   if $DRY_RUN; then
-    echo "[dry-run] install hooks (11): ${GLOBAL_HOOKS[*]}"
-    echo "[dry-run] remove superseded: dev-wiki-post-commit.sh (replaced by post-commit.sh)"
-    echo "[dry-run] register hooks in settings.json (nested {matcher, hooks:[{type, command}]} schema)"
-    echo "[dry-run] create enforce marker: ~/.claude/enforce"
+    HOOK_COUNT=$(echo "$HOOK_SCRIPTS" | wc -l | tr -d ' ')
+    echo "[dry-run] install hooks ($HOOK_COUNT): $HOOK_SCRIPTS"
+    echo "[dry-run] register hooks in settings.json (nested schema)"
+    echo "[dry-run] create markers: $MARKERS"
   else
     mkdir -p ~/.claude/hooks
-    for h in "${GLOBAL_HOOKS[@]}"; do
+    for h in $HOOK_SCRIPTS; do
       [ -f "$HOOKS_SRC/$h" ] || { echo "Error: source missing: $HOOKS_SRC/$h" >&2; exit 1; }
       cp "$HOOKS_SRC/$h" ~/.claude/hooks/"$h"
       chmod +x ~/.claude/hooks/"$h"
     done
-    # Remove superseded duplicate (kit's post-commit.sh replaces this — same trigger, more robust)
-    rm -f ~/.claude/hooks/dev-wiki-post-commit.sh
-    touch ~/.claude/enforce
-    touch ~/.claude/enforce-memory
 
-    # Register hooks in settings.json using Claude Code's nested schema:
-    # {matcher, hooks:[{type:"command", command}]} — NOT the legacy flat {matcher, command}.
-    # Migrates any pre-existing flat-shape entries to the nested shape.
-    SETTINGS=~/.claude/settings.json
-    python3 -c "
-import json, os
-path = os.path.expanduser('$SETTINGS')
-data = {}
-if os.path.isfile(path):
-    with open(path) as f:
-        data = json.load(f)
-if 'hooks' not in data:
-    data['hooks'] = {}
-hooks = data['hooks']
+    GHOSTS=$(jq -r '.modules[] | select(.name == "dev-wiki") | .ghost_cleanup[]' "$MODULES_JSON" 2>/dev/null || true)
+    for g in $GHOSTS; do rm -f ~/.claude/hooks/"$g".sh; done
+    for m in $MARKERS; do touch "$(eval echo "$m")"; done
 
-def cmd_path(name):
-    return os.path.expanduser('~/.claude/hooks/' + name)
-
-def upsert(event, matcher, hook_file):
-    cmd = cmd_path(hook_file)
-    if event not in hooks:
-        hooks[event] = []
-    # Already present in nested shape? Update matcher if changed.
-    for e in hooks[event]:
-        for inner in e.get('hooks', []):
-            if inner.get('command', '').endswith(hook_file):
-                if matcher and e.get('matcher') != matcher:
-                    e['matcher'] = matcher
-                elif not matcher and 'matcher' in e:
-                    del e['matcher']
-                return
-    # Pre-existing flat-shape entry? Migrate it.
-    for e in hooks[event]:
-        if e.get('command', '').endswith(hook_file) and 'hooks' not in e:
-            keep_matcher = e.get('matcher')
-            e.clear()
-            if keep_matcher: e['matcher'] = keep_matcher
-            e['hooks'] = [{'type': 'command', 'command': cmd}]
-            return
-    # New entry.
-    entry = {}
-    if matcher: entry['matcher'] = matcher
-    entry['hooks'] = [{'type': 'command', 'command': cmd}]
-    hooks[event].append(entry)
-
-# PreToolUse
-upsert('PreToolUse', 'Write|Edit|MultiEdit', 'enforce-spec.sh')
-upsert('PreToolUse', 'Write|Edit|MultiEdit', 'enforce-memory.sh')
-upsert('PreToolUse', 'Write|Edit|MultiEdit', 'dev-wiki-scope-check.sh')
-
-# PostToolUse
-upsert('PostToolUse', 'Bash', 'detect-loop.sh')
-upsert('PostToolUse', 'Bash', 'post-commit.sh')
-upsert('PostToolUse', 'Write|Edit|MultiEdit', 'stale-queue.sh')
-
-# Stop
-upsert('Stop', '', 'enforce-loop.sh')
-upsert('Stop', '', 'session-stop.sh')
-
-# PreCompact + PostCompact
-upsert('PreCompact', '', 'pre-compact.sh')
-upsert('PostCompact', '', 'post-compact.sh')
-
-# UserPromptSubmit
-upsert('UserPromptSubmit', '', 'context-size-check.sh')
-
-# Remove ghost registrations for superseded hooks
-for event in list(hooks.keys()):
-    hooks[event] = [e for e in hooks[event] if not any(
-        'dev-wiki-post-commit' in h.get('command', '') for h in e.get('hooks', [])
-    )]
-
-with open(path, 'w') as f:
-    json.dump(data, f, indent=2)
-    f.write('\n')
-"
+    python3 "$REGISTER_SCRIPT" hooks ~/.claude/settings.json "$MODULES_JSON" --scope global
   fi
 fi
 
 # === Knowledge-wiki module ===
 if [ "$INSTALL_KNOWLEDGE" = true ]; then
-  if $DRY_RUN; then
-    echo "[dry-run] --- Module: knowledge-wiki ---"
-  fi
-  for skill in $KNOWLEDGE_SKILLS; do
-    install_skill_dir "$skill"
-  done
+  $DRY_RUN && echo "[dry-run] --- Module: knowledge-wiki ---"
+  for skill in $(module_skills knowledge-wiki); do install_skill_dir "$skill"; done
 fi
 
 # --- Summary ---
@@ -522,7 +297,7 @@ if ! $DRY_RUN; then
   echo ""
   echo "Installed:"
   [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/rules/                    — identity (soul, personal, file-lifecycle)"
-  [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/skills/{spec,nana,memory-consolidate}/ — core skills"
+  [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/skills/{spec,nana,memory-consolidate,init}/ — core skills"
   [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/memory_server/            — persistent memory MCP server"
   [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/.nana-dev-kit-path        — kit location marker"
   [ "$INSTALL_PYTHON" = true ] && echo "  ~/.claude/skills/py-init/           — /py-init Python scaffolding"
@@ -532,11 +307,12 @@ if ! $DRY_RUN; then
   [ "$INSTALL_KNOWLEDGE" = true ] && echo "  ~/.claude/skills/wiki-*/            — knowledge-wiki pipeline (11 skills)"
   echo ""
   echo "Getting started (open a project, then run one of these):"
+  echo "  /init         — auto-detect language and scaffold (recommended)"
   echo "  /dev-init     — bootstrap dev-wiki lifecycle tracking"
   echo "  /py-init      — scaffold Python project with full toolchain"
   echo "  /ts-init      — scaffold TypeScript project with full toolchain"
   echo "  /wiki-init    — start a knowledge wiki for your domain"
 else
   echo ""
-  echo "[dry-run] Getting started: /dev-init (lifecycle), /py-init (Python), /ts-init (TypeScript), /wiki-init (knowledge)"
+  echo "[dry-run] Getting started: /init (auto-detect), /dev-init (lifecycle), /py-init (Python), /ts-init (TypeScript), /wiki-init (knowledge)"
 fi

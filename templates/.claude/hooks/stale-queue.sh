@@ -11,7 +11,7 @@ ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
 command -v jq >/dev/null 2>&1 || { echo "[nana:stale-queue] jq not found, hook skipped" >&2; exit 0; }
 
 INPUT=$(cat)
-FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty' 2>/dev/null || echo "")
+FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // .input.file_path // empty' 2>/dev/null || echo "")
 [ -z "$FILE_PATH" ] && exit 0
 
 # Convert to project-relative path

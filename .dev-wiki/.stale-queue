@@ -23,3 +23,6 @@ templates/.claude/hooks/scan-secrets.sh
 eval/corpus/hook-context-size-jq/scenario.json
 eval/corpus/hook-session-start-memory-healthy/scenario.json
 eval/corpus/hook-session-start-memory-broken/scenario.json
+templates/.claude/hooks/post-commit.sh
+modules.json
+scripts/register-settings.py

@@ -42,6 +42,18 @@ Skip this section if the project has no `.claude/evals/` directory.
 
 ---
 
+## New Component Integration Checklist
+
+When a task adds a new hook, skill, or install.sh change, verify before marking complete:
+
+1. **Functional test exists** — pipe real input through the component, check output. File-existence tests are not sufficient.
+2. **Registration verified** — component appears in both settings.json (hook registration) AND modules.json (module definition).
+3. **Cross-component** — run make test + make eval to catch interactions with existing components.
+
+This checklist prevents the silent-breakage anti-pattern (fail-open + structural-only tests = bugs persisting 8-33 phases).
+
+---
+
 ## Post-Implementation Self-Check *(Lite: simplified — categories 1-2 only)*
 
 Runs after the last task in the active phase is marked `[x]`, before `/dev-debrief`. Purpose: catch mechanical and cross-layer issues that per-task VERIFY cannot detect (cross-file consistency, metadata completeness, convention alignment).

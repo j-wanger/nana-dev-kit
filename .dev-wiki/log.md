@@ -1,5 +1,7 @@
 # Dev Wiki Log
 
+[2026-05-25T29:00:00] DEBRIEF -- 2 decisions (confidence upgraded), 1 journal, tasks verified, state refreshed, Phase 40 completed, ~301 tests, 50/50 eval, retro check: no systemic issues
+[2026-05-25T28:00:00] PLAN -- Phase 40 planned, 7 tasks, 2 decisions (install-sh-extraction-approach, functional-smoke-invariant-rule)
 [2026-05-25T19:02:12] PLAN -- Phase 39 planned, 6 tasks, 3 decisions (health-probe-3-layer, posttooluse-normalize-after-verification, init-router-in-core)
 [2026-05-25T25:00:00] DEBRIEF -- 2 decisions (mcp-memory-server-cwd-fix, fail-loud-over-fail-silent-memory), 1 journal, tasks verified, state refreshed, Phase 38 completed, 283 tests, 47/47 eval
 [2026-05-25T24:00:00] PLAN -- Phase 38 planned, 6 tasks, 3 decisions (install-skill-module-assignment, posttooluse-field-path-inconsistency, no-eval-scope-check-scenarios)

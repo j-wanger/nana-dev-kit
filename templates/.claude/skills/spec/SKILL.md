@@ -50,6 +50,10 @@ Before drafting, dispatch a clean-context subagent to independently generate con
 
 If Agent tool unavailable: warn `"Adversarial constraint generator unavailable — drafting with author-only constraints."` and proceed to Step 3.
 
+## Step 2.6: Functional Smoke Invariant
+
+If the spec involves a new hook, skill, or install.sh change: the Exit Criteria MUST include at least one functional test that exercises the component (pipe real input through it, check output). Structural tests (file existence, grep for pattern) are necessary but not sufficient — they miss the silent breakage pattern where a component exists but doesn't work.
+
 ## Step 3: Draft Spec
 
 Use this 9-section template. Fill every section — empty sections signal missing thinking.

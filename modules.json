@@ -1,0 +1,79 @@
+{
+  "modules": [
+    {
+      "name": "core",
+      "depends_on": [],
+      "flags": { "enable": "--all", "disable": "--core-only" },
+      "skills": ["spec", "nana", "memory-consolidate", "init"],
+      "rules": ["nana-soul.md", "file-lifecycle.md"],
+      "rules_conditional": ["nana-personal.md"],
+      "hooks": [],
+      "markers": [],
+      "mcp": {
+        "name": "memory",
+        "module": "memory_server",
+        "cwd": "~/.claude"
+      }
+    },
+    {
+      "name": "python",
+      "depends_on": ["core"],
+      "flags": { "disable": "--no-python" },
+      "skills": ["py-init", "py-lint", "py-review", "py-test"],
+      "rules": [],
+      "hooks": [],
+      "markers": []
+    },
+    {
+      "name": "typescript",
+      "depends_on": ["core"],
+      "flags": { "disable": "--no-typescript" },
+      "skills": ["ts-init"],
+      "rules": [],
+      "hooks": [],
+      "markers": []
+    },
+    {
+      "name": "dev-wiki",
+      "depends_on": ["core"],
+      "flags": {},
+      "skills": ["dev-wiki", "dev-check", "dev-debrief", "dev-init", "dev-plan", "dev-scan"],
+      "rules": [],
+      "hooks": [
+        { "event": "PreToolUse", "matcher": "Write|Edit|MultiEdit", "script": "enforce-spec.sh" },
+        { "event": "PreToolUse", "matcher": "Write|Edit|MultiEdit", "script": "enforce-memory.sh" },
+        { "event": "PreToolUse", "matcher": "Write|Edit|MultiEdit", "script": "dev-wiki-scope-check.sh" },
+        { "event": "PostToolUse", "matcher": "Bash", "script": "detect-loop.sh" },
+        { "event": "PostToolUse", "matcher": "Bash", "script": "post-commit.sh" },
+        { "event": "PostToolUse", "matcher": "Write|Edit|MultiEdit", "script": "stale-queue.sh" },
+        { "event": "Stop", "matcher": "", "script": "enforce-loop.sh" },
+        { "event": "Stop", "matcher": "", "script": "session-stop.sh" },
+        { "event": "PreCompact", "matcher": "", "script": "pre-compact.sh" },
+        { "event": "PostCompact", "matcher": "", "script": "post-compact.sh" },
+        { "event": "UserPromptSubmit", "matcher": "", "script": "context-size-check.sh" }
+      ],
+      "markers": ["~/.claude/enforce", "~/.claude/enforce-memory"],
+      "ghost_cleanup": ["dev-wiki-post-commit"]
+    },
+    {
+      "name": "knowledge-wiki",
+      "depends_on": ["core"],
+      "flags": {},
+      "skills": ["knowledge-wiki", "wiki-absorb", "wiki-add", "wiki-bootstrap", "wiki-consolidate", "wiki-health", "wiki-index", "wiki-init", "wiki-query", "wiki-reorg", "wiki-registry"],
+      "rules": [],
+      "hooks": [],
+      "markers": []
+    }
+  ],
+  "project_local": {
+    "hooks": [
+      { "event": "SessionStart", "matcher": "", "script": "session-start.sh" },
+      { "event": "PostToolUse", "matcher": "Write|Edit|MultiEdit", "script": "audit-log.sh" },
+      { "event": "PostToolUse", "matcher": "Write|Edit|MultiEdit", "script": "auto-ruff-format.sh" },
+      { "event": "PreToolUse", "matcher": "Bash", "script": "block-dangerous-bash.sh" },
+      { "event": "Stop", "matcher": "", "script": "check-tests-were-run.sh" },
+      { "event": "PostToolUse", "matcher": "Write|Edit|MultiEdit", "script": "scan-secrets.sh" }
+    ],
+    "extra_dirs": ["session-start.d"]
+  }
+}
