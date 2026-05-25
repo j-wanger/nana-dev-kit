@@ -15,8 +15,8 @@ fi
 INPUT=$(cat)
 
 # Extract command and exit code via grep/sed (pure bash, no Python)
-COMMAND=$(echo "$INPUT" | grep -o '"command" *: *"[^"]*"' | head -1 | sed 's/.*: *"//;s/"$//')
-EXIT_CODE=$(echo "$INPUT" | grep -o '"exit_code" *: *[0-9]*' | head -1 | sed 's/.*: *//')
+COMMAND=$(echo "$INPUT" | grep -o '"command" *: *"[^"]*"' | head -1 | sed 's/.*: *"//;s/"$//' || true)
+EXIT_CODE=$(echo "$INPUT" | grep -o '"exit_code" *: *[0-9]*' | head -1 | sed 's/.*: *//' || true)
 
 # Skip if we couldn't parse either field
 if [ -z "$COMMAND" ] || [ -z "$EXIT_CODE" ]; then
