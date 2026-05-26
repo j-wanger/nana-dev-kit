@@ -1,3 +1,8 @@
+---
+parent: dev-wiki
+referenced_at: "referenced (step unknown)"
+---
+
 # architecture-template.md
 
 Template for `_ARCHITECTURE.md`, the 7-section structural snapshot of the project. Consumed by `dev-scan`, `dev-debrief`, `dev-context`, and `dev-plan`.

@@ -1,3 +1,8 @@
+---
+parent: dev-plan
+referenced_at: "Step 7"
+---
+
 # Dev-Plan Artifact Writer
 
 You are writing phase planning artifacts to the dev wiki. The orchestrator has completed the interactive planning steps (user questions, approach approval, task drafting). Your job: write all artifacts atomically and return a summary.

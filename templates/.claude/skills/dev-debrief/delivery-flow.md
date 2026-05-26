@@ -1,3 +1,8 @@
+---
+parent: dev-debrief
+referenced_at: "Step 2"
+---
+
 # Delivery Flow Protocol
 
 Extracted from dev-debrief. Runs after executor returns when phase_status = READY FOR COMPLETION.

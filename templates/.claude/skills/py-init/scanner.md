@@ -1,3 +1,8 @@
+---
+parent: py-init
+referenced_at: "referenced (step unknown)"
+---
+
 # Feasibility Scanner — 10 Dimensions
 
 Run all checks. Record each as: **compatible**, **upgradeable**, or **blocking**.

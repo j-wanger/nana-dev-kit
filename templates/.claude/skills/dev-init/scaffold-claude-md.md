@@ -1,3 +1,8 @@
+---
+parent: dev-init
+referenced_at: "Step 13b"
+---
+
 # scaffold-claude-md (companion to /dev-init)
 
 trigger: read this file when the user opts in to the "Scaffold project CLAUDE.md?" prompt at dev-init Step 13b. Self-describing per the Phase 17 companion convention — invocation logic and file-output spec live here, not in `dev-init/SKILL.md`.

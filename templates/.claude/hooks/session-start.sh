@@ -9,6 +9,8 @@ HOOK_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$HOOK_DIR/session-start.d/wk-prune.sh"
 source "$HOOK_DIR/session-start.d/memory-nudge.sh"
 
+date +%s > "$HOME/.claude/.session-start-ts" 2>/dev/null || true
+
 # --- Dev-wiki lifecycle state ---
 DEVWIKI_STATE=".dev-wiki/_CURRENT_STATE.md"
 if [ -f "$DEVWIKI_STATE" ]; then

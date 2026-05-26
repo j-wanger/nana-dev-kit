@@ -1,3 +1,8 @@
+---
+parent: wiki-absorb
+referenced_at: "Step 3"
+---
+
 <!-- Convention version: 2026-04-05 -->
 # Wiki Absorb -- Reviewer
 

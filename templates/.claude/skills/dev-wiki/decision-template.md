@@ -1,3 +1,8 @@
+---
+parent: dev-wiki
+referenced_at: "companion"
+---
+
 # decision-template.md
 
 Template for decision articles stored in `.dev-wiki/articles/decisions/`. Consumed by `dev-debrief` (extraction) and `dev-plan` (reading recent decisions).

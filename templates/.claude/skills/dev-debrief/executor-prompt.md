@@ -1,3 +1,8 @@
+---
+parent: dev-debrief
+referenced_at: "Step 6"
+---
+
 # Dev-Debrief Executor
 
 You are executing the mechanical steps of a dev-debrief. The orchestrator analyzed the conversation and extracted the substance. Your job: read existing wiki state, write all artifacts, return a structured summary.
@@ -12,7 +17,7 @@ The orchestrator provides:
 - **DATE**: Today's date (YYYY-MM-DD)
 - **MODE**: `full` or `quick`
 - **CEREMONY**: `lite` or `standard`
-- **SUBSTANCE**: Structured payload with: decisions, open_questions, tasks_completed, tasks_discovered, architectural_changes, escape_hatches, health_delta, soft_observations, phase_info
+- **SUBSTANCE**: Structured payload with: decisions, open_questions, tasks_completed, tasks_discovered, architectural_changes, escape_hatches, health_delta, soft_observations, phase_info, duration_estimate
 
 Variables: `$WIKI` = `$ROOT/.dev-wiki`.
 
@@ -51,7 +56,7 @@ For each decision in substance payload: read `~/.claude/skills/dev-wiki/decision
 
 ### 3. Create Journal Entry
 
-Create ONE entry at `$WIKI/articles/journal/$DATE-<slug>.md`. Read `~/.claude/skills/dev-wiki/journal-templates.md` for rich template. If file exists with same slug, append numeric suffix. Include health_delta and soft_observations from substance.
+Create ONE entry at `$WIKI/articles/journal/$DATE-<slug>.md`. Read `~/.claude/skills/dev-wiki/journal-templates.md` for rich template. If file exists with same slug, append numeric suffix. Include health_delta and soft_observations from substance. Add `duration: <estimate>` to frontmatter (post-compaction estimate — may undercount for long sessions). If duration_estimate not provided, use "unknown".
 
 **Activation quality (Step 6a):** If `$ROOT/.claude/rules/active-knowledge.md` exists, count entries, check slug references against substance, compute hit rate, append under `### Activation Quality`.
 

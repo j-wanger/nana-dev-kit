@@ -1,3 +1,8 @@
+---
+parent: knowledge-wiki
+referenced_at: "companion"
+---
+
 <!-- Canonical article conventions — 2026-04-08 -->
 <!-- REFERENCE, DO NOT PASTE. Writer prompts in wiki-absorb, wiki-bootstrap, wiki-reorg should link here rather than copy content inline. -->
 <!-- Also referenced by wiki-health for its convention-check sections. -->

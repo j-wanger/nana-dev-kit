@@ -1,3 +1,8 @@
+---
+parent: dev-plan
+referenced_at: "companion"
+---
+
 # Post-Implementation Self-Check Checklist
 
 Deterministic checks run after all phase tasks are marked [x], before /dev-review. For S/M Lite phases, self-check IS the review gate (dev-review passes through). Each check is a concrete command or procedure — no subjective judgement.

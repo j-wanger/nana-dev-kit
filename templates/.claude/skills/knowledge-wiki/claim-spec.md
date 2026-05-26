@@ -1,3 +1,8 @@
+---
+parent: knowledge-wiki
+referenced_at: "companion"
+---
+
 # Claim System Specification (Deprecated)
 
 The claim provenance system was removed in Phase 42. Claims were an intermediate representation compensating for Qwen limitations in the multi-stage pipeline. Claude handles synthesis with inline citations directly.

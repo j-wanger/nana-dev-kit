@@ -1,3 +1,8 @@
+---
+parent: wiki-bootstrap
+referenced_at: "Step 2"
+---
+
 <!-- Convention version: 2026-04-20 -->
 # Wiki Bootstrap -- Writer
 

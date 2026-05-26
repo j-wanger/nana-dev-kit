@@ -1,3 +1,8 @@
+---
+parent: dev-wiki
+referenced_at: "companion"
+---
+
 # journal-templates.md
 
 All three journal entry templates (Rich, Mechanical, Quick) plus common frontmatter. Consumed by `dev-debrief` and `dev-context`.

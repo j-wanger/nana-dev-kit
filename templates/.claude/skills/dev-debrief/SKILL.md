@@ -60,7 +60,8 @@ Agent({
 2. If `phase_status` includes READY FOR COMPLETION: read `~/.claude/skills/dev-debrief/delivery-flow.md` and follow the delivery report + auto-commit protocol (Steps D1-D3). This is the **delivery gate** — the second boundary checkpoint.
 3. If `soft_observations > 0`, run capture check (Step 6b)
 4. If `retro: triggered`, surface retro findings
-5. Present a conversational summary — outcomes, not transcript
+5. **Phase cooldown check:** Read `$HOME/.claude/.session-start-ts` (fallback: 4 hours ago). Count git commits since that timestamp containing "Phase" in the message (`git log --since=@<ts> --oneline | grep -ci 'Phase'`). If ≥2 phases completed in this session, emit advisory: `"⚠ [nana:cooldown] N phases completed this session. For best results, start a new Claude Code session for Phase N+1."` Advisory only — never blocks.
+6. Present a conversational summary — outcomes, not transcript
 
 ---
 
@@ -165,7 +166,7 @@ Analyze the **full conversation in your context window** to extract:
 6. **Architectural changes** -- new modules, changed dependencies, structural reorganization
 7. **Escape hatches used** -- valid types: **SECURITY** (fix vulnerability), **DEPENDENCY** (prerequisite first), **USER OVERRIDE** (follow user, note deviation), **DISCOVERY** (add precondition). Note type and justification for each deviation.
 8. **Health delta** -- if `## Development Toolchain` exists in `_ARCHITECTURE.md`, compare session-end state against baseline: test count changes (new tests added/removed), type errors introduced/resolved, lint violations, tools added/removed. Include delta in journal entry under `## Health Delta` if any changes occurred.
-9. **Soft observations / Phase N+1 candidates** -- if the session produced a validation-status article OR surfaced uncovered patterns, populate the optional `## Soft Observations / Phase N+1 Candidates` section in the journal entry per `~/.claude/skills/dev-wiki/journal-templates.md`. Source: bullet list of (observation, suggested next-phase framing, evidence link). Downstream phases use this section as their refinement-phase candidate source as refinement-phase candidates.
+9. **Soft observations / Phase N+1 candidates (required)** -- populate the `## Soft Observations / Phase N+1 Candidates` section in every journal entry. Source: bullet list of (observation, suggested next-phase framing, evidence link). If no observations surfaced, write "None identified." The section header must always appear — this is the project's immune system for catching future issues early.
 
 ### Step 4.5: Review Gate (Conditional)
 

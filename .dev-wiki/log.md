@@ -1,5 +1,7 @@
 # Dev Wiki Log
 
+[2026-05-25T03:00:00] DEBRIEF -- 3 decisions (confidence upgraded medium->high), 1 journal, tasks verified, state refreshed, Phase 41 completed, ~303 tests, 50/50 eval
+[2026-05-25T02:00:24] PLAN -- Phase 41 planned, 7 tasks, 3 decisions (companion-metadata-format, cooldown-advisory-placement, jq-guard-fail-stop)
 [2026-05-25T29:00:00] DEBRIEF -- 2 decisions (confidence upgraded), 1 journal, tasks verified, state refreshed, Phase 40 completed, ~301 tests, 50/50 eval, retro check: no systemic issues
 [2026-05-25T28:00:00] PLAN -- Phase 40 planned, 7 tasks, 2 decisions (install-sh-extraction-approach, functional-smoke-invariant-rule)
 [2026-05-25T19:02:12] PLAN -- Phase 39 planned, 6 tasks, 3 decisions (health-probe-3-layer, posttooluse-normalize-after-verification, init-router-in-core)

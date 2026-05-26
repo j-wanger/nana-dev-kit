@@ -1,3 +1,8 @@
+---
+parent: dev-plan
+referenced_at: "Step 0.6"
+---
+
 # Spec Auto-Invocation Protocol
 
 When dev-plan Step 0.6 finds no spec for the target phase (standard ceremony), follow this protocol instead of stopping.

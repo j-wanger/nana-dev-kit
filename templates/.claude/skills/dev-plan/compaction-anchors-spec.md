@@ -1,3 +1,8 @@
+---
+parent: dev-plan
+referenced_at: "Step 10"
+---
+
 # Compaction Anchors and Error Handling
 
 Companion to `dev-plan/SKILL.md`. Behavioral reference for compaction anchor design and error handling. Steps 8f-8g in SKILL.md contain the orchestration logic; this companion provides the specification and rationale.

@@ -1,3 +1,8 @@
+---
+parent: wiki-health
+referenced_at: "Step 2"
+---
+
 # Dashboard Metrics Specification
 
 Companion to wiki-health SKILL.md. Defines the 12 computed metrics and the dashboard output format.

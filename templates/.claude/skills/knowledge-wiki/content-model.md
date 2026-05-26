@@ -1,3 +1,8 @@
+---
+parent: knowledge-wiki
+referenced_at: "companion"
+---
+
 <!-- Canonical content model — SSOT for tiers, lifecycle, and episodic conventions -->
 <!-- REFERENCE, DO NOT PASTE. Skills that handle content model logic should link here rather than duplicate definitions. -->
 

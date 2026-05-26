@@ -1,3 +1,8 @@
+---
+parent: dev-scan
+referenced_at: "Step 1-4"
+---
+
 # Python Scan Profile
 
 Self-describing language profile for dev-scan. Read by the main agent after Step 1 detects Python as primary language. NOT a subagent prompt.

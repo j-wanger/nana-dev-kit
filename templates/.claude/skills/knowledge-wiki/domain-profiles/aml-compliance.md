@@ -1,3 +1,8 @@
+---
+parent: knowledge-wiki
+referenced_at: "companion"
+---
+
 # Domain Profile: AML Compliance
 
 Anti-money laundering, sanctions, fraud, and financial crime compliance. Content changes frequently due to regulatory updates, sanctions list revisions, and evolving typologies.

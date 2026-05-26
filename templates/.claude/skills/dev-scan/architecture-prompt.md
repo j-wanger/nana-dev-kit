@@ -1,3 +1,8 @@
+---
+parent: dev-scan
+referenced_at: "Step 6"
+---
+
 # Architecture Synthesis Prompt
 
 Subagent prompt template for rewriting `_ARCHITECTURE.md` from scan findings. Read by dev-scan SKILL.md Step 6, Subagent A.

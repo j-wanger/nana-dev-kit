@@ -1,3 +1,8 @@
+---
+parent: dev-debrief
+referenced_at: "Step 4.5"
+---
+
 # Review Gate (Step 4.5)
 
 Size-gated review, run conditionally during debrief. Replaces the former standalone `/dev-review` skill.

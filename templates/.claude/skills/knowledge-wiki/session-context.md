@@ -1,3 +1,8 @@
+---
+parent: knowledge-wiki
+referenced_at: "companion"
+---
+
 [project-wiki] Wiki framework active.
 
 REGISTERED WIKIS: Read ~/.claude/wikis.json at session start to discover available wikis. If the file does not exist, no wikis are registered yet — an unregistered `./wiki/schema.md` in CWD will be auto-registered on first write command.

@@ -1,3 +1,8 @@
+---
+parent: dev-plan
+referenced_at: "Step 7.5"
+---
+
 # Plan Review Protocol
 
 Extracted from dev-plan Steps 7.5/7.6. Contains plan quality review mechanics — task drafting, reviewer dispatch, and verdict handling.

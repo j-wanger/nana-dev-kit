@@ -1,3 +1,8 @@
+---
+parent: wiki-add
+referenced_at: "Step 2-4"
+---
+
 <!-- Convention version: 2026-04-26 -->
 # Wiki Add -- Writer
 

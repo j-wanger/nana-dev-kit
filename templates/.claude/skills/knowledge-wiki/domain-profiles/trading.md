@@ -1,3 +1,8 @@
+---
+parent: knowledge-wiki
+referenced_at: "companion"
+---
+
 # Domain Profile: Trading
 
 Financial markets, trading systems, market microstructure, and quantitative strategies. Market data and exchange rules change frequently; statistical methods and theory are more stable.

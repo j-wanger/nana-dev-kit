@@ -1,3 +1,8 @@
+---
+parent: dev-plan
+referenced_at: "Step 3"
+---
+
 # Scope Exploration Protocol
 
 Explore the phase scope to understand files, dependencies, and blast radius. Called from dev-plan Step 3.

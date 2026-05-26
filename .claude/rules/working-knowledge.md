@@ -1,6 +1,14 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
+- [uses: 1] install.sh uses fail-STOP (exit 1) for missing jq, unlike hooks which use fail-open (exit 0). Different pattern for different contexts: install runs once explicitly, hooks run continuously. Multi-platform hint (brew/apt) on failure.
+  source: [[decision:jq-guard-fail-stop]] | activated: 2026-05-25
+- [uses: 1] Companion metadata: every companion .md file has YAML frontmatter with parent (owning skill dir name) + referenced_at (step in parent SKILL.md). 92 files covered. test_companions.sh validates bidirectionally: Direction A (parent matches dir) + Direction B (SKILL.md Read paths resolve). Future companions must include frontmatter.
+  source: [[decision:companion-metadata-format]] | activated: 2026-05-25
+- [uses: 1] Cooldown advisory in debrief: fires when >=2 Phase commits since .session-start-ts (written by session-start.sh). Falls back to "last 4 hours" if timestamp missing. Advisory only (never blocks). Placed in debrief SKILL.md after executor returns, outside delivery-flow.md.
+  source: [[decision:cooldown-advisory-placement]] | activated: 2026-05-25
+- [uses: 1] Session timestamp: session-start.sh writes `date +%s` to $HOME/.claude/.session-start-ts in init block. Consumed by cooldown advisory in debrief SKILL.md.
+  source: [[active-knowledge:phase-41]] | activated: 2026-05-25
 - [uses: 1] modules.json is single source of truth for 5 module groups (core, python, typescript, dev-wiki, knowledge-wiki). Defines skill lists, hook registrations, MCP config. Consumed by install.sh (jq), register-settings.py (Python), tests (filesystem consistency), MANIFEST, README.
   source: [[decision:install-sh-extraction-approach]] | activated: 2026-05-25
 - [uses: 1] Functional smoke invariant: every component registered in settings.json or install.sh must have at least one functional test (pipe input, check output). Codified in spec SKILL.md Step 2.6 + dev-plan implementation-guide.md integration checklist. Evidence: 4 silent breakages lasting 8-33 phases.

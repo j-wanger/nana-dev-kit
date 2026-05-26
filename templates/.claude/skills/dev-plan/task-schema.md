@@ -1,3 +1,8 @@
+---
+parent: dev-plan
+referenced_at: "Step 8b"
+---
+
 # task-schema.md
 
 Task schema for `tasks.md` entries — format template, field definitions, task states, size guidelines, task ordering, and plan review dimensions. Consumed by `dev-plan` (task generation) and `dev-check` (validation).

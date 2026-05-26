@@ -1,3 +1,8 @@
+---
+parent: dev-wiki
+referenced_at: "companion"
+---
+
 # phase-template.md
 
 Template for phase articles stored in `.dev-wiki/articles/phases/`. Consumed by `dev-plan` (create) and `dev-debrief` (status updates).

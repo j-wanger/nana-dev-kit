@@ -1,3 +1,8 @@
+---
+parent: dev-debrief
+referenced_at: "Step 9a"
+---
+
 # dev-debrief — Architecture Staleness Detection
 
 Companion to `SKILL.md` Step 9a. Check whether `_ARCHITECTURE.md` may have drifted during this session. This catches a known blind spot: skill files at `~/.claude/skills/` and the companion files under `~/.claude/skills/dev-wiki/` are outside the project root, so the stale-queue hook cannot track them. See [[architecture-drift-root-cause]].

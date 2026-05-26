@@ -1,3 +1,8 @@
+---
+parent: dev-plan
+referenced_at: "Step 8a-bis"
+---
+
 # Memory Bridge (Step 8a-bis)
 
 Auto-store key phase decisions to memory after decision articles are finalized (Step 8a). Runs inline in the orchestrator — Agent subagents cannot access MCP tools.

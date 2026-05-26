@@ -1,3 +1,8 @@
+---
+parent: knowledge-wiki
+referenced_at: "companion"
+---
+
 # Domain Profile: General
 
 General-purpose knowledge base with no domain-specific staleness assumptions. Suitable for project documentation, team knowledge, or mixed-domain wikis.

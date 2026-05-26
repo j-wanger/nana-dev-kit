@@ -1,3 +1,8 @@
+---
+parent: dev-debrief
+referenced_at: "Step 11"
+---
+
 # Debrief Finalization — Steps 11, 13, 14, and 15
 
 Companion file for dev-debrief SKILL.md. Contains mechanical finalization steps that run during full debrief. Read at two points: Step 11 (before Step 12), and Steps 13-15 (after Step 12b). Step 12 (active-phase.md rewrite) is handled inline in SKILL.md.

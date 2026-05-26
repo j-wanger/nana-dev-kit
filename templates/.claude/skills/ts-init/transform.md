@@ -1,3 +1,8 @@
+---
+parent: ts-init
+referenced_at: "referenced (step unknown)"
+---
+
 # Existing Project Transform (TypeScript)
 
 Apply changes based on scanner results. Follow this order — later steps depend on earlier ones.

@@ -1,3 +1,8 @@
+---
+parent: dev-wiki
+referenced_at: "referenced (step unknown)"
+---
+
 # working-knowledge-spec.md
 
 Specification for `.claude/rules/working-knowledge.md` — usage-tracked cross-phase knowledge.

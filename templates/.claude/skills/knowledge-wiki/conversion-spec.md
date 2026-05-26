@@ -1,3 +1,8 @@
+---
+parent: knowledge-wiki
+referenced_at: "companion"
+---
+
 <!-- Canonical document conversion specification — SSOT for engine tiers, formats, and integration -->
 <!-- REFERENCE, DO NOT PASTE -->
 

@@ -1,3 +1,8 @@
+---
+parent: dev-wiki
+referenced_at: "referenced (step unknown)"
+---
+
 # active-knowledge-spec.md
 
 Specification for `.claude/rules/active-knowledge.md` — phase-scoped knowledge activation file that survives compaction. Consumed by `dev-plan` (create), `dev-context` (load + validate), `dev-debrief` (carry-forward on phase change), `dev-check` (S10, C9, C11).

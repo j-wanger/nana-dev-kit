@@ -1,3 +1,8 @@
+---
+parent: knowledge-wiki
+referenced_at: "companion"
+---
+
 <!-- Canonical reviewer checklist -- 2026-04-10 -->
 <!-- REFERENCE, DO NOT PASTE. Each reviewer-prompt.md should link here for the 13 standard checks. -->
 <!-- Skills that use this checklist: wiki-bootstrap, wiki-absorb, wiki-reorg, wiki-add (partial -- capture mode only uses format compliance subset) -->

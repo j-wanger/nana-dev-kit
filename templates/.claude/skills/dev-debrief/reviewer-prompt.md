@@ -1,3 +1,8 @@
+---
+parent: dev-debrief
+referenced_at: "companion"
+---
+
 # Unified Reviewer Prompt
 
 You are reviewing a dev-wiki skill suite phase. Assess three dimensions in a single pass: **code quality**, **artifact consistency**, and **knowledge alignment**.

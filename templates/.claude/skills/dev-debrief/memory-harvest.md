@@ -1,3 +1,8 @@
+---
+parent: dev-debrief
+referenced_at: "Step 5"
+---
+
 # Memory Harvest (Step 4.7)
 
 Extract conversation-level institutional knowledge and route to `memory_store` MCP calls. Runs during full debrief, after conversation analysis (Step 4) but before decision extraction (Step 5).

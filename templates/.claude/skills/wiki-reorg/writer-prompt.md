@@ -1,3 +1,8 @@
+---
+parent: wiki-reorg
+referenced_at: "Step 2-7"
+---
+
 <!-- Convention version: 2026-04-05 -->
 # Wiki Reorg -- Writer
 

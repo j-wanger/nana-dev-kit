@@ -16,6 +16,7 @@ test:
 	@bash "$(NANA_KIT_DIR)tests/test_enforce.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_harden.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_memory.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_companions.sh"
 	@echo ""
 	@echo "All tests passed."
 

@@ -1,3 +1,8 @@
+---
+parent: dev-init
+referenced_at: "Step 6"
+---
+
 # Init Scaffolding — Templates
 
 Companion file for dev-init SKILL.md. Contains stable template content for schema.md and active-phase.md. Read by SKILL.md at Steps 6 and 7.

@@ -1,3 +1,8 @@
+---
+parent: dev-scan
+referenced_at: "Step 20"
+---
+
 # File Article Synthesis Prompt
 
 Subagent prompt template for creating per-file code articles. This file is the canonical template source. Read by dev-scan SKILL.md Step 6, Subagent C. Dispatched in batches of ~20 files per subagent.

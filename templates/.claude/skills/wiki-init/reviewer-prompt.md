@@ -1,3 +1,8 @@
+---
+parent: wiki-init
+referenced_at: "Step 2-6"
+---
+
 <!-- Convention version: 2026-04-05 -->
 # Wiki Init — Reviewer
 

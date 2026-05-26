@@ -1,3 +1,8 @@
+---
+parent: knowledge-wiki
+referenced_at: "referenced (step unknown)"
+---
+
 <!-- Canonical pipeline specification — SSOT for wiki resolution, subagent conventions, and A→W→R orchestration -->
 <!-- REFERENCE, DO NOT PASTE. Each wiki skill's SKILL.md should link here rather than copy content inline. -->
 <!-- To use Step 0 in a skill: write a short Step 0 section that reads "Read and follow the Step 0 section of ~/.claude/skills/knowledge-wiki/pipeline-spec.md. This skill is a [write|read-only] operation — in sub-step 0.6 [update the last_used field | SKIP the touch step]." Then link to this file. -->

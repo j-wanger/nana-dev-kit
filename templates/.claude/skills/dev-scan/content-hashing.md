@@ -1,3 +1,8 @@
+---
+parent: dev-scan
+referenced_at: "Scan Flow (Main Agent — Steps 1-4)"
+---
+
 # content-hashing.md
 
 Content hashing specification for staleness detection in code articles — file hash algorithm, module composite hash, staleness check, edge cases, and exclusion patterns. Consumed by `dev-scan` (article creation/refresh) and `dev-context` (incremental staleness check).

@@ -1,3 +1,8 @@
+---
+parent: knowledge-wiki
+referenced_at: "companion"
+---
+
 # Search Specification
 
 Hybrid BM25 + vector search for wiki articles. SSOT for the search system — referenced by wiki-query SKILL.md and wiki-index SKILL.md.

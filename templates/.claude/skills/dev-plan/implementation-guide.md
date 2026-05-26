@@ -1,3 +1,8 @@
+---
+parent: dev-plan
+referenced_at: "Step 10"
+---
+
 # Implementation Guide
 
 Extracted from dev-plan Step 10. Read when beginning implementation.

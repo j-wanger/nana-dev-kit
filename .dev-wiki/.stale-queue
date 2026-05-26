@@ -26,3 +26,4 @@ eval/corpus/hook-session-start-memory-broken/scenario.json
 templates/.claude/hooks/post-commit.sh
 modules.json
 scripts/register-settings.py
+tests/test_companions.sh

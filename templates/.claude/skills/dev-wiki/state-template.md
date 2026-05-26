@@ -1,3 +1,8 @@
+---
+parent: dev-wiki
+referenced_at: "companion"
+---
+
 # state-template.md
 
 Template for `_CURRENT_STATE.md`, the 7-section living project state document. Consumed by `dev-debrief`, `dev-plan`, and `AGENTS.md`.

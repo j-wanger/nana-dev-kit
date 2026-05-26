@@ -1,3 +1,8 @@
+---
+parent: dev-init
+referenced_at: "companion"
+---
+
 # {{PROJECT_NAME}}
 
 {{PROJECT_DESCRIPTION}}

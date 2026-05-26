@@ -1,16 +1,18 @@
 # Active Phase Context
 
-Phase: 40 - install.sh Extraction & Anti-Pattern Hardening
+Phase: 41 - Harness Hardening & Process Safeguards
 Status: COMPLETED (7/7 tasks done, all exit criteria verified)
-Objective: Decompose install.sh into modules.json + register-settings.py. Fix PostToolUse normalization gap. Codify functional smoke invariant. Clean up stale phase articles.
+Objective: Resolve remaining anti-patterns (#3 momentum risk, #5 companion proliferation) with jq install guard, session timestamp, companion metadata, bidirectional validation test, debrief enhancements, cooldown advisory.
 
 Results:
-- install.sh: 542 to 318 lines (41% reduction), zero inline Python
-- modules.json: 5 module groups, single source of truth
-- register-settings.py: ~120 lines, hooks + mcp subcommands
-- PostToolUse normalization: stale-queue.sh + post-commit.sh fixed
-- Functional smoke invariant: codified in spec + dev-plan
+- jq fail-STOP guard in install.sh (multi-platform hint, exit 1)
+- Session timestamp in session-start.sh (.session-start-ts)
+- 92 companion files with YAML frontmatter (parent + referenced_at)
+- test_companions.sh: Direction A 92/92, Direction B 85/85
+- Debrief soft observations required + duration estimation
+- Cooldown advisory fires on >=2 Phase commits since session start
+- ~303 tests passing, 50/50 eval (100%)
 
-Next: Run /dev-plan to start Phase 41.
+Next: Run /dev-plan to start Phase 42.
 
 Gates: [x] direction=approved [ ] delivery=pending

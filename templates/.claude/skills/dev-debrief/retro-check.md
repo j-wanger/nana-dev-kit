@@ -1,3 +1,8 @@
+---
+parent: dev-debrief
+referenced_at: "Step 0"
+---
+
 # Retro Check (Step 12c)
 
 Lightweight retrospective analysis, run conditionally during debrief. Replaces the former standalone `/dev-retro` skill. Analyzes only the 3 highest-signal dimensions (retired dims 4-9 per v2 redesign item 7).

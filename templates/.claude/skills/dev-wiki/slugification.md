@@ -1,3 +1,8 @@
+---
+parent: dev-wiki
+referenced_at: "referenced (step unknown)"
+---
+
 # Slugification Algorithm
 
 Shared reference for all dev-wiki skills that generate filenames.

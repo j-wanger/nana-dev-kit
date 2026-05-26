@@ -1,3 +1,8 @@
+---
+parent: knowledge-wiki
+referenced_at: "companion"
+---
+
 # Domain Profile: Machine Learning
 
 Machine learning engineering, model development, MLOps, and AI systems. Frameworks and tooling evolve rapidly; foundational theory is stable.

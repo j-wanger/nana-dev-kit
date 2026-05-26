@@ -1,3 +1,8 @@
+---
+parent: dev-plan
+referenced_at: "Step 2.5"
+---
+
 # Iterative Retrieval Specification
 
 Companion to dev-plan Step 2.5. Defines the multi-round knowledge retrieval loop.

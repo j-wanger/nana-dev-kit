@@ -1,3 +1,8 @@
+---
+parent: dev-scan
+referenced_at: "Step 2"
+---
+
 # Refresh Flow (Incremental, Hash-Based)
 
 When existing code articles are found and `--full` is NOT set:

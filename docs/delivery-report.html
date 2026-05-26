@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 40</title>
+<title>Delivery Report: Phase 41</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,79 +21,109 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 40 &mdash; install.sh Extraction &amp; Anti-Pattern Hardening</h1>
+<h1>Delivery Report: Phase 41 &mdash; Harness Hardening &amp; Process Safeguards</h1>
 
 <div class="summary">
   <div class="card"><div class="num">7/7</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">20</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">106</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (0 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">50/50</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+353</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-529</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+552</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-43</div><div class="label">Lines Removed</div></div>
   <div class="card"><div class="num">10</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">17:23</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num">22:19</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>[S] PostToolUse normalization completion — add `.tool_input.X // .input.X // empty` fallback to stale-queue.sh (file_...</td></tr>
-<tr><td>&#x2705;</td><td>[S] Phase article housekeeping — delete not-started Phase 12 duplicate (phase-12-soul-enhancement-and-memory-keeper.m...</td></tr>
-<tr><td>&#x2705;</td><td>[M] modules.json manifest — create declarative JSON manifest at repo root defining all 5 module groups. Each module: ...</td></tr>
-<tr><td>&#x2705;</td><td>[M] scripts/register-settings.py — extract the duplicated inline Python into a standalone script. Subcommands: `hooks...</td></tr>
-<tr><td>&#x2705;</td><td>[M] install.sh refactor — replace all inline Python with calls to scripts/register-settings.py, replace hardcoded ski...</td></tr>
-<tr><td>&#x2705;</td><td>[S] Functional smoke invariant + integration checklist — add to spec SKILL.md: "When a spec includes a new hook, skil...</td></tr>
-<tr><td>&#x2705;</td><td>[M] Tests + MANIFEST + final verify — add register-settings.py tests (upsert idempotency, flat-to-nested migration, g...</td></tr>
+<tr><td>&#x2705;</td><td>[S] jq guard in install.sh: `grep -q 'command -v jq' install.sh` fails (RED), add fail-stop guard with multi-platform...</td></tr>
+<tr><td>&#x2705;</td><td>[S] Session timestamp in session-start.sh: `grep -q 'session-start-ts' templates/.claude/hooks/session-start.sh` fail...</td></tr>
+<tr><td>&#x2705;</td><td>[M] Companion metadata batch addition: `find templates/.claude/skills -name '*.md' ! -name 'SKILL.md' ! -name 'MANIFEST'</td></tr>
+<tr><td>&#x2705;</td><td>[M] test_companions.sh bidirectional validation: `bash tests/test_companions.sh` fails (RED), implement Direction A (...</td></tr>
+<tr><td>&#x2705;</td><td>[M] Debrief soft observations + duration: `grep -qi 'required.*soft.observation\</td></tr>
+<tr><td>&#x2705;</td><td>[M] Cooldown advisory in debrief: `grep -qi 'cooldown\</td></tr>
+<tr><td>&#x2705;</td><td>[S] Makefile + full verification: `grep -q 'test_companions' Makefile` fails (RED), add test_companions.sh to test ta...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Functional smoke invariant: every registered component needs a functional test</td><td>high</td></tr>
-<tr><td>install.sh extraction: modules.json + register-settings.py</td><td>medium</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>jq guard in install.sh: fail-STOP pattern</td><td>high</td></tr>
+<tr><td>Cooldown advisory placement: debrief SKILL.md after executor returns</td><td>high</td></tr>
+<tr><td>Companion metadata format: parent + referenced_at YAML frontmatter</td><td>high</td></tr>
+<tr><td>Functional smoke invariant: every registered component needs a functional test</td><td>high</td></tr>
+<tr><td>install.sh extraction: modules.json + register-settings.py</td><td>high</td></tr>
 <tr><td>/init router belongs in CORE_SKILLS</td><td>high</td></tr>
 <tr><td>PostToolUse normalization: verify then normalize</td><td>high</td></tr>
 <tr><td>Health probe uses 3 layers: jq config, import check, sqlite3 count</td><td>high</td></tr>
 <tr><td>Fail-loud over fail-silent for memory MCP failures</td><td>high</td></tr>
 <tr><td>MCP memory server CWD fix: install.sh set wrong working directory</td><td>high</td></tr>
-<tr><td>No eval scenario updates needed for scope-check fix</td><td>high</td></tr>
-<tr><td>PostToolUse field path inconsistency: document only, don't fix</td><td>medium</td></tr>
-<tr><td>Skills module assignment: nana/memory-consolidate to core, py-lint/py-review/py-test to python</td><td>high</td></tr>
 </table>
 
 <h2>Files Changed</h2>
 <ul>
-<li><code>.claude/rules/active-knowledge.md</code></li>
 <li><code>.claude/rules/active-phase.md</code></li>
+<li><code>.claude/rules/working-knowledge.md</code></li>
 <li><code>.dev-wiki/.stale-queue</code></li>
+<li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
-<li><code>.dev-wiki/articles/phases/phase-12-soul-enhancement-and-memory-keeper.md</code></li>
-<li><code>.dev-wiki/articles/phases/phase-22-session-start-refactor-v040.md</code></li>
-<li><code>.dev-wiki/articles/phases/phase-22-session-start-refactor.md</code></li>
-<li><code>.dev-wiki/articles/phases/phase-24-dx-hook-performance.md</code></li>
 <li><code>.dev-wiki/enforcement.log</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
+<li><code>Makefile</code></li>
 <li><code>README.md</code></li>
 <li><code>install.sh</code></li>
-<li><code>templates/.claude/hooks/post-commit.sh</code></li>
-<li><code>templates/.claude/hooks/stale-queue.sh</code></li>
-<li><code>templates/.claude/skills/MANIFEST</code></li>
+<li><code>templates/.claude/hooks/session-start.sh</code></li>
+<li><code>templates/.claude/skills/dev-debrief/SKILL.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/active-knowledge-transition.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/architecture-staleness-check.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/claude-md-refresh.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/debrief-finalization.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/delivery-flow.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/executor-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/memory-harvest.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/quick-debrief-flow.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/retro-check.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/review-gate.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/reviewer-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-init/init-scaffolding.md</code></li>
+<li><code>templates/.claude/skills/dev-init/scaffold-claude-md.md</code></li>
+<li><code>templates/.claude/skills/dev-init/templates/AGENTS.md</code></li>
+<li><code>templates/.claude/skills/dev-init/templates/project-CLAUDE.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/approach-reviewer-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/artifact-writer-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/compaction-anchors-spec.md</code></li>
 <li><code>templates/.claude/skills/dev-plan/implementation-guide.md</code></li>
-<li><code>templates/.claude/skills/spec/SKILL.md</code></li>
-<li><code>tests/test_install.sh</code></li>
+<li><code>templates/.claude/skills/dev-plan/iterative-retrieval-spec.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/memory-bridge.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/plan-review-companion.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/plan-reviewer-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/research-pause-spec.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/scope-exploration-spec.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/self-check-checklist.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/spec-auto-invoke.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/state-loader-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/task-schema.md</code></li>
+<li><code>templates/.claude/skills/dev-scan/architecture-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-scan/content-hashing.md</code></li>
+<li><code>templates/.claude/skills/dev-scan/file-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-scan/module-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-scan/python-memory-checks.md</code></li>
+<li><code>templates/.claude/skills/dev-scan/python-scan-profile.md</code></li>
+<li><code>templates/.claude/skills/dev-scan/refresh-flow.md</code></li>
 
-
+<li><em>... and 56 more</em></li>
 </ul>
 
 <h2>Test Results</h2>
 <p><span class="status" style="background:#2d7d2d">PASS</span> 0 passed, 0 failed</p>
-<pre>  exact_duplicate: reinforces regardless of mode     OK
+<pre>
 
-memory: 11 run, 11 passed, 0 failed
+companion-validation: 2 run, 2 passed, 0 failed
 
 All tests passed.</pre>
 
@@ -102,7 +132,7 @@ All tests passed.</pre>
 <pre>Score: 50/50 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-05-25 17:23:05 by generate-delivery-report.py
+  Generated 2026-05-25 22:19:45 by generate-delivery-report.py
 </div>
 </body>
 </html>

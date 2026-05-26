@@ -1,3 +1,8 @@
+---
+parent: dev-debrief
+referenced_at: "Step 12b"
+---
+
 # dev-debrief — Active Knowledge Transition Logic
 
 Companion to `SKILL.md` Step 12b. Handle `.claude/rules/active-knowledge.md` based on phase state. Read `~/.claude/skills/dev-wiki/active-knowledge-spec.md` for the specification.

@@ -1,3 +1,8 @@
+---
+parent: dev-scan
+referenced_at: "Step 6"
+---
+
 # Module Article Synthesis Prompt
 
 Subagent prompt template for creating per-directory module articles. This file is the canonical template source. Read by dev-scan SKILL.md Step 6, Subagent B.

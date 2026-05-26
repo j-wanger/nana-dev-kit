@@ -1,3 +1,8 @@
+---
+parent: dev-wiki
+referenced_at: "companion"
+---
+
 # Stale Queue Specification
 
 Lightweight change-tracking mechanism. PostToolUse hooks mark changed files; `/dev-context` processes the queue at session start.

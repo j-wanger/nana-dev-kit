@@ -1,3 +1,8 @@
+---
+parent: py-init
+referenced_at: "referenced (step unknown)"
+---
+
 # Existing Project Transform
 
 Apply changes using `source_dir` and `package_name` from scan. Follow this order — later steps depend on earlier ones.

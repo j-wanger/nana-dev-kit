@@ -1,3 +1,8 @@
+---
+parent: dev-plan
+referenced_at: "Step 0"
+---
+
 # Research Pause Specification
 
 Companion to `dev-plan/SKILL.md`. Defines the save/resume protocol for when planning discovers the user needs research before committing to a phase direction.

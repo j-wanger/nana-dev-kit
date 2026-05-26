@@ -1,3 +1,8 @@
+---
+parent: dev-init
+referenced_at: "companion"
+---
+
 # Dev-Wiki Agent Lifecycle
 
 Portable protocol for projects with `.dev-wiki/`. Follow at session start automatically — no explicit command needed.

@@ -1,3 +1,8 @@
+---
+parent: dev-scan
+referenced_at: "Step 1-4"
+---
+
 # Python Memory Checks
 
 Self-describing memory optimization profile for dev-scan. Read by the main agent when Python is primary language AND database/analytics dependencies detected. NOT a subagent prompt.

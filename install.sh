@@ -62,6 +62,8 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
+command -v jq >/dev/null 2>&1 || { echo "Error: jq is required. Install with: brew install jq (macOS) or apt install jq (Linux)." >&2; exit 1; }
+
 # --- Project-local install (short-circuit, no global writes) ---
 if $PROJECT_LOCAL; then
   HOOKS_SRC="$SCRIPT_DIR/templates/.claude/hooks"

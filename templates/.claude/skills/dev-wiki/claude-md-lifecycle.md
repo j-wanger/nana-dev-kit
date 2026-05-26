@@ -1,3 +1,8 @@
+---
+parent: dev-wiki
+referenced_at: "referenced (step unknown)"
+---
+
 # claude-md-lifecycle.md
 
 Lifecycle specification for the project-level `./CLAUDE.md` — ownership, refresh triggers, update scope, size guard, and lifecycle stages. Consumed by `dev-debrief` (refresh check) and `dev-init` (scaffold).

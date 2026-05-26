@@ -1,3 +1,8 @@
+---
+parent: dev-debrief
+referenced_at: "Step 1"
+---
+
 # Quick Debrief Flow (Score < 5)
 
 Companion to dev-debrief SKILL.md. Contains the full quick-debrief procedure (QD Steps 1-6). Loaded when significance score < 5.

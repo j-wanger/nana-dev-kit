@@ -1,3 +1,8 @@
+---
+parent: wiki-health
+referenced_at: "Step 15"
+---
+
 # Empirical-Anchor Density (Advisory)
 
 <!-- ADVISORY ONLY - never HARD-block; exit code MUST remain 0 regardless of empirical-anchor findings per [[wiki:two-tier-drift-classification]]. Advisory-fires-but-pass-returned. -->

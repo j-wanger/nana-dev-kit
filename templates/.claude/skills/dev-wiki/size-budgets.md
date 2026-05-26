@@ -1,3 +1,8 @@
+---
+parent: dev-wiki
+referenced_at: "referenced (step unknown)"
+---
+
 # Size Budgets
 
 Shared reference for all dev-wiki skills that write articles and living documents.

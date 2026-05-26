@@ -1,3 +1,8 @@
+---
+parent: knowledge-wiki
+referenced_at: "companion"
+---
+
 <!-- Registry schema — 2026-04-08 -->
 
 # ~/.claude/wikis.json Schema

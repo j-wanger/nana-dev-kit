@@ -1,4 +1,6 @@
 ---
+parent: wiki-absorb
+referenced_at: "Step 3"
 name: source-credibility-verifier
 description: "MUST BE USED for external-synthesis ingest above density threshold. Classifies quantitative/attributed claims as VERIFIED/PARTIAL/AMBER/RED against primary sources via WebSearch before writer dispatch."
 tools: [Read, WebSearch, WebFetch]
