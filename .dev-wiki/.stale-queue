@@ -42,3 +42,4 @@ eval/comparison/scripts/setup-harness.sh
 eval/comparison/scripts/hook-wrapper.sh
 eval/comparison/scripts/collect-metrics.sh
 eval/comparison/scripts/setup-swe-task.sh
+templates/.claude/skills/MANIFEST

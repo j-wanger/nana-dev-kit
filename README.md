@@ -16,11 +16,10 @@ git clone https://github.com/j-wanger/nana-dev-kit.git ~/nana-dev-kit
 Then in any project:
 
 ```
-/init         # auto-detect language → scaffold Python or TypeScript
-/dev-init     # bootstrap dev-wiki lifecycle tracking
-/py-init      # scaffold Python toolchain
-/ts-init      # scaffold TypeScript toolchain (pnpm/Biome/Vitest/tsc)
-              # (or use /dev-init alone for non-language-specific projects)
+/nana-init    # full bootstrap: language scaffold + dev-wiki + optional knowledge wiki
+/py-init      # scaffold Python toolchain only
+/ts-init      # scaffold TypeScript toolchain only (pnpm/Biome/Vitest/tsc)
+/dev-init     # bootstrap dev-wiki lifecycle tracking only
 ```
 
 ### Installer Flags

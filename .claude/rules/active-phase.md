@@ -1,10 +1,10 @@
 # Active Phase Context
 
-Phase: 42 - Harness Effectiveness Validation
-Status: COMPLETED (7/7 tasks done)
-Objective: Designed and ran controlled clean-room comparison measuring harness effectiveness. Three conditions (bare baseline, context injection, full harness), SWE-bench hard task, parallel subagent execution for A+B, manual session for C.
+Phase: 43 - Unified Init & Activation Gap
+Status: COMPLETED (5/5 tasks done)
+Objective: Renamed /init to /nana-init (resolved Claude Code built-in collision) and expanded from 44-line language router to 86-line multi-stage orchestrator bootstrapping full Nana experience (language scaffold + dev-wiki + optional knowledge wiki). All 8 exit criteria verified.
 
-Results: A 3/4, B 3/4, C 4/4 (acceptance test confound acknowledged). Context injection improves efficiency/style, not correctness.
-Next: Run /dev-plan to plan Phase 43.
+Results: Skill directory renamed, 5 cross-references updated, SKILL.md expanded to 86 lines (under 120 target), +3 test assertions, ~306 tests pass, 50/50 eval.
+Next: Run /dev-plan to plan Phase 44.
 
 Gates: [x] direction=approved [x] delivery=accepted

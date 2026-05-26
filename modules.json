@@ -4,7 +4,7 @@
       "name": "core",
       "depends_on": [],
       "flags": { "enable": "--all", "disable": "--core-only" },
-      "skills": ["spec", "nana", "memory-consolidate", "init"],
+      "skills": ["spec", "nana", "memory-consolidate", "nana-init"],
       "rules": ["nana-soul.md", "file-lifecycle.md"],
       "rules_conditional": ["nana-personal.md"],
       "hooks": [],

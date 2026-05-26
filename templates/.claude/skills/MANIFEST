@@ -52,7 +52,7 @@ eeab846abd860f98f761228b60b2b2a1  templates/.claude/skills/dev-wiki/slugificatio
 43c8553ae8af8da520dd780a983427a0  templates/.claude/skills/dev-wiki/stale-queue-spec.md
 9537891ec30c95feeae48c7412fc51c2  templates/.claude/skills/dev-wiki/state-template.md
 ca3094fd6c356142652f9aeec6fad757  templates/.claude/skills/dev-wiki/working-knowledge-spec.md
-0f0e96f9f4f91f3901c170eef0bd2427  templates/.claude/skills/init/SKILL.md
+7eba04b58f6d1827182d6a0275b5c40d  templates/.claude/skills/nana-init/SKILL.md
 62d52f32f8ae6efd237613e6d97a1dc7  templates/.claude/skills/knowledge-wiki/SKILL.md
 5be2a271de3cbd9706158de735d69142  templates/.claude/skills/knowledge-wiki/article-conventions.md
 d59531b29bc6127faf5a632d45edf87d  templates/.claude/skills/knowledge-wiki/claim-spec.md
@@ -132,7 +132,7 @@ ec297f639a856b595197ac37a26ded8f  templates/.claude/skills/wiki-reorg/SKILL.md
 # dev-plan: "Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."
 # dev-scan: "Use when adopting dev-wiki on an existing project, when _ARCHITECTURE.md is shallow, or after major structural changes. Scans code structure, modules, dependencies, entry points, and design patterns. Do NOT use for ad-hoc code questions — use Grep/Read directly."
 # dev-wiki: "Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-context, dev-plan, etc.)."
-# init: Detect the project language and route to the appropriate scaffolding skill.
+# nana-init: Bootstrap the full Nana experience — language scaffold, dev-wiki lifecycle, optional knowledge wiki. Use when starting a new project or completing activation on an existing one.
 # knowledge-wiki: "Route wiki operations and enforce wiki workflow discipline. Use when the user mentions 'wiki', 'knowledge base', or wants to manage project knowledge. Also activated by SessionStart hook when a registered wiki applies to the current directory. Do NOT invoke directly when the user names a specific wiki command — invoke that command instead (wiki-query, wiki-add, etc.)."
 # memory-consolidate: "Consolidate duplicate/overlapping memory entries using Claude. Use when memory_search returns redundant results, after many phases, or for periodic memory maintenance."
 # nana: "Show installed nana-dev-kit skills grouped by module. Use when the user asks what skills are available, what the kit can do, or wants a quick reference."

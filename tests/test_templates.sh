@@ -697,21 +697,45 @@ else
   test_fail "Not all PostToolUse hooks use .tool_input canonical path"
 fi
 
-test_start "init/SKILL.md exists with language markers"
-if test -f "$PROJECT_ROOT/templates/.claude/skills/init/SKILL.md" && \
-   grep -qi 'py-init' "$PROJECT_ROOT/templates/.claude/skills/init/SKILL.md" && \
-   grep -qi 'ts-init' "$PROJECT_ROOT/templates/.claude/skills/init/SKILL.md" && \
-   grep -qi 'pyproject' "$PROJECT_ROOT/templates/.claude/skills/init/SKILL.md"; then
+test_start "nana-init/SKILL.md exists with language markers"
+if test -f "$PROJECT_ROOT/templates/.claude/skills/nana-init/SKILL.md" && \
+   grep -qi 'py-init' "$PROJECT_ROOT/templates/.claude/skills/nana-init/SKILL.md" && \
+   grep -qi 'ts-init' "$PROJECT_ROOT/templates/.claude/skills/nana-init/SKILL.md" && \
+   grep -qi 'pyproject' "$PROJECT_ROOT/templates/.claude/skills/nana-init/SKILL.md"; then
   test_pass
 else
-  test_fail "init/SKILL.md missing or incomplete"
+  test_fail "nana-init/SKILL.md missing or incomplete"
 fi
 
-test_start "MANIFEST has init description"
-if grep -q '# init:' "$PROJECT_ROOT/templates/.claude/skills/MANIFEST"; then
+test_start "MANIFEST has nana-init description"
+if grep -q '# nana-init:' "$PROJECT_ROOT/templates/.claude/skills/MANIFEST"; then
   test_pass
 else
-  test_fail "MANIFEST missing init description"
+  test_fail "MANIFEST missing nana-init description"
+fi
+
+test_start "nana-init/SKILL.md dispatches to dev-init"
+if grep -q 'dev-init' "$PROJECT_ROOT/templates/.claude/skills/nana-init/SKILL.md" && \
+   grep -q 'Skill.*dev-init' "$PROJECT_ROOT/templates/.claude/skills/nana-init/SKILL.md"; then
+  test_pass
+else
+  test_fail "nana-init/SKILL.md missing dev-init dispatch"
+fi
+
+test_start "nana-init/SKILL.md dispatches to wiki-init"
+if grep -q 'wiki-init' "$PROJECT_ROOT/templates/.claude/skills/nana-init/SKILL.md" && \
+   grep -q 'Skill.*wiki-init' "$PROJECT_ROOT/templates/.claude/skills/nana-init/SKILL.md"; then
+  test_pass
+else
+  test_fail "nana-init/SKILL.md missing wiki-init dispatch"
+fi
+
+test_start "nana-init/SKILL.md within 120 line cap"
+NANA_INIT_LINES=$(wc -l < "$PROJECT_ROOT/templates/.claude/skills/nana-init/SKILL.md")
+if [ "$NANA_INIT_LINES" -le 120 ]; then
+  test_pass
+else
+  test_fail "nana-init/SKILL.md is $NANA_INIT_LINES lines (cap: 120)"
 fi
 
 test_summary "test_templates"

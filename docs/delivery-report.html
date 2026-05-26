@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 42</title>
+<title>Delivery Report: Phase 43</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,37 +21,36 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 42 &mdash; Harness Effectiveness Validation</h1>
+<h1>Delivery Report: Phase 43 &mdash; Unified Init &amp; Activation Gap</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">7/7</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">9</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">5/5</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">17</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (0 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">50/50</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+113</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-47</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">3</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">10:38</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+190</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-105</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">4</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">17:32</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>[M] Starter codebases — Create two Python project scaffolds: (a) feature-build starter (pyproject.toml, src/ skeleton...</td></tr>
-<tr><td>&#x2705;</td><td>[S] Task definitions — Write frozen task specification documents: feature-build.md (build a CLI task tracker with add...</td></tr>
-<tr><td>&#x2705;</td><td>[M] Setup scripts — Create three setup scripts: setup-baseline.sh (bare repo, no harness), setup-context.sh (repo wit...</td></tr>
-<tr><td>&#x2705;</td><td>[M] Metrics + hook wrapper — Create collect-metrics.sh (parses git log for commit count, counts files/lines, runs ruf...</td></tr>
-<tr><td>&#x2705;</td><td>[M] Methodology + results template + run guide — Write methodology.md (required sections: ## Tasks, ## Metrics, ## Co...</td></tr>
-<tr><td>&#x2705;</td><td>[L] Execute comparison — Set up repos for conditions A (baseline) and B (context injection) using setup scripts with ...</td></tr>
-<tr><td>&#x2705;</td><td>[S] Document findings + regression check — Analyze results from task 6, fill in results-template.md with actual data ...</td></tr>
+<tr><td>&#x2705;</td><td>Rename init directory + tighten triggers: `test -d templates/.claude/skills/nana-init` fails (RED), `git mv templates...</td></tr>
+<tr><td>&#x2705;</td><td>Update cross-references — modules.json "init" → "nana-init" in core skills, install.sh echo/dry-run display strings (...</td></tr>
+<tr><td>&#x2705;</td><td>Update tests + rename checkpoint verify — `make test` fails because test_install.sh and test_templates.sh assert old ...</td></tr>
+<tr><td>&#x2705;</td><td>Expand SKILL.md to multi-stage orchestrator — `grep -q 'dev-init' templates/.claude/skills/nana-init/SKILL.md` fails ...</td></tr>
+<tr><td>&#x2705;</td><td>Update tests for expanded SKILL.md + final exit criteria verify — `grep -q 'dev-init' tests/test_templates.sh` in nan...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Multi-angle subagent review for blind comparison</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Rename /init to /nana-init and expand to multi-stage orchestrator</td><td>high</td></tr>
+<tr><td>Multi-angle subagent review for blind comparison</td><td>high</td></tr>
 <tr><td>SWE-bench comparison confound: acceptance test asymmetry</td><td>high</td></tr>
 <tr><td>Experimental contamination protocol</td><td>high</td></tr>
 </table>
@@ -67,6 +66,14 @@
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
+<li><code>README.md</code></li>
+<li><code>install.sh</code></li>
+<li><code>modules.json</code></li>
+<li><code>templates/.claude/skills/MANIFEST</code></li>
+<li><code>templates/.claude/skills/init/SKILL.md</code></li>
+<li><code>templates/.claude/skills/nana-init/SKILL.md</code></li>
+<li><code>tests/test_install.sh</code></li>
+<li><code>tests/test_templates.sh</code></li>
 
 
 </ul>
@@ -84,7 +91,7 @@ All tests passed.</pre>
 <pre>Score: 50/50 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-05-26 10:38:51 by generate-delivery-report.py
+  Generated 2026-05-26 17:32:41 by generate-delivery-report.py
 </div>
 </body>
 </html>

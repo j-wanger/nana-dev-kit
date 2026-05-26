@@ -1,6 +1,10 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
+- [uses: 1] /nana-init (86 lines) is a multi-stage orchestrator replacing the old /init (44 lines). Detects component states (language markers, .dev-wiki/, wiki/), then dispatches to py-init/ts-init, dev-init, wiki-init via Skill(). Each step independently skippable. Renamed from init/ to resolve Claude Code built-in /init collision.
+  source: [[decision:nana-init-rename-and-expand]] | activated: 2026-05-26
+- [uses: 1] modules.json core skills array lists "nana-init" (not "init"). install.sh cp -r copies whatever modules.json lists. MANIFEST description line uses `# nana-init:` prefix.
+  source: [[active-knowledge:phase-43]] | activated: 2026-05-26
 - [uses: 1] Three-condition comparison design: A (bare baseline subagent) vs B (context-injection subagent with .claude/rules/ + AGENTS.md) vs C (full harness manual session). A+B automatable via parallel subagents; C requires manual user session. Subagents naturally lack hooks/skills/memory — valid clean-room baseline. Results: A 3/4, B 3/4, C 4/4 (acceptance test confound).
   source: [[decision:three-condition-comparison-design]] | activated: 2026-05-26
 - [uses: 1] Python task choice for comparison: tasks are Python to exercise py-lint, py-review, py-test, py-init skills. Maximizes measurable difference in condition C. TypeScript comparison would be natural follow-up.

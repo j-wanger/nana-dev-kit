@@ -275,8 +275,8 @@ assert_file_exists "$THOME_ALL/.claude/skills/wiki-init/SKILL.md"
 test_start "full install creates ts-init skill"
 assert_file_exists "$THOME_ALL/.claude/skills/ts-init/SKILL.md"
 
-test_start "full install creates init router skill"
-assert_file_exists "$THOME_ALL/.claude/skills/init/SKILL.md"
+test_start "full install creates nana-init skill"
+assert_file_exists "$THOME_ALL/.claude/skills/nana-init/SKILL.md"
 
 test_start "full install copies ts-init scanner companion"
 assert_file_exists "$THOME_ALL/.claude/skills/ts-init/scanner.md"

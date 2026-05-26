@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Install Nana Dev Kit — copies global pieces to ~/.claude/
-# Run once per machine. Then use /init in any project to scaffold the harness.
+# Run once per machine. Then use /nana-init in any project to scaffold the harness.
 #
 # Flags:
 #   --all            Install everything (default)
@@ -299,7 +299,7 @@ if ! $DRY_RUN; then
   echo ""
   echo "Installed:"
   [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/rules/                    — identity (soul, personal, file-lifecycle)"
-  [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/skills/{spec,nana,memory-consolidate,init}/ — core skills"
+  [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/skills/{spec,nana,memory-consolidate,nana-init}/ — core skills"
   [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/memory_server/            — persistent memory MCP server"
   [ "$INSTALL_CORE" = true ] && echo "  ~/.claude/.nana-dev-kit-path        — kit location marker"
   [ "$INSTALL_PYTHON" = true ] && echo "  ~/.claude/skills/py-init/           — /py-init Python scaffolding"
@@ -309,12 +309,12 @@ if ! $DRY_RUN; then
   [ "$INSTALL_KNOWLEDGE" = true ] && echo "  ~/.claude/skills/wiki-*/            — knowledge-wiki pipeline (11 skills)"
   echo ""
   echo "Getting started (open a project, then run one of these):"
-  echo "  /init         — auto-detect language and scaffold (recommended)"
+  echo "  /nana-init    — bootstrap full Nana experience (recommended)"
   echo "  /dev-init     — bootstrap dev-wiki lifecycle tracking"
   echo "  /py-init      — scaffold Python project with full toolchain"
   echo "  /ts-init      — scaffold TypeScript project with full toolchain"
   echo "  /wiki-init    — start a knowledge wiki for your domain"
 else
   echo ""
-  echo "[dry-run] Getting started: /init (auto-detect), /dev-init (lifecycle), /py-init (Python), /ts-init (TypeScript), /wiki-init (knowledge)"
+  echo "[dry-run] Getting started: /nana-init (full bootstrap), /dev-init (lifecycle), /py-init (Python), /ts-init (TypeScript), /wiki-init (knowledge)"
 fi
