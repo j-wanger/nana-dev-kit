@@ -44,6 +44,7 @@
 - [[phase-39-resilience-health-probes|Phase 39: Resilience & Health Probes]] -- completed
 - [[phase-40-install-extraction-anti-pattern-hardening|Phase 40: install.sh Extraction & Anti-Pattern Hardening]] -- completed
 - [[phase-41-harness-hardening-process-safeguards|Phase 41: Harness Hardening & Process Safeguards]] -- completed
+- [[phase-42-harness-effectiveness-validation|Phase 42: Harness Effectiveness Validation]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -120,6 +121,12 @@
 - [[companion-metadata-format|Companion metadata format: parent + referenced_at YAML frontmatter]] -- medium confidence, accepted
 - [[cooldown-advisory-placement|Cooldown advisory placement: debrief SKILL.md after executor returns]] -- medium confidence, accepted
 - [[jq-guard-fail-stop|jq guard in install.sh: fail-STOP pattern]] -- medium confidence, accepted
+- [[experimental-contamination-protocol|Experimental contamination protocol]] -- high confidence, accepted
+- [[swe-bench-comparison-confound|SWE-bench comparison confound: acceptance test asymmetry]] -- high confidence, accepted
+- [[multi-angle-subagent-review|Multi-angle subagent review for blind comparison]] -- high confidence, accepted
+- [[clean-room-parallel-subagent-comparison|Clean-room parallel subagent comparison]] -- high confidence, accepted
+- [[three-condition-comparison-design|Three-condition comparison design]] -- high confidence, accepted
+- [[python-task-language-choice|Python task language choice for comparison]] -- high confidence, accepted
 - [[turn-level-hybrid-recommended|Turn-level hybrid RRF is the winning strategy]] -- high confidence, accepted
 - [[diagnostic-first-benchmark|Diagnostic-first benchmark]] -- high confidence, accepted
 - [[monorepo-skill-distribution|Monorepo Skill Distribution]] -- high confidence, accepted
@@ -153,6 +160,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-26-phase-42-harness-effectiveness-validation-complete|Phase 42 complete]] -- 2026-05-26
 - [[2026-05-25-phase-41-harness-hardening-complete|Phase 41 complete]] -- 2026-05-25
 - [[2026-05-25-phase-40-install-extraction-complete|Phase 40 complete]] -- 2026-05-25
 - [[2026-05-25-phase-39-resilience-health-probes-complete|Phase 39 complete]] -- 2026-05-25
@@ -198,6 +206,7 @@
 - [[roadmap-gap-analysis|Engineering Gap Analysis & Roadmap]] -- active, tracks open/closed gaps and build order
 
 ### Status
+- [[2026-05-26-codebase-snapshot|Codebase Snapshot]] -- 2026-05-26
 - [[2026-05-25-codebase-snapshot|Codebase Snapshot]] -- 2026-05-25
 - [[2026-05-24-codebase-snapshot|Codebase Snapshot]] -- 2026-05-24
 - [[2026-05-23-codebase-snapshot|Codebase Snapshot]] -- 2026-05-23
@@ -219,6 +228,8 @@
 
 ## Recent
 
+- 2026-05-26: Phase 42 completed -- harness effectiveness: 3-condition comparison (A bare 3/4, B context 3/4, C full 4/4), SWE-bench hard task, contamination protocol, acceptance test confound, multi-angle blind review, 3 decisions, ~303 tests, 50/50 eval
+- 2026-05-25: Phase 42 planned -- 7 tasks (2S 4M 1L), 3 decisions (clean-room-parallel-subagent-comparison, three-condition-comparison-design, python-task-language-choice), harness effectiveness validation
 - 2026-05-25: Phase 41 completed -- harness hardening: jq guard, session timestamp, 92 companion metadata, bidirectional test, debrief enhancements, cooldown advisory, 3 decisions (confidence upgraded), ~303 tests, 50/50 eval
 - 2026-05-25: Phase 41 planned -- 7 tasks (3S 4M), 3 decisions (companion-metadata-format, cooldown-advisory-placement, jq-guard-fail-stop), harness hardening & process safeguards
 - 2026-05-25: Phase 40 completed -- install.sh extraction: 542 to 318 lines, zero inline Python, modules.json + register-settings.py, functional smoke invariant codified, 2 decisions (confidence upgraded), ~301 tests, 50/50 eval

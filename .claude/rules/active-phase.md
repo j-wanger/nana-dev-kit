@@ -1,18 +1,10 @@
 # Active Phase Context
 
-Phase: 41 - Harness Hardening & Process Safeguards
-Status: COMPLETED (7/7 tasks done, all exit criteria verified)
-Objective: Resolve remaining anti-patterns (#3 momentum risk, #5 companion proliferation) with jq install guard, session timestamp, companion metadata, bidirectional validation test, debrief enhancements, cooldown advisory.
+Phase: 42 - Harness Effectiveness Validation
+Status: COMPLETED (7/7 tasks done)
+Objective: Designed and ran controlled clean-room comparison measuring harness effectiveness. Three conditions (bare baseline, context injection, full harness), SWE-bench hard task, parallel subagent execution for A+B, manual session for C.
 
-Results:
-- jq fail-STOP guard in install.sh (multi-platform hint, exit 1)
-- Session timestamp in session-start.sh (.session-start-ts)
-- 92 companion files with YAML frontmatter (parent + referenced_at)
-- test_companions.sh: Direction A 92/92, Direction B 85/85
-- Debrief soft observations required + duration estimation
-- Cooldown advisory fires on >=2 Phase commits since session start
-- ~303 tests passing, 50/50 eval (100%)
+Results: A 3/4, B 3/4, C 4/4 (acceptance test confound acknowledged). Context injection improves efficiency/style, not correctness.
+Next: Run /dev-plan to plan Phase 43.
 
-Next: Run /dev-plan to start Phase 42.
-
-Gates: [x] direction=approved [ ] delivery=pending
+Gates: [x] direction=approved [x] delivery=accepted

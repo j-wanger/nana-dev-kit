@@ -1,6 +1,6 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-05-25 by /dev-debrief (Phase 41 completed)
+> Last updated: 2026-05-26 by /dev-debrief (Phase 42 completed)
 
 ## Project Shape
 
@@ -21,8 +21,9 @@ nana-dev-kit/
     longmemeval.py                     # Benchmark script (FTS5+hybrid, per-question DB isolation, recall@5/10)
     README.md                          # Usage instructions + interpretation guide
     data/, results.json, .venv/        # Gitignored: dataset cache, results, Python venv
-  eval/                                # Eval harness: corpus, schemas, validators
+  eval/                                # Eval harness: corpus, schemas, validators, comparison
     corpus/                            # Scenario directories (hook-*, skill-*, lifecycle-*)
+    comparison/                        # Harness effectiveness comparison (methodology, scripts, results)
     schemas/                           # JSON input schemas for hook contracts
     validators/                        # Bash validators for skill artifact contracts
     README.md                          # Corpus structure + scoring documentation
@@ -62,7 +63,7 @@ nana-dev-kit/
 | memory_server/ | Vendored MCP memory server (nanaclaw, 2,373 LOC, near-zero divergence from upstream) | server.py, storage.py, embedding.py, *.py | MCP stdio | Memory CRUD via MCP protocol |
 | .github/workflows/ | Kit CI (shellcheck + make test) | kit-ci.yml | .sh files, Makefile | CI pass/fail |
 | benchmark/ | LongMemEval-S retrieval benchmark (FTS5 recall@5 91.0%, hybrid/turn ~95%, turn-level indexing) | longmemeval.py, README.md | memory_server/storage.py, HuggingFace dataset, fastembed (optional) | benchmark/results.json, stdout summary |
-| eval/ | Eval harness: benchmark corpus + scoring (50 scenarios) | corpus/*/scenario.json, schemas/*.json, validators/*.sh | templates/.claude/hooks/*, skill outputs | Scored eval report (text) |
+| eval/ | Eval harness: benchmark corpus + scoring (50 scenarios) + harness effectiveness comparison | corpus/*/scenario.json, schemas/*.json, validators/*.sh, comparison/ | templates/.claude/hooks/*, skill outputs | Scored eval report (text), comparison results |
 | docs/ | Generated reports (7-Layer architecture) | report.html (package inventory, Eval/Specs categories), workflow.html (12-hook table, Enforcement + Memory Bridge sections) | Project files, templates/.claude/skills/MANIFEST, templates/.claude/settings.json | HTML package inventory + workflow breakdown |
 | scripts/ | Multi-agent sync + report generation + eval + delivery + settings registration | sync-rules.sh, generate-report.py (~350 lines), generate-workflow.py (~800 lines), eval-runner.sh (~310 lines), generate-delivery-report.py (196 lines), register-settings.py (~120 lines, hooks + mcp subcommands for JSON merge) | AGENTS.md, project tree, eval/corpus/, templates/.claude/skills/MANIFEST, templates/.claude/settings.json, modules.json | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md, docs/report.html, docs/workflow.html, eval report (text), delivery report (HTML), settings.json (hook + MCP registration) |
 | tests/ | Automated bash test suite (~303 tests, including 3 README accuracy + 6 report staleness + 23 functional verification + ~10 register-settings.py tests + 2 companion validation) | helpers.sh, test_*.sh | install.sh, scripts/, templates/, docs/, modules.json | stdout (pass/fail) |
@@ -96,5 +97,3 @@ Bash + jq (hooks + eval). memory_server requires python3 + pip deps (mcp, pydant
 
 - MEDIUM: `templates/.github/workflows/ci.yml:29` hardcodes `src/` for mypy -- acceptable since /py-init replaces it based on detected source_dir
 - LOW: wiki-index ships Python files (.py) alongside .md -- needs accounting in language-neutrality audit
-
-## Related

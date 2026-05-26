@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 41</title>
+<title>Delivery Report: Phase 42</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,46 +21,39 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 41 &mdash; Harness Hardening &amp; Process Safeguards</h1>
+<h1>Delivery Report: Phase 42 &mdash; Harness Effectiveness Validation</h1>
 
 <div class="summary">
   <div class="card"><div class="num">7/7</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">106</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">9</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (0 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">50/50</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+552</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-43</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">10</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">22:19</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+113</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-47</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">3</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">10:38</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>[S] jq guard in install.sh: `grep -q 'command -v jq' install.sh` fails (RED), add fail-stop guard with multi-platform...</td></tr>
-<tr><td>&#x2705;</td><td>[S] Session timestamp in session-start.sh: `grep -q 'session-start-ts' templates/.claude/hooks/session-start.sh` fail...</td></tr>
-<tr><td>&#x2705;</td><td>[M] Companion metadata batch addition: `find templates/.claude/skills -name '*.md' ! -name 'SKILL.md' ! -name 'MANIFEST'</td></tr>
-<tr><td>&#x2705;</td><td>[M] test_companions.sh bidirectional validation: `bash tests/test_companions.sh` fails (RED), implement Direction A (...</td></tr>
-<tr><td>&#x2705;</td><td>[M] Debrief soft observations + duration: `grep -qi 'required.*soft.observation\</td></tr>
-<tr><td>&#x2705;</td><td>[M] Cooldown advisory in debrief: `grep -qi 'cooldown\</td></tr>
-<tr><td>&#x2705;</td><td>[S] Makefile + full verification: `grep -q 'test_companions' Makefile` fails (RED), add test_companions.sh to test ta...</td></tr>
+<tr><td>&#x2705;</td><td>[M] Starter codebases — Create two Python project scaffolds: (a) feature-build starter (pyproject.toml, src/ skeleton...</td></tr>
+<tr><td>&#x2705;</td><td>[S] Task definitions — Write frozen task specification documents: feature-build.md (build a CLI task tracker with add...</td></tr>
+<tr><td>&#x2705;</td><td>[M] Setup scripts — Create three setup scripts: setup-baseline.sh (bare repo, no harness), setup-context.sh (repo wit...</td></tr>
+<tr><td>&#x2705;</td><td>[M] Metrics + hook wrapper — Create collect-metrics.sh (parses git log for commit count, counts files/lines, runs ruf...</td></tr>
+<tr><td>&#x2705;</td><td>[M] Methodology + results template + run guide — Write methodology.md (required sections: ## Tasks, ## Metrics, ## Co...</td></tr>
+<tr><td>&#x2705;</td><td>[L] Execute comparison — Set up repos for conditions A (baseline) and B (context injection) using setup scripts with ...</td></tr>
+<tr><td>&#x2705;</td><td>[S] Document findings + regression check — Analyze results from task 6, fill in results-template.md with actual data ...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>jq guard in install.sh: fail-STOP pattern</td><td>high</td></tr>
-<tr><td>Cooldown advisory placement: debrief SKILL.md after executor returns</td><td>high</td></tr>
-<tr><td>Companion metadata format: parent + referenced_at YAML frontmatter</td><td>high</td></tr>
-<tr><td>Functional smoke invariant: every registered component needs a functional test</td><td>high</td></tr>
-<tr><td>install.sh extraction: modules.json + register-settings.py</td><td>high</td></tr>
-<tr><td>/init router belongs in CORE_SKILLS</td><td>high</td></tr>
-<tr><td>PostToolUse normalization: verify then normalize</td><td>high</td></tr>
-<tr><td>Health probe uses 3 layers: jq config, import check, sqlite3 count</td><td>high</td></tr>
-<tr><td>Fail-loud over fail-silent for memory MCP failures</td><td>high</td></tr>
-<tr><td>MCP memory server CWD fix: install.sh set wrong working directory</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Multi-angle subagent review for blind comparison</td><td>high</td></tr>
+<tr><td>SWE-bench comparison confound: acceptance test asymmetry</td><td>high</td></tr>
+<tr><td>Experimental contamination protocol</td><td>high</td></tr>
 </table>
 
 <h2>Files Changed</h2>
@@ -74,49 +67,8 @@
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
-<li><code>Makefile</code></li>
-<li><code>README.md</code></li>
-<li><code>install.sh</code></li>
-<li><code>templates/.claude/hooks/session-start.sh</code></li>
-<li><code>templates/.claude/skills/dev-debrief/SKILL.md</code></li>
-<li><code>templates/.claude/skills/dev-debrief/active-knowledge-transition.md</code></li>
-<li><code>templates/.claude/skills/dev-debrief/architecture-staleness-check.md</code></li>
-<li><code>templates/.claude/skills/dev-debrief/claude-md-refresh.md</code></li>
-<li><code>templates/.claude/skills/dev-debrief/debrief-finalization.md</code></li>
-<li><code>templates/.claude/skills/dev-debrief/delivery-flow.md</code></li>
-<li><code>templates/.claude/skills/dev-debrief/executor-prompt.md</code></li>
-<li><code>templates/.claude/skills/dev-debrief/memory-harvest.md</code></li>
-<li><code>templates/.claude/skills/dev-debrief/quick-debrief-flow.md</code></li>
-<li><code>templates/.claude/skills/dev-debrief/retro-check.md</code></li>
-<li><code>templates/.claude/skills/dev-debrief/review-gate.md</code></li>
-<li><code>templates/.claude/skills/dev-debrief/reviewer-prompt.md</code></li>
-<li><code>templates/.claude/skills/dev-init/init-scaffolding.md</code></li>
-<li><code>templates/.claude/skills/dev-init/scaffold-claude-md.md</code></li>
-<li><code>templates/.claude/skills/dev-init/templates/AGENTS.md</code></li>
-<li><code>templates/.claude/skills/dev-init/templates/project-CLAUDE.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/approach-reviewer-prompt.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/artifact-writer-prompt.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/compaction-anchors-spec.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/implementation-guide.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/iterative-retrieval-spec.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/memory-bridge.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/plan-review-companion.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/plan-reviewer-prompt.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/research-pause-spec.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/scope-exploration-spec.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/self-check-checklist.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/spec-auto-invoke.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/state-loader-prompt.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/task-schema.md</code></li>
-<li><code>templates/.claude/skills/dev-scan/architecture-prompt.md</code></li>
-<li><code>templates/.claude/skills/dev-scan/content-hashing.md</code></li>
-<li><code>templates/.claude/skills/dev-scan/file-prompt.md</code></li>
-<li><code>templates/.claude/skills/dev-scan/module-prompt.md</code></li>
-<li><code>templates/.claude/skills/dev-scan/python-memory-checks.md</code></li>
-<li><code>templates/.claude/skills/dev-scan/python-scan-profile.md</code></li>
-<li><code>templates/.claude/skills/dev-scan/refresh-flow.md</code></li>
 
-<li><em>... and 56 more</em></li>
+
 </ul>
 
 <h2>Test Results</h2>
@@ -132,7 +84,7 @@ All tests passed.</pre>
 <pre>Score: 50/50 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-05-25 22:19:45 by generate-delivery-report.py
+  Generated 2026-05-26 10:38:51 by generate-delivery-report.py
 </div>
 </body>
 </html>

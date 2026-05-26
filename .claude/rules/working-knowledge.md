@@ -1,6 +1,10 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
+- [uses: 1] Three-condition comparison design: A (bare baseline subagent) vs B (context-injection subagent with .claude/rules/ + AGENTS.md) vs C (full harness manual session). A+B automatable via parallel subagents; C requires manual user session. Subagents naturally lack hooks/skills/memory — valid clean-room baseline. Results: A 3/4, B 3/4, C 4/4 (acceptance test confound).
+  source: [[decision:three-condition-comparison-design]] | activated: 2026-05-26
+- [uses: 1] Python task choice for comparison: tasks are Python to exercise py-lint, py-review, py-test, py-init skills. Maximizes measurable difference in condition C. TypeScript comparison would be natural follow-up.
+  source: [[decision:python-task-language-choice]] | activated: 2026-05-26
 - [uses: 1] install.sh uses fail-STOP (exit 1) for missing jq, unlike hooks which use fail-open (exit 0). Different pattern for different contexts: install runs once explicitly, hooks run continuously. Multi-platform hint (brew/apt) on failure.
   source: [[decision:jq-guard-fail-stop]] | activated: 2026-05-25
 - [uses: 1] Companion metadata: every companion .md file has YAML frontmatter with parent (owning skill dir name) + referenced_at (step in parent SKILL.md). 92 files covered. test_companions.sh validates bidirectionally: Direction A (parent matches dir) + Direction B (SKILL.md Read paths resolve). Future companions must include frontmatter.
@@ -71,7 +75,7 @@
   source: [[decision:jq-hook-migration]] + [[journal:2026-05-22-phase-25-postcommit-hook-complete]] | activated: 2026-05-22
 - [uses: 1] PostCommit hook writes .dev-wiki/.pending-commit sidecar (one-line JSON: hash, message, files). Advisory only (exit 0). Claude processes via [dev-wiki:post-commit] trigger in dev-wiki-hooks rules.
   source: [[decision:postcommit-hook-architecture]] | activated: 2026-05-22
-- [uses: 2] Eval design: binary scoring only (pass=1.0, fail=0.0), jq hard dependency, eval/ top-level directory separate from tests/; make eval never called by make test; 43 scenarios in 4 categories (hook, skill, context, lifecycle)
+- [uses: 3] Eval design: binary scoring only (pass=1.0, fail=0.0), jq hard dependency, eval/ top-level directory separate from tests/; make eval never called by make test; 50 scenarios in 4 categories (hook, skill, context, lifecycle); eval/comparison/ for harness effectiveness
   source: [[decision:eval-binary-scoring-only]] + [[decision:eval-jq-hard-dependency]] + [[decision:eval-top-level-directory]] | activated: 2026-05-22
 - [uses: 1] Context eval is a new runner category (not folded into hook/skill); eval report shows "context 4/4" directly answering "do rules reach the model?"; checks array with file_exists, section_present, hook_output types
   source: [[decision:context-eval-new-category]] | activated: 2026-05-22
@@ -79,7 +83,7 @@
   source: [[decision:hook-stdin-per-hook-contracts]] | activated: 2026-05-22
 - [uses: 1] scan-secrets.sh has macOS BSD grep compatibility bug: \x27 in pattern doesn't match single quotes; eval fixture uses double quotes as workaround
   source: [[journal:2026-05-22-phase-21-eval-expansion-complete]] | activated: 2026-05-22
-- [uses: 1] Eval harnesses should measure 3 layers: outcome (did it work), trajectory (was path efficient), system metrics (cost/latency); for dev-kit self-eval, focus on outcome + trajectory, defer system metrics
+- [uses: 2] Eval harnesses should measure 3 layers: outcome (did it work), trajectory (was path efficient), system metrics (cost/latency); for dev-kit self-eval, focus on outcome + trajectory, defer system metrics. Self-grading bias: same LLM writing + evaluating inflates pass rates — methodology must acknowledge.
   source: [[wiki:agentic-eval-3-layer-model]] | activated: 2026-05-22
 - [uses: 1] Scenario-based eval needs 4 components per case: initial context (fixture), interaction script (input), oracle assertions (expected), timeouts; structured JSON manifest per scenario
   source: [[wiki:scenario-eval-structure]] | activated: 2026-05-22
