@@ -1,10 +1,10 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-05-26 by /dev-debrief (Phase 43 completed)
+> Last updated: 2026-05-26 by /dev-debrief (Phase 44 completed)
 
 ## Project Shape
 
-Shell/Markdown/Python scaffolding kit (220+ files: 23 .sh hooks, 120+ skill .md, 22+ template .md, 14 memory_server .py, 4 wiki-index .py, 50 eval scenarios, 4 eval schemas, 4 eval validators, 2 benchmark .py/.md, 4 .json, 2 .txt, 1 .yaml, 2 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore, 1 .patch, 2 scripts .py). Runtime: bash + jq (hooks + eval). Scaffolds a 5-layer Python dev harness + TypeScript dev harness + dev-wiki lifecycle + knowledge-wiki pipeline into new/existing projects via two operational modes: `install.sh` (one-time global, reads modules.json via jq, delegates JSON merges to scripts/register-settings.py, with --all/--core-only/--no-python/--no-typescript/--project-local/--dry-run/--status flags) and `make sync-rules` (per-project). 2-gate ceremony model (direction + delivery) with autonomous agent flow between gates. ~306 automated tests via `make test` + 50 eval scenarios via `make eval`. LongMemEval-S benchmark: FTS5 recall@5 91.0%, hybrid/turn ~95%. v0.5.0 on GitHub.
+Shell/Markdown/Python scaffolding kit (240+ files: 23 .sh hooks, 120+ skill .md, 22+ template .md, 14 memory_server .py, 4 wiki-index .py, 50 eval scenarios, 10 reasoning scenarios, 4 eval schemas, 4 eval validators, 10 heuristic .md, 2 benchmark .py/.md, 4 .json, 2 .txt, 1 .yaml, 2 .yml, 1 .toml, 1 Makefile, 1 VERSION, 1 kit-ci.yml, 1 .gitignore, 1 .patch, 2 scripts .py, 1 reasoning eval .py). Runtime: bash + jq (hooks + eval). Scaffolds a 5-layer Python dev harness + TypeScript dev harness + dev-wiki lifecycle + knowledge-wiki pipeline into new/existing projects via two operational modes: `install.sh` (one-time global, reads modules.json via jq, delegates JSON merges to scripts/register-settings.py, with --all/--core-only/--no-python/--no-typescript/--project-local/--dry-run/--status flags) and `make sync-rules` (per-project). 2-gate ceremony model (direction + delivery) with autonomous agent flow between gates. ~310 automated tests via `make test` + 50 eval scenarios via `make eval` + 10 reasoning eval scenarios. LongMemEval-S benchmark: FTS5 recall@5 91.0%, hybrid/turn ~95%. v0.5.0 on GitHub.
 
 ## Directory Layout
 
@@ -14,16 +14,18 @@ nana-dev-kit/
   Makefile, VERSION, README.md         # Build targets, v0.5.0, docs (~95 lines, 7 sections)
   .github/workflows/kit-ci.yml        # Kit CI: shellcheck + make test
   memory_server/                       # Vendored MCP memory server (12 .py, nanaclaw)
-  docs/                                # Generated HTML reports (report.html, workflow.html)
+  wiki/                                # Knowledge wiki (cognitive-patterns): heuristics/ (SCHEMA.md + 10 HEU-*.md), articles/, inbox/
+  docs/                                # Generated reports (report.html, workflow.html, architecture diagrams)
   patches/                               # Upstream sync patches
     nanaclaw-sanitize-fts.patch        # Surgical _sanitize_fts_query fix for nanaclaw upstream
   benchmark/                             # LongMemEval-S memory retrieval benchmark
     longmemeval.py                     # Benchmark script (FTS5+hybrid, per-question DB isolation, recall@5/10)
     README.md                          # Usage instructions + interpretation guide
     data/, results.json, .venv/        # Gitignored: dataset cache, results, Python venv
-  eval/                                # Eval harness: corpus, schemas, validators, comparison
+  eval/                                # Eval harness: corpus, schemas, validators, comparison, reasoning
     corpus/                            # Scenario directories (hook-*, skill-*, lifecycle-*)
     comparison/                        # Harness effectiveness comparison (methodology, scripts, results)
+    reasoning/                         # Reasoning eval: LLM-as-judge, 10 scenarios, baseline scores (corpus/, judges/, baseline/)
     schemas/                           # JSON input schemas for hook contracts
     validators/                        # Bash validators for skill artifact contracts
     README.md                          # Corpus structure + scoring documentation
@@ -63,10 +65,11 @@ nana-dev-kit/
 | memory_server/ | Vendored MCP memory server (nanaclaw, 2,373 LOC, near-zero divergence from upstream) | server.py, storage.py, embedding.py, *.py | MCP stdio | Memory CRUD via MCP protocol |
 | .github/workflows/ | Kit CI (shellcheck + make test) | kit-ci.yml | .sh files, Makefile | CI pass/fail |
 | benchmark/ | LongMemEval-S retrieval benchmark (FTS5 recall@5 91.0%, hybrid/turn ~95%, turn-level indexing) | longmemeval.py, README.md | memory_server/storage.py, HuggingFace dataset, fastembed (optional) | benchmark/results.json, stdout summary |
-| eval/ | Eval harness: benchmark corpus + scoring (50 scenarios) + harness effectiveness comparison | corpus/*/scenario.json, schemas/*.json, validators/*.sh, comparison/ | templates/.claude/hooks/*, skill outputs | Scored eval report (text), comparison results |
+| wiki/ | Knowledge wiki (cognitive-patterns): heuristic store with 10 seed heuristics, structured SCHEMA.md | heuristics/SCHEMA.md, heuristics/HEU-*.md, schema.md, index.md | .dev-wiki/articles/decisions/, working-knowledge.md (seed source) | Heuristic articles for session-start injection + reasoning eval |
+| eval/ | Eval harness: benchmark corpus + scoring (50 scenarios) + harness effectiveness comparison + reasoning eval (10 scenarios) | corpus/*/scenario.json, schemas/*.json, validators/*.sh, comparison/, reasoning/ | templates/.claude/hooks/*, skill outputs, wiki/heuristics/ (reasoning eval) | Scored eval report (text), comparison results, reasoning baseline scores |
 | docs/ | Generated reports (7-Layer architecture) | report.html (package inventory, Eval/Specs categories), workflow.html (12-hook table, Enforcement + Memory Bridge sections) | Project files, templates/.claude/skills/MANIFEST, templates/.claude/settings.json | HTML package inventory + workflow breakdown |
 | scripts/ | Multi-agent sync + report generation + eval + delivery + settings registration | sync-rules.sh, generate-report.py (~350 lines), generate-workflow.py (~800 lines), eval-runner.sh (~310 lines), generate-delivery-report.py (196 lines), register-settings.py (~120 lines, hooks + mcp subcommands for JSON merge) | AGENTS.md, project tree, eval/corpus/, templates/.claude/skills/MANIFEST, templates/.claude/settings.json, modules.json | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md, docs/report.html, docs/workflow.html, eval report (text), delivery report (HTML), settings.json (hook + MCP registration) |
-| tests/ | Automated bash test suite (~306 tests, including 3 README accuracy + 6 report staleness + 23 functional verification + ~10 register-settings.py tests + 2 companion validation) | helpers.sh, test_*.sh | install.sh, scripts/, templates/, docs/, modules.json | stdout (pass/fail) |
+| tests/ | Automated bash test suite (~310 tests, including 3 README accuracy + 6 report staleness + 23 functional verification + ~10 register-settings.py tests + 2 companion validation + 4 heuristic/eval assertions) | helpers.sh, test_*.sh | install.sh, scripts/, templates/, docs/, modules.json | stdout (pass/fail) |
 | templates/.claude/hooks/ | Claude Code lifecycle hook templates (17 files + session-start.d/ with 2 modules). All hooks use `[nana:<hook>]` message prefix (exception: `[dev-wiki:post-commit]` kept as semantic trigger). All use jq for JSON parsing (detect-loop.sh is pure bash exception). enforce-spec.sh, enforce-loop.sh, enforce-memory.sh write enforcement.log (JSONL, 500-line cap). PostToolUse hooks use `.tool_input.file_path // .input.file_path` canonical path with defensive fallback. | session-start.sh, session-start.d/{wk-prune,memory-nudge}.sh, pre-compact.sh, post-compact.sh, post-commit.sh, context-size-check.sh, dev-wiki-scope-check.sh, session-stop.sh, stale-queue.sh, audit-log.sh, enforce-spec.sh, enforce-loop.sh, enforce-memory.sh, detect-loop.sh, scan-secrets.sh, etc. | .dev-wiki/ state, .claude/rules/, specs/*.md, .claude/enforce, ~/.claude/enforce-memory | stdout (context injection, safety gates, enforcement blocking, loop detection, commit notification, memory gate, scope check, stale queue), .dev-wiki/enforcement.log |
 | templates/.claude/rules/ | Identity + lifecycle rules (4 files) | nana-soul.md (59 lines), nana-personal.md, file-lifecycle.md, py-session-state.md | -- | -- |
 | templates/.claude/skills/ | 26 skill directories + MANIFEST with descriptions (~130 files) | SKILL.md files + companion .md files (incl. plan-review-companion.md, delivery-flow.md) | -- | -- |
@@ -91,7 +94,7 @@ Bash + jq (hooks + eval). memory_server requires python3 + pip deps (mcp, pydant
 
 ## Test Organization
 
-~306 automated tests (7 scripts) + 50 eval scenarios (4 categories). `make test` runs regression tests fail-fast in temp dirs. `make eval` runs scored eval separately (requires jq).
+~310 automated tests (7 scripts) + 50 eval scenarios (4 categories) + 10 reasoning eval scenarios. `make test` runs regression tests. `make eval` runs scored eval (jq). Reasoning eval: `python3 eval/reasoning/run-eval.py` (subagent-based, non-deterministic).
 
 ## Known Issues
 

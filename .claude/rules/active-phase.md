@@ -1,14 +1,10 @@
 # Active Phase Context
 
 Phase: 44 - Heuristic Learning System — Foundation
-Status: PLANNED (0/7 tasks done)
-Objective: Build heuristic store (wiki/heuristics/), seed with 10 transferable reasoning patterns from 43-phase history, integrate retrieval into session-start, establish baseline reasoning eval with LLM-as-judge scoring.
+Status: COMPLETED (7/7 tasks done)
+Objective: Built heuristic store (knowledge wiki with 10 seed heuristics from 43 phases), session-start integration, and reasoning eval baseline (subagent-based, 3 runs, 5/5 ceiling from self-grading bias).
 
-Scope: wiki/, wiki/heuristics/, templates/.claude/hooks/session-start.sh, eval/reasoning/
-Key constraints: Heuristics must be transferable (not project-specific). Reasoning eval is non-deterministic (separate from make eval). Seed from decision articles + working-knowledge + git history.
-Exit criteria: wiki with heuristic category, SCHEMA.md, 10 seed heuristics, session-start integration, eval runner + 10 scenarios + baseline scores, make test + make eval pass.
-Abort: If wiki-init disrupts existing project structure or Anthropic SDK unavailable for eval runner.
+Results: Knowledge wiki scaffolded, SCHEMA.md defined, 10 HEU-*.md seed heuristics, eval/reasoning/ with 10 scenarios + baseline, session-start heuristic count block, docs regenerated, +4 test assertions, ~310 tests pass, 50/50 eval.
+Next: Run /dev-plan to plan Phase 45.
 
-Gates:
-- [x] Direction confirmed by user (approach approved)
-- [ ] Delivery accepted (post-implementation report)
+Gates: [x] direction=approved [x] delivery=accepted

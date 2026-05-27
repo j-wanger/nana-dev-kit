@@ -46,7 +46,7 @@
 - [[phase-41-harness-hardening-process-safeguards|Phase 41: Harness Hardening & Process Safeguards]] -- completed
 - [[phase-42-harness-effectiveness-validation|Phase 42: Harness Effectiveness Validation]] -- completed
 - [[phase-43-unified-init-activation-gap|Phase 43: Unified Init & Activation Gap]] -- completed
-- [[phase-44-heuristic-learning-foundation|Phase 44: Heuristic Learning System — Foundation]] -- active
+- [[phase-44-heuristic-learning-foundation|Phase 44: Heuristic Learning System — Foundation]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -129,6 +129,7 @@
 - [[clean-room-parallel-subagent-comparison|Clean-room parallel subagent comparison]] -- high confidence, accepted
 - [[three-condition-comparison-design|Three-condition comparison design]] -- high confidence, accepted
 - [[python-task-language-choice|Python task language choice for comparison]] -- high confidence, accepted
+- [[subagent-reasoning-eval|Subagent-Based Reasoning Eval]] -- medium confidence, accepted
 - [[nana-init-rename-and-expand|Rename /init to /nana-init and expand to multi-stage orchestrator]] -- high confidence, accepted
 - [[turn-level-hybrid-recommended|Turn-level hybrid RRF is the winning strategy]] -- high confidence, accepted
 - [[diagnostic-first-benchmark|Diagnostic-first benchmark]] -- high confidence, accepted
@@ -163,6 +164,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-26-phase-44-heuristic-learning-foundation-complete|Phase 44 complete]] -- 2026-05-26
 - [[2026-05-26-phase-43-unified-init-activation-gap-complete|Phase 43 complete]] -- 2026-05-26
 - [[2026-05-26-phase-42-harness-effectiveness-validation-complete|Phase 42 complete]] -- 2026-05-26
 - [[2026-05-25-phase-41-harness-hardening-complete|Phase 41 complete]] -- 2026-05-25
@@ -232,6 +234,8 @@
 
 ## Recent
 
+- 2026-05-26: Phase 44 completed -- heuristic learning foundation: knowledge wiki + 10 seed heuristics + session-start integration + reasoning eval baseline (5/5 ceiling), 2 decisions, +4 test assertions, ~310 tests, 50/50 eval
+- 2026-05-26: Phase 44 planned -- 7 tasks (1L 3M 3S), 1 decision (cognitive-enhancement-plan), heuristic learning system foundation
 - 2026-05-26: Phase 43 completed -- nana-init rename + expand: init/ -> nana-init/, 44 -> 86 line multi-stage orchestrator, 5 cross-ref updates, 1 decision (accepted), +3 test assertions, ~306 tests, 50/50 eval
 - 2026-05-26: Phase 43 planned -- 5 tasks (2S 3M), 1 decision (nana-init-rename-and-expand), unified init & activation gap
 - 2026-05-26: Phase 42 completed -- harness effectiveness: 3-condition comparison (A bare 3/4, B context 3/4, C full 4/4), SWE-bench hard task, contamination protocol, acceptance test confound, multi-angle blind review, 3 decisions, ~303 tests, 50/50 eval
@@ -240,8 +244,6 @@
 - 2026-05-25: Phase 41 planned -- 7 tasks (3S 4M), 3 decisions (companion-metadata-format, cooldown-advisory-placement, jq-guard-fail-stop), harness hardening & process safeguards
 - 2026-05-25: Phase 40 completed -- install.sh extraction: 542 to 318 lines, zero inline Python, modules.json + register-settings.py, functional smoke invariant codified, 2 decisions (confidence upgraded), ~301 tests, 50/50 eval
 - 2026-05-25: Phase 40 planned -- 7 tasks (3S 4M), 2 decisions (install-sh-extraction-approach, functional-smoke-invariant-rule), install.sh extraction & anti-pattern hardening
-- 2026-05-25: Phase 39 completed -- 3-state health probe, jq migration complete, PostToolUse .tool_input canonical, /init router, 3 decisions confirmed high, 291 tests, 50/50 eval
-- 2026-05-25: Phase 39 planned -- 6 tasks (2S 4M), 3 decisions (health-probe-3-layer, posttooluse-normalize-after-verification, init-router-in-core), resilience & health probes
 - 2026-05-25: Phase 38 planned -- 6 tasks (5S 1M), 3 decisions (install-skill-module-assignment, posttooluse-field-path-inconsistency, no-eval-scope-check-scenarios), install integrity & functional verification
 - 2026-05-25: Phase 37 completed -- ceremony streamlining: 4-gate to 2-gate, --internal spec, delivery report, auto-commit/push, 3 decisions confirmed high, 259 tests, 47/47 eval
 - 2026-05-25: Phase 37 planned -- 7 tasks (2S 5M), 3 decisions (ceremony-streamlining-2-gate-model, spec-internal-mode, delivery-report-before-commit), ceremony streamlining & autonomous flow

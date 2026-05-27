@@ -458,7 +458,7 @@
 - [x] Expand SKILL.md to multi-stage orchestrator — `grep -q 'dev-init' templates/.claude/skills/nana-init/SKILL.md` fails (RED), rewrite SKILL.md to ~80-120 lines: per-component state detection (language markers, .dev-wiki/, wiki/), language scaffold routing (existing logic), dev-init dispatch via Skill(skill="dev-init") if .dev-wiki/ absent, wiki-init prompt + dispatch via Skill(skill="wiki-init") if user opts in (GREEN), verify line count ≤120 and all dispatch paths clear (REFACTOR) | scope: templates/.claude/skills/nana-init/SKILL.md | success: `grep -q 'dev-init' templates/.claude/skills/nana-init/SKILL.md && grep -q 'wiki-init' templates/.claude/skills/nana-init/SKILL.md && grep -q 'Skill.*dev-init' templates/.claude/skills/nana-init/SKILL.md && [ $(wc -l < templates/.claude/skills/nana-init/SKILL.md) -le 120 ]` | size: M
 - [x] Update tests for expanded SKILL.md + final exit criteria verify — `grep -q 'dev-init' tests/test_templates.sh` in nana-init context fails (RED), add test_templates.sh assertions for SKILL.md mentioning dev-init, wiki-init, Skill() dispatch, line count ≤120 (GREEN) | scope: tests/test_templates.sh | success: `grep -q 'dev-init' tests/test_templates.sh && grep -q 'nana-init' tests/test_templates.sh && make test && make eval 2>&1 | grep -qE 'Score.*100'` | size: S
 
-<!-- gate-log:phase-44 direction=approved delivery=pending -->
+<!-- gate-log:phase-44 direction=approved delivery=accepted -->
 
 ## Phase 44: Heuristic Learning System — Foundation
 

@@ -1,5 +1,6 @@
 # Dev Wiki Log
 
+[2026-05-26T23:59:00] DEBRIEF -- 2 decisions (subagent-reasoning-eval new, cognitive-enhancement-plan existing), 1 journal, tasks verified, state refreshed, Phase 44 completed, ~310 tests, 50/50 eval
 [2026-05-26T23:00:00] PLAN -- Phase 44 planned, 7 tasks (1L+3M+3S), 1 decision (cognitive-enhancement-plan). Heuristic learning foundation: wiki scaffold, schema, 10 seed heuristics, session-start integration, reasoning eval baseline.
 [2026-05-26T22:00:00] DEBRIEF -- 1 decision (nana-init-rename-and-expand accepted), 1 journal, tasks verified, state refreshed, Phase 43 completed, ~306 tests, 50/50 eval
 [2026-05-26T13:00:00] PLAN -- Phase 43 planned, 5 tasks, 1 decision (nana-init-rename-and-expand)
