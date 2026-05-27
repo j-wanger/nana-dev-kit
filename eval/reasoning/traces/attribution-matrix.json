@@ -1,0 +1,477 @@
+{
+  "generated": "auto",
+  "full_set_condition": "full-set",
+  "heuristics_ablated": [
+    "IRON-001",
+    "IRON-002",
+    "IRON-003",
+    "IRON-004",
+    "IRON-005"
+  ],
+  "scenarios": [
+    "015-rewrite-vs-refactor-auth",
+    "018-feature-flag-debt",
+    "020-tech-debt-triage"
+  ],
+  "dimensions": [
+    "decision",
+    "reasoning",
+    "antipattern"
+  ],
+  "threshold": {
+    "delta": 0.5,
+    "variance": 0.5
+  },
+  "classifications": [
+    {
+      "heuristic_id": "IRON-001",
+      "scenario_id": "015-rewrite-vs-refactor-auth",
+      "dimension": "decision",
+      "full_set_mean": 3.67,
+      "loo_mean": 3.67,
+      "delta": 0.0,
+      "variance": 3.5556,
+      "classification": "uncertain"
+    },
+    {
+      "heuristic_id": "IRON-001",
+      "scenario_id": "015-rewrite-vs-refactor-auth",
+      "dimension": "reasoning",
+      "full_set_mean": 4.0,
+      "loo_mean": 4.0,
+      "delta": 0.0,
+      "variance": 2.0,
+      "classification": "uncertain"
+    },
+    {
+      "heuristic_id": "IRON-001",
+      "scenario_id": "015-rewrite-vs-refactor-auth",
+      "dimension": "antipattern",
+      "full_set_mean": 3.67,
+      "loo_mean": 3.67,
+      "delta": 0.0,
+      "variance": 3.5556,
+      "classification": "uncertain"
+    },
+    {
+      "heuristic_id": "IRON-001",
+      "scenario_id": "018-feature-flag-debt",
+      "dimension": "decision",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-001",
+      "scenario_id": "018-feature-flag-debt",
+      "dimension": "reasoning",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-001",
+      "scenario_id": "018-feature-flag-debt",
+      "dimension": "antipattern",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-001",
+      "scenario_id": "020-tech-debt-triage",
+      "dimension": "decision",
+      "full_set_mean": 5.0,
+      "loo_mean": 4.0,
+      "delta": -1.0,
+      "variance": 2.0,
+      "classification": "uncertain"
+    },
+    {
+      "heuristic_id": "IRON-001",
+      "scenario_id": "020-tech-debt-triage",
+      "dimension": "reasoning",
+      "full_set_mean": 5.0,
+      "loo_mean": 4.0,
+      "delta": -1.0,
+      "variance": 2.0,
+      "classification": "uncertain"
+    },
+    {
+      "heuristic_id": "IRON-001",
+      "scenario_id": "020-tech-debt-triage",
+      "dimension": "antipattern",
+      "full_set_mean": 5.0,
+      "loo_mean": 3.67,
+      "delta": -1.33,
+      "variance": 3.5556,
+      "classification": "uncertain"
+    },
+    {
+      "heuristic_id": "IRON-002",
+      "scenario_id": "015-rewrite-vs-refactor-auth",
+      "dimension": "decision",
+      "full_set_mean": 3.67,
+      "loo_mean": 5.0,
+      "delta": 1.33,
+      "variance": 0.0,
+      "classification": "helped"
+    },
+    {
+      "heuristic_id": "IRON-002",
+      "scenario_id": "015-rewrite-vs-refactor-auth",
+      "dimension": "reasoning",
+      "full_set_mean": 4.0,
+      "loo_mean": 5.0,
+      "delta": 1.0,
+      "variance": 0.0,
+      "classification": "helped"
+    },
+    {
+      "heuristic_id": "IRON-002",
+      "scenario_id": "015-rewrite-vs-refactor-auth",
+      "dimension": "antipattern",
+      "full_set_mean": 3.67,
+      "loo_mean": 5.0,
+      "delta": 1.33,
+      "variance": 0.0,
+      "classification": "helped"
+    },
+    {
+      "heuristic_id": "IRON-002",
+      "scenario_id": "018-feature-flag-debt",
+      "dimension": "decision",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-002",
+      "scenario_id": "018-feature-flag-debt",
+      "dimension": "reasoning",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-002",
+      "scenario_id": "018-feature-flag-debt",
+      "dimension": "antipattern",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-002",
+      "scenario_id": "020-tech-debt-triage",
+      "dimension": "decision",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-002",
+      "scenario_id": "020-tech-debt-triage",
+      "dimension": "reasoning",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-002",
+      "scenario_id": "020-tech-debt-triage",
+      "dimension": "antipattern",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-003",
+      "scenario_id": "015-rewrite-vs-refactor-auth",
+      "dimension": "decision",
+      "full_set_mean": 3.67,
+      "loo_mean": 5.0,
+      "delta": 1.33,
+      "variance": 0.0,
+      "classification": "helped"
+    },
+    {
+      "heuristic_id": "IRON-003",
+      "scenario_id": "015-rewrite-vs-refactor-auth",
+      "dimension": "reasoning",
+      "full_set_mean": 4.0,
+      "loo_mean": 5.0,
+      "delta": 1.0,
+      "variance": 0.0,
+      "classification": "helped"
+    },
+    {
+      "heuristic_id": "IRON-003",
+      "scenario_id": "015-rewrite-vs-refactor-auth",
+      "dimension": "antipattern",
+      "full_set_mean": 3.67,
+      "loo_mean": 5.0,
+      "delta": 1.33,
+      "variance": 0.0,
+      "classification": "helped"
+    },
+    {
+      "heuristic_id": "IRON-003",
+      "scenario_id": "018-feature-flag-debt",
+      "dimension": "decision",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-003",
+      "scenario_id": "018-feature-flag-debt",
+      "dimension": "reasoning",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-003",
+      "scenario_id": "018-feature-flag-debt",
+      "dimension": "antipattern",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-003",
+      "scenario_id": "020-tech-debt-triage",
+      "dimension": "decision",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-003",
+      "scenario_id": "020-tech-debt-triage",
+      "dimension": "reasoning",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-003",
+      "scenario_id": "020-tech-debt-triage",
+      "dimension": "antipattern",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-004",
+      "scenario_id": "015-rewrite-vs-refactor-auth",
+      "dimension": "decision",
+      "full_set_mean": 3.67,
+      "loo_mean": 3.67,
+      "delta": 0.0,
+      "variance": 3.5556,
+      "classification": "uncertain"
+    },
+    {
+      "heuristic_id": "IRON-004",
+      "scenario_id": "015-rewrite-vs-refactor-auth",
+      "dimension": "reasoning",
+      "full_set_mean": 4.0,
+      "loo_mean": 4.0,
+      "delta": 0.0,
+      "variance": 2.0,
+      "classification": "uncertain"
+    },
+    {
+      "heuristic_id": "IRON-004",
+      "scenario_id": "015-rewrite-vs-refactor-auth",
+      "dimension": "antipattern",
+      "full_set_mean": 3.67,
+      "loo_mean": 3.67,
+      "delta": 0.0,
+      "variance": 3.5556,
+      "classification": "uncertain"
+    },
+    {
+      "heuristic_id": "IRON-004",
+      "scenario_id": "018-feature-flag-debt",
+      "dimension": "decision",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-004",
+      "scenario_id": "018-feature-flag-debt",
+      "dimension": "reasoning",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-004",
+      "scenario_id": "018-feature-flag-debt",
+      "dimension": "antipattern",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-004",
+      "scenario_id": "020-tech-debt-triage",
+      "dimension": "decision",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-004",
+      "scenario_id": "020-tech-debt-triage",
+      "dimension": "reasoning",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-004",
+      "scenario_id": "020-tech-debt-triage",
+      "dimension": "antipattern",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-005",
+      "scenario_id": "015-rewrite-vs-refactor-auth",
+      "dimension": "decision",
+      "full_set_mean": 3.67,
+      "loo_mean": 5.0,
+      "delta": 1.33,
+      "variance": 0.0,
+      "classification": "helped"
+    },
+    {
+      "heuristic_id": "IRON-005",
+      "scenario_id": "015-rewrite-vs-refactor-auth",
+      "dimension": "reasoning",
+      "full_set_mean": 4.0,
+      "loo_mean": 5.0,
+      "delta": 1.0,
+      "variance": 0.0,
+      "classification": "helped"
+    },
+    {
+      "heuristic_id": "IRON-005",
+      "scenario_id": "015-rewrite-vs-refactor-auth",
+      "dimension": "antipattern",
+      "full_set_mean": 3.67,
+      "loo_mean": 5.0,
+      "delta": 1.33,
+      "variance": 0.0,
+      "classification": "helped"
+    },
+    {
+      "heuristic_id": "IRON-005",
+      "scenario_id": "018-feature-flag-debt",
+      "dimension": "decision",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-005",
+      "scenario_id": "018-feature-flag-debt",
+      "dimension": "reasoning",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-005",
+      "scenario_id": "018-feature-flag-debt",
+      "dimension": "antipattern",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-005",
+      "scenario_id": "020-tech-debt-triage",
+      "dimension": "decision",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-005",
+      "scenario_id": "020-tech-debt-triage",
+      "dimension": "reasoning",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    },
+    {
+      "heuristic_id": "IRON-005",
+      "scenario_id": "020-tech-debt-triage",
+      "dimension": "antipattern",
+      "full_set_mean": 5.0,
+      "loo_mean": 5.0,
+      "delta": 0.0,
+      "variance": 0.0,
+      "classification": "irrelevant"
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "mode": "with-iron-rules",
+  "scenarios": 20,
+  "method": "subagent (Sonnet agent with IRON RULES context injection, Sonnet judge-v2, separate contexts per run)",
+  "judge_prompt": "eval/reasoning/judges/reasoning-judge-v2.md",
+  "iron_rules_injected": ["IRON-001", "IRON-002", "IRON-003", "IRON-004", "IRON-005"],
+  "injection_method": "Condensed IRON RULES (Always/Never for each) prepended to agent system prompt. Judge receives agent response only — does not see IRON RULES.",
+  "note": "IRON RULES produced measurable improvement on 2 of 3 differentiating scenarios (012, 014) and one regression (018). Net delta: +5 across differentiating scenarios. 012 improved dramatically (agent now matches expert recommendation with IRON-003/005 framing). 018 regressed because IRON-004 (simpler system) pushed toward incremental cleanup, contradicting expert's 'dedicate sprint' recommendation.",
+  "delta_summary": {
+    "improved_scenarios": {
+      "012-api-backward-compat": {"baseline": {"decision": 2, "reasoning": 3, "antipattern": 2}, "iron_rules": {"decision": 5, "reasoning": 5, "antipattern": 5}, "delta": "+8"},
+      "014-library-dep-pinning": {"baseline": {"decision": 4, "reasoning": 4, "antipattern": 4}, "iron_rules": {"decision": 5, "reasoning": 5, "antipattern": 5}, "delta": "+3"}
+    },
+    "regressed_scenarios": {
+      "018-feature-flag-debt": {"baseline": {"decision": 4, "reasoning": 4, "antipattern": 5}, "iron_rules": {"decision": 2, "reasoning": 3, "antipattern": 2}, "delta": "-6"}
+    },
+    "net_delta_differentiating": "+5 (across 012, 014, 018)",
+    "total_baseline_mean": 4.68,
+    "total_iron_rules_mean": 4.73,
+    "net_mean_delta": "+0.05"
+  },
+  "runs": [
+    [
+      {"scenario_id": "001-database-choice", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "002-hook-error-strategy", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "003-structural-vs-functional-tests", "scores": {"decision": 5, "reasoning": 5, "antipattern": 4}},
+      {"scenario_id": "004-vendored-dep-extension", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "005-ceremony-reduction", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "006-cross-domain-port", "scores": {"decision": 5, "reasoning": 5, "antipattern": 4}},
+      {"scenario_id": "007-optional-subsystem-failure", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "008-false-positive-detection", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "009-latency-budget-language", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "010-dedup-at-scale", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "011-monorepo-migration-timing", "scores": {"decision": 5, "reasoning": 4, "antipattern": 4}},
+      {"scenario_id": "012-api-backward-compat", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "013-ci-slow-flaky", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "014-library-dep-pinning", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "015-rewrite-vs-refactor-auth", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "016-build-vs-buy-observability", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "017-schema-migration-strategy", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "018-feature-flag-debt", "scores": {"decision": 2, "reasoning": 3, "antipattern": 2}},
+      {"scenario_id": "019-consistency-vs-availability", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "020-tech-debt-triage", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}}
+    ],
+    [
+      {"scenario_id": "001-database-choice", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "002-hook-error-strategy", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "003-structural-vs-functional-tests", "scores": {"decision": 5, "reasoning": 5, "antipattern": 4}},
+      {"scenario_id": "004-vendored-dep-extension", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "005-ceremony-reduction", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "006-cross-domain-port", "scores": {"decision": 5, "reasoning": 5, "antipattern": 4}},
+      {"scenario_id": "007-optional-subsystem-failure", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "008-false-positive-detection", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "009-latency-budget-language", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "010-dedup-at-scale", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "011-monorepo-migration-timing", "scores": {"decision": 5, "reasoning": 4, "antipattern": 4}},
+      {"scenario_id": "012-api-backward-compat", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "013-ci-slow-flaky", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "014-library-dep-pinning", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "015-rewrite-vs-refactor-auth", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "016-build-vs-buy-observability", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "017-schema-migration-strategy", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "018-feature-flag-debt", "scores": {"decision": 2, "reasoning": 3, "antipattern": 2}},
+      {"scenario_id": "019-consistency-vs-availability", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "020-tech-debt-triage", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}}
+    ],
+    [
+      {"scenario_id": "001-database-choice", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "002-hook-error-strategy", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "003-structural-vs-functional-tests", "scores": {"decision": 5, "reasoning": 5, "antipattern": 4}},
+      {"scenario_id": "004-vendored-dep-extension", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "005-ceremony-reduction", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "006-cross-domain-port", "scores": {"decision": 5, "reasoning": 5, "antipattern": 4}},
+      {"scenario_id": "007-optional-subsystem-failure", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "008-false-positive-detection", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "009-latency-budget-language", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "010-dedup-at-scale", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "011-monorepo-migration-timing", "scores": {"decision": 5, "reasoning": 4, "antipattern": 4}},
+      {"scenario_id": "012-api-backward-compat", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "013-ci-slow-flaky", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "014-library-dep-pinning", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "015-rewrite-vs-refactor-auth", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "016-build-vs-buy-observability", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "017-schema-migration-strategy", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "018-feature-flag-debt", "scores": {"decision": 2, "reasoning": 3, "antipattern": 2}},
+      {"scenario_id": "019-consistency-vs-availability", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
+      {"scenario_id": "020-tech-debt-triage", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}}
+    ]
+  ]
+}

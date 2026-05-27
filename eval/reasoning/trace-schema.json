@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ablation Trace Result",
+  "description": "Per-condition ablation results for heuristic attribution analysis",
+  "type": "object",
+  "required": ["condition", "scenarios", "corpus_version", "runs"],
+  "properties": {
+    "condition": {
+      "type": "string",
+      "description": "Ablation condition: 'baseline-no-heuristics', 'full-set', or 'leave-one-out-IRON-NNN'"
+    },
+    "heuristic_id": {
+      "type": ["string", "null"],
+      "description": "ID of the removed heuristic (null for baseline/full-set, e.g. 'IRON-004' for leave-one-out)"
+    },
+    "scenario_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Scenario IDs included in this condition"
+    },
+    "scenarios": {
+      "type": "integer",
+      "description": "Number of scenarios evaluated"
+    },
+    "corpus_version": {
+      "type": "string",
+      "description": "Heuristic corpus snapshot identifier (e.g. '2026-05-27-15heuristics')"
+    },
+    "judge_prompt": {
+      "type": "string",
+      "description": "Judge version used (e.g. 'reasoning-judge-v2')"
+    },
+    "prompt_hash": {
+      "type": "string",
+      "description": "SHA256 of the agent system prompt template (minus ablated rule)"
+    },
+    "runs": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["scenario_id", "scores"],
+          "properties": {
+            "scenario_id": { "type": "string" },
+            "scores": {
+              "type": "object",
+              "required": ["decision", "reasoning", "antipattern"],
+              "properties": {
+                "decision": { "type": "integer", "minimum": 1, "maximum": 5 },
+                "reasoning": { "type": "integer", "minimum": 1, "maximum": 5 },
+                "antipattern": { "type": "integer", "minimum": 1, "maximum": 5 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "created": { "type": "string" },
+        "agent_model": { "type": "string" },
+        "judge_model": { "type": "string" }
+      }
+    }
+  }
+}

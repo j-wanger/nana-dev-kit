@@ -13,7 +13,7 @@ source_phase: <N>       # Phase number where this pattern was discovered (or "mu
 confidence: high|medium # How well-validated is this pattern?
 helpful: 0              # Counter: times this heuristic led to a good outcome
 harmful: 0              # Counter: times this heuristic misled or was ignored to good effect
-status: active          # active | deprecated | under-review
+status: active          # active | deprecated | under-review | iron
 ---
 ```
 
@@ -38,9 +38,19 @@ Each bullet should name the specific wrong action and why it fails.
 2-4 sentences explaining the underlying principle. This is what makes the heuristic transferable — readers who understand the WHY can adapt the ALWAYS/NEVER to novel situations.
 
 ### ## Anti-pattern
-Name the most common wrong approach for this trigger situation.
-Explain WHY it seems right but fails. Include the failure mechanism.
-Format: name the pattern, then "→" followed by why it breaks.
+Name the most common wrong approach, then optionally add a structured table of additional failure modes.
+
+**Primary anti-pattern (required):** Name the pattern, then "→" followed by why it breaks.
+
+**Anti-pattern table (optional, 3-5 rows max):** For heuristics with multiple known failure modes, add a structured table after the primary anti-pattern paragraph:
+
+| Failure Mode | Detection Signal | Why It Fails |
+|---|---|---|
+| Name of the wrong approach | Concrete observable: metric, file pattern, phrase in rationale, or structural property | Specific mechanism of failure |
+
+Each Detection Signal must be a concrete observable — answerable by "Could I write a grep/lint/eval check for this?" If not, rewrite it. Vague signals like "watch for complexity" are not allowed.
+
+If a heuristic has no observed failure modes beyond the primary anti-pattern, omit the table or add: *"No additional anti-patterns observed — monitor."*
 
 ### ## Source
 Which project phases, decisions, or incidents generated this heuristic.
@@ -97,6 +107,12 @@ model also makes debugging trivial — one .db file to inspect, copy, or delete.
 constraint. The constraint is: `pip install && run` must work without Docker,
 without servers, without configuration. Every external dependency is a
 potential install failure.
+
+| Failure Mode | Detection Signal | Why It Fails |
+|---|---|---|
+| Redis for caching in a CLI tool | `docker` or `redis-server` in install steps | Adds server dependency to a tool that runs once per invocation |
+| MongoDB for document storage | `pymongo` or `mongoose` in dependencies + single-user context | Network server for local-only data; connection setup cost exceeds query time |
+| Custom file-based JSON store | Hand-rolled `json.load/dump` with manual locking | Re-invents SQLite poorly; no ACID, no indexing, breaks on concurrent access |
 
 ## Source
 Phase 4: memory server chose SQLite. Phase 32: LongMemEval benchmark showed

@@ -761,12 +761,151 @@ else
   test_fail "eval/reasoning/judges/reasoning-judge.md missing"
 fi
 
-test_start "eval/reasoning has >= 10 scenario files"
+test_start "eval/reasoning has >= 20 scenario files"
 SCENARIO_COUNT=$(find "$PROJECT_ROOT/eval/reasoning/corpus" -name "*.json" 2>/dev/null | wc -l | tr -d ' ')
-if [ "$SCENARIO_COUNT" -ge 10 ]; then
+if [ "$SCENARIO_COUNT" -ge 20 ]; then
   test_pass
 else
-  test_fail "eval/reasoning has $SCENARIO_COUNT scenarios (need >= 10)"
+  test_fail "eval/reasoning has $SCENARIO_COUNT scenarios (need >= 20)"
+fi
+
+test_start "eval/reasoning/judges/reasoning-judge-v2.md exists"
+if [ -f "$PROJECT_ROOT/eval/reasoning/judges/reasoning-judge-v2.md" ]; then
+  test_pass
+else
+  test_fail "reasoning-judge-v2.md missing"
+fi
+
+test_start "eval/reasoning/baseline/results-v2.json exists"
+if [ -f "$PROJECT_ROOT/eval/reasoning/baseline/results-v2.json" ]; then
+  test_pass
+else
+  test_fail "results-v2.json missing"
+fi
+
+test_start "wiki/heuristics has >= 5 IRON RULES"
+IRON_COUNT=$(find "$PROJECT_ROOT/wiki/heuristics" -name "IRON-*.md" 2>/dev/null | wc -l | tr -d ' ')
+if [ "$IRON_COUNT" -ge 5 ]; then
+  test_pass
+else
+  test_fail "wiki/heuristics has $IRON_COUNT IRON RULES (need >= 5)"
+fi
+
+test_start "SCHEMA.md includes iron status"
+if grep -q 'iron' "$PROJECT_ROOT/wiki/heuristics/SCHEMA.md"; then
+  test_pass
+else
+  test_fail "SCHEMA.md missing iron status"
+fi
+
+# Phase 46: Anti-pattern tables + heuristic capture
+test_start "SCHEMA.md has anti-pattern table format"
+if grep -q 'Failure Mode.*Detection Signal' "$PROJECT_ROOT/wiki/heuristics/SCHEMA.md"; then
+  test_pass
+else
+  test_fail "SCHEMA.md missing anti-pattern table format definition"
+fi
+
+test_start "All IRON RULES have anti-pattern tables"
+IRON_TABLE_MISSING=0
+for f in "$PROJECT_ROOT"/wiki/heuristics/IRON-*.md; do
+  if ! grep -q '| Failure Mode' "$f"; then
+    IRON_TABLE_MISSING=$((IRON_TABLE_MISSING + 1))
+  fi
+done
+if [ "$IRON_TABLE_MISSING" -eq 0 ]; then
+  test_pass
+else
+  test_fail "$IRON_TABLE_MISSING IRON RULES missing anti-pattern tables"
+fi
+
+test_start "heuristic-capture.md exists"
+if test -f "$PROJECT_ROOT/templates/.claude/skills/dev-debrief/heuristic-capture.md"; then
+  test_pass
+else
+  test_fail "templates/.claude/skills/dev-debrief/heuristic-capture.md missing"
+fi
+
+test_start "dev-debrief SKILL.md references heuristic capture"
+if grep -q 'heuristic.capture' "$PROJECT_ROOT/templates/.claude/skills/dev-debrief/SKILL.md"; then
+  test_pass
+else
+  test_fail "dev-debrief SKILL.md missing heuristic-capture reference"
+fi
+
+test_start "dev-debrief SKILL.md under 350 lines"
+DEBRIEF_LINES=$(wc -l < "$PROJECT_ROOT/templates/.claude/skills/dev-debrief/SKILL.md" | tr -d ' ')
+if [ "$DEBRIEF_LINES" -le 350 ]; then
+  test_pass
+else
+  test_fail "dev-debrief SKILL.md is $DEBRIEF_LINES lines (max 350)"
+fi
+
+# === Phase 47: Self-Dialogue ===
+
+test_start "self-dialogue-prompt.md exists"
+if test -f "$PROJECT_ROOT/templates/.claude/skills/dev-plan/self-dialogue-prompt.md"; then
+  test_pass
+else
+  test_fail "templates/.claude/skills/dev-plan/self-dialogue-prompt.md missing"
+fi
+
+test_start "dev-plan SKILL.md references self-dialogue"
+if grep -q 'self-dialogue' "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md"; then
+  test_pass
+else
+  test_fail "dev-plan SKILL.md missing self-dialogue reference"
+fi
+
+test_start "dev-plan SKILL.md under 350 lines"
+DEVPLAN_LINES=$(wc -l < "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md" | tr -d ' ')
+if [ "$DEVPLAN_LINES" -le 350 ]; then
+  test_pass
+else
+  test_fail "dev-plan SKILL.md is $DEVPLAN_LINES lines (max 350)"
+fi
+
+test_start "self-dialogue-injection.md exists"
+if test -f "$PROJECT_ROOT/eval/reasoning/self-dialogue-injection.md"; then
+  test_pass
+else
+  test_fail "eval/reasoning/self-dialogue-injection.md missing"
+fi
+
+# Phase 48: Trace collection + ablation analysis
+test_start "trace-schema.json exists and is valid JSON"
+if test -f "$PROJECT_ROOT/eval/reasoning/trace-schema.json" && python3 -c "import json; json.load(open('$PROJECT_ROOT/eval/reasoning/trace-schema.json'))"; then
+  test_pass
+else
+  test_fail "eval/reasoning/trace-schema.json missing or invalid"
+fi
+
+test_start "traces directory exists"
+if test -d "$PROJECT_ROOT/eval/reasoning/traces"; then
+  test_pass
+else
+  test_fail "eval/reasoning/traces/ directory missing"
+fi
+
+test_start "run-eval.py has --ablation mode"
+if python3 "$PROJECT_ROOT/eval/reasoning/run-eval.py" --help 2>&1 | grep -q 'ablation'; then
+  test_pass
+else
+  test_fail "run-eval.py missing --ablation mode"
+fi
+
+test_start "run-eval.py has --analyze mode"
+if python3 "$PROJECT_ROOT/eval/reasoning/run-eval.py" --help 2>&1 | grep -q 'analyze'; then
+  test_pass
+else
+  test_fail "run-eval.py missing --analyze mode"
+fi
+
+test_start "README documents ablation methodology"
+if grep -q 'ablation' "$PROJECT_ROOT/eval/reasoning/README.md"; then
+  test_pass
+else
+  test_fail "eval/reasoning/README.md missing ablation section"
 fi
 
 test_summary "test_templates"

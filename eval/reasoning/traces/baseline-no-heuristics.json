@@ -1,0 +1,148 @@
+{
+  "condition": "baseline-no-heuristics",
+  "heuristic_id": null,
+  "scenario_ids": [
+    "012-api-backward-compat",
+    "014-library-dep-pinning",
+    "015-rewrite-vs-refactor-auth",
+    "018-feature-flag-debt",
+    "020-tech-debt-triage"
+  ],
+  "scenarios": 5,
+  "corpus_version": "2026-05-27-15heuristics",
+  "judge_prompt": "reasoning-judge-v2",
+  "prompt_hash": "ablation-phase-48",
+  "runs": [
+    [
+      {
+        "scenario_id": "012-api-backward-compat",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "014-library-dep-pinning",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "015-rewrite-vs-refactor-auth",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "018-feature-flag-debt",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "020-tech-debt-triage",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      }
+    ],
+    [
+      {
+        "scenario_id": "012-api-backward-compat",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "014-library-dep-pinning",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "015-rewrite-vs-refactor-auth",
+        "scores": {
+          "decision": 4,
+          "reasoning": 4,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "018-feature-flag-debt",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "020-tech-debt-triage",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      }
+    ],
+    [
+      {
+        "scenario_id": "012-api-backward-compat",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "014-library-dep-pinning",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "015-rewrite-vs-refactor-auth",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "018-feature-flag-debt",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "020-tech-debt-triage",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      }
+    ]
+  ],
+  "metadata": {
+    "created": "2026-05-27",
+    "agent_model": "sonnet",
+    "judge_model": "sonnet"
+  }
+}

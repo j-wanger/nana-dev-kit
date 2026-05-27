@@ -176,6 +176,10 @@ Read `~/.claude/skills/dev-debrief/review-gate.md` for the full size-gated revie
 
 Read `~/.claude/skills/dev-debrief/memory-harvest.md` for the extraction procedure. Routes conversation-level institutional knowledge (corrections, preferences, failure lessons, non-obvious constraints) to `memory_store` MCP calls. Runs after conversation analysis (Step 4) so it can use the extracted substance as input. Do NOT duplicate phase decisions — those go to wiki articles in Step 5.
 
+### Step 4.8: Heuristic Capture *(Lite: skip)*
+
+Read `~/.claude/skills/dev-debrief/heuristic-capture.md` for the extraction procedure. Scans phase decisions for transferable reasoning patterns, applies transferability gate, dedup against existing heuristics, and proposes new heuristic articles for user confirmation. Do NOT auto-commit — user must approve each proposed heuristic.
+
 ### Step 5: Extract Decisions *(Lite: skip)*
 
 For each candidate decision from Step 4, read `~/.claude/skills/dev-wiki/decision-template.md` for the full decision extraction criteria (inclusion, exclusion, signal detection, confidence levels, noise prevention).

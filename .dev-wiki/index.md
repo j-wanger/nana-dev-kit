@@ -47,6 +47,10 @@
 - [[phase-42-harness-effectiveness-validation|Phase 42: Harness Effectiveness Validation]] -- completed
 - [[phase-43-unified-init-activation-gap|Phase 43: Unified Init & Activation Gap]] -- completed
 - [[phase-44-heuristic-learning-foundation|Phase 44: Heuristic Learning System — Foundation]] -- completed
+- [[phase-45-eval-calibration-iron-rules|Phase 45: Eval Calibration & IRON RULES]] -- completed
+- [[phase-46-anti-pattern-tables-heuristic-capture|Phase 46: Anti-Pattern Tables & Heuristic Capture]] -- completed
+- [[phase-47-self-dialogue-in-dev-plan|Phase 47: Self-Dialogue in Dev-Plan]] -- completed
+- [[phase-48-trace-collection-pattern-analysis|Phase 48: Trace Collection & Pattern Analysis]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -129,6 +133,16 @@
 - [[clean-room-parallel-subagent-comparison|Clean-room parallel subagent comparison]] -- high confidence, accepted
 - [[three-condition-comparison-design|Three-condition comparison design]] -- high confidence, accepted
 - [[python-task-language-choice|Python task language choice for comparison]] -- high confidence, accepted
+- [[eval-calibration-exemplar-based-judge-anchoring|Eval Calibration — Exemplar-Based Judge Anchoring]] -- high confidence, accepted
+- [[iron-rules-as-iron-status-heuristics|IRON RULES as Iron-Status Heuristics]] -- high confidence, accepted
+- [[anti-pattern-table-format-extension|Anti-pattern table format extension]] -- high confidence, accepted
+- [[iron-004-lifecycle-complexity-fix|IRON-004 lifecycle complexity fix]] -- high confidence, accepted
+- [[self-dialogue-dual-condition-eval|Self-Dialogue Dual-Condition Eval]] -- medium confidence, accepted
+- [[full-spec-ablation-scope|Full-Spec Ablation Scope (105 runs)]] -- high confidence, accepted
+- [[sequential-baseline-verification|Sequential Baseline Verification]] -- high confidence, accepted
+- [[scenario-type-selection-criteria|Scenario-Type Selection Criteria]] -- high confidence, accepted
+- [[no-prompt-length-padding|No Prompt-Length Padding for Ablation]] -- high confidence, accepted
+- [[stochastic-heuristic-interference|Stochastic Heuristic Interference (Negative Result)]] -- high confidence, accepted
 - [[subagent-reasoning-eval|Subagent-Based Reasoning Eval]] -- medium confidence, accepted
 - [[nana-init-rename-and-expand|Rename /init to /nana-init and expand to multi-stage orchestrator]] -- high confidence, accepted
 - [[turn-level-hybrid-recommended|Turn-level hybrid RRF is the winning strategy]] -- high confidence, accepted
@@ -164,6 +178,10 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-27-phase-48-trace-collection-pattern-analysis-complete|Phase 48 complete (stochastic interference — negative result)]] -- 2026-05-27
+- [[2026-05-27-phase-47-self-dialogue-in-dev-plan-complete|Phase 47 complete (negative result)]] -- 2026-05-27
+- [[2026-05-27-phase-46-anti-pattern-tables-heuristic-capture-complete|Phase 46 complete]] -- 2026-05-27
+- [[2026-05-27-phase-45-eval-calibration-iron-rules-complete|Phase 45 complete]] -- 2026-05-27
 - [[2026-05-26-phase-44-heuristic-learning-foundation-complete|Phase 44 complete]] -- 2026-05-26
 - [[2026-05-26-phase-43-unified-init-activation-gap-complete|Phase 43 complete]] -- 2026-05-26
 - [[2026-05-26-phase-42-harness-effectiveness-validation-complete|Phase 42 complete]] -- 2026-05-26
@@ -210,8 +228,10 @@
 
 ### Roadmap
 - [[roadmap-gap-analysis|Engineering Gap Analysis & Roadmap]] -- active, tracks open/closed gaps and build order
+- [[roadmap-cognitive-enhancement|Cognitive Enhancement Roadmap]] -- active, 7-phase heuristic learning plan (4/7 done)
 
 ### Status
+- [[2026-05-27-codebase-snapshot|Codebase Snapshot]] -- 2026-05-27
 - [[2026-05-26-codebase-snapshot|Codebase Snapshot]] -- 2026-05-26
 - [[2026-05-25-codebase-snapshot|Codebase Snapshot]] -- 2026-05-25
 - [[2026-05-24-codebase-snapshot|Codebase Snapshot]] -- 2026-05-24
@@ -234,6 +254,14 @@
 
 ## Recent
 
+- 2026-05-27: Phase 48 completed (stochastic interference — negative result) -- LOO ablation on 5 IRON RULES x 3 training scenarios (~75 invocations), stochastic interference finding, IRON-001 load-bearing, attribution matrix + selection criteria, 5 decisions (4 upgraded, 1 new), +5 test assertions, 162+ tests, 50/50 eval
+- 2026-05-27: Phase 48 planned -- 5 tasks (2S 2M 1L), 4 decisions (full-spec-ablation-scope, sequential-baseline-verification, scenario-type-selection-criteria, no-prompt-length-padding), trace collection & pattern analysis: leave-one-out ablation, attribution matrix, selection criteria
+- 2026-05-27: Phase 47 completed (negative result) -- self-dialogue in dev-plan: inline net negative, subagent net neutral, production companion + Step 6.0.5 wired, 1 decision, +4 test assertions, ~158 tests, 50/50 eval
+- 2026-05-27: Phase 47 planned -- 6 tasks (4S 1L 1M), 1 decision (self-dialogue-dual-condition-eval), self-dialogue in dev-plan: dual-condition eval (inline A + subagent B), production companion + Step 6.0.5
+- 2026-05-27: Phase 46 completed -- anti-pattern tables in all 5 IRON RULES, IRON-004 fix (scenario 018 +2.67), heuristic-capture.md companion (Step 4.8), delta measurement, scenario 012 regressed -0.67 (context dilution), 2 decisions (confidence upgraded), +5 test assertions, ~320 tests, 50/50 eval
+- 2026-05-27: Phase 46 planned -- 7 tasks (2S 5M), 2 decisions (anti-pattern-table-format-extension, iron-004-lifecycle-complexity-fix), anti-pattern tables + IRON-004 fix + heuristic capture + delta measurement
+- 2026-05-27: Phase 45 completed -- eval calibration + IRON RULES: 10 harder scenarios, judge v2 (exemplar-based), ceiling broken (19.4% below 5), 5 IRON RULES (0 conflicts), delta +5, 2 decisions (confidence upgraded), +5 test assertions, ~315 tests, 50/50 eval
+- 2026-05-27: Phase 45 planned -- 7 tasks (1L 5M 1S), 2 decisions (eval-calibration-exemplar-based-judge-anchoring, iron-rules-as-iron-status-heuristics), eval calibration + IRON RULES
 - 2026-05-26: Phase 44 completed -- heuristic learning foundation: knowledge wiki + 10 seed heuristics + session-start integration + reasoning eval baseline (5/5 ceiling), 2 decisions, +4 test assertions, ~310 tests, 50/50 eval
 - 2026-05-26: Phase 44 planned -- 7 tasks (1L 3M 3S), 1 decision (cognitive-enhancement-plan), heuristic learning system foundation
 - 2026-05-26: Phase 43 completed -- nana-init rename + expand: init/ -> nana-init/, 44 -> 86 line multi-stage orchestrator, 5 cross-ref updates, 1 decision (accepted), +3 test assertions, ~306 tests, 50/50 eval
@@ -242,7 +270,6 @@
 - 2026-05-25: Phase 42 planned -- 7 tasks (2S 4M 1L), 3 decisions (clean-room-parallel-subagent-comparison, three-condition-comparison-design, python-task-language-choice), harness effectiveness validation
 - 2026-05-25: Phase 41 completed -- harness hardening: jq guard, session timestamp, 92 companion metadata, bidirectional test, debrief enhancements, cooldown advisory, 3 decisions (confidence upgraded), ~303 tests, 50/50 eval
 - 2026-05-25: Phase 41 planned -- 7 tasks (3S 4M), 3 decisions (companion-metadata-format, cooldown-advisory-placement, jq-guard-fail-stop), harness hardening & process safeguards
-- 2026-05-25: Phase 40 completed -- install.sh extraction: 542 to 318 lines, zero inline Python, modules.json + register-settings.py, functional smoke invariant codified, 2 decisions (confidence upgraded), ~301 tests, 50/50 eval
 - 2026-05-25: Phase 40 planned -- 7 tasks (3S 4M), 2 decisions (install-sh-extraction-approach, functional-smoke-invariant-rule), install.sh extraction & anti-pattern hardening
 - 2026-05-25: Phase 38 planned -- 6 tasks (5S 1M), 3 decisions (install-skill-module-assignment, posttooluse-field-path-inconsistency, no-eval-scope-check-scenarios), install integrity & functional verification
 - 2026-05-25: Phase 37 completed -- ceremony streamlining: 4-gate to 2-gate, --internal spec, delivery report, auto-commit/push, 3 decisions confirmed high, 259 tests, 47/47 eval

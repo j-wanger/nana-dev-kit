@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 43</title>
+<title>Delivery Report: Phase 48</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,38 +21,44 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 43 &mdash; Unified Init &amp; Activation Gap</h1>
+<h1>Delivery Report: Phase 48 &mdash; Trace Collection &amp; Pattern Analysis</h1>
 
 <div class="summary">
   <div class="card"><div class="num">5/5</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">17</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">15</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (0 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">50/50</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+190</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-105</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">4</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">17:32</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+722</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-131</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">10</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">17:18</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>Rename init directory + tighten triggers: `test -d templates/.claude/skills/nana-init` fails (RED), `git mv templates...</td></tr>
-<tr><td>&#x2705;</td><td>Update cross-references — modules.json "init" → "nana-init" in core skills, install.sh echo/dry-run display strings (...</td></tr>
-<tr><td>&#x2705;</td><td>Update tests + rename checkpoint verify — `make test` fails because test_install.sh and test_templates.sh assert old ...</td></tr>
-<tr><td>&#x2705;</td><td>Expand SKILL.md to multi-stage orchestrator — `grep -q 'dev-init' templates/.claude/skills/nana-init/SKILL.md` fails ...</td></tr>
-<tr><td>&#x2705;</td><td>Update tests for expanded SKILL.md + final exit criteria verify — `grep -q 'dev-init' tests/test_templates.sh` in nan...</td></tr>
+<tr><td>&#x2705;</td><td>Trace schema + directory: test -d eval/reasoning/traces fails (RED), create traces/ directory + trace-schema.json def...</td></tr>
+<tr><td>&#x2705;</td><td>Extend run-eval.py with --ablation and --analyze modes: python3 eval/reasoning/run-eval.py --help</td></tr>
+<tr><td>&#x2705;</td><td>Execute ablation protocol — orchestrate via Claude Code subagents: (1) fresh no-heuristic baseline on 5 differentiati...</td></tr>
+<tr><td>&#x2705;</td><td>Attribution analysis + selection criteria: test -f eval/reasoning/traces/attribution-matrix.json fails (RED), run pyt...</td></tr>
+<tr><td>&#x2705;</td><td>README update + test assertions + verification: grep -q 'ablation' eval/reasoning/README.md fails (RED), update READM...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Rename /init to /nana-init and expand to multi-stage orchestrator</td><td>high</td></tr>
-<tr><td>Multi-angle subagent review for blind comparison</td><td>high</td></tr>
-<tr><td>SWE-bench comparison confound: acceptance test asymmetry</td><td>high</td></tr>
-<tr><td>Experimental contamination protocol</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Stochastic Heuristic Interference (Negative Result)</td><td>high</td></tr>
+<tr><td>No Prompt-Length Padding for Ablation</td><td>high</td></tr>
+<tr><td>Scenario-Type Selection Criteria</td><td>high</td></tr>
+<tr><td>Sequential Baseline Verification</td><td>high</td></tr>
+<tr><td>Full-Spec Ablation Scope (105 runs)</td><td>high</td></tr>
+<tr><td>Self-Dialogue Dual-Condition Eval</td><td>medium</td></tr>
+<tr><td>IRON-004 lifecycle complexity fix</td><td>high</td></tr>
+<tr><td>Anti-pattern table format extension</td><td>high</td></tr>
+<tr><td>Eval Calibration — Exemplar-Based Judge Anchoring</td><td>high</td></tr>
+<tr><td>IRON RULES as Iron-Status Heuristics</td><td>high</td></tr>
 </table>
 
 <h2>Files Changed</h2>
@@ -66,14 +72,12 @@
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
-<li><code>README.md</code></li>
-<li><code>install.sh</code></li>
-<li><code>modules.json</code></li>
-<li><code>templates/.claude/skills/MANIFEST</code></li>
-<li><code>templates/.claude/skills/init/SKILL.md</code></li>
-<li><code>templates/.claude/skills/nana-init/SKILL.md</code></li>
-<li><code>tests/test_install.sh</code></li>
+<li><code>eval/reasoning/README.md</code></li>
+<li><code>eval/reasoning/run-eval.py</code></li>
+<li><code>templates/.claude/skills/dev-debrief/SKILL.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/SKILL.md</code></li>
 <li><code>tests/test_templates.sh</code></li>
+<li><code>wiki/heuristics/SCHEMA.md</code></li>
 
 
 </ul>
@@ -91,7 +95,7 @@ All tests passed.</pre>
 <pre>Score: 50/50 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-05-26 17:32:41 by generate-delivery-report.py
+  Generated 2026-05-27 17:18:12 by generate-delivery-report.py
 </div>
 </body>
 </html>

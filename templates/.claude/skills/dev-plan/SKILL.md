@@ -197,6 +197,12 @@ Based on user's answers (or prior constraints), propose the approach for THIS PH
 
 **PERSIST immediately:** Write draft decision article at `$WIKI/articles/decisions/<slug>.md` with `confidence: low`. Read `~/.claude/skills/dev-wiki/decision-template.md` for the decision article template.
 
+### Step 6.0.5: Self-Dialogue (Devil's Advocate) *(Lite: skip)*
+
+Read `~/.claude/skills/dev-plan/self-dialogue-prompt.md`. Dispatch Agent with: self-dialogue prompt + proposed approach text + condensed IRON RULES (`iron-rules-injection-v2.md` format) + phase objective/exit criteria. Collect 2-3 counterarguments with IRON RULE citations. **Timeout:** 60 seconds.
+
+**Resolve inline:** For each counterargument: accept (revise approach) or reject (state specific reason). Update the approach text before proceeding. **Fail-open:** If companion missing, subagent times out, or output contains no `IRON-` citations, skip — proceed with unmodified approach.
+
 ### Step 6.1: Contradiction Check (Inline) *(Lite: skip)*
 
 Search for wiki knowledge that might contradict the proposed approach. Serial inline (not subagent).

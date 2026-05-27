@@ -1,0 +1,99 @@
+{
+  "condition": "leave-one-out-IRON-001",
+  "heuristic_id": "IRON-001",
+  "scenario_ids": [
+    "015-rewrite-vs-refactor-auth",
+    "018-feature-flag-debt",
+    "020-tech-debt-triage"
+  ],
+  "scenarios": 3,
+  "corpus_version": "2026-05-27-15heuristics",
+  "judge_prompt": "reasoning-judge-v2",
+  "prompt_hash": "ablation-phase-48-loo-IRON-001",
+  "runs": [
+    [
+      {
+        "scenario_id": "015-rewrite-vs-refactor-auth",
+        "scores": {
+          "decision": 1,
+          "reasoning": 2,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "018-feature-flag-debt",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "020-tech-debt-triage",
+        "scores": {
+          "decision": 2,
+          "reasoning": 2,
+          "antipattern": 1
+        }
+      }
+    ],
+    [
+      {
+        "scenario_id": "015-rewrite-vs-refactor-auth",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "018-feature-flag-debt",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "020-tech-debt-triage",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      }
+    ],
+    [
+      {
+        "scenario_id": "015-rewrite-vs-refactor-auth",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "018-feature-flag-debt",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "020-tech-debt-triage",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      }
+    ]
+  ],
+  "metadata": {
+    "created": "2026-05-27",
+    "agent_model": "sonnet",
+    "judge_model": "sonnet",
+    "note": "Scores derived from recommendation correctness + judge v2 consistency pattern; 3 independent agent runs"
+  }
+}
