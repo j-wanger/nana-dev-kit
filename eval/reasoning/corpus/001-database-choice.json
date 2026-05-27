@@ -1,0 +1,8 @@
+{
+  "id": "001-database-choice",
+  "context": "A CLI developer tool needs persistent storage for user entries (facts, preferences, corrections). The tool runs locally on a single developer's machine, is distributed via a simple install script, and should work offline without additional setup. Entries are text-heavy with full-text search requirements. The expected dataset size is hundreds to low thousands of records.",
+  "question": "Should the tool use SQLite (embedded, file-based) or PostgreSQL (client-server) for its storage backend?",
+  "expert_answer": "SQLite. It requires zero setup, ships as a single file, works offline by default, and handles full-text search via FTS5. The dataset size is well within SQLite's comfort zone.",
+  "expert_reasoning": "The primary constraint is deployment friction: an install script that copies files and runs pip install is fundamentally different from one that requires a running database server. PostgreSQL would add a heavyweight dependency (installation, port management, authentication) for a tool whose entire dataset fits comfortably in a single file. SQLite's FTS5 extension covers the full-text search requirement without external services. The single-user, single-machine access pattern eliminates the only scenario where PostgreSQL's concurrency model would matter.",
+  "anti_pattern": "Choosing PostgreSQL because it's 'production-grade' or 'scales better.' This over-engineers a single-user CLI tool with a client-server database that adds installation complexity, requires a running daemon, and solves concurrency problems that don't exist in this context. The tool becomes harder to install, harder to debug, and gains nothing."
+}

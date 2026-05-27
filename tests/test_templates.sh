@@ -738,4 +738,35 @@ else
   test_fail "nana-init/SKILL.md is $NANA_INIT_LINES lines (cap: 120)"
 fi
 
+# --- Heuristic Learning System (Phase 44) ---
+
+test_start "session-start.sh has heuristic count block"
+if grep -q 'nana:heuristic' "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh"; then
+  test_pass
+else
+  test_fail "session-start.sh missing [nana:heuristics] block"
+fi
+
+test_start "eval/reasoning/run-eval.py exists"
+if [ -f "$PROJECT_ROOT/eval/reasoning/run-eval.py" ]; then
+  test_pass
+else
+  test_fail "eval/reasoning/run-eval.py missing"
+fi
+
+test_start "eval/reasoning/judges/reasoning-judge.md exists"
+if [ -f "$PROJECT_ROOT/eval/reasoning/judges/reasoning-judge.md" ]; then
+  test_pass
+else
+  test_fail "eval/reasoning/judges/reasoning-judge.md missing"
+fi
+
+test_start "eval/reasoning has >= 10 scenario files"
+SCENARIO_COUNT=$(find "$PROJECT_ROOT/eval/reasoning/corpus" -name "*.json" 2>/dev/null | wc -l | tr -d ' ')
+if [ "$SCENARIO_COUNT" -ge 10 ]; then
+  test_pass
+else
+  test_fail "eval/reasoning has $SCENARIO_COUNT scenarios (need >= 10)"
+fi
+
 test_summary "test_templates"

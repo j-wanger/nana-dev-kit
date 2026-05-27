@@ -40,12 +40,12 @@
 <body>
 
 <h1>Nana Dev Kit</h1>
-<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-05-24 09:53</p>
+<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-05-26 17:47</p>
 
 <div class="stats">
-  <div class="stat"><div class="num">319</div><div class="label">Files</div></div>
-  <div class="stat"><div class="num">23,266</div><div class="label">Lines of Code</div></div>
-  <div class="stat"><div class="num">185</div><div class="label">Automated Tests</div></div>
+  <div class="stat"><div class="num">394</div><div class="label">Files</div></div>
+  <div class="stat"><div class="num">29,088</div><div class="label">Lines of Code</div></div>
+  <div class="stat"><div class="num">291</div><div class="label">Automated Tests</div></div>
   <div class="stat"><div class="num">7</div><div class="label">Harness Layers</div></div>
   <div class="stat"><div class="num">v0.5.0</div><div class="label">Latest Tag</div></div>
 </div>
@@ -134,29 +134,33 @@
 
 <h2>File Inventory</h2>
 <div class="category">
-  <h3>Core Scripts <span class="badge badge-green">6 files, 1,975 lines</span></h3>
+  <h3>Core Scripts <span class="badge badge-green">8 files, 2,362 lines</span></h3>
   <ul class="file-list">
-    <li><span>Makefile</span><span class='lines'>28</span></li>
-    <li><span>install.sh</span><span class='lines'>355</span></li>
+    <li><span>Makefile</span><span class='lines'>30</span></li>
+    <li><span>install.sh</span><span class='lines'>320</span></li>
     <li><span>scripts/eval-runner.sh</span><span class='lines'>333</span></li>
+    <li><span>scripts/generate-delivery-report.py</span><span class='lines'>276</span></li>
     <li><span>scripts/generate-report.py</span><span class='lines'>328</span></li>
     <li><span>scripts/generate-workflow.py</span><span class='lines'>860</span></li>
+    <li><span>scripts/register-settings.py</span><span class='lines'>144</span></li>
     <li><span>scripts/sync-rules.sh</span><span class='lines'>71</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Test Suite <span class="badge badge-green">6 files, 1,272 lines</span></h3>
+  <h3>Test Suite <span class="badge badge-green">8 files, 2,289 lines</span></h3>
   <ul class="file-list">
     <li><span>tests/helpers.sh</span><span class='lines'>74</span></li>
+    <li><span>tests/test_companions.sh</span><span class='lines'>97</span></li>
     <li><span>tests/test_enforce.sh</span><span class='lines'>137</span></li>
     <li><span>tests/test_harden.sh</span><span class='lines'>138</span></li>
-    <li><span>tests/test_install.sh</span><span class='lines'>316</span></li>
+    <li><span>tests/test_install.sh</span><span class='lines'>736</span></li>
+    <li><span>tests/test_memory.sh</span><span class='lines'>266</span></li>
     <li><span>tests/test_sync_rules.sh</span><span class='lines'>100</span></li>
-    <li><span>tests/test_templates.sh</span><span class='lines'>507</span></li>
+    <li><span>tests/test_templates.sh</span><span class='lines'>741</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Memory Server <span class="badge badge-green">14 files, 2,382 lines</span></h3>
+  <h3>Memory Server <span class="badge badge-green">14 files, 2,411 lines</span></h3>
   <ul class="file-list">
     <li><span>memory_server/__init__.py</span><span class='lines'>0</span></li>
     <li><span>memory_server/__main__.py</span><span class='lines'>17</span></li>
@@ -171,7 +175,7 @@
     <li><span>memory_server/requirements.txt</span><span class='lines'>5</span></li>
     <li><span>memory_server/server.py</span><span class='lines'>302</span></li>
     <li><span>memory_server/sidecar.py</span><span class='lines'>184</span></li>
-    <li><span>memory_server/storage.py</span><span class='lines'>900</span></li>
+    <li><span>memory_server/storage.py</span><span class='lines'>929</span></li>
   </ul>
 </div>
 <div class="category">
@@ -192,128 +196,140 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 3: Hooks <span class="badge badge-green">15 files, 746 lines</span></h3>
+  <h3>Templates — Layer 3: Hooks <span class="badge badge-green">21 files, 1,029 lines</span></h3>
   <ul class="file-list">
     <li><span>templates/.claude/hooks/audit-log.sh</span><span class='lines'>23</span></li>
     <li><span>templates/.claude/hooks/auto-ruff-format.sh</span><span class='lines'>17</span></li>
     <li><span>templates/.claude/hooks/block-dangerous-bash.sh</span><span class='lines'>37</span></li>
     <li><span>templates/.claude/hooks/check-tests-were-run.sh</span><span class='lines'>28</span></li>
+    <li><span>templates/.claude/hooks/context-size-check.sh</span><span class='lines'>35</span></li>
     <li><span>templates/.claude/hooks/detect-loop.sh</span><span class='lines'>58</span></li>
+    <li><span>templates/.claude/hooks/dev-wiki-scope-check.sh</span><span class='lines'>52</span></li>
     <li><span>templates/.claude/hooks/enforce-loop.sh</span><span class='lines'>107</span></li>
+    <li><span>templates/.claude/hooks/enforce-memory.sh</span><span class='lines'>57</span></li>
     <li><span>templates/.claude/hooks/enforce-spec.sh</span><span class='lines'>71</span></li>
     <li><span>templates/.claude/hooks/post-commit.sh</span><span class='lines'>60</span></li>
+    <li><span>templates/.claude/hooks/post-compact.sh</span><span class='lines'>22</span></li>
     <li><span>templates/.claude/hooks/pre-compact.sh</span><span class='lines'>50</span></li>
     <li><span>templates/.claude/hooks/py-review-stop-prompt.md</span><span class='lines'>10</span></li>
     <li><span>templates/.claude/hooks/scan-secrets.sh</span><span class='lines'>26</span></li>
-    <li><span>templates/.claude/hooks/session-start.d/memory-nudge.sh</span><span class='lines'>29</span></li>
+    <li><span>templates/.claude/hooks/session-start.d/memory-nudge.sh</span><span class='lines'>35</span></li>
     <li><span>templates/.claude/hooks/session-start.d/wk-prune.sh</span><span class='lines'>54</span></li>
-    <li><span>templates/.claude/hooks/session-start.sh</span><span class='lines'>99</span></li>
+    <li><span>templates/.claude/hooks/session-start.sh</span><span class='lines'>129</span></li>
+    <li><span>templates/.claude/hooks/session-stop.sh</span><span class='lines'>28</span></li>
+    <li><span>templates/.claude/hooks/stale-queue.sh</span><span class='lines'>53</span></li>
     <li><span>templates/.claude/settings.json</span><span class='lines'>77</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 3: Skills <span class="badge badge-green">120 files, 10,972 lines</span></h3>
+  <h3>Templates — Layer 3: Skills <span class="badge badge-green">126 files, 12,011 lines</span></h3>
   <ul class="file-list">
-    <li><span>templates/.claude/skills/MANIFEST</span><span class='lines'>143</span></li>
+    <li><span>templates/.claude/skills/MANIFEST</span><span class='lines'>154</span></li>
     <li><span>templates/.claude/skills/dev-check/SKILL.md</span><span class='lines'>150</span></li>
-    <li><span>templates/.claude/skills/dev-debrief/SKILL.md</span><span class='lines'>310</span></li>
-    <li><span>templates/.claude/skills/dev-debrief/active-knowledge-transition.md</span><span class='lines'>19</span></li>
-    <li><span>templates/.claude/skills/dev-debrief/architecture-staleness-check.md</span><span class='lines'>19</span></li>
-    <li><span>templates/.claude/skills/dev-debrief/claude-md-refresh.md</span><span class='lines'>33</span></li>
-    <li><span>templates/.claude/skills/dev-debrief/debrief-finalization.md</span><span class='lines'>29</span></li>
-    <li><span>templates/.claude/skills/dev-debrief/executor-prompt.md</span><span class='lines'>136</span></li>
-    <li><span>templates/.claude/skills/dev-debrief/memory-harvest.md</span><span class='lines'>63</span></li>
-    <li><span>templates/.claude/skills/dev-debrief/quick-debrief-flow.md</span><span class='lines'>26</span></li>
-    <li><span>templates/.claude/skills/dev-debrief/retro-check.md</span><span class='lines'>41</span></li>
-    <li><span>templates/.claude/skills/dev-debrief/review-gate.md</span><span class='lines'>32</span></li>
-    <li><span>templates/.claude/skills/dev-debrief/reviewer-prompt.md</span><span class='lines'>45</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/SKILL.md</span><span class='lines'>311</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/active-knowledge-transition.md</span><span class='lines'>24</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/architecture-staleness-check.md</span><span class='lines'>24</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/claude-md-refresh.md</span><span class='lines'>38</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/debrief-finalization.md</span><span class='lines'>34</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/delivery-flow.md</span><span class='lines'>48</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/executor-prompt.md</span><span class='lines'>141</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/memory-harvest.md</span><span class='lines'>68</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/quick-debrief-flow.md</span><span class='lines'>31</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/retro-check.md</span><span class='lines'>46</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/review-gate.md</span><span class='lines'>37</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/reviewer-prompt.md</span><span class='lines'>50</span></li>
     <li><span>templates/.claude/skills/dev-init/SKILL.md</span><span class='lines'>214</span></li>
-    <li><span>templates/.claude/skills/dev-init/init-scaffolding.md</span><span class='lines'>49</span></li>
-    <li><span>templates/.claude/skills/dev-init/scaffold-claude-md.md</span><span class='lines'>49</span></li>
-    <li><span>templates/.claude/skills/dev-init/templates/AGENTS.md</span><span class='lines'>50</span></li>
-    <li><span>templates/.claude/skills/dev-init/templates/project-CLAUDE.md</span><span class='lines'>37</span></li>
-    <li><span>templates/.claude/skills/dev-plan/SKILL.md</span><span class='lines'>330</span></li>
-    <li><span>templates/.claude/skills/dev-plan/approach-reviewer-prompt.md</span><span class='lines'>63</span></li>
-    <li><span>templates/.claude/skills/dev-plan/artifact-writer-prompt.md</span><span class='lines'>103</span></li>
-    <li><span>templates/.claude/skills/dev-plan/compaction-anchors-spec.md</span><span class='lines'>71</span></li>
-    <li><span>templates/.claude/skills/dev-plan/implementation-guide.md</span><span class='lines'>76</span></li>
-    <li><span>templates/.claude/skills/dev-plan/iterative-retrieval-spec.md</span><span class='lines'>36</span></li>
-    <li><span>templates/.claude/skills/dev-plan/memory-bridge.md</span><span class='lines'>67</span></li>
-    <li><span>templates/.claude/skills/dev-plan/plan-reviewer-prompt.md</span><span class='lines'>79</span></li>
-    <li><span>templates/.claude/skills/dev-plan/research-pause-spec.md</span><span class='lines'>52</span></li>
-    <li><span>templates/.claude/skills/dev-plan/scope-exploration-spec.md</span><span class='lines'>25</span></li>
-    <li><span>templates/.claude/skills/dev-plan/self-check-checklist.md</span><span class='lines'>84</span></li>
-    <li><span>templates/.claude/skills/dev-plan/spec-auto-invoke.md</span><span class='lines'>48</span></li>
-    <li><span>templates/.claude/skills/dev-plan/state-loader-prompt.md</span><span class='lines'>114</span></li>
-    <li><span>templates/.claude/skills/dev-plan/task-schema.md</span><span class='lines'>86</span></li>
+    <li><span>templates/.claude/skills/dev-init/init-scaffolding.md</span><span class='lines'>54</span></li>
+    <li><span>templates/.claude/skills/dev-init/scaffold-claude-md.md</span><span class='lines'>54</span></li>
+    <li><span>templates/.claude/skills/dev-init/templates/AGENTS.md</span><span class='lines'>55</span></li>
+    <li><span>templates/.claude/skills/dev-init/templates/project-CLAUDE.md</span><span class='lines'>42</span></li>
+    <li><span>templates/.claude/skills/dev-plan/SKILL.md</span><span class='lines'>309</span></li>
+    <li><span>templates/.claude/skills/dev-plan/approach-reviewer-prompt.md</span><span class='lines'>68</span></li>
+    <li><span>templates/.claude/skills/dev-plan/artifact-writer-prompt.md</span><span class='lines'>108</span></li>
+    <li><span>templates/.claude/skills/dev-plan/compaction-anchors-spec.md</span><span class='lines'>76</span></li>
+    <li><span>templates/.claude/skills/dev-plan/implementation-guide.md</span><span class='lines'>93</span></li>
+    <li><span>templates/.claude/skills/dev-plan/iterative-retrieval-spec.md</span><span class='lines'>41</span></li>
+    <li><span>templates/.claude/skills/dev-plan/memory-bridge.md</span><span class='lines'>72</span></li>
+    <li><span>templates/.claude/skills/dev-plan/plan-review-companion.md</span><span class='lines'>28</span></li>
+    <li><span>templates/.claude/skills/dev-plan/plan-reviewer-prompt.md</span><span class='lines'>84</span></li>
+    <li><span>templates/.claude/skills/dev-plan/research-pause-spec.md</span><span class='lines'>57</span></li>
+    <li><span>templates/.claude/skills/dev-plan/scope-exploration-spec.md</span><span class='lines'>30</span></li>
+    <li><span>templates/.claude/skills/dev-plan/self-check-checklist.md</span><span class='lines'>89</span></li>
+    <li><span>templates/.claude/skills/dev-plan/spec-auto-invoke.md</span><span class='lines'>53</span></li>
+    <li><span>templates/.claude/skills/dev-plan/state-loader-prompt.md</span><span class='lines'>119</span></li>
+    <li><span>templates/.claude/skills/dev-plan/task-schema.md</span><span class='lines'>91</span></li>
     <li><span>templates/.claude/skills/dev-scan/SKILL.md</span><span class='lines'>241</span></li>
-    <li><span>templates/.claude/skills/dev-scan/architecture-prompt.md</span><span class='lines'>42</span></li>
-    <li><span>templates/.claude/skills/dev-scan/content-hashing.md</span><span class='lines'>62</span></li>
-    <li><span>templates/.claude/skills/dev-scan/file-prompt.md</span><span class='lines'>92</span></li>
-    <li><span>templates/.claude/skills/dev-scan/module-prompt.md</span><span class='lines'>73</span></li>
-    <li><span>templates/.claude/skills/dev-scan/python-memory-checks.md</span><span class='lines'>58</span></li>
-    <li><span>templates/.claude/skills/dev-scan/python-scan-profile.md</span><span class='lines'>70</span></li>
-    <li><span>templates/.claude/skills/dev-scan/refresh-flow.md</span><span class='lines'>17</span></li>
+    <li><span>templates/.claude/skills/dev-scan/architecture-prompt.md</span><span class='lines'>47</span></li>
+    <li><span>templates/.claude/skills/dev-scan/content-hashing.md</span><span class='lines'>67</span></li>
+    <li><span>templates/.claude/skills/dev-scan/file-prompt.md</span><span class='lines'>97</span></li>
+    <li><span>templates/.claude/skills/dev-scan/module-prompt.md</span><span class='lines'>78</span></li>
+    <li><span>templates/.claude/skills/dev-scan/python-memory-checks.md</span><span class='lines'>63</span></li>
+    <li><span>templates/.claude/skills/dev-scan/python-scan-profile.md</span><span class='lines'>75</span></li>
+    <li><span>templates/.claude/skills/dev-scan/refresh-flow.md</span><span class='lines'>22</span></li>
     <li><span>templates/.claude/skills/dev-wiki/SKILL.md</span><span class='lines'>132</span></li>
-    <li><span>templates/.claude/skills/dev-wiki/active-knowledge-spec.md</span><span class='lines'>60</span></li>
-    <li><span>templates/.claude/skills/dev-wiki/architecture-template.md</span><span class='lines'>56</span></li>
-    <li><span>templates/.claude/skills/dev-wiki/claude-md-lifecycle.md</span><span class='lines'>53</span></li>
-    <li><span>templates/.claude/skills/dev-wiki/decision-template.md</span><span class='lines'>48</span></li>
-    <li><span>templates/.claude/skills/dev-wiki/journal-templates.md</span><span class='lines'>60</span></li>
-    <li><span>templates/.claude/skills/dev-wiki/phase-template.md</span><span class='lines'>64</span></li>
-    <li><span>templates/.claude/skills/dev-wiki/size-budgets.md</span><span class='lines'>19</span></li>
-    <li><span>templates/.claude/skills/dev-wiki/slugification.md</span><span class='lines'>57</span></li>
-    <li><span>templates/.claude/skills/dev-wiki/stale-queue-spec.md</span><span class='lines'>68</span></li>
-    <li><span>templates/.claude/skills/dev-wiki/state-template.md</span><span class='lines'>74</span></li>
-    <li><span>templates/.claude/skills/dev-wiki/working-knowledge-spec.md</span><span class='lines'>33</span></li>
+    <li><span>templates/.claude/skills/dev-wiki/active-knowledge-spec.md</span><span class='lines'>65</span></li>
+    <li><span>templates/.claude/skills/dev-wiki/architecture-template.md</span><span class='lines'>61</span></li>
+    <li><span>templates/.claude/skills/dev-wiki/claude-md-lifecycle.md</span><span class='lines'>58</span></li>
+    <li><span>templates/.claude/skills/dev-wiki/decision-template.md</span><span class='lines'>53</span></li>
+    <li><span>templates/.claude/skills/dev-wiki/journal-templates.md</span><span class='lines'>65</span></li>
+    <li><span>templates/.claude/skills/dev-wiki/phase-template.md</span><span class='lines'>69</span></li>
+    <li><span>templates/.claude/skills/dev-wiki/size-budgets.md</span><span class='lines'>24</span></li>
+    <li><span>templates/.claude/skills/dev-wiki/slugification.md</span><span class='lines'>62</span></li>
+    <li><span>templates/.claude/skills/dev-wiki/stale-queue-spec.md</span><span class='lines'>73</span></li>
+    <li><span>templates/.claude/skills/dev-wiki/state-template.md</span><span class='lines'>79</span></li>
+    <li><span>templates/.claude/skills/dev-wiki/working-knowledge-spec.md</span><span class='lines'>38</span></li>
     <li><span>templates/.claude/skills/knowledge-wiki/SKILL.md</span><span class='lines'>112</span></li>
-    <li><span>templates/.claude/skills/knowledge-wiki/article-conventions.md</span><span class='lines'>173</span></li>
-    <li><span>templates/.claude/skills/knowledge-wiki/claim-spec.md</span><span class='lines'>5</span></li>
-    <li><span>templates/.claude/skills/knowledge-wiki/content-model.md</span><span class='lines'>188</span></li>
-    <li><span>templates/.claude/skills/knowledge-wiki/conversion-spec.md</span><span class='lines'>80</span></li>
-    <li><span>templates/.claude/skills/knowledge-wiki/domain-profiles/aml-compliance.md</span><span class='lines'>43</span></li>
-    <li><span>templates/.claude/skills/knowledge-wiki/domain-profiles/general.md</span><span class='lines'>29</span></li>
-    <li><span>templates/.claude/skills/knowledge-wiki/domain-profiles/machine-learning.md</span><span class='lines'>42</span></li>
-    <li><span>templates/.claude/skills/knowledge-wiki/domain-profiles/trading.md</span><span class='lines'>42</span></li>
-    <li><span>templates/.claude/skills/knowledge-wiki/pipeline-spec.md</span><span class='lines'>308</span></li>
-    <li><span>templates/.claude/skills/knowledge-wiki/registry-schema.md</span><span class='lines'>78</span></li>
-    <li><span>templates/.claude/skills/knowledge-wiki/reviewer-checklist.md</span><span class='lines'>162</span></li>
-    <li><span>templates/.claude/skills/knowledge-wiki/search-spec.md</span><span class='lines'>170</span></li>
-    <li><span>templates/.claude/skills/knowledge-wiki/session-context.md</span><span class='lines'>35</span></li>
+    <li><span>templates/.claude/skills/knowledge-wiki/article-conventions.md</span><span class='lines'>178</span></li>
+    <li><span>templates/.claude/skills/knowledge-wiki/claim-spec.md</span><span class='lines'>10</span></li>
+    <li><span>templates/.claude/skills/knowledge-wiki/content-model.md</span><span class='lines'>193</span></li>
+    <li><span>templates/.claude/skills/knowledge-wiki/conversion-spec.md</span><span class='lines'>85</span></li>
+    <li><span>templates/.claude/skills/knowledge-wiki/domain-profiles/aml-compliance.md</span><span class='lines'>48</span></li>
+    <li><span>templates/.claude/skills/knowledge-wiki/domain-profiles/general.md</span><span class='lines'>34</span></li>
+    <li><span>templates/.claude/skills/knowledge-wiki/domain-profiles/machine-learning.md</span><span class='lines'>47</span></li>
+    <li><span>templates/.claude/skills/knowledge-wiki/domain-profiles/trading.md</span><span class='lines'>47</span></li>
+    <li><span>templates/.claude/skills/knowledge-wiki/pipeline-spec.md</span><span class='lines'>313</span></li>
+    <li><span>templates/.claude/skills/knowledge-wiki/registry-schema.md</span><span class='lines'>83</span></li>
+    <li><span>templates/.claude/skills/knowledge-wiki/reviewer-checklist.md</span><span class='lines'>167</span></li>
+    <li><span>templates/.claude/skills/knowledge-wiki/search-spec.md</span><span class='lines'>175</span></li>
+    <li><span>templates/.claude/skills/knowledge-wiki/session-context.md</span><span class='lines'>40</span></li>
     <li><span>templates/.claude/skills/memory-consolidate/SKILL.md</span><span class='lines'>45</span></li>
+    <li><span>templates/.claude/skills/nana-init/SKILL.md</span><span class='lines'>86</span></li>
     <li><span>templates/.claude/skills/nana/SKILL.md</span><span class='lines'>37</span></li>
     <li><span>templates/.claude/skills/py-init/SKILL.md</span><span class='lines'>168</span></li>
-    <li><span>templates/.claude/skills/py-init/scanner.md</span><span class='lines'>102</span></li>
-    <li><span>templates/.claude/skills/py-init/transform.md</span><span class='lines'>98</span></li>
+    <li><span>templates/.claude/skills/py-init/scanner.md</span><span class='lines'>107</span></li>
+    <li><span>templates/.claude/skills/py-init/transform.md</span><span class='lines'>103</span></li>
     <li><span>templates/.claude/skills/py-lint/SKILL.md</span><span class='lines'>37</span></li>
     <li><span>templates/.claude/skills/py-review/SKILL.md</span><span class='lines'>58</span></li>
     <li><span>templates/.claude/skills/py-test/SKILL.md</span><span class='lines'>41</span></li>
-    <li><span>templates/.claude/skills/spec/SKILL.md</span><span class='lines'>128</span></li>
-    <li><span>templates/.claude/skills/spec/adversarial-constraints-prompt.md</span><span class='lines'>41</span></li>
-    <li><span>templates/.claude/skills/spec/spec-reviewer-prompt.md</span><span class='lines'>77</span></li>
+    <li><span>templates/.claude/skills/spec/SKILL.md</span><span class='lines'>138</span></li>
+    <li><span>templates/.claude/skills/spec/adversarial-constraints-prompt.md</span><span class='lines'>46</span></li>
+    <li><span>templates/.claude/skills/spec/spec-reviewer-prompt.md</span><span class='lines'>82</span></li>
+    <li><span>templates/.claude/skills/ts-init/SKILL.md</span><span class='lines'>198</span></li>
+    <li><span>templates/.claude/skills/ts-init/scanner.md</span><span class='lines'>115</span></li>
+    <li><span>templates/.claude/skills/ts-init/transform.md</span><span class='lines'>114</span></li>
     <li><span>templates/.claude/skills/wiki-absorb/SKILL.md</span><span class='lines'>142</span></li>
-    <li><span>templates/.claude/skills/wiki-absorb/analyst-prompt.md</span><span class='lines'>66</span></li>
-    <li><span>templates/.claude/skills/wiki-absorb/reviewer-prompt.md</span><span class='lines'>43</span></li>
-    <li><span>templates/.claude/skills/wiki-absorb/verifier-prompt.md</span><span class='lines'>117</span></li>
-    <li><span>templates/.claude/skills/wiki-absorb/writer-prompt.md</span><span class='lines'>99</span></li>
+    <li><span>templates/.claude/skills/wiki-absorb/analyst-prompt.md</span><span class='lines'>71</span></li>
+    <li><span>templates/.claude/skills/wiki-absorb/reviewer-prompt.md</span><span class='lines'>48</span></li>
+    <li><span>templates/.claude/skills/wiki-absorb/verifier-prompt.md</span><span class='lines'>119</span></li>
+    <li><span>templates/.claude/skills/wiki-absorb/writer-prompt.md</span><span class='lines'>104</span></li>
     <li><span>templates/.claude/skills/wiki-add/SKILL.md</span><span class='lines'>143</span></li>
-    <li><span>templates/.claude/skills/wiki-add/analyst-prompt.md</span><span class='lines'>66</span></li>
-    <li><span>templates/.claude/skills/wiki-add/reviewer-prompt.md</span><span class='lines'>55</span></li>
-    <li><span>templates/.claude/skills/wiki-add/writer-prompt.md</span><span class='lines'>94</span></li>
+    <li><span>templates/.claude/skills/wiki-add/analyst-prompt.md</span><span class='lines'>71</span></li>
+    <li><span>templates/.claude/skills/wiki-add/reviewer-prompt.md</span><span class='lines'>60</span></li>
+    <li><span>templates/.claude/skills/wiki-add/writer-prompt.md</span><span class='lines'>99</span></li>
     <li><span>templates/.claude/skills/wiki-bootstrap/SKILL.md</span><span class='lines'>248</span></li>
-    <li><span>templates/.claude/skills/wiki-bootstrap/analyst-prompt.md</span><span class='lines'>135</span></li>
-    <li><span>templates/.claude/skills/wiki-bootstrap/research-agent-prompt.md</span><span class='lines'>97</span></li>
-    <li><span>templates/.claude/skills/wiki-bootstrap/research-loop-spec.md</span><span class='lines'>61</span></li>
-    <li><span>templates/.claude/skills/wiki-bootstrap/reviewer-prompt.md</span><span class='lines'>66</span></li>
-    <li><span>templates/.claude/skills/wiki-bootstrap/writer-prompt.md</span><span class='lines'>129</span></li>
+    <li><span>templates/.claude/skills/wiki-bootstrap/analyst-prompt.md</span><span class='lines'>140</span></li>
+    <li><span>templates/.claude/skills/wiki-bootstrap/research-agent-prompt.md</span><span class='lines'>102</span></li>
+    <li><span>templates/.claude/skills/wiki-bootstrap/research-loop-spec.md</span><span class='lines'>66</span></li>
+    <li><span>templates/.claude/skills/wiki-bootstrap/reviewer-prompt.md</span><span class='lines'>71</span></li>
+    <li><span>templates/.claude/skills/wiki-bootstrap/writer-prompt.md</span><span class='lines'>134</span></li>
     <li><span>templates/.claude/skills/wiki-consolidate/SKILL.md</span><span class='lines'>123</span></li>
-    <li><span>templates/.claude/skills/wiki-consolidate/analyst-prompt.md</span><span class='lines'>54</span></li>
+    <li><span>templates/.claude/skills/wiki-consolidate/analyst-prompt.md</span><span class='lines'>59</span></li>
     <li><span>templates/.claude/skills/wiki-consolidate/consolidate.py</span><span class='lines'>337</span></li>
-    <li><span>templates/.claude/skills/wiki-consolidate/reviewer-prompt.md</span><span class='lines'>46</span></li>
-    <li><span>templates/.claude/skills/wiki-consolidate/writer-prompt.md</span><span class='lines'>62</span></li>
+    <li><span>templates/.claude/skills/wiki-consolidate/reviewer-prompt.md</span><span class='lines'>51</span></li>
+    <li><span>templates/.claude/skills/wiki-consolidate/writer-prompt.md</span><span class='lines'>67</span></li>
     <li><span>templates/.claude/skills/wiki-health/SKILL.md</span><span class='lines'>218</span></li>
-    <li><span>templates/.claude/skills/wiki-health/dashboard-spec.md</span><span class='lines'>80</span></li>
-    <li><span>templates/.claude/skills/wiki-health/empirical-anchor-spec.md</span><span class='lines'>35</span></li>
+    <li><span>templates/.claude/skills/wiki-health/dashboard-spec.md</span><span class='lines'>85</span></li>
+    <li><span>templates/.claude/skills/wiki-health/empirical-anchor-spec.md</span><span class='lines'>40</span></li>
     <li><span>templates/.claude/skills/wiki-index/SKILL.md</span><span class='lines'>65</span></li>
     <li><span>templates/.claude/skills/wiki-index/convert.py</span><span class='lines'>202</span></li>
     <li><span>templates/.claude/skills/wiki-index/indexer.py</span><span class='lines'>277</span></li>
@@ -322,18 +338,18 @@
     <li><span>templates/.claude/skills/wiki-index/search.py</span><span class='lines'>200</span></li>
     <li><span>templates/.claude/skills/wiki-index/wikilib.py</span><span class='lines'>42</span></li>
     <li><span>templates/.claude/skills/wiki-init/SKILL.md</span><span class='lines'>217</span></li>
-    <li><span>templates/.claude/skills/wiki-init/analyst-prompt.md</span><span class='lines'>42</span></li>
-    <li><span>templates/.claude/skills/wiki-init/reviewer-prompt.md</span><span class='lines'>56</span></li>
-    <li><span>templates/.claude/skills/wiki-init/writer-prompt.md</span><span class='lines'>115</span></li>
+    <li><span>templates/.claude/skills/wiki-init/analyst-prompt.md</span><span class='lines'>47</span></li>
+    <li><span>templates/.claude/skills/wiki-init/reviewer-prompt.md</span><span class='lines'>61</span></li>
+    <li><span>templates/.claude/skills/wiki-init/writer-prompt.md</span><span class='lines'>120</span></li>
     <li><span>templates/.claude/skills/wiki-query/SKILL.md</span><span class='lines'>243</span></li>
-    <li><span>templates/.claude/skills/wiki-query/analyst-prompt.md</span><span class='lines'>70</span></li>
-    <li><span>templates/.claude/skills/wiki-query/reviewer-prompt.md</span><span class='lines'>76</span></li>
-    <li><span>templates/.claude/skills/wiki-query/writer-prompt.md</span><span class='lines'>77</span></li>
+    <li><span>templates/.claude/skills/wiki-query/analyst-prompt.md</span><span class='lines'>75</span></li>
+    <li><span>templates/.claude/skills/wiki-query/reviewer-prompt.md</span><span class='lines'>81</span></li>
+    <li><span>templates/.claude/skills/wiki-query/writer-prompt.md</span><span class='lines'>82</span></li>
     <li><span>templates/.claude/skills/wiki-registry/SKILL.md</span><span class='lines'>91</span></li>
     <li><span>templates/.claude/skills/wiki-reorg/SKILL.md</span><span class='lines'>94</span></li>
-    <li><span>templates/.claude/skills/wiki-reorg/analyst-prompt.md</span><span class='lines'>74</span></li>
-    <li><span>templates/.claude/skills/wiki-reorg/reviewer-prompt.md</span><span class='lines'>61</span></li>
-    <li><span>templates/.claude/skills/wiki-reorg/writer-prompt.md</span><span class='lines'>93</span></li>
+    <li><span>templates/.claude/skills/wiki-reorg/analyst-prompt.md</span><span class='lines'>79</span></li>
+    <li><span>templates/.claude/skills/wiki-reorg/reviewer-prompt.md</span><span class='lines'>66</span></li>
+    <li><span>templates/.claude/skills/wiki-reorg/writer-prompt.md</span><span class='lines'>98</span></li>
   </ul>
 </div>
 <div class="category">
@@ -343,33 +359,64 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 7: CI & GitHub <span class="badge badge-green">4 files, 157 lines</span></h3>
+  <h3>Templates — Layer 7: CI & GitHub <span class="badge badge-green">5 files, 221 lines</span></h3>
   <ul class="file-list">
     <li><span>templates/.github/CODEOWNERS</span><span class='lines'>11</span></li>
     <li><span>templates/.github/PULL_REQUEST_TEMPLATE.md</span><span class='lines'>25</span></li>
+    <li><span>templates/.github/workflows/ci-ts.yml</span><span class='lines'>64</span></li>
     <li><span>templates/.github/workflows/ci.yml</span><span class='lines'>49</span></li>
     <li><span>templates/pyproject.toml</span><span class='lines'>72</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Documentation <span class="badge badge-green">3 files, 354 lines</span></h3>
+  <h3>Templates — Config <span class="badge badge-green">1 files, 88 lines</span></h3>
   <ul class="file-list">
-    <li><span>README.md</span><span class='lines'>99</span></li>
+    <li><span>templates/AGENTS-ts.md</span><span class='lines'>88</span></li>
+  </ul>
+</div>
+<div class="category">
+  <h3>Documentation <span class="badge badge-green">3 files, 372 lines</span></h3>
+  <ul class="file-list">
+    <li><span>README.md</span><span class='lines'>117</span></li>
     <li><span>VERSION</span><span class='lines'>1</span></li>
     <li><span>self-test.md</span><span class='lines'>254</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>CI & Build <span class="badge badge-green">2 files, 26 lines</span></h3>
+  <h3>CI & Build <span class="badge badge-green">2 files, 36 lines</span></h3>
   <ul class="file-list">
     <li><span>.github/workflows/kit-ci.yml</span><span class='lines'>20</span></li>
-    <li><span>.gitignore</span><span class='lines'>6</span></li>
+    <li><span>.gitignore</span><span class='lines'>16</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Eval Harness <span class="badge badge-green">115 files, 1,516 lines</span></h3>
+  <h3>Eval Harness <span class="badge badge-green">155 files, 2,611 lines</span></h3>
   <ul class="file-list">
     <li><span>eval/README.md</span><span class='lines'>86</span></li>
+    <li><span>eval/comparison/CONDITION-C-INSTRUCTIONS.md</span><span class='lines'>35</span></li>
+    <li><span>eval/comparison/methodology.md</span><span class='lines'>93</span></li>
+    <li><span>eval/comparison/results-template.md</span><span class='lines'>106</span></li>
+    <li><span>eval/comparison/run-guide.md</span><span class='lines'>54</span></li>
+    <li><span>eval/comparison/scripts/collect-metrics.sh</span><span class='lines'>106</span></li>
+    <li><span>eval/comparison/scripts/hook-wrapper.sh</span><span class='lines'>27</span></li>
+    <li><span>eval/comparison/scripts/setup-baseline.sh</span><span class='lines'>29</span></li>
+    <li><span>eval/comparison/scripts/setup-context.sh</span><span class='lines'>48</span></li>
+    <li><span>eval/comparison/scripts/setup-harness.sh</span><span class='lines'>55</span></li>
+    <li><span>eval/comparison/scripts/setup-swe-task.sh</span><span class='lines'>21</span></li>
+    <li><span>eval/comparison/starters/bug-fix/README.md</span><span class='lines'>10</span></li>
+    <li><span>eval/comparison/starters/bug-fix/pyproject.toml</span><span class='lines'>12</span></li>
+    <li><span>eval/comparison/starters/bug-fix/src/unitconv/__init__.py</span><span class='lines'>1</span></li>
+    <li><span>eval/comparison/starters/bug-fix/src/unitconv/converter.py</span><span class='lines'>82</span></li>
+    <li><span>eval/comparison/starters/bug-fix/tests/__init__.py</span><span class='lines'>0</span></li>
+    <li><span>eval/comparison/starters/bug-fix/tests/test_converter.py</span><span class='lines'>74</span></li>
+    <li><span>eval/comparison/starters/feature-build/README.md</span><span class='lines'>24</span></li>
+    <li><span>eval/comparison/starters/feature-build/pyproject.toml</span><span class='lines'>15</span></li>
+    <li><span>eval/comparison/starters/feature-build/src/tasktracker/__init__.py</span><span class='lines'>0</span></li>
+    <li><span>eval/comparison/starters/feature-build/src/tasktracker/cli.py</span><span class='lines'>5</span></li>
+    <li><span>eval/comparison/starters/feature-build/tests/__init__.py</span><span class='lines'>0</span></li>
+    <li><span>eval/comparison/tasks/bug-fix.md</span><span class='lines'>24</span></li>
+    <li><span>eval/comparison/tasks/feature-build.md</span><span class='lines'>37</span></li>
+    <li><span>eval/comparison/tasks/swe-bench-django-16263.md</span><span class='lines'>59</span></li>
     <li><span>eval/corpus/context-file-lifecycle-sections/file-lifecycle.md</span><span class='lines'>32</span></li>
     <li><span>eval/corpus/context-file-lifecycle-sections/scenario.json</span><span class='lines'>17</span></li>
     <li><span>eval/corpus/context-rules-installed/file-lifecycle.md</span><span class='lines'>32</span></li>
@@ -393,6 +440,7 @@
     <li><span>eval/corpus/hook-block-safe-command/scenario.json</span><span class='lines'>11</span></li>
     <li><span>eval/corpus/hook-check-tests-no-py/scenario.json</span><span class='lines'>11</span></li>
     <li><span>eval/corpus/hook-check-tests-py-no-pytest/scenario.json</span><span class='lines'>12</span></li>
+    <li><span>eval/corpus/hook-context-size-jq/scenario.json</span><span class='lines'>13</span></li>
     <li><span>eval/corpus/hook-detect-loop-2-no-warn/enforce-marker</span><span class='lines'>0</span></li>
     <li><span>eval/corpus/hook-detect-loop-2-no-warn/loop-state-1.txt</span><span class='lines'>1</span></li>
     <li><span>eval/corpus/hook-detect-loop-2-no-warn/scenario.json</span><span class='lines'>19</span></li>
@@ -410,6 +458,12 @@
     <li><span>eval/corpus/hook-enforce-loop-pass/result.txt</span><span class='lines'>1</span></li>
     <li><span>eval/corpus/hook-enforce-loop-pass/scenario.json</span><span class='lines'>21</span></li>
     <li><span>eval/corpus/hook-enforce-loop-pass/spec.md</span><span class='lines'>5</span></li>
+    <li><span>eval/corpus/hook-enforce-memory-allow/marker</span><span class='lines'>1</span></li>
+    <li><span>eval/corpus/hook-enforce-memory-allow/scenario.json</span><span class='lines'>19</span></li>
+    <li><span>eval/corpus/hook-enforce-memory-block/marker</span><span class='lines'>1</span></li>
+    <li><span>eval/corpus/hook-enforce-memory-block/scenario.json</span><span class='lines'>19</span></li>
+    <li><span>eval/corpus/hook-enforce-memory-inactive/marker</span><span class='lines'>1</span></li>
+    <li><span>eval/corpus/hook-enforce-memory-inactive/scenario.json</span><span class='lines'>16</span></li>
     <li><span>eval/corpus/hook-enforce-spec-allow-gate/active-phase.md</span><span class='lines'>5</span></li>
     <li><span>eval/corpus/hook-enforce-spec-allow-gate/enforce-marker</span><span class='lines'>0</span></li>
     <li><span>eval/corpus/hook-enforce-spec-allow-gate/keep</span><span class='lines'>0</span></li>
@@ -436,6 +490,8 @@
     <li><span>eval/corpus/hook-pre-compact-active-phase/tasks.md</span><span class='lines'>1</span></li>
     <li><span>eval/corpus/hook-scan-secrets-clean/scenario.json</span><span class='lines'>15</span></li>
     <li><span>eval/corpus/hook-scan-secrets-pattern/scenario.json</span><span class='lines'>16</span></li>
+    <li><span>eval/corpus/hook-session-start-memory-broken/scenario.json</span><span class='lines'>17</span></li>
+    <li><span>eval/corpus/hook-session-start-memory-healthy/scenario.json</span><span class='lines'>17</span></li>
     <li><span>eval/corpus/hook-session-start-populated/current-state.md</span><span class='lines'>6</span></li>
     <li><span>eval/corpus/hook-session-start-populated/enforce-marker</span><span class='lines'>0</span></li>
     <li><span>eval/corpus/hook-session-start-populated/scenario.json</span><span class='lines'>20</span></li>
@@ -451,6 +507,13 @@
     <li><span>eval/corpus/lifecycle-deliverable-enforcement/scenario.json</span><span class='lines'>37</span></li>
     <li><span>eval/corpus/lifecycle-deliverable-enforcement/spec.md</span><span class='lines'>5</span></li>
     <li><span>eval/corpus/lifecycle-deliverable-enforcement/widget-content</span><span class='lines'>2</span></li>
+    <li><span>eval/corpus/lifecycle-full-phase-cycle/active-phase.md</span><span class='lines'>5</span></li>
+    <li><span>eval/corpus/lifecycle-full-phase-cycle/current-state.md</span><span class='lines'>7</span></li>
+    <li><span>eval/corpus/lifecycle-full-phase-cycle/deliverable.py</span><span class='lines'>1</span></li>
+    <li><span>eval/corpus/lifecycle-full-phase-cycle/enforce-marker</span><span class='lines'>1</span></li>
+    <li><span>eval/corpus/lifecycle-full-phase-cycle/scenario.json</span><span class='lines'>49</span></li>
+    <li><span>eval/corpus/lifecycle-full-phase-cycle/spec.md</span><span class='lines'>6</span></li>
+    <li><span>eval/corpus/lifecycle-full-phase-cycle/tasks.md</span><span class='lines'>5</span></li>
     <li><span>eval/corpus/lifecycle-full-session-flow/current-state.md</span><span class='lines'>11</span></li>
     <li><span>eval/corpus/lifecycle-full-session-flow/enforce-marker</span><span class='lines'>0</span></li>
     <li><span>eval/corpus/lifecycle-full-session-flow/scenario.json</span><span class='lines'>43</span></li>
@@ -487,7 +550,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Specs <span class="badge badge-green">22 files, 1,954 lines</span></h3>
+  <h3>Specs <span class="badge badge-green">34 files, 3,083 lines</span></h3>
   <ul class="file-list">
     <li><span>specs/phase-08-spec-skill.md</span><span class='lines'>113</span></li>
     <li><span>specs/phase-09-file-lifecycle-reference.md</span><span class='lines'>83</span></li>
@@ -511,15 +574,32 @@
     <li><span>specs/phase-28-dx-discoverability.md</span><span class='lines'>97</span></li>
     <li><span>specs/phase-29-grade-push.md</span><span class='lines'>109</span></li>
     <li><span>specs/phase-30-data-driven-reports.md</span><span class='lines'>107</span></li>
+    <li><span>specs/phase-31-integration-eval-memory-gating.md</span><span class='lines'>84</span></li>
+    <li><span>specs/phase-32-longmemeval-s-benchmark.md</span><span class='lines'>79</span></li>
+    <li><span>specs/phase-33-hybrid-retrieval-memory-fixes.md</span><span class='lines'>85</span></li>
+    <li><span>specs/phase-34-upstream-sync-store-opt-ts-design.md</span><span class='lines'>87</span></li>
+    <li><span>specs/phase-36-hooks-audit-housekeeping.md</span><span class='lines'>95</span></li>
+    <li><span>specs/phase-38-install-integrity.md</span><span class='lines'>72</span></li>
+    <li><span>specs/phase-39-resilience-health-probes.md</span><span class='lines'>69</span></li>
+    <li><span>specs/phase-40-install-extraction-anti-pattern-hardening.md</span><span class='lines'>64</span></li>
+    <li><span>specs/phase-41-harness-hardening-process-safeguards.md</span><span class='lines'>82</span></li>
+    <li><span>specs/phase-42-harness-effectiveness-validation.md</span><span class='lines'>82</span></li>
+    <li><span>specs/phase-43-unified-init-activation-gap.md</span><span class='lines'>78</span></li>
+    <li><span>specs/ts-init-design.md</span><span class='lines'>252</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Other <span class="badge badge-green">4 files, 1,555 lines</span></h3>
+  <h3>Other <span class="badge badge-green">9 files, 2,218 lines</span></h3>
   <ul class="file-list">
-    <li><span>.claude/rules/active-phase.md</span><span class='lines'>11</span></li>
-    <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>162</span></li>
-    <li><span>docs/report.html</span><span class='lines'>556</span></li>
+    <li><span>.claude/rules/active-phase.md</span><span class='lines'>10</span></li>
+    <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>216</span></li>
+    <li><span>benchmark/README.md</span><span class='lines'>108</span></li>
+    <li><span>benchmark/longmemeval.py</span><span class='lines'>302</span></li>
+    <li><span>docs/delivery-report.html</span><span class='lines'>97</span></li>
+    <li><span>docs/report.html</span><span class='lines'>557</span></li>
     <li><span>docs/workflow.html</span><span class='lines'>826</span></li>
+    <li><span>modules.json</span><span class='lines'>79</span></li>
+    <li><span>patches/nanaclaw-sanitize-fts.patch</span><span class='lines'>23</span></li>
   </ul>
 </div>
 <h2>Test Coverage</h2>
@@ -543,11 +623,11 @@
 </table>
 
 <h2>Recent Git History</h2>
-<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">60865c2 Phase 30: Data-Driven Report Generators — 7-layer model, enforcement + memory-bridge diagrams
-b35d624 Regenerate HTML reports for v0.5.0+ (stale since Phase 13/v0.3.0)
-6a63927 Debrief Phase 29: v0.5.1 Grade Push — 7 tasks, 3 decisions, 43/43 eval
-c6ee854 Phase 29: v0.5.1 Grade Push — /nana skill, memory-consolidate, spec provenance, enforcement logging
-dd5a515 Debrief Phase 28: DX Discoverability — 169 tests, 43/43 eval</pre>
+<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">a91fddf Phase 43: Unified Init & Activation Gap — rename /init to /nana-init, expand to full bootstrap orchestrator
+181f74f Phase 42: Harness Effectiveness Validation — SWE-bench comparison, 3-condition A/B/C with token tracking
+9153408 Phase 41: Harness Hardening & Process Safeguards — jq guard, companion metadata, cooldown advisory, debrief enhancements
+7310391 Phase 40: install.sh Extraction & Anti-Pattern Hardening — modules.json, register-settings.py, functional smoke invariant
+92f26b7 Phase 39: Resilience & Health Probes — jq migration, 3-state health probe, PostToolUse normalization, /init router</pre>
 
 <footer>
   Generated by <code>scripts/generate-report.py</code> &mdash; run <code>make report</code> to regenerate

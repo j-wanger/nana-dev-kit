@@ -43,3 +43,14 @@ eval/comparison/scripts/hook-wrapper.sh
 eval/comparison/scripts/collect-metrics.sh
 eval/comparison/scripts/setup-swe-task.sh
 templates/.claude/skills/MANIFEST
+eval/reasoning/run-eval.py
+eval/reasoning/corpus/001-database-choice.json
+eval/reasoning/corpus/002-hook-error-strategy.json
+eval/reasoning/corpus/003-structural-vs-functional-tests.json
+eval/reasoning/corpus/004-vendored-dep-extension.json
+eval/reasoning/corpus/005-ceremony-reduction.json
+eval/reasoning/corpus/006-cross-domain-port.json
+eval/reasoning/corpus/007-optional-subsystem-failure.json
+eval/reasoning/corpus/008-false-positive-detection.json
+eval/reasoning/corpus/009-latency-budget-language.json
+eval/reasoning/corpus/010-dedup-at-scale.json

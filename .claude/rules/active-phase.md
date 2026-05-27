@@ -1,10 +1,14 @@
 # Active Phase Context
 
-Phase: 43 - Unified Init & Activation Gap
-Status: COMPLETED (5/5 tasks done)
-Objective: Renamed /init to /nana-init (resolved Claude Code built-in collision) and expanded from 44-line language router to 86-line multi-stage orchestrator bootstrapping full Nana experience (language scaffold + dev-wiki + optional knowledge wiki). All 8 exit criteria verified.
+Phase: 44 - Heuristic Learning System — Foundation
+Status: PLANNED (0/7 tasks done)
+Objective: Build heuristic store (wiki/heuristics/), seed with 10 transferable reasoning patterns from 43-phase history, integrate retrieval into session-start, establish baseline reasoning eval with LLM-as-judge scoring.
 
-Results: Skill directory renamed, 5 cross-references updated, SKILL.md expanded to 86 lines (under 120 target), +3 test assertions, ~306 tests pass, 50/50 eval.
-Next: Run /dev-plan to plan Phase 44.
+Scope: wiki/, wiki/heuristics/, templates/.claude/hooks/session-start.sh, eval/reasoning/
+Key constraints: Heuristics must be transferable (not project-specific). Reasoning eval is non-deterministic (separate from make eval). Seed from decision articles + working-knowledge + git history.
+Exit criteria: wiki with heuristic category, SCHEMA.md, 10 seed heuristics, session-start integration, eval runner + 10 scenarios + baseline scores, make test + make eval pass.
+Abort: If wiki-init disrupts existing project structure or Anthropic SDK unavailable for eval runner.
 
-Gates: [x] direction=approved [x] delivery=accepted
+Gates:
+- [x] Direction confirmed by user (approach approved)
+- [ ] Delivery accepted (post-implementation report)

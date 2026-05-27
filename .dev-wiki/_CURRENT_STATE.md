@@ -1,48 +1,47 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-26 by /dev-debrief (Phase 43 completed)
+> Last updated: 2026-05-26 by /dev-plan (Phase 44 planned)
 
 ## Recommended Next Action
 
-Run /dev-plan to plan Phase 44. Phase 43 completed all 5 tasks and all 8 exit criteria verified.
+Begin Phase 44 implementation. Task 1: Initialize knowledge wiki via /wiki-init.
 
 ## Active Phase
 
-**[[phase-43-unified-init-activation-gap|Phase 43: Unified Init & Activation Gap]]** (status: completed)
+**[[phase-44-heuristic-learning-foundation|Phase 44: Heuristic Learning System — Foundation]]** (status: active)
 
-Entry criteria: MET -- Phase 42 completed (7/7 tasks done)
-Exit criteria: ALL MET -- /nana-init replaces /init, bootstraps language scaffold + dev-wiki + optional knowledge wiki, ~306 tests + 50/50 eval pass
+Entry criteria: MET -- Phase 43 completed (5/5 tasks done)
+Exit criteria: wiki with heuristic category, SCHEMA.md, 10 seed heuristics, session-start integration, eval/reasoning runner + 10 scenarios + baseline scores, make test + make eval pass
 
-Progress: 100% (5/5 tasks done)
+Progress: 0% (0/7 tasks done)
 
 ## Active Phase Contract
 
-Phase: 43 - Unified Init & Activation Gap
-Tasks: 5 (2S + 3M) -- ALL COMPLETED
+Phase: 44 - Heuristic Learning System — Foundation
+Tasks: 7 (1L + 3M + 3S)
 Transition: continue
-Abort: n/a (phase completed)
+Abort: If wiki-init disrupts existing project structure or Anthropic SDK unavailable for eval runner
 
 ## Recent Decisions
 
 | Decision | Confidence | Date |
 |----------|------------|------|
+| [[cognitive-enhancement-plan]] | high | 2026-05-26 |
 | [[nana-init-rename-and-expand]] | high | 2026-05-26 |
 
 ## Blockers and Open Questions
 
-- None. Phase 43 completed cleanly with no blockers.
+- None currently.
 
 ## Key Artifacts
 
 | Path | Purpose | Last Modified |
 |------|---------|---------------|
-| `templates/.claude/skills/nana-init/SKILL.md` | Multi-stage onboarding orchestrator (86 lines, renamed from init/) | 2026-05-26 |
-| `modules.json` | Declarative module manifest (5 modules, "nana-init" in core) | 2026-05-26 |
-| `install.sh` | Module-group installer (nana-init references updated) | 2026-05-26 |
-| `eval/comparison/` | Harness effectiveness comparison (methodology, scripts, results) | 2026-05-26 |
-| `tests/` | 7 test scripts, ~306 tests (helpers.sh + test_*.sh) | 2026-05-26 |
-| `eval/` | 50 eval scenarios in 4 categories (100%) | 2026-05-26 |
-| `VERSION` | Semantic version (0.5.0) | 2026-05-23 |
+| `wiki/` | Knowledge wiki (to be scaffolded via /wiki-init) | pending |
+| `wiki/heuristics/` | Heuristic store (SCHEMA.md + 10 seed HEU-*.md) | pending |
+| `eval/reasoning/` | Reasoning eval infrastructure (runner, judge, scenarios) | pending |
+| `templates/.claude/hooks/session-start.sh` | Session-start hook (heuristic count to be added) | 2026-05-26 |
+| `specs/phase-44-heuristic-learning-foundation.md` | Phase 44 spec (approved) | 2026-05-26 |
 
 ## Session Journal (last 5)
 
@@ -56,9 +55,8 @@ Abort: n/a (phase completed)
 
 - Status: [[2026-05-26-codebase-snapshot|Codebase Snapshot 2026-05-26]]
 - Phases 1-43: 43 completed (see index.md)
-- Decision: [[nana-init-rename-and-expand|Rename /init to /nana-init and expand to multi-stage orchestrator]] -- high confidence, accepted
-- Spec: specs/phase-43-unified-init-activation-gap.md
+- Decision: [[cognitive-enhancement-plan|Cognitive Enhancement Plan — heuristic learning architecture]] -- high confidence, adopted
+- Spec: specs/phase-44-heuristic-learning-foundation.md
 - Roadmap: [[roadmap-gap-analysis|Engineering Gap Analysis]] -- 1 OPEN gap remains (4.1 language-agnostic core)
 - Release: v0.5.0 tagged and pushed
 - Benchmark: FTS5 recall@5 91.0%, hybrid/turn ~95% estimated (LongMemEval-S)
-- Comparison: eval/comparison/results-template.md (A 3/4, B 3/4, C 4/4; acceptance test confound acknowledged)

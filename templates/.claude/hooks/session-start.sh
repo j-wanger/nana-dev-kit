@@ -49,6 +49,14 @@ if [ -f "$TASKS" ]; then
   fi
 fi
 
+# --- Heuristic library ---
+if [ -d "wiki/heuristics" ]; then
+  HEURISTIC_COUNT=$(find wiki/heuristics -maxdepth 1 -name "HEU-*.md" 2>/dev/null | wc -l | tr -d ' ')
+  if [ "$HEURISTIC_COUNT" -gt 0 ] 2>/dev/null; then
+    echo "[nana:heuristics] $HEURISTIC_COUNT heuristics available — search with wiki-query tag:heuristic before approach formulation"
+  fi
+fi
+
 # --- Crash recovery: detect commits since last debrief ---
 if [ -f "$DEVWIKI_STATE" ]; then
   STATE_MTIME=$(stat -f %m "$DEVWIKI_STATE" 2>/dev/null || stat -c %Y "$DEVWIKI_STATE" 2>/dev/null || echo 0)

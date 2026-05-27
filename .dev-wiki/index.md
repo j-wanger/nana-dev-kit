@@ -46,6 +46,7 @@
 - [[phase-41-harness-hardening-process-safeguards|Phase 41: Harness Hardening & Process Safeguards]] -- completed
 - [[phase-42-harness-effectiveness-validation|Phase 42: Harness Effectiveness Validation]] -- completed
 - [[phase-43-unified-init-activation-gap|Phase 43: Unified Init & Activation Gap]] -- completed
+- [[phase-44-heuristic-learning-foundation|Phase 44: Heuristic Learning System — Foundation]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
