@@ -76,8 +76,8 @@
     "rationale": "No heuristic trigger directly matches distributed systems consistency-vs-availability tradeoffs. This is a domain-specific question about CAP theorem application, not covered by current heuristic set."
   },
   "020-tech-debt-triage": {
-    "relevant": [],
-    "rationale": "No heuristic trigger matches capacity-multiplier reasoning (choosing the initiative that unblocks other initiatives). This is a documented reasoning gap — the meta-decision pattern is not covered by current heuristics."
+    "relevant": ["HEU-011"],
+    "rationale": "HEU-011 trigger directly matches (prioritizing between 3 competing initiatives where test reliability enables/reduces cost of the other two). This was the canonical scenario that motivated HEU-011's creation."
   },
   "021-microservice-extraction-timing": {
     "relevant": ["IRON-001", "IRON-002"],

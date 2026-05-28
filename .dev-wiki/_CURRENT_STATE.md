@@ -1,33 +1,41 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-27 by /dev-debrief (Phase 52 completed)
+> Last updated: 2026-05-27 by /dev-plan (Phase 53 planned)
 
 ## Recommended Next Action
 
-Phase 52 complete (7/7 tasks done, all exit criteria met). Cognitive Enhancement Roadmap 7/7 complete. No active phase. Run /dev-plan to start next phase.
+Start Phase 53 implementation. Task 1: MCP Memory Diagnosis (S, orthogonal quick diagnostic). Back up DB files, check CWD config, document root cause.
 
 ## Active Phase
 
-No active phase. Last completed: **[[phase-52-heuristic-evolution|Phase 52: Heuristic Evolution — Counter Scoring, Deprecation Lifecycle, Dashboard]]** (status: completed)
+**[[phase-53-open-questions|Phase 53: Open Questions — IRON-004 Scoping, Meta-Decision Expansion, MCP Memory]]** (status: active)
 
-Progress: 100% (7/7 tasks done)
+Entry criteria: MET (Phase 52 complete, open questions documented)
+Exit criteria: 3 investigations documented with findings, HEU-011 drafted + eval'd, make test + make eval pass
+
+Progress: ~0% (0/6 tasks done)
 
 ## Active Phase Contract
 
-No active phase. Between phases.
+Phase: 53 - Open Questions: IRON-004 Scoping, Meta-Decision Expansion, MCP Memory
+Tasks: 6 (see tasks.md)
+Transition: continue
+Abort: if blocked >3 attempts, ask user: skip or abort
 
 ## Recent Decisions
 
 | Decision | Confidence | Date |
 |----------|------------|------|
+| [[verification-first-iron004]] | medium | 2026-05-27 |
 | [[counter-attribution-uniform-global-verdict]] | medium (confirmed) | 2026-05-27 |
 
 ## Blockers and Open Questions
 
 - Haiku judge inter-run variance: mean ranges 2.97-4.85 across runs. Possibly caused by recommendation length sensitivity. Needs investigation. (raised 2026-05-27)
-- IRON-004 scoping for deadline-constrained scenarios: "simpler system wins" overrides domain reasoning on 015. (raised 2026-05-27)
-- Whether "meta-decision" scenarios (like 020) can be systematically expanded for capacity-multiplier reasoning. (raised 2026-05-27)
-- MCP memory data loss: 0 entries at Phase 50 start despite population in prior phases. Not investigated this phase. (raised 2026-05-27)
+- [CLOSED Phase 53] IRON-004 scoping for deadline-constrained scenarios: resolved by selective injection (Phase 51). Ground-truth maps 015 to IRON-005 only. No IRON-004 edit needed.
+- [CLOSED Phase 53] Meta-decision scenarios (020): HEU-011 capacity-multiplier heuristic drafted. Clean baseline already solves 020 correctly; IRON-RULES-condition eval deferred.
+- [CLOSED Phase 53] MCP memory data loss: root cause is CWD mismatch + health probe bugs. Phase 19-48 entries irrecoverable. See mcp-memory-diagnosis.md.
+- session-start.d/memory-nudge.sh has two bugs: wrong DB path + wrong column name. Fix in future phase. (raised 2026-05-27)
 
 ## Key Artifacts
 

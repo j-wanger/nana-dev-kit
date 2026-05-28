@@ -90,4 +90,28 @@ make_heuristic "$T" "HEU-IDTEST" 5 1 "active"
 assert_exit_code 0 bash -c "python3 '$DASHBOARD' --dir '$T' 2>&1 | grep -q 'HEU-IDTEST'"
 rm -rf "$T"
 
+# Test 9: HEU-011 article exists with required YAML frontmatter fields
+test_start "test_heu011_frontmatter"
+HEU011="$REPO_ROOT/wiki/heuristics/HEU-011-capacity-multiplier.md"
+assert_file_exists "$HEU011"
+assert_contains "$HEU011" "id: HEU-011"
+assert_contains "$HEU011" "trigger:"
+assert_contains "$HEU011" "domain:"
+assert_contains "$HEU011" "status:"
+assert_contains "$HEU011" "helpful:"
+assert_contains "$HEU011" "harmful:"
+
+# Test 10: HEU-011 has all 6 required sections
+test_start "test_heu011_sections"
+assert_contains "$HEU011" "## When this applies"
+assert_contains "$HEU011" "## Always"
+assert_contains "$HEU011" "## Never"
+assert_contains "$HEU011" "## Why"
+assert_contains "$HEU011" "## Anti-pattern"
+assert_contains "$HEU011" "## Source"
+
+# Test 11: Dashboard shows HEU-011 from real wiki directory
+test_start "test_dashboard_shows_heu011"
+assert_exit_code 0 bash -c "python3 '$DASHBOARD' 2>&1 | grep -q 'HEU-011'"
+
 test_summary "heuristic_evolution"
