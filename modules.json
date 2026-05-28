@@ -72,7 +72,8 @@
       { "event": "PostToolUse", "matcher": "Write|Edit|MultiEdit", "script": "auto-ruff-format.sh" },
       { "event": "PreToolUse", "matcher": "Bash", "script": "block-dangerous-bash.sh" },
       { "event": "Stop", "matcher": "", "script": "check-tests-were-run.sh" },
-      { "event": "PostToolUse", "matcher": "Write|Edit|MultiEdit", "script": "scan-secrets.sh" }
+      { "event": "PostToolUse", "matcher": "Write|Edit|MultiEdit", "script": "scan-secrets.sh" },
+      { "event": "Stop", "matcher": "", "script": "py-review-stop-prompt.md", "type": "prompt" }
     ],
     "extra_dirs": ["session-start.d"]
   }

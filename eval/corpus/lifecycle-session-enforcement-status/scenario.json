@@ -15,7 +15,7 @@
       "input": "{}",
       "expected": {
         "exit_code": 0,
-        "stdout_contains": ["nana:enforce.*inactive"]
+        "stdout_contains": ["enforce:.*inactive"]
       }
     },
     {
@@ -28,7 +28,7 @@
       },
       "expected": {
         "exit_code": 0,
-        "stdout_contains": ["nana:enforce.*active"]
+        "stdout_contains": ["enforce:.*active"]
       }
     }
   ]

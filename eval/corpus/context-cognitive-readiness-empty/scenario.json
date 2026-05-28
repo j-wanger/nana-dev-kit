@@ -1,0 +1,15 @@
+{
+  "name": "cognitive readiness recommends wiki-bootstrap when wiki empty",
+  "category": "context",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      "wiki/schema.md": "wiki-schema.md",
+      ".dev-wiki/_CURRENT_STATE.md": "current-state.md"
+    },
+    "home_files": {}
+  },
+  "checks": [
+    {"type": "hook_output", "hook": "session-start.sh", "input": "", "stdout_contains": ["nana:cognitive", "Recommended action", "wiki-bootstrap"]}
+  ]
+}

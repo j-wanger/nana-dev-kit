@@ -12,6 +12,6 @@
   "input": "",
   "expected": {
     "exit_code": 0,
-    "stdout_contains": "[nana:memory]"
+    "stdout_contains": "nana:cognitive"
   }
 }

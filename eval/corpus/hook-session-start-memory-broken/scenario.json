@@ -12,6 +12,6 @@
   "input": "",
   "expected": {
     "exit_code": 0,
-    "stdout_contains": "server broken"
+    "stdout_contains": "broken"
   }
 }

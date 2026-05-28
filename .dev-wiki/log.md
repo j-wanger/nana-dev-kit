@@ -1,5 +1,7 @@
 # Dev Wiki Log
 
+[2026-05-28T18:00:00] DEBRIEF -- 1 decision (memory-architecture-classification upgraded), 1 journal, tasks verified (6/6), state refreshed, Phase 56 completed, 1 working-knowledge entry added, 54/54 eval, memory harvest: nothing to extract
+[2026-05-28T12:00:00] PLAN -- Phase 55 planned, 6 tasks (3S+3M), 2 decisions (cascade-failure-diagnosis, spec-reform-reasoning-over-compliance). Harness activation overhaul: nana-init fix, registration completeness test, spec reform (prescriptive→reasoning), cognitive readiness diagnostic, empty-wiki guidance.
 [2026-05-27T23:45:00] PLAN -- Phase 53 planned, 6 tasks (2S+3M+1S), 1 decision (verification-first-iron004). Open questions: MCP memory diagnosis, IRON-004 matcher verification + analysis, HEU-011 capacity-multiplier draft + eval, tests + dashboard, findings consolidation.
 [2026-05-27T23:30:00] PLAN -- Phase 52 planned, 7 tasks (3M+4S), 1 decision (counter-attribution-uniform-global-verdict). Heuristic evolution: counter update companion, deprecation lifecycle, dashboard, SCHEMA.md lifecycle, tests, eval scenarios, roadmap Phase 7 completion.
 [2026-05-27T23:00:00] DEBRIEF -- 2 decisions (1 upgraded medium->high), 1 journal, tasks verified (7/7), state refreshed, Phase 51 completed, active knowledge carried forward (3 entries), 96/96 companions, 50/50 eval, memory harvest: 3 entries stored
@@ -106,3 +108,7 @@
 [2026-05-24T00:00:00] DEBRIEF -- 3 decisions (3 existing confirmed, 1 upgraded medium->high), 1 journal, tasks verified, state refreshed, Phase 31 completed
 [2026-05-23T22:30:00] PLAN -- Phase 31 planned, 5 tasks (3M 2S), 3 decisions (memory-enforcement-auto-create, trust-based-memory-gate, settings-registration-global-only)
 [2026-05-28T03:20:45Z] DEBRIEF -- 1 decision (already written), 1 journal, tasks updated (6 completed), state refreshed, active-knowledge carried forward (4 entries)
+[2026-05-28T04:00:00Z] PLAN -- Phase 54 planned, 4 tasks (4S), 0 decisions. Maintenance sweep: memory-nudge.sh column fix, session-start.sh DB paths, stale working-knowledge removal, test assertions.
+[2026-05-28T04:30:00Z] DEBRIEF -- 0 decisions, 1 journal, tasks verified (4 completed), state refreshed, Phase 54 completed
+[2026-05-28T05:00:00Z] DEBRIEF -- 3 decisions (1 new bidirectional-registration-invariant, 2 existing), 1 journal, tasks verified (6 completed), state refreshed, Phase 55 completed, retro check (Phases 51-55) clean
+[2026-05-28T21:00:00] PLAN -- Phase 56 planned, 6 tasks, 1 decision (memory architecture classification)

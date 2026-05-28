@@ -1,3 +1,8 @@
+---
+name: nana-init
+description: Bootstrap the full Nana experience for a project — language scaffold, dev-wiki lifecycle tracking, and optional knowledge wiki. Each step detects existing state and skips if already initialized.
+---
+
 # nana-init
 
 Bootstrap the full Nana experience for a project: language scaffold, dev-wiki lifecycle tracking, and optional knowledge wiki. Each step detects existing state and skips if already initialized.
@@ -57,7 +62,7 @@ Dev-wiki enables: phase tracking, task management, crash recovery, session conti
 | `wiki/` absent | Ask: "Set up a knowledge wiki? Recommended for domain-heavy work. (y/n)" |
 | `wiki/` present | Skip: "Knowledge wiki already initialized." |
 
-If user accepts: invoke `Skill(skill="wiki-init")`.
+If user accepts: invoke `Skill(skill="wiki-init")`. After wiki-init completes, recommend seeding: `"Wiki created. Run /wiki-bootstrap next to seed domain knowledge — this takes 2-5 minutes and gives the harness domain context for planning and review."`
 If user declines: skip. They can run `/wiki-init` later.
 
 ---

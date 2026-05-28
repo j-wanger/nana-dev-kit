@@ -74,14 +74,21 @@ Use this 9-section template. Fill every section — empty sections signal missin
 - [Explicit list — prevents scope creep]
 
 ## Approach
-[High-level direction. NOT step-by-step — constrain the direction, not the path.]
+[High-level direction — goals and constraints, not implementation details.
+Do NOT prescribe specific libraries, schemas, file structures, or architectures.
+Let the implementer's domain reasoning determine the design.]
+
+### Domain Research Questions
+[1-3 questions the implementer should investigate before committing to a design.
+What domain knowledge would separate a good implementation from a great one?]
 
 ## Constraints (CRITICAL)
 [Safety rails. Each prevents a specific known failure mode.]
 - [Constraint: prevents <specific bad outcome>]
 
-## Deliverables
-[Concrete, enumerable outputs. Not "improved code" but "3 files: X, Y, Z."]
+## Success Vision
+[What does excellent look like? Describe outcomes and qualities, not specific files or artifacts.
+"Honest methodology that acknowledges limitations" over "3 files: X.py, Y.py, Z.py".]
 
 ## Exit Criteria (machine-checkable)
 [Each is a command returning pass/fail.]
@@ -103,7 +110,7 @@ Use this 9-section template. Fill every section — empty sections signal missin
 
 Verify before dispatching Tier 1. Fix failures first.
 
-- [ ] All 9 H2 headers present (Objective through Assumptions)
+- [ ] All 9 H2 headers present (Objective, Context, Scope, Approach, Constraints, Success Vision, Exit Criteria, Checkpoints, Assumptions)
 - [ ] Scope has both `### In scope` and `### Out of scope`
 - [ ] Constraints has ≥1 bullet
 - [ ] Exit Criteria has ≥1 `- [ ]` with backtick command

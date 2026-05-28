@@ -18,6 +18,7 @@ test:
 	@bash "$(NANA_KIT_DIR)tests/test_memory.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_companions.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_heuristic_evolution.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_registration.sh"
 	@echo ""
 	@echo "All tests passed."
 

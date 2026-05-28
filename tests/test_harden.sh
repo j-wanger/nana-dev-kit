@@ -56,6 +56,27 @@ else
 fi
 rm -rf "$T"
 
+# --- Memory nudge structural checks ---
+
+test_start "memory-nudge: uses correct column name (active, not is_active)"
+NUDGE_HOOK="$REPO_ROOT/templates/.claude/hooks/session-start.d/memory-nudge.sh"
+if grep -q 'is_active' "$NUDGE_HOOK"; then
+  test_fail "memory-nudge.sh still uses is_active instead of active"
+elif ! grep -qE 'WHERE.*\bactive\b' "$NUDGE_HOOK"; then
+  test_fail "memory-nudge.sh missing active column reference"
+else
+  test_pass
+fi
+
+test_start "session-start: uses project-relative .memory/memory.db path"
+if grep -qF 'memory_server/memory.db' "$START_HOOK"; then
+  test_fail "session-start.sh still uses wrong memory_server/ path"
+elif ! grep -qF '.memory/memory.db' "$START_HOOK"; then
+  test_fail "session-start.sh missing .memory/memory.db path"
+else
+  test_pass
+fi
+
 # --- Memory nudge tests ---
 
 test_start "nudge: cooldown suppresses"

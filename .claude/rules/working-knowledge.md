@@ -1,6 +1,16 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
+- [uses: 1] Memory architecture 5-layer classification: working-knowledge=mandatory (.claude/rules/), active-knowledge=mandatory (.claude/rules/), dev-wiki=automatic (session-start + dev-plan), knowledge-wiki=automatic (dev-plan Step 2 + spec), MCP memory=voluntary (nudges only). Key insight: strengthen existing activation points (.claude/rules/ files always loaded), don't add hooks (can be unwired -- 3 cascade failures across project history).
+  source: [[decision:memory-architecture-classification]] | activated: 2026-05-28
+- [uses: 1] Cascade failure anti-pattern: nana-init not installed -> enforce marker missing -> all enforcement silently disabled. Third instance of same class (pre-compact.sh Phase 15-23, MCP CWD Phase 4-38, nana-init Phase 43-55). Root cause: install.sh cp -r needs YAML frontmatter in SKILL.md.
+  source: [[decision:cascade-failure-diagnosis]] | activated: 2026-05-28
+- [uses: 1] Open-ended prompts outperform prescriptive specs: +1.75 composite quality delta in 5-implementation experiment. Best implementation (bare Claude, open-ended prompt) produced academic citations and honest backtesting. Spec reform: Deliverables -> Success Vision, added Domain Research Questions, Reasoning Enablement reviewer dimension.
+  source: [[decision:spec-reform-reasoning-over-compliance]] | activated: 2026-05-28
+- [uses: 1] Bidirectional registration invariant: filesystem -> modules.json AND modules.json -> filesystem. Complements functional smoke invariant (Phase 41) which only checks "does registered stuff work?" but not "is stuff registered?". test_registration.sh, 40 assertions.
+  source: [[decision:bidirectional-registration-invariant]] | activated: 2026-05-28
+- [uses: 1] Session-start.sh line cap (70 lines, Phase 22) eroded to 137 lines over Phases 23-54 without any test catching it. Cognitive-readiness.sh extraction fixed it. Pattern: caps need test assertions, not just documentation.
+  source: [[journal:2026-05-28-phase-55-harness-activation-overhaul-complete]] | activated: 2026-05-28
 - [uses: 1] Clean baseline solves scenario 020 correctly (5/5/5). The "8/9 wrong" finding (Phase 50) was from IRON-RULES-injected conditions — IRON-005 biases toward dependency upgrade over capacity multiplier. HEU-011's value is as IRON-005 counterweight, not standalone improvement. IRON-RULES-condition eval deferred.
   source: [[active-knowledge:phase-53]] | activated: 2026-05-27
 - [uses: 1] MCP memory CWD mismatch: Claude Code ignores settings.json cwd, uses project directory. DB at <project_root>/.memory/memory.db, not ~/.claude/.memory/. Health probe (memory-nudge.sh) checks wrong path + wrong column (is_active vs active). Phase 19-48 entries irrecoverable. 11 current entries from Phase 49+.
@@ -30,8 +40,6 @@
 - [uses: 1] Haiku judge passes calibration: mean=4.07, 37.8% below 5 (self-judge: mean 4.83, fails). High inter-run variance (mean ranges 2.97-4.85) needs investigation. Sonnet not tested (jumped to Haiku per fallback sequence).
   source: [[active-knowledge:phase-50]] | activated: 2026-05-27
 - [uses: 1] Harder scenarios don't reduce ceiling if model gets them right. Ceiling is about correct-answer frequency, not scenario difficulty. 5 new scenarios (021-025) scored 15/15 with self-judge. Ceiling reduction requires wrong answers OR stricter judge.
-  source: [[active-knowledge:phase-50]] | activated: 2026-05-27
-- [uses: 1] Scenario 020 capacity-multiplier gap: consistently wrong across all conditions (8/9 choose dependency upgrade, 0 choose test reliability). "Choose the initiative that unblocks other initiatives" is a genuine model reasoning gap.
   source: [[active-knowledge:phase-50]] | activated: 2026-05-27
 - [uses: 1] Conditional injection negative result: scenario-type classification (suppress IRON RULES for risk-dominant) provides zero delta vs always-inject. Stochastic interference from Phase 48 did not reproduce in fresh runs. Baseline divergence, not rule-induced interference.
   source: [[journal:2026-05-27-phase-49-conditional-heuristic-injection-complete]] | activated: 2026-05-27
@@ -191,8 +199,6 @@
   source: [[decision:soul-vs-agents-delineation]] | activated: 2026-05-19
 - [uses: 1] nana-soul.md Thinking protocol has trigger clause (trade-offs/design/advisory), cost-of-error proportionality, 5 moves (read subtext, challenge frame, delay commitment, informed search H8, lateral scope H9); 59 lines total. T0 in dev-plan SKILL.md uses output-format forcing (not abstract checks).
   source: [[journal:2026-05-21-phase-14-adversarial-thinking-and-review-complete]] | activated: 2026-05-21
-- [uses: 1] /spec skill has two-tier review gate: Tier 0 structural lint (inline, deterministic) + Tier 1 semantic subagent (6 dimensions); adaptive persistence (dev-wiki -> /dev-plan, standalone -> specs/)
-  source: [[decision:spec-two-tier-review-gate]] | activated: 2026-05-19
 - [uses: 3] Gate enforcement uses two layers: active-phase.md Gates section (5 checkpoints, preventive) + tasks.md gate log HTML comments (detective, auditable)
   source: [[decision:gate-enforcement-checklist-plus-log]] | activated: 2026-05-19
 - [uses: 3] Hook exit codes: 0 = allow (tool use proceeds), 2 = block (stderr shown to Claude); PreToolUse receives JSON on stdin with input.file_path; PostToolUse receives tool_name, tool_input, stdout, stderr, exit_code; advisory hooks MUST exit 0

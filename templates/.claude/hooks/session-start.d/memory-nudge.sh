@@ -26,7 +26,7 @@ check_memory_consolidation() {
 
   if [ "$SUPPRESS" = false ]; then
     local MCOUNT
-    MCOUNT=$(timeout 2 sqlite3 "$MEMORY_DB" "SELECT COUNT(*) FROM memories WHERE is_active=1;" 2>/dev/null || echo "0")
+    MCOUNT=$(timeout 2 sqlite3 "$MEMORY_DB" "SELECT COUNT(*) FROM memories WHERE active=1;" 2>/dev/null || echo "0")
     if [ "$MCOUNT" -gt 500 ] 2>/dev/null; then
       echo "[memory] $MCOUNT active entries. Consider running memory_consolidate."
       date +%s > "$NUDGE_TS"

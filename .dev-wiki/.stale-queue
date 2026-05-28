@@ -81,3 +81,10 @@ scripts/heuristic-dashboard.py
 tests/test_heuristic_evolution.sh
 eval/corpus/skill-counter-update-companion/scenario.json
 eval/corpus/skill-evolution-lifecycle-companion/scenario.json
+tests/test_registration.sh
+templates/.claude/hooks/session-start.d/cognitive-readiness.sh
+eval/corpus/hook-session-start-populated/scenario.json
+eval/corpus/lifecycle-full-phase-cycle/scenario.json
+eval/corpus/lifecycle-session-enforcement-status/scenario.json
+eval/corpus/context-cognitive-readiness-populated/scenario.json
+eval/corpus/context-cognitive-readiness-empty/scenario.json

@@ -149,6 +149,10 @@ Discover relevant wikis, then retrieve articles from each:
 
 If no articles score >0 across all wikis, emit: `"Cross-wiki retrieval: N wikis scored, 0 relevant articles found."` and continue (planning proceeds without wiki knowledge).
 
+If wiki exists, count domain articles (excluding heuristics, inbox, scaffolding): `wiki_article_count=$(find $ROOT/wiki -name "*.md" -not -name "schema.md" -not -name "index.md" -not -name "SCHEMA.md" -not -path "*/heuristics/*" -not -path "*/inbox/*" -not -path "*/.processed/*" 2>/dev/null | wc -l)`. If `wiki_article_count` is 0 (WIKI_EMPTY state):
+
+**Recommended action:** `"Knowledge wiki has no domain articles. Run /wiki-bootstrap to seed domain knowledge before planning — Phase 42 experiment showed +1.75 quality delta with domain research. Takes 2-5 minutes."` Persist `- [planning] Knowledge wiki empty — domain research unavailable (raised <today>)` to `_CURRENT_STATE.md` `## Blockers and Open Questions`. Continue without wiki knowledge.
+
 If no `~/.claude/wikis.json` and no `$ROOT/wiki/`, skip. **Budget:** 5 articles initially (Step 2.5 may expand to 14 via iterative loop).
 
 ### Step 2.5: Iterative Knowledge Completeness Check *(Lite: skip)*

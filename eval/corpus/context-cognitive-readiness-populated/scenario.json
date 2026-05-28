@@ -1,0 +1,17 @@
+{
+  "name": "cognitive readiness reports wiki articles when populated",
+  "category": "context",
+  "scoring": "binary",
+  "setup": {
+    "cwd_files": {
+      "wiki/articles/patterns/test-article.md": "wiki-article.md",
+      ".dev-wiki/_CURRENT_STATE.md": "current-state.md"
+    },
+    "home_files": {
+      ".claude/enforce": "enforce-marker"
+    }
+  },
+  "checks": [
+    {"type": "hook_output", "hook": "session-start.sh", "input": "", "stdout_contains": ["nana:cognitive", "articles"]}
+  ]
+}

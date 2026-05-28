@@ -12,30 +12,31 @@ import os
 import sys
 
 
-def upsert_hook(hooks, event, matcher, hook_file, hooks_dir):
-    cmd = os.path.join(hooks_dir, hook_file)
+def upsert_hook(hooks, event, matcher, hook_file, hooks_dir, hook_type="command"):
+    path = os.path.join(hooks_dir, hook_file)
+    key = "prompt" if hook_type == "prompt" else "command"
     if event not in hooks:
         hooks[event] = []
     for e in hooks[event]:
         for inner in e.get("hooks", []):
-            if inner.get("command", "").endswith(hook_file):
+            if inner.get(key, "").endswith(hook_file):
                 if matcher and e.get("matcher") != matcher:
                     e["matcher"] = matcher
                 elif not matcher and "matcher" in e:
                     del e["matcher"]
                 return
     for e in hooks[event]:
-        if e.get("command", "").endswith(hook_file) and "hooks" not in e:
+        if e.get(key, "").endswith(hook_file) and "hooks" not in e:
             keep_matcher = e.get("matcher")
             e.clear()
             if keep_matcher:
                 e["matcher"] = keep_matcher
-            e["hooks"] = [{"type": "command", "command": cmd}]
+            e["hooks"] = [{"type": hook_type, key: path}]
             return
     entry = {}
     if matcher:
         entry["matcher"] = matcher
-    entry["hooks"] = [{"type": "command", "command": cmd}]
+    entry["hooks"] = [{"type": hook_type, key: path}]
     hooks[event].append(entry)
 
 
@@ -80,7 +81,8 @@ def cmd_hooks(args):
     hooks = data["hooks"]
 
     for h in hook_defs:
-        upsert_hook(hooks, h["event"], h.get("matcher", ""), h["script"], hooks_dir)
+        upsert_hook(hooks, h["event"], h.get("matcher", ""), h["script"], hooks_dir,
+                     hook_type=h.get("type", "command"))
 
     for g in ghosts:
         remove_ghost(hooks, g)

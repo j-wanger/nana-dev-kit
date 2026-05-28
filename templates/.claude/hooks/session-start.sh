@@ -8,6 +8,7 @@ set -euo pipefail
 HOOK_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$HOOK_DIR/session-start.d/wk-prune.sh"
 source "$HOOK_DIR/session-start.d/memory-nudge.sh"
+source "$HOOK_DIR/session-start.d/cognitive-readiness.sh"
 
 date +%s > "$HOME/.claude/.session-start-ts" 2>/dev/null || true
 
@@ -40,23 +41,6 @@ if [ -f "$SESSION_STATE" ]; then
   fi
 fi
 
-# --- Memory search guidance ---
-TASKS=".dev-wiki/tasks.md"
-if [ -f "$TASKS" ]; then
-  TOPIC=$(grep -m1 '^\- \[ \]' "$TASKS" 2>/dev/null | sed 's/^- \[ \] \[.\] //' | sed 's/ —.*//' | head -c 80 || true)
-  if [ -n "$TOPIC" ]; then
-    echo "[nana:memory] Run memory_search with query: \"$TOPIC\""
-  fi
-fi
-
-# --- Heuristic library ---
-if [ -d "wiki/heuristics" ]; then
-  HEURISTIC_COUNT=$(find wiki/heuristics -maxdepth 1 -name "HEU-*.md" 2>/dev/null | wc -l | tr -d ' ')
-  if [ "$HEURISTIC_COUNT" -gt 0 ] 2>/dev/null; then
-    echo "[nana:heuristics] $HEURISTIC_COUNT heuristics available — search with wiki-query tag:heuristic before approach formulation"
-  fi
-fi
-
 # --- Crash recovery: detect commits since last debrief ---
 if [ -f "$DEVWIKI_STATE" ]; then
   STATE_MTIME=$(stat -f %m "$DEVWIKI_STATE" 2>/dev/null || stat -c %Y "$DEVWIKI_STATE" 2>/dev/null || echo 0)
@@ -76,62 +60,11 @@ if [ -f ".dev-wiki/.pending-commit" ]; then
 fi
 
 # --- Clear session state ---
-rm -f .claude/.loop-state
-rm -f .claude/.memory-consulted
+rm -f .claude/.loop-state .claude/.memory-consulted
 
-# --- Memory consolidation nudge ---
-check_memory_consolidation "$HOME/.claude/memory_server/memory.db" "$HOME/.claude/.memory-nudge-ts"
-
-# --- Working-knowledge pruning ---
+# --- Module functions ---
+check_memory_consolidation ".memory/memory.db" "$HOME/.claude/.memory-nudge-ts"
 prune_working_knowledge ".claude/rules/working-knowledge.md" ".dev-wiki/.stale-queue"
-
-# --- Enforcement status ---
-if [ -f "$HOME/.claude/enforce" ]; then
-  echo "[nana:enforce] active"
-else
-  echo "[nana:enforce] inactive (touch ~/.claude/enforce to enable)"
-fi
-
-# --- MCP memory server health check ---
-MEM="not configured"
-if [ -f "$HOME/.claude/settings.json" ] && command -v jq >/dev/null 2>&1; then
-  MCP_CMD=$(jq -r '.mcpServers.memory.command // empty' "$HOME/.claude/settings.json" 2>/dev/null || true)
-  if [ -n "$MCP_CMD" ]; then
-    if [ ! -x "$MCP_CMD" ] && [ ! -f "$MCP_CMD" ]; then
-      echo "[nana:memory] server broken (python not found at $MCP_CMD). Run install.sh to fix."
-      MEM="broken"
-    else
-      MCP_CWD=$(jq -r '.mcpServers.memory.cwd // empty' "$HOME/.claude/settings.json" 2>/dev/null || true)
-      if ! (cd "$MCP_CWD" 2>/dev/null && "$MCP_CMD" -c "import memory_server" 2>/dev/null); then
-        echo "[nana:memory] server broken (cannot import from cwd: $MCP_CWD). Run install.sh to fix."
-        MEM="broken"
-      else
-        MEM="healthy"
-        DB_PATH="$HOME/.claude/memory_server/memory.db"
-        if [ -f "$DB_PATH" ] && command -v sqlite3 >/dev/null 2>&1; then
-          ENTRY_COUNT=$(sqlite3 "$DB_PATH" "SELECT COUNT(*) FROM memories WHERE active = 1;" 2>/dev/null || echo "?")
-          echo "[nana:memory] server healthy ($ENTRY_COUNT entries)"
-        else
-          echo "[nana:memory] server healthy (db check skipped)"
-        fi
-      fi
-    fi
-  fi
-fi
-if [ "$MEM" = "not configured" ]; then
-  echo "[nana:memory] not configured"
-fi
-
-# --- Kit summary ---
-SKILL_N=0
-HOOK_N=0
-[ -d "$HOME/.claude/skills" ] && SKILL_N=$(find "$HOME/.claude/skills" -maxdepth 2 -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
-[ -d "$HOME/.claude/hooks" ] && HOOK_N=$(find "$HOME/.claude/hooks" -maxdepth 1 -name "*.sh" 2>/dev/null | wc -l | tr -d ' ')
-KIT_VER=""
-if [ -f "$HOME/.claude/.nana-dev-kit-path" ]; then
-  KP=$(cat "$HOME/.claude/.nana-dev-kit-path" 2>/dev/null || true)
-  [ -n "$KP" ] && [ -f "$KP/VERSION" ] && KIT_VER=" v$(cat "$KP/VERSION")"
-fi
-echo "[nana:kit] ${SKILL_N} skills, ${HOOK_N} hooks, memory ${MEM}${KIT_VER}"
+check_cognitive_readiness
 
 exit 0

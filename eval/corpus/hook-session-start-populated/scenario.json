@@ -15,6 +15,6 @@
   "input": "",
   "expected": {
     "exit_code": 0,
-    "stdout_contains": ["Dev-Wiki State", "nana:enforce.*active", "memory.*search"]
+    "stdout_contains": ["Dev-Wiki State", "enforce:.*active", "search:.*memory_search"]
   }
 }

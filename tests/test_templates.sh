@@ -109,8 +109,8 @@ assert_contains "$LIFECYCLE" 'memory_store'
 test_start "session-start.sh has gate-check logic"
 assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" 'nana:gate'
 
-test_start "session-start.sh has kit summary line"
-assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" 'nana:kit'
+test_start "cognitive-readiness.sh has kit summary line"
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.d/cognitive-readiness.sh" 'nana:cognitive'
 
 test_start "session-start.sh passes syntax check"
 assert_exit_code 0 bash -n "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh"
@@ -182,8 +182,8 @@ else
 fi
 
 # --- Session-start memory guidance ---
-test_start "session-start.sh has memory_search guidance"
-assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" 'memory_search'
+test_start "cognitive-readiness.sh has memory_search guidance"
+assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.d/cognitive-readiness.sh" 'memory_search'
 
 test_start "session-start.sh has pending-commit stale check"
 assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" 'pending-commit'
@@ -201,12 +201,12 @@ assert_file_exists "$PROJECT_ROOT/templates/.claude/hooks/session-start.d/memory
 test_start "session-start.d/memory-nudge.sh passes syntax check"
 assert_exit_code 0 bash -n "$PROJECT_ROOT/templates/.claude/hooks/session-start.d/memory-nudge.sh"
 
-test_start "session-start.sh sources 2 modules from session-start.d/"
+test_start "session-start.sh sources 3 modules from session-start.d/"
 SOURCES=$(grep -c 'source.*session-start\.d/' "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh")
-if [ "$SOURCES" -eq 2 ]; then
+if [ "$SOURCES" -eq 3 ]; then
   test_pass
 else
-  test_fail "expected 2 source lines, got $SOURCES"
+  test_fail "expected 3 source lines, got $SOURCES"
 fi
 
 # --- Enforce-memory hook ---
@@ -673,13 +673,14 @@ else
   test_fail "session-start.sh still uses python3 -c for JSON parsing"
 fi
 
-test_start "session-start.sh has 3-state memory health probe"
-if grep -q 'memory.*healthy' "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" && \
-   grep -q 'memory.*broken' "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh" && \
-   grep -q 'memory.*configured' "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh"; then
+test_start "cognitive-readiness.sh has 3-state memory health probe"
+CR="$PROJECT_ROOT/templates/.claude/hooks/session-start.d/cognitive-readiness.sh"
+if grep -q 'mem_status="healthy"' "$CR" && \
+   grep -q 'mem_status="broken' "$CR" && \
+   grep -q 'mem_status="not configured"' "$CR"; then
   test_pass
 else
-  test_fail "session-start.sh missing 3-state health probe"
+  test_fail "cognitive-readiness.sh missing 3-state health probe"
 fi
 
 test_start "PostToolUse hooks use .tool_input canonical path"
@@ -740,11 +741,11 @@ fi
 
 # --- Heuristic Learning System (Phase 44) ---
 
-test_start "session-start.sh has heuristic count block"
-if grep -q 'nana:heuristic' "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh"; then
+test_start "cognitive-readiness.sh has heuristic count block"
+if grep -q 'heuristic' "$PROJECT_ROOT/templates/.claude/hooks/session-start.d/cognitive-readiness.sh"; then
   test_pass
 else
-  test_fail "session-start.sh missing [nana:heuristics] block"
+  test_fail "cognitive-readiness.sh missing heuristic count block"
 fi
 
 test_start "eval/reasoning/run-eval.py exists"

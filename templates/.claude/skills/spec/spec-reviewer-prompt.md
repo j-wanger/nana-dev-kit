@@ -66,6 +66,16 @@ Readable after context compaction — no conversation references?
 - **PASS:** An agent with only this document could execute the work
 - **FAIL:** Requires conversation context that won't survive compaction
 
+### 7. Reasoning Enablement
+
+Does the spec promote domain thinking or constrain it?
+
+- Approach states goals/constraints, not implementation details (no specific libraries, schemas, file structures)
+- Domain Research Questions present and non-trivial (not answerable from the spec itself)
+- Success Vision describes outcomes/qualities, not artifacts
+- **PASS:** An expert would make better domain decisions than a novice given this spec
+- **FAIL:** Spec prescribes implementation so tightly that domain expertise adds no value
+
 ## Output Format
 
 ```

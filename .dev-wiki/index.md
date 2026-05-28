@@ -56,6 +56,9 @@
 - [[phase-51-prompt-type-hooks|Phase 51: Prompt-Type Hooks — Heuristic-Informed Runtime Judging]] -- completed
 - [[phase-52-heuristic-evolution|Phase 52: Heuristic Evolution — Counter Scoring, Deprecation Lifecycle, Dashboard]] -- completed
 - [[phase-53-open-questions|Phase 53: Open Questions — IRON-004 Scoping, Meta-Decision Expansion, MCP Memory]] -- completed
+- [[phase-54-maintenance-sweep|Phase 54: Maintenance Sweep]] -- completed
+- [[phase-55-harness-activation-overhaul|Phase 55: Harness Activation Overhaul]] -- completed
+- [[phase-56-cognitive-activation-memory-design|Phase 56: Cognitive Activation & Memory Design]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -161,6 +164,10 @@
 - [[counter-attribution-uniform-global-verdict|Counter Attribution — Uniform Global Verdict]] -- medium confidence, accepted
 - [[mcp-memory-diagnosis|MCP Memory Data Loss Diagnosis]] -- high confidence, accepted
 - [[phase-53-investigation-findings|Phase 53 Investigation Findings]] -- high confidence, active
+- [[cascade-failure-diagnosis|Cascade Failure: nana-init → Enforcement Disabled]] -- high confidence, active
+- [[spec-reform-reasoning-over-compliance|Spec Reform: Reasoning Over Compliance]] -- medium confidence, active
+- [[bidirectional-registration-invariant|Bidirectional Registration Invariant]] -- high confidence, accepted
+- [[memory-architecture-classification|Memory Architecture Classification]] -- high confidence, accepted
 - [[nana-init-rename-and-expand|Rename /init to /nana-init and expand to multi-stage orchestrator]] -- high confidence, accepted
 - [[turn-level-hybrid-recommended|Turn-level hybrid RRF is the winning strategy]] -- high confidence, accepted
 - [[diagnostic-first-benchmark|Diagnostic-first benchmark]] -- high confidence, accepted
@@ -195,6 +202,9 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-28-phase-56-cognitive-activation-memory-design-complete|Phase 56 complete (cognitive activation & memory design — 5-layer classification, actionable cognitive readiness, domain seed)]] -- 2026-05-28
+- [[2026-05-28-phase-55-harness-activation-overhaul-complete|Phase 55 complete (harness activation overhaul — cascade fix, spec reform, cognitive readiness)]] -- 2026-05-28
+- [[2026-05-28-phase-54-maintenance-sweep-complete|Phase 54 complete (maintenance sweep — hook bug fixes, stale knowledge removal)]] -- 2026-05-28
 - [[2026-05-27-phase-53-open-questions-complete|Phase 53 complete (open questions — IRON-004 scoping, HEU-011, MCP memory)]] -- 2026-05-27
 - [[2026-05-27-phase-52-heuristic-evolution-complete|Phase 52 complete (heuristic evolution — counter scoring, deprecation lifecycle, dashboard)]] -- 2026-05-27
 - [[2026-05-27-phase-51-prompt-type-hooks-complete|Phase 51 complete (heuristic-informed runtime judging)]] -- 2026-05-27
@@ -253,6 +263,7 @@
 - [[roadmap-cognitive-enhancement|Cognitive Enhancement Roadmap]] -- active, 7-phase heuristic learning plan (7/7 done)
 
 ### Status
+- [[2026-05-28-codebase-snapshot|Codebase Snapshot]] -- 2026-05-28
 - [[2026-05-27-codebase-snapshot|Codebase Snapshot]] -- 2026-05-27
 - [[2026-05-26-codebase-snapshot|Codebase Snapshot]] -- 2026-05-26
 - [[2026-05-25-codebase-snapshot|Codebase Snapshot]] -- 2026-05-25
@@ -276,15 +287,19 @@
 
 ## Recent
 
-- 2026-05-27: Phase 53 completed -- 6/6 tasks, 1 decision (verification-first-iron004), 3 investigations resolved (MCP memory CWD mismatch, IRON-004 selective injection resolves, HEU-011 drafted + eval at ceiling), +3 test assertions (11 total), 52/52 eval
-- 2026-05-27: Phase 53 planned -- 6 tasks (2S 3M 1S), 1 decision (verification-first-iron004), open questions: MCP memory diagnosis, IRON-004 matcher verification, HEU-011 capacity-multiplier draft + eval
-- 2026-05-27: Phase 52 planned -- 7 tasks (3M 4S), 1 decision (counter-attribution-uniform-global-verdict), heuristic evolution: counter scoring, deprecation lifecycle, dashboard
-- 2026-05-27: Phase 51 completed -- 7/7 tasks, 2 decisions (fire-and-forget-heuristic-judge high, ground-truth-first-falsification upgraded medium->high), ground-truth.json (25 scenarios, 84% coverage), heuristic-matcher + judge prompts, SKILL.md Step 6.5, --selective mode, +6 tests, 96/96 companions, 50/50 eval
-- 2026-05-27: Phase 51 planned -- 7 tasks (5M 2S), 2 decisions (fire-and-forget-heuristic-judge, ground-truth-first-falsification), heuristic-informed runtime judging: ground-truth mapping, trigger matcher, plan-adapted judge, SKILL.md Step 6.5, --selective mode, analysis
-- 2026-05-27: Phase 50 completed -- 8/8 tasks, 1 decision (two-phase-eval-methodology), 3 experiments: length-sensitivity negative, Haiku judge passes calibration (mean=4.07), 5 harder scenarios 15/15 at ceiling, two-phase eval methodology discovered
-- 2026-05-27: Phase 50 planned -- 8 tasks (1S 5M 1L 1M), 2 decisions (length-sensitivity-experiment-design, cross-model-judge-via-agent-param), eval advancement: length-sensitivity, cross-model judging, 5 harder scenarios, combined analysis
-- 2026-05-27: Phase 49 completed (NEGATIVE RESULT) -- conditional injection zero delta vs always-inject, 3-type taxonomy, 20 scenario_type fields, --conditional mode, stochastic interference non-reproducible, 0 new decisions (3 confirmed), 162+ tests, 50/50 eval
-- 2026-05-27: Phase 49 planned -- 6 tasks (1S 4M 1L), 3 decisions (fresh-runs-deviation, three-type-taxonomy-only, early-falsification-checkpoint), conditional heuristic injection: scenario-type taxonomy, 3-condition eval with early falsification, analysis document
+- 2026-05-28: Phase 56 completed -- 6/6 tasks, 1 decision (memory-architecture-classification, upgraded low->high), 5-layer classification, actionable cognitive readiness, dev-plan wiki strengthened, 4 domain articles seeded, 54/54 eval
+- 2026-05-28: Phase 56 planned -- 6 tasks, 1 decision (memory-architecture-classification), cognitive activation & memory design
+- 2026-05-28: Phase 55 completed -- 6/6 tasks, 3 decisions (cascade-failure-diagnosis, spec-reform-reasoning-over-compliance, bidirectional-registration-invariant), cascade fix, spec reform, cognitive readiness, +40 registration test assertions, 52/52 eval, retro clean
+- 2026-05-28: Phase 54 completed -- 4/4 tasks, 0 decisions, hook bug fixes (memory-nudge column, session-start DB paths), stale working-knowledge removed, +2 test assertions, 52/52 eval
+- 2026-05-28: Phase 54 planned -- 4 tasks (4S), 0 decisions, maintenance sweep
+- 2026-05-27: Phase 53 completed -- 6/6 tasks, 1 decision (verification-first-iron004), 3 investigations resolved, HEU-011 drafted, 52/52 eval
+- 2026-05-27: Phase 53 planned -- 6 tasks, 1 decision, open questions: MCP memory, IRON-004, HEU-011
+- 2026-05-27: Phase 52 completed -- 7/7 tasks, 1 decision confirmed, counter scoring + deprecation lifecycle + dashboard, 52/52 eval
+- 2026-05-27: Phase 52 planned -- 7 tasks, 1 decision, heuristic evolution
+- 2026-05-27: Phase 51 completed -- 7/7 tasks, 2 decisions, ground-truth mapping + runtime judging, 50/50 eval
+- 2026-05-27: Phase 51 planned -- 7 tasks, 2 decisions, heuristic-informed runtime judging
+- 2026-05-27: Phase 50 completed -- 8/8 tasks, 1 decision, length-sensitivity negative, Haiku judge passes, harder scenarios at ceiling
+- 2026-05-27: Phase 49 completed (NEGATIVE RESULT) -- conditional injection zero delta, 3-type taxonomy, 50/50 eval
 - 2026-05-27: Phase 48 completed (stochastic interference — negative result) -- LOO ablation on 5 IRON RULES x 3 training scenarios (~75 invocations), stochastic interference finding, IRON-001 load-bearing, attribution matrix + selection criteria, 5 decisions (4 upgraded, 1 new), +5 test assertions, 162+ tests, 50/50 eval
 - 2026-05-27: Phase 48 planned -- 5 tasks (2S 2M 1L), 4 decisions (full-spec-ablation-scope, sequential-baseline-verification, scenario-type-selection-criteria, no-prompt-length-padding), trace collection & pattern analysis: leave-one-out ablation, attribution matrix, selection criteria
 - 2026-05-27: Phase 47 completed (negative result) -- self-dialogue in dev-plan: inline net negative, subagent net neutral, production companion + Step 6.0.5 wired, 1 decision, +4 test assertions, ~158 tests, 50/50 eval
