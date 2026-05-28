@@ -54,6 +54,7 @@
 - [[phase-49-conditional-heuristic-injection|Phase 49: Conditional Heuristic Injection — Scenario-Type Classification]] -- completed
 - [[phase-50-eval-advancement|Phase 50: Eval Advancement — Cross-Model Judging, Harder Scenarios & Length-Sensitivity]] -- completed
 - [[phase-51-prompt-type-hooks|Phase 51: Prompt-Type Hooks — Heuristic-Informed Runtime Judging]] -- completed
+- [[phase-52-heuristic-evolution|Phase 52: Heuristic Evolution — Counter Scoring, Deprecation Lifecycle, Dashboard]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -155,6 +156,7 @@
 - [[cross-model-judge-via-agent-param|Cross-Model Judge via Agent Parameter]] -- medium confidence, accepted
 - [[fire-and-forget-heuristic-judge|Fire-and-Forget Heuristic Judge]] -- high confidence, accepted
 - [[ground-truth-first-falsification|Ground-Truth-First Falsification]] -- high confidence, accepted
+- [[counter-attribution-uniform-global-verdict|Counter Attribution — Uniform Global Verdict]] -- medium confidence, accepted
 - [[nana-init-rename-and-expand|Rename /init to /nana-init and expand to multi-stage orchestrator]] -- high confidence, accepted
 - [[turn-level-hybrid-recommended|Turn-level hybrid RRF is the winning strategy]] -- high confidence, accepted
 - [[diagnostic-first-benchmark|Diagnostic-first benchmark]] -- high confidence, accepted
@@ -268,6 +270,7 @@
 
 ## Recent
 
+- 2026-05-27: Phase 52 planned -- 7 tasks (3M 4S), 1 decision (counter-attribution-uniform-global-verdict), heuristic evolution: counter scoring, deprecation lifecycle, dashboard
 - 2026-05-27: Phase 51 completed -- 7/7 tasks, 2 decisions (fire-and-forget-heuristic-judge high, ground-truth-first-falsification upgraded medium->high), ground-truth.json (25 scenarios, 84% coverage), heuristic-matcher + judge prompts, SKILL.md Step 6.5, --selective mode, +6 tests, 96/96 companions, 50/50 eval
 - 2026-05-27: Phase 51 planned -- 7 tasks (5M 2S), 2 decisions (fire-and-forget-heuristic-judge, ground-truth-first-falsification), heuristic-informed runtime judging: ground-truth mapping, trigger matcher, plan-adapted judge, SKILL.md Step 6.5, --selective mode, analysis
 - 2026-05-27: Phase 50 completed -- 8/8 tasks, 1 decision (two-phase-eval-methodology), 3 experiments: length-sensitivity negative, Haiku judge passes calibration (mean=4.07), 5 harder scenarios 15/15 at ceiling, two-phase eval methodology discovered

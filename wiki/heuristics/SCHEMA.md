@@ -119,3 +119,24 @@ Phase 4: memory server chose SQLite. Phase 32: LongMemEval benchmark showed
 FTS5 handles 500+ questions at 91% recall@5. Phase 38: CWD bug proved
 SQLite's single-file model is also debuggable (one .db file to inspect).
 ```
+
+## Lifecycle Transitions
+
+Heuristic status evolves based on helpful/harmful counter ratios from the heuristic judge (dev-plan Step 6.5). Counters are retrospective analytics — they never influence heuristic selection.
+
+### Counter Semantics
+
+- `helpful`: incremented when heuristic matched AND judge global score ≥ 6/10
+- `harmful`: incremented when heuristic matched AND judge score ≤ 4/10 AND approach reviewer score ≥ 6/10 (heuristic guidance conflicted with a reviewer-accepted approach)
+- No update at judge score = 5 or when both judge and reviewer reject
+
+### Status Transitions
+
+| From | To | Trigger | Action |
+|------|------|---------|--------|
+| `active` | `under-review` | `harmful/(helpful+harmful) > 0.3` AND `helpful+harmful >= 5` | Automatic (orchestrator edits YAML) |
+| `under-review` | `active` or `deprecated` | Manual user review | User edits YAML, optionally resets counters |
+| `deprecated` | — | Terminal | Manual recovery only (user edits YAML) |
+| `iron` | — | Never transitions | Counters accumulate for observability; dashboard flags harm ratio > 0.3 |
+
+Minimum sample size of 5 total invocations prevents premature transitions from small-sample noise.

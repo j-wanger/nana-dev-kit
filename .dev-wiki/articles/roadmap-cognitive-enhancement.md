@@ -21,8 +21,8 @@ tags: [roadmap, heuristics, reasoning, eval]
 | 3 | IRON RULES + anti-pattern tables | Phase 45+46 | **DONE** | IRON-001–005, anti-pattern tables (3 rows each), judge v2 | Split across two phases; eval calibration added to Phase 45 |
 | 4 | Self-dialogue in dev-plan | Phase 47 | **DONE** | self-dialogue-prompt.md, self-dialogue-injection.md, 2 eval conditions | **Negative result**: inline net negative, subagent net neutral |
 | 5 | Trace collection + pattern analysis | Phase 48 | **DONE** | eval/reasoning/traces/, attribution-matrix.json, selection-criteria.md | **Negative result**: per-rule selection not viable (stochastic interference); reframes to scenario-type classification |
-| 6 | Prompt-type hooks (LLM-as-judge during execution) | — | PLANNED | | |
-| 7 | Heuristic evolution (helpful/harmful scoring, deprecation) | — | PLANNED | | |
+| 6 | Prompt-type hooks (LLM-as-judge during execution) | Phase 51 | **DONE** | heuristic-matcher.md, heuristic-judge-prompt.md, SKILL.md Step 6.5, ground-truth.json (25 scenarios, 84% coverage) | As planned |
+| 7 | Heuristic evolution (helpful/harmful scoring, deprecation) | Phase 52 | **DONE** | heuristic-counter-update.md, heuristic-lifecycle.md, heuristic-dashboard.py, SCHEMA.md lifecycle section | Uniform global verdict attribution (known approximation) |
 
 ## Eval Baseline & Deltas
 

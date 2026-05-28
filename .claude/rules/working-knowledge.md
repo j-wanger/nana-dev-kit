@@ -1,6 +1,14 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
+- [uses: 1] Heuristic counter evolution: judge verdicts update helpful/harmful counters via heuristic-counter-update.md companion. Attribution: helpful on score>=6/10, harmful on score<=4/10 AND reviewer>=6/10, no-update at 5. Uniform global verdict to all matched heuristics (known approximation). Counters are retrospective analytics only, never influence matcher selection.
+  source: [[active-knowledge:phase-52]] | activated: 2026-05-27
+- [uses: 1] Heuristic deprecation lifecycle: active->under-review at harmful/(helpful+harmful) ratio>0.3 AND total>=5. Iron status immune to all transitions. Deprecated is terminal state. Defined in heuristic-lifecycle.md companion, codified in SCHEMA.md lifecycle section.
+  source: [[active-knowledge:phase-52]] | activated: 2026-05-27
+- [uses: 1] Heuristic dashboard: scripts/heuristic-dashboard.py reads wiki/heuristics/*.md, regex YAML parsing, terminal table output. `make dashboard` target. Handles zero-counter "unscored" state, surfaces never-matched heuristics, keys on id: field. All 15 heuristics currently at 0/0.
+  source: [[active-knowledge:phase-52]] | activated: 2026-05-27
+- [uses: 1] Cognitive Enhancement Roadmap complete (7/7 phases): foundation (44) -> capture (46) -> IRON RULES (45+46) -> self-dialogue (47, negative) -> trace collection (48, negative) -> prompt-type hooks (51) -> evolution (52). Future heuristic work is ad-hoc.
+  source: [[active-knowledge:phase-52]] | activated: 2026-05-27
 - [uses: 1] Heuristic trigger matching uses LLM subagent + domain-tag fallback. Max 3 heuristics per invocation, 1200-char combined injection cap (below ~400-token context dilution threshold). Matcher prompt at heuristic-matcher.md, judge at heuristic-judge-prompt.md.
   source: [[active-knowledge:phase-51]] | activated: 2026-05-27
 - [uses: 1] Fire-and-forget heuristic judge: scores used for routing only (accept/revise/reject verdict), never injected back into planner context. Phase 47 showed same-context critique causes hedging. Judge + approach reviewer verdicts merged at Step 6.5.

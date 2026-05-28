@@ -3,7 +3,7 @@
 
 NANA_KIT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-.PHONY: sync-rules test eval report workflow
+.PHONY: sync-rules test eval report workflow dashboard
 
 sync-rules:
 	@bash "$(NANA_KIT_DIR)scripts/sync-rules.sh" . .
@@ -17,6 +17,7 @@ test:
 	@bash "$(NANA_KIT_DIR)tests/test_harden.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_memory.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_companions.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_heuristic_evolution.sh"
 	@echo ""
 	@echo "All tests passed."
 
@@ -28,3 +29,6 @@ report:
 
 workflow:
 	@python3 "$(NANA_KIT_DIR)scripts/generate-workflow.py"
+
+dashboard:
+	@python3 "$(NANA_KIT_DIR)scripts/heuristic-dashboard.py"

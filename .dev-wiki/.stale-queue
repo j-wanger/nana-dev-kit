@@ -77,3 +77,7 @@ eval/reasoning/corpus/024-vendor-lock-in-vs-velocity.json
 eval/reasoning/corpus/025-test-coverage-mandate.json
 eval/reasoning/selective/ground-truth.json
 eval/reasoning/selective/results.json
+scripts/heuristic-dashboard.py
+tests/test_heuristic_evolution.sh
+eval/corpus/skill-counter-update-companion/scenario.json
+eval/corpus/skill-evolution-lifecycle-companion/scenario.json

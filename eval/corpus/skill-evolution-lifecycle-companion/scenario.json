@@ -1,0 +1,17 @@
+{
+  "name": "heuristic-lifecycle.md has required transition rules",
+  "category": "context",
+  "scoring": "binary",
+  "setup": {
+    "home_files": {
+      ".claude/skills/dev-plan/heuristic-lifecycle.md": "heuristic-lifecycle.md"
+    }
+  },
+  "checks": [
+    {"type": "file_exists", "path": ".claude/skills/dev-plan/heuristic-lifecycle.md"},
+    {"type": "section_present", "path": ".claude/skills/dev-plan/heuristic-lifecycle.md", "sections": [
+      "## Transition Rules",
+      "## Skip Conditions"
+    ]}
+  ]
+}
