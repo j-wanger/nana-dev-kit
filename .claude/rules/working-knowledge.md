@@ -1,11 +1,37 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
-- [uses: 1] Stochastic heuristic interference (negative result): LOO ablation showed scenario 015 interference is stochastic (~1/3 of runs), not attributable to any specific IRON RULE. Removing IRON-004 does NOT fix it. IRON-001 is load-bearing for scenario 020. Per-rule selection not viable; scenario-type classification (all-or-nothing injection) is the right framing.
+- [uses: 1] Heuristic trigger matching uses LLM subagent + domain-tag fallback. Max 3 heuristics per invocation, 1200-char combined injection cap (below ~400-token context dilution threshold). Matcher prompt at heuristic-matcher.md, judge at heuristic-judge-prompt.md.
+  source: [[active-knowledge:phase-51]] | activated: 2026-05-27
+- [uses: 1] Fire-and-forget heuristic judge: scores used for routing only (accept/revise/reject verdict), never injected back into planner context. Phase 47 showed same-context critique causes hedging. Judge + approach reviewer verdicts merged at Step 6.5.
+  source: [[decision:fire-and-forget-heuristic-judge]] | activated: 2026-05-27
+- [uses: 1] Ground-truth heuristic mapping: 84% scenario coverage (21/25 have at least 1 matching heuristic). 4 blind-spot scenarios (011, 019, 020, 023) in organizational/distributed-systems domains. IRON-004 most broadly applicable (6/25) but known harmful on 018.
+  source: [[active-knowledge:phase-51]] | activated: 2026-05-27
+- [uses: 1] Two-phase eval methodology: single-call eval (agent sees expert answers) produces 100% ceiling (20/20 at 5/5/5). Two-phase (agent blind, separate judge) produces meaningful differentiation. Essential for all future eval runs.
+  source: [[decision:two-phase-eval-methodology]] | activated: 2026-05-27
+- [uses: 1] Filler text actively discarded by model: irrelevant content (cooking/gardening) is judged for content-relevance before application. Length-sensitivity experiment doesn't cleanly isolate length variable. NEGATIVE RESULT for length-as-driver hypothesis.
+  source: [[active-knowledge:phase-50]] | activated: 2026-05-27
+- [uses: 1] Haiku judge passes calibration: mean=4.07, 37.8% below 5 (self-judge: mean 4.83, fails). High inter-run variance (mean ranges 2.97-4.85) needs investigation. Sonnet not tested (jumped to Haiku per fallback sequence).
+  source: [[active-knowledge:phase-50]] | activated: 2026-05-27
+- [uses: 1] Harder scenarios don't reduce ceiling if model gets them right. Ceiling is about correct-answer frequency, not scenario difficulty. 5 new scenarios (021-025) scored 15/15 with self-judge. Ceiling reduction requires wrong answers OR stricter judge.
+  source: [[active-knowledge:phase-50]] | activated: 2026-05-27
+- [uses: 1] Scenario 020 capacity-multiplier gap: consistently wrong across all conditions (8/9 choose dependency upgrade, 0 choose test reliability). "Choose the initiative that unblocks other initiatives" is a genuine model reasoning gap.
+  source: [[active-knowledge:phase-50]] | activated: 2026-05-27
+- [uses: 1] Conditional injection negative result: scenario-type classification (suppress IRON RULES for risk-dominant) provides zero delta vs always-inject. Stochastic interference from Phase 48 did not reproduce in fresh runs. Baseline divergence, not rule-induced interference.
+  source: [[journal:2026-05-27-phase-49-conditional-heuristic-injection-complete]] | activated: 2026-05-27
+- [uses: 1] Fresh runs methodology: cross-round absolute scores diverge (baseline variance). All conditions for a comparison must run fresh in the same evaluation round. Within-round deltas valid, cross-round comparisons invalid.
+  source: [[decision:fresh-runs-deviation]] | activated: 2026-05-27
+- [uses: 1] Early falsification checkpoint: run cheapest falsification test first before committing to expensive eval. Phase 49: 3 no-inject runs on 015 before 180 full-eval invocations. Saved nothing here (passed), but design pattern is sound.
+  source: [[decision:early-falsification-checkpoint]] | activated: 2026-05-27
+- [uses: 1] Three-type scenario taxonomy: risk-dominant, capacity-constraint, domain-nuance. Property-based (transferable to new scenarios), not outcome-based (ceiling is an eval property, not a scenario property). No 4th type.
+  source: [[decision:three-type-taxonomy-only]] | activated: 2026-05-27
+- [uses: 1] Conditional injection template: gates on scenario_type field in JSON metadata. risk-dominant suppresses IRON RULES, all others inject. Metadata-based lookup, not runtime inference.
+  source: [[active-knowledge:phase-49]] | activated: 2026-05-27
+- [uses: 2] Stochastic heuristic interference (negative result): LOO ablation showed scenario 015 interference is stochastic (~1/3 of runs), not attributable to any specific IRON RULE. Removing IRON-004 does NOT fix it. IRON-001 is load-bearing for scenario 020. Per-rule selection not viable; scenario-type classification (all-or-nothing injection) is the right framing.
   source: [[decision:stochastic-heuristic-interference]] | activated: 2026-05-27
 - [uses: 1] LOO ablation methodology: remove one IRON RULE at a time, compare to full-set across training scenarios x 3 runs. Classification: delta >= 0.5 with variance < 0.5 = helped/hurt; else "uncertain". Baseline-first checkpoint required. Judge v2 (exemplar-based), same judge for all conditions.
   source: [[decision:full-spec-ablation-scope]] + [[decision:sequential-baseline-verification]] | activated: 2026-05-27
-- [uses: 1] Scenario-type selection criteria: attribution matrix per-dimension (heuristic x scenario x dimension). Selection operates at scenario-type level (risk-dominant, capacity-constraint, domain-nuance). Train on 015/018/020, validate on held-out 012/014.
+- [uses: 2] Scenario-type selection criteria: attribution matrix per-dimension (heuristic x scenario x dimension). Selection operates at scenario-type level (risk-dominant, capacity-constraint, domain-nuance). Train on 015/018/020, validate on held-out 012/014.
   source: [[decision:scenario-type-selection-criteria]] | activated: 2026-05-27
 - [uses: 1] Prompt-length confound control: no padding text (padding introduces its own confound). Scenario 012 as diagnostic: uniform improvement when ANY rule removed = length effect; specific = content attribution.
   source: [[decision:no-prompt-length-padding]] | activated: 2026-05-27
@@ -169,43 +195,9 @@
   source: [[decision:spec-two-tier-review-gate]] | activated: 2026-05-19
 - [uses: 3] Gate enforcement uses two layers: active-phase.md Gates section (5 checkpoints, preventive) + tasks.md gate log HTML comments (detective, auditable)
   source: [[decision:gate-enforcement-checklist-plus-log]] | activated: 2026-05-19
-- [uses: 1] Memory access is MCP-only: memory_store to write, memory_search to read; .memory/MEMORY.md files are inert legacy (not deleted, just not read)
-  source: [[decision:memory-convergence-mcp-only]] | activated: 2026-05-19
-- [uses: 1] Layered gate enforcement: preventive (implementation-guide.md pre-flight refusal) + detective (dev-debrief gate-compliance audit) + template (session-start.sh gate-check warning); mirrors Tier 0/1 review pattern
-  source: [[decision:layered-gate-enforcement-automated]] | activated: 2026-05-19
-- [uses: 1] Memory-harvest is a dev-debrief companion (Step 1.5/4.7), not a standalone skill; routes corrections/preferences/lessons to memory_store, decisions to wiki articles
-  source: [[decision:memory-harvest-in-debrief]] | activated: 2026-05-20
-- [uses: 1] dev-plan Step 0.6 spec-existence check (standard ceremony only): requires specs/<phase-slug>.md or phase article ## Formal Spec before planning proceeds
-  source: [[decision:spec-and-thinking-enforcement-in-devplan]] | activated: 2026-05-20
-- [uses: 1] dev-plan Step 6 has thinking-protocol T0: challenge frame, read subtext, delay commitment before approach formulation (conversational only, no artifacts)
-  source: [[decision:spec-and-thinking-enforcement-in-devplan]] | activated: 2026-05-20
-- [uses: 1] nana.instructions.md must byte-match nana-soul.md minus 4-line YAML frontmatter; verified by diff <(tail -n +5 ...) in test suite
-  source: [[decision:soul-vs-agents-delineation]] | activated: 2026-05-20
-- [uses: 1] install.sh conditionally copies nana-personal.md (skips if ~/.claude/rules/nana-personal.md already exists); template has no user-specific content
-  source: [[decision:personal-profile-template-for-shipping]] | activated: 2026-05-20
-- [uses: 1] SKILL.md complex-orchestration ceiling is 350 lines (raised from 250 in Phase 13); enforced in self-check-checklist.md, not size-budgets.md
-  source: [[decision:skill-ceiling-250-to-350]] | activated: 2026-05-20
-- [uses: 1] AgentCoder 3-agent separation: same-context confirmation bias breaks when adversarial constraints generated by clean-context subagent (only objective+context, no approach/decisions)
-  source: [[decision:adversarial-constraint-generation-as-spec-step]] | activated: 2026-05-21
-- [uses: 1] T0 thinking protocol rewritten from abstract checks to output-format forcing: must name weakest assumption + what breaks, identify alternative framing, state what info would change recommendation; non-vacuity gate retries once
-  source: [[decision:t0-wording-over-structural-subagent]] | activated: 2026-05-21
-- [uses: 1] SIGPIPE race: grep -q in pipefail mode causes premature pipe closure; fix by capturing output to variable first, then grep the variable
-  source: [[journal:2026-05-22-phase-15-wire-the-lifecycle-complete]] | activated: 2026-05-22
-- [uses: 1] PreCompact hook at templates/.claude/hooks/pre-compact.sh: pure bash, reads committed _CURRENT_STATE.md + tasks.md + active-phase.md, outputs structured summary
-  source: [[journal:2026-05-22-phase-15-wire-the-lifecycle-complete]] | activated: 2026-05-22
-- [uses: 1] session-start.sh enhanced with memory_search topic guidance (extracts active task topic from dev-wiki state); reads 2 sources + gate-check + memory guidance
-  source: [[journal:2026-05-22-phase-15-wire-the-lifecycle-complete]] | activated: 2026-05-22
-- [uses: 1] wiki-index ships Python files (indexer.py, search.py, wikilib.py, convert.py) — needs language-neutrality accounting in future phase
-  source: [[journal:2026-05-22-phase-15-wire-the-lifecycle-complete]] | activated: 2026-05-22
 - [uses: 3] Hook exit codes: 0 = allow (tool use proceeds), 2 = block (stderr shown to Claude); PreToolUse receives JSON on stdin with input.file_path; PostToolUse receives tool_name, tool_input, stdout, stderr, exit_code; advisory hooks MUST exit 0
   source: [[wiki:hook-exit-codes]] | activated: 2026-05-22
 - [uses: 3] Enforcement hooks (enforce-spec.sh, enforce-loop.sh, detect-loop.sh) install globally to ~/.claude/hooks/; check CWD .claude/enforce marker (fail-open); install.sh JSON merges hooks into settings.json
   source: [[decision:global-hooks-project-opt-in]] | activated: 2026-05-22
-- [uses: 1] Stop hook (enforce-loop.sh) runs only file-existence exit criteria (test -f, test -d) from specs/<slug>.md; open tasks and debrief status are advisory (stdout), not blocking (exit 2)
-  source: [[decision:lightweight-deliverable-check-stop]] | activated: 2026-05-22
-- [uses: 1] Subshell variable propagation: $(setup_fixture) doesn't export HOME to parent; use inline HOME=... before command instead of export in subshell for test fixtures
-  source: [[journal:2026-05-22-phase-16-enforce-the-loop-complete]] | activated: 2026-05-22
-- [uses: 1] detect-loop.sh is pure bash exception to python-json-parsing-hooks convention; <50ms PostToolUse budget precludes Python subprocess (~20ms overhead)
-  source: [[decision:pure-bash-loop-detection]] | activated: 2026-05-22
 - [uses: 1] Working-knowledge entries use [uses: N] format with activated: YYYY-MM-DD; [pinned] tag prevents auto-pruning; sort by activation date (newest first)
   source: [[wiki:working-knowledge-spec]] | activated: 2026-05-22

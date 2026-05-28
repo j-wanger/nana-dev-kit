@@ -1,5 +1,6 @@
 {
   "id": "002-hook-error-strategy",
+  "scenario_type": "domain-nuance",
   "context": "A developer toolkit uses a JSON parser (jq) in two contexts: (1) an install script that runs once when a user sets up the tool, and (2) event hooks that fire automatically on every file save, commit, or tool invocation during normal development work. Both contexts parse JSON configuration files. The toolkit targets developers who may or may not have jq pre-installed.",
   "question": "When jq is missing, should both contexts fail the same way, or should they use different error strategies?",
   "expert_answer": "Different strategies. The installer should fail-stop (exit 1 with a clear error message and install hints). The event hooks should fail-open (exit 0, silently allowing the operation to proceed).",

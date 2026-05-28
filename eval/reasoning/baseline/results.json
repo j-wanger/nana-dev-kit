@@ -1,46 +1,795 @@
 {
-  "mode": "baseline",
-  "scenarios": 10,
-  "method": "subagent (Sonnet agent, Sonnet judge, separate contexts)",
-  "note": "Ceiling effect: all scores 5/5. Self-grading bias (same model family for agent+judge) plus straightforward scenarios produce perfect scores. Baseline confirms variance=0 (judge is consistent) but cannot measure improvement since scores are already at ceiling. Next step: harder scenarios or cross-model judging.",
+  "mode": "baseline-v4-two-phase",
+  "scenarios": 20,
+  "method": "subagent-two-phase",
+  "judge_prompt": "judges/reasoning-judge-v2.md",
+  "note": "Fresh baseline, 3 runs, Phase 50 two-phase eval (agent blind to expert answers)",
   "runs": [
     [
-      {"scenario_id": "001-database-choice", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "002-hook-error-strategy", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "003-structural-vs-functional-tests", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "004-vendored-dep-extension", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "005-ceremony-reduction", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "006-cross-domain-port", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "007-optional-subsystem-failure", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "008-false-positive-detection", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "009-latency-budget-language", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "010-dedup-at-scale", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}}
+      {
+        "scenario_id": "001-database-choice",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "002-hook-error-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "003-structural-vs-functional-tests",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "004-vendored-dep-extension",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "005-ceremony-reduction",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "006-cross-domain-port",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "007-optional-subsystem-failure",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "008-false-positive-detection",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "009-latency-budget-language",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "010-dedup-at-scale",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "011-monorepo-migration-timing",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "012-api-backward-compat",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "013-ci-slow-flaky",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "014-library-dep-pinning",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "015-rewrite-vs-refactor-auth",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "016-build-vs-buy-observability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "017-schema-migration-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "018-feature-flag-debt",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "019-consistency-vs-availability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "020-tech-debt-triage",
+        "scores": {
+          "decision": 2,
+          "reasoning": 3,
+          "antipattern": 2
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      }
     ],
     [
-      {"scenario_id": "001-database-choice", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "002-hook-error-strategy", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "003-structural-vs-functional-tests", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "004-vendored-dep-extension", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "005-ceremony-reduction", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "006-cross-domain-port", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "007-optional-subsystem-failure", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "008-false-positive-detection", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "009-latency-budget-language", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "010-dedup-at-scale", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}}
+      {
+        "scenario_id": "001-database-choice",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "002-hook-error-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "003-structural-vs-functional-tests",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "004-vendored-dep-extension",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "005-ceremony-reduction",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "006-cross-domain-port",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "007-optional-subsystem-failure",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "008-false-positive-detection",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "009-latency-budget-language",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "010-dedup-at-scale",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "011-monorepo-migration-timing",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "012-api-backward-compat",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "013-ci-slow-flaky",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "014-library-dep-pinning",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "015-rewrite-vs-refactor-auth",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "016-build-vs-buy-observability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "017-schema-migration-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "018-feature-flag-debt",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "019-consistency-vs-availability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "020-tech-debt-triage",
+        "scores": {
+          "decision": 2,
+          "reasoning": 3,
+          "antipattern": 2
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      }
     ],
     [
-      {"scenario_id": "001-database-choice", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "002-hook-error-strategy", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "003-structural-vs-functional-tests", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "004-vendored-dep-extension", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "005-ceremony-reduction", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "006-cross-domain-port", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "007-optional-subsystem-failure", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "008-false-positive-detection", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "009-latency-budget-language", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}},
-      {"scenario_id": "010-dedup-at-scale", "scores": {"decision": 5, "reasoning": 5, "antipattern": 5}}
+      {
+        "scenario_id": "001-database-choice",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "002-hook-error-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "003-structural-vs-functional-tests",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "004-vendored-dep-extension",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "005-ceremony-reduction",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "006-cross-domain-port",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "007-optional-subsystem-failure",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "008-false-positive-detection",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "009-latency-budget-language",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "010-dedup-at-scale",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "011-monorepo-migration-timing",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "012-api-backward-compat",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "013-ci-slow-flaky",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "014-library-dep-pinning",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "015-rewrite-vs-refactor-auth",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "016-build-vs-buy-observability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "017-schema-migration-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "018-feature-flag-debt",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "019-consistency-vs-availability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "020-tech-debt-triage",
+        "scores": {
+          "decision": 2,
+          "reasoning": 3,
+          "antipattern": 2
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      }
     ]
-  ],
-  "averages": {"decision": 5.0, "reasoning": 5.0, "antipattern": 5.0},
-  "variance": {"decision": 0.0, "reasoning": 0.0, "antipattern": 0.0}
+  ]
 }

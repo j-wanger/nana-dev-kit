@@ -1,5 +1,6 @@
 {
   "id": "003-structural-vs-functional-tests",
+  "scenario_type": "domain-nuance",
   "context": "A plugin system registers components in a JSON config file and copies corresponding script files to a known directory. The test suite verifies each component by checking that (a) its entry exists in the config file and (b) its script file exists on disk. Despite these tests passing, 4 separate components had silent bugs that persisted undetected for 8 to 33 development iterations. The bugs were in the scripts themselves -- wrong field paths, broken parsing logic, missing error handling -- none of which were caught by existence checks.",
   "question": "What testing invariant should be added to prevent silent component breakage from persisting across development iterations?",
   "expert_answer": "Every registered component must have at least one functional smoke test that pipes representative input into the component and asserts on its output. File existence and config registration are necessary but not sufficient.",

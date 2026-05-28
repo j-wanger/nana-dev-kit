@@ -51,6 +51,9 @@
 - [[phase-46-anti-pattern-tables-heuristic-capture|Phase 46: Anti-Pattern Tables & Heuristic Capture]] -- completed
 - [[phase-47-self-dialogue-in-dev-plan|Phase 47: Self-Dialogue in Dev-Plan]] -- completed
 - [[phase-48-trace-collection-pattern-analysis|Phase 48: Trace Collection & Pattern Analysis]] -- completed
+- [[phase-49-conditional-heuristic-injection|Phase 49: Conditional Heuristic Injection — Scenario-Type Classification]] -- completed
+- [[phase-50-eval-advancement|Phase 50: Eval Advancement — Cross-Model Judging, Harder Scenarios & Length-Sensitivity]] -- completed
+- [[phase-51-prompt-type-hooks|Phase 51: Prompt-Type Hooks — Heuristic-Informed Runtime Judging]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -144,6 +147,14 @@
 - [[no-prompt-length-padding|No Prompt-Length Padding for Ablation]] -- high confidence, accepted
 - [[stochastic-heuristic-interference|Stochastic Heuristic Interference (Negative Result)]] -- high confidence, accepted
 - [[subagent-reasoning-eval|Subagent-Based Reasoning Eval]] -- medium confidence, accepted
+- [[fresh-runs-deviation|Fresh Runs Deviation]] -- high confidence, accepted
+- [[three-type-taxonomy-only|Three-Type Taxonomy Only]] -- high confidence, accepted
+- [[early-falsification-checkpoint|Early Falsification Checkpoint]] -- high confidence, accepted
+- [[length-sensitivity-experiment-design|Length-Sensitivity Experiment Design]] -- medium confidence, accepted
+- [[two-phase-eval-methodology|Two-Phase Eval Methodology]] -- high confidence, accepted
+- [[cross-model-judge-via-agent-param|Cross-Model Judge via Agent Parameter]] -- medium confidence, accepted
+- [[fire-and-forget-heuristic-judge|Fire-and-Forget Heuristic Judge]] -- high confidence, accepted
+- [[ground-truth-first-falsification|Ground-Truth-First Falsification]] -- high confidence, accepted
 - [[nana-init-rename-and-expand|Rename /init to /nana-init and expand to multi-stage orchestrator]] -- high confidence, accepted
 - [[turn-level-hybrid-recommended|Turn-level hybrid RRF is the winning strategy]] -- high confidence, accepted
 - [[diagnostic-first-benchmark|Diagnostic-first benchmark]] -- high confidence, accepted
@@ -178,6 +189,9 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-27-phase-51-prompt-type-hooks-complete|Phase 51 complete (heuristic-informed runtime judging)]] -- 2026-05-27
+- [[2026-05-27-phase-50-eval-advancement-complete|Phase 50 complete (length-sensitivity negative, Haiku judge passes, harder scenarios 15/15)]] -- 2026-05-27
+- [[2026-05-27-phase-49-conditional-heuristic-injection-complete|Phase 49 complete (negative result — conditional injection zero delta)]] -- 2026-05-27
 - [[2026-05-27-phase-48-trace-collection-pattern-analysis-complete|Phase 48 complete (stochastic interference — negative result)]] -- 2026-05-27
 - [[2026-05-27-phase-47-self-dialogue-in-dev-plan-complete|Phase 47 complete (negative result)]] -- 2026-05-27
 - [[2026-05-27-phase-46-anti-pattern-tables-heuristic-capture-complete|Phase 46 complete]] -- 2026-05-27
@@ -228,7 +242,7 @@
 
 ### Roadmap
 - [[roadmap-gap-analysis|Engineering Gap Analysis & Roadmap]] -- active, tracks open/closed gaps and build order
-- [[roadmap-cognitive-enhancement|Cognitive Enhancement Roadmap]] -- active, 7-phase heuristic learning plan (4/7 done)
+- [[roadmap-cognitive-enhancement|Cognitive Enhancement Roadmap]] -- active, 7-phase heuristic learning plan (7/7 done)
 
 ### Status
 - [[2026-05-27-codebase-snapshot|Codebase Snapshot]] -- 2026-05-27
@@ -254,6 +268,12 @@
 
 ## Recent
 
+- 2026-05-27: Phase 51 completed -- 7/7 tasks, 2 decisions (fire-and-forget-heuristic-judge high, ground-truth-first-falsification upgraded medium->high), ground-truth.json (25 scenarios, 84% coverage), heuristic-matcher + judge prompts, SKILL.md Step 6.5, --selective mode, +6 tests, 96/96 companions, 50/50 eval
+- 2026-05-27: Phase 51 planned -- 7 tasks (5M 2S), 2 decisions (fire-and-forget-heuristic-judge, ground-truth-first-falsification), heuristic-informed runtime judging: ground-truth mapping, trigger matcher, plan-adapted judge, SKILL.md Step 6.5, --selective mode, analysis
+- 2026-05-27: Phase 50 completed -- 8/8 tasks, 1 decision (two-phase-eval-methodology), 3 experiments: length-sensitivity negative, Haiku judge passes calibration (mean=4.07), 5 harder scenarios 15/15 at ceiling, two-phase eval methodology discovered
+- 2026-05-27: Phase 50 planned -- 8 tasks (1S 5M 1L 1M), 2 decisions (length-sensitivity-experiment-design, cross-model-judge-via-agent-param), eval advancement: length-sensitivity, cross-model judging, 5 harder scenarios, combined analysis
+- 2026-05-27: Phase 49 completed (NEGATIVE RESULT) -- conditional injection zero delta vs always-inject, 3-type taxonomy, 20 scenario_type fields, --conditional mode, stochastic interference non-reproducible, 0 new decisions (3 confirmed), 162+ tests, 50/50 eval
+- 2026-05-27: Phase 49 planned -- 6 tasks (1S 4M 1L), 3 decisions (fresh-runs-deviation, three-type-taxonomy-only, early-falsification-checkpoint), conditional heuristic injection: scenario-type taxonomy, 3-condition eval with early falsification, analysis document
 - 2026-05-27: Phase 48 completed (stochastic interference — negative result) -- LOO ablation on 5 IRON RULES x 3 training scenarios (~75 invocations), stochastic interference finding, IRON-001 load-bearing, attribution matrix + selection criteria, 5 decisions (4 upgraded, 1 new), +5 test assertions, 162+ tests, 50/50 eval
 - 2026-05-27: Phase 48 planned -- 5 tasks (2S 2M 1L), 4 decisions (full-spec-ablation-scope, sequential-baseline-verification, scenario-type-selection-criteria, no-prompt-length-padding), trace collection & pattern analysis: leave-one-out ablation, attribution matrix, selection criteria
 - 2026-05-27: Phase 47 completed (negative result) -- self-dialogue in dev-plan: inline net negative, subagent net neutral, production companion + Step 6.0.5 wired, 1 decision, +4 test assertions, ~158 tests, 50/50 eval
@@ -262,7 +282,6 @@
 - 2026-05-27: Phase 46 planned -- 7 tasks (2S 5M), 2 decisions (anti-pattern-table-format-extension, iron-004-lifecycle-complexity-fix), anti-pattern tables + IRON-004 fix + heuristic capture + delta measurement
 - 2026-05-27: Phase 45 completed -- eval calibration + IRON RULES: 10 harder scenarios, judge v2 (exemplar-based), ceiling broken (19.4% below 5), 5 IRON RULES (0 conflicts), delta +5, 2 decisions (confidence upgraded), +5 test assertions, ~315 tests, 50/50 eval
 - 2026-05-27: Phase 45 planned -- 7 tasks (1L 5M 1S), 2 decisions (eval-calibration-exemplar-based-judge-anchoring, iron-rules-as-iron-status-heuristics), eval calibration + IRON RULES
-- 2026-05-26: Phase 44 completed -- heuristic learning foundation: knowledge wiki + 10 seed heuristics + session-start integration + reasoning eval baseline (5/5 ceiling), 2 decisions, +4 test assertions, ~310 tests, 50/50 eval
 - 2026-05-26: Phase 44 planned -- 7 tasks (1L 3M 3S), 1 decision (cognitive-enhancement-plan), heuristic learning system foundation
 - 2026-05-26: Phase 43 completed -- nana-init rename + expand: init/ -> nana-init/, 44 -> 86 line multi-stage orchestrator, 5 cross-ref updates, 1 decision (accepted), +3 test assertions, ~306 tests, 50/50 eval
 - 2026-05-26: Phase 43 planned -- 5 tasks (2S 3M), 1 decision (nana-init-rename-and-expand), unified init & activation gap

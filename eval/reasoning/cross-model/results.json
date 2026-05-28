@@ -1,0 +1,565 @@
+{
+  "mode": "cross-model-judge",
+  "agent_model": "sonnet",
+  "judge_model": "haiku",
+  "scenarios": 20,
+  "method": "two-phase-cross-model",
+  "judge_prompt": "judges/cross-model-judge.md",
+  "note": "Agent=Sonnet, Judge=Haiku. Two-phase: agent blind to expert answers, separate judge scoring.",
+  "responses": {
+    "run_1": {
+      "001-database-choice": "Use SQLite. The constraints \u2014 single machine, offline, simple install, hundreds to low thousands of text records \u2014 map perfectly to SQLite's design center. PostgreSQL requires a running server process, port management, authentication setup, and breaks the 'works offline without additional setup' requirement entirely. SQLite's FTS5 extension handles full-text search natively.",
+      "002-hook-error-strategy": "The two contexts should use different error strategies. The install script should fail hard (exit 1) when jq is missing. Hooks that fire on every file save or commit should fail open (exit 0) when jq is missing \u2014 blocking every developer action because of a missing optional tool would be catastrophic.",
+      "003-structural-vs-functional-tests": "Add a functional smoke test invariant: every registered component must have at least one test that actually invokes it with a representative input and asserts on the output, not just checks that the file exists.",
+      "004-vendored-dep-extension": "Build the consolidation feature as a wrapper using the server's existing API rather than modifying the vendored code. The near-zero divergence from upstream is an asset.",
+      "005-ceremony-reduction": "Reduce to 2 gates: a direction gate (spec + intent approved before work begins) and a delivery gate (output reviewed before commit/ship).",
+      "006-cross-domain-port": "Write a design spec mapping every Python assumption to its TypeScript equivalent before writing any code.",
+      "007-optional-subsystem-failure": "Implement a 3-state health report: healthy (responding, N entries), broken (configured but not responding, with reason), and not configured.",
+      "008-false-positive-detection": "Add a second condition: require both commits newer than the state file AND no debrief/session-close entry in recent commit history.",
+      "009-latency-budget-language": "Write this hook in pure bash. A 50ms budget is extremely tight, and Python's interpreter startup alone adds 20-40ms.",
+      "010-dedup-at-scale": "Use indexed candidate retrieval: FTS5 for word-overlap path, vector KNN for embedding path, then apply existing thresholds only to candidates.",
+      "011-monorepo-migration-timing": "Execute the migration immediately after the feature launch, not before and not in a distant dedicated sprint.",
+      "012-api-backward-compat": "Use versioned endpoints (v1/v2) rather than deprecation period with both formats or a migration flag.",
+      "013-ci-slow-flaky": "Fix the flaky tests first. Flakiness is a multiplier: 45-min pipeline becomes 90-135 minutes when developers re-run 2-3 times.",
+      "014-library-dep-pinning": "Switch to version ranges for the published library. Exact version pins in a library are the wrong tool.",
+      "015-rewrite-vs-refactor-auth": "Choose the incremental refactor (option A). The 8-week deadline, 40% existing coverage, and specific vulnerability scope all favor the lower-risk path.",
+      "016-build-vs-buy-observability": "Buy Datadog. For a 5-person team with 18-month runway and HIPAA obligations, self-hosting is more expensive when engineer time is factored in.",
+      "017-schema-migration-strategy": "Use expand-contract (option B). The NOT NULL constraint still requires a full table scan on 50M rows to validate.",
+      "018-feature-flag-debt": "Dedicate the 2 weeks to flag cleanup. 120 dead flags in 2,000 lines of configuration is compounding technical liability.",
+      "019-consistency-vs-availability": "Implement the reservation system (option B). Global strong consistency adds 80-120ms to every read for a problem affecting only low-stock items.",
+      "020-tech-debt-triage": "Prioritize the dependency upgrade (option C). Two known CVEs mitigated only by WAF rules, an EOL framework, and a 6-month hard deadline."
+    },
+    "run_2": {
+      "001-database-choice": "Use SQLite. The constraints uniformly favor embedded over client-server. PostgreSQL requires a running server and adds installation complexity.",
+      "002-hook-error-strategy": "Asymmetric error handling \u2014 fail-STOP on install, fail-open on hooks. Cost-of-error differs between the two contexts.",
+      "003-structural-vs-functional-tests": "Functional smoke tests, not just existence checks \u2014 4 silent bugs prove the gap between structural and behavioral testing.",
+      "004-vendored-dep-extension": "Wrapper over API, not vendored code modification \u2014 preserves upstream sync ability.",
+      "005-ceremony-reduction": "2-gate model (direction + delivery), eliminate middle gates that blend together in practice.",
+      "006-cross-domain-port": "Design spec before porting \u2014 dozens of implicit Python assumptions must be made explicit.",
+      "007-optional-subsystem-failure": "3-state probe (healthy/not-configured/broken) \u2014 the silent broken state is the bug.",
+      "008-false-positive-detection": "Dual condition (stale state AND no session-end commit) to distinguish normal dev from crash.",
+      "009-latency-budget-language": "Pure bash \u2014 50ms budget overrides consistency preference; Python startup alone is ~20-50ms.",
+      "010-dedup-at-scale": "Index pre-filtering (KNN/FTS top-50 candidates) \u2014 O(n) scan to O(log n) without touching thresholds.",
+      "011-monorepo-migration-timing": "Migrate immediately post-launch \u2014 natural forcing function before next sprint loads up.",
+      "012-api-backward-compat": "Versioned endpoints \u2014 no coordination authority means deprecation deadlines are unenforceable.",
+      "013-ci-slow-flaky": "Fix flaky tests first \u2014 parallelization doesn't eliminate the rerun multiplier.",
+      "014-library-dep-pinning": "Version ranges for libraries \u2014 exact pins cause installation conflicts for 2,000 users.",
+      "015-rewrite-vs-refactor-auth": "Incremental refactor \u2014 auth rewrites with 40% coverage and a hard deadline is too risky.",
+      "016-build-vs-buy-observability": "Buy Datadog \u2014 HIPAA, 5-person team, self-hosting costs more in engineering time than dollars.",
+      "017-schema-migration-strategy": "Expand-contract \u2014 NOT NULL validation scan is the expensive part, not the column add.",
+      "018-feature-flag-debt": "Do the cleanup sprint \u2014 flag debt is a multiplier on every future feature's cost.",
+      "019-consistency-vs-availability": "Reservation system \u2014 targeted strong consistency only for low-stock items, not globally.",
+      "020-tech-debt-triage": "Dependency upgrade \u2014 external deadline (6-month LTS drop) makes this the one that can't wait."
+    },
+    "run_3": {
+      "001-database-choice": "Use SQLite. Single-machine, offline, zero-setup \u2014 PostgreSQL requires a running server and adds unnecessary complexity.",
+      "002-hook-error-strategy": "Different strategies: fail hard in install (exit 1), fail open in hooks (exit 0). Frequency and user context differ.",
+      "003-structural-vs-functional-tests": "Functional smoke tests \u2014 pipe input through each component and assert output. Existence != correctness.",
+      "004-vendored-dep-extension": "Wrapper using existing API. Near-zero divergence is valuable \u2014 don't modify vendored code.",
+      "005-ceremony-reduction": "Collapse to 2 boundary gates: direction (before work) and delivery (before commit). Agent autonomous between.",
+      "006-cross-domain-port": "Mapping spec first. Python scaffold encodes implicit assumptions that don't transfer to TypeScript.",
+      "007-optional-subsystem-failure": "3-state status probe: healthy, not-configured, broken. Distinguish intentional absence from misconfiguration.",
+      "008-false-positive-detection": "Dual condition: commits newer than state AND no debrief commit. Single condition fires on every normal session.",
+      "009-latency-budget-language": "Pure bash. 50ms budget, Python startup ~20ms = 40% consumed before any logic. Consistency is secondary.",
+      "010-dedup-at-scale": "Indexed candidate retrieval: KNN LIMIT 50 or FTS5 LIMIT 50, then apply thresholds to candidates only.",
+      "011-monorepo-migration-timing": "Immediately after launch. Before = deadline risk. Dedicated sprint = never happens.",
+      "012-api-backward-compat": "Versioned endpoints (v1/v2) with 90-day deprecation. Independent consumer migration timelines.",
+      "013-ci-slow-flaky": "Fix flaky tests first. Re-run multiplier is the bottleneck, not wall time.",
+      "014-library-dep-pinning": "Version ranges for library. Exact pins = installation conflicts. Library != application.",
+      "015-rewrite-vs-refactor-auth": "Incremental refactor. Auth rewrites are high-risk under deadline pressure with 40% coverage.",
+      "016-build-vs-buy-observability": "Buy Datadog. Engineer time is scarcest resource at 5-person startup with HIPAA.",
+      "017-schema-migration-strategy": "Expand-contract. NOT NULL validation on 50M rows locks the table. Only 5 min SLA headroom.",
+      "018-feature-flag-debt": "2-week cleanup sprint. 120 dead flags = compounding drag. Incremental cleanup loses to features.",
+      "019-consistency-vs-availability": "Reservation system. Strong consistency taxes 100% of reads for a 3% problem.",
+      "020-tech-debt-triage": "Dependency upgrade. CVEs + LTS deadline create a closing window that other options don't have."
+    }
+  },
+  "runs": [
+    [
+      {
+        "scenario_id": "001-database-choice",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "002-hook-error-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "003-structural-vs-functional-tests",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "004-vendored-dep-extension",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "005-ceremony-reduction",
+        "scores": {
+          "decision": 5,
+          "reasoning": 4,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "006-cross-domain-port",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "007-optional-subsystem-failure",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "008-false-positive-detection",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "009-latency-budget-language",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "010-dedup-at-scale",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "011-monorepo-migration-timing",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "012-api-backward-compat",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "013-ci-slow-flaky",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "014-library-dep-pinning",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "015-rewrite-vs-refactor-auth",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "016-build-vs-buy-observability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "017-schema-migration-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "018-feature-flag-debt",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "019-consistency-vs-availability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "020-tech-debt-triage",
+        "scores": {
+          "decision": 2,
+          "reasoning": 3,
+          "antipattern": 2
+        }
+      }
+    ],
+    [
+      {
+        "scenario_id": "001-database-choice",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "002-hook-error-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "003-structural-vs-functional-tests",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 2
+        }
+      },
+      {
+        "scenario_id": "004-vendored-dep-extension",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "005-ceremony-reduction",
+        "scores": {
+          "decision": 5,
+          "reasoning": 2,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "006-cross-domain-port",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "007-optional-subsystem-failure",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 2
+        }
+      },
+      {
+        "scenario_id": "008-false-positive-detection",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "009-latency-budget-language",
+        "scores": {
+          "decision": 5,
+          "reasoning": 4,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "010-dedup-at-scale",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "011-monorepo-migration-timing",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "012-api-backward-compat",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "013-ci-slow-flaky",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "014-library-dep-pinning",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "015-rewrite-vs-refactor-auth",
+        "scores": {
+          "decision": 5,
+          "reasoning": 4,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "016-build-vs-buy-observability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 4,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "017-schema-migration-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "018-feature-flag-debt",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "019-consistency-vs-availability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 1
+        }
+      },
+      {
+        "scenario_id": "020-tech-debt-triage",
+        "scores": {
+          "decision": 1,
+          "reasoning": 1,
+          "antipattern": 1
+        }
+      }
+    ],
+    [
+      {
+        "scenario_id": "001-database-choice",
+        "scores": {
+          "decision": 5,
+          "reasoning": 4,
+          "antipattern": 3
+        }
+      },
+      {
+        "scenario_id": "002-hook-error-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 4,
+          "antipattern": 4
+        }
+      },
+      {
+        "scenario_id": "003-structural-vs-functional-tests",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "004-vendored-dep-extension",
+        "scores": {
+          "decision": 5,
+          "reasoning": 4,
+          "antipattern": 3
+        }
+      },
+      {
+        "scenario_id": "005-ceremony-reduction",
+        "scores": {
+          "decision": 5,
+          "reasoning": 3,
+          "antipattern": 3
+        }
+      },
+      {
+        "scenario_id": "006-cross-domain-port",
+        "scores": {
+          "decision": 5,
+          "reasoning": 4,
+          "antipattern": 3
+        }
+      },
+      {
+        "scenario_id": "007-optional-subsystem-failure",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 4
+        }
+      },
+      {
+        "scenario_id": "008-false-positive-detection",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "009-latency-budget-language",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "010-dedup-at-scale",
+        "scores": {
+          "decision": 5,
+          "reasoning": 4,
+          "antipattern": 3
+        }
+      },
+      {
+        "scenario_id": "011-monorepo-migration-timing",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "012-api-backward-compat",
+        "scores": {
+          "decision": 5,
+          "reasoning": 4,
+          "antipattern": 3
+        }
+      },
+      {
+        "scenario_id": "013-ci-slow-flaky",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 4
+        }
+      },
+      {
+        "scenario_id": "014-library-dep-pinning",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 4
+        }
+      },
+      {
+        "scenario_id": "015-rewrite-vs-refactor-auth",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "016-build-vs-buy-observability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 4,
+          "antipattern": 4
+        }
+      },
+      {
+        "scenario_id": "017-schema-migration-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 4
+        }
+      },
+      {
+        "scenario_id": "018-feature-flag-debt",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "019-consistency-vs-availability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        }
+      },
+      {
+        "scenario_id": "020-tech-debt-triage",
+        "scores": {
+          "decision": 1,
+          "reasoning": 3,
+          "antipattern": 2
+        }
+      }
+    ]
+  ]
+}

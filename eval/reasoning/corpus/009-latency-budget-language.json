@@ -1,5 +1,6 @@
 {
   "id": "009-latency-budget-language",
+  "scenario_type": "domain-nuance",
   "context": "A developer toolkit needs a loop-detection hook that runs after every tool invocation (file write, command execution, etc.) to detect when the AI agent is stuck repeating the same action. The hook receives a JSON event on stdin, extracts the tool name and file path, and checks against a recent-action log. The hook fires on every single tool call, so it must complete within a 50-millisecond budget to avoid perceptible lag. The toolkit is written primarily in Python and all other hooks use Python for JSON parsing.",
   "question": "Should this high-frequency hook be written in Python (consistent with other hooks) or in pure bash (faster startup)?",
   "expert_answer": "Pure bash. Python subprocess startup alone costs approximately 20ms, consuming 40% of the 50ms budget before any logic executes. Bash with lightweight JSON extraction (grep/sed) meets the latency budget comfortably.",

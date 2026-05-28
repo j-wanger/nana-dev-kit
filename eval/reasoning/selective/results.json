@@ -1,0 +1,51 @@
+{
+  "analysis_type": "selective_injection_coverage",
+  "date": "2026-05-27",
+  "scenarios": 25,
+  "heuristics_available": 15,
+  "coverage": {
+    "with_matches": 21,
+    "without_matches": 4,
+    "coverage_pct": 84.0,
+    "unmatched_scenarios": [
+      "011-monorepo-migration-timing",
+      "019-consistency-vs-availability",
+      "020-tech-debt-triage",
+      "023-team-topology-bottleneck"
+    ]
+  },
+  "match_distribution": {
+    "0_matches": 4,
+    "1_match": 10,
+    "2_matches": 10,
+    "3_matches": 1,
+    "avg_matches_per_scenario": 1.32
+  },
+  "heuristic_usage": {
+    "IRON-004": 6,
+    "IRON-005": 4,
+    "IRON-001": 3,
+    "IRON-002": 3,
+    "IRON-003": 3,
+    "HEU-003": 2,
+    "HEU-004": 2,
+    "HEU-006": 2,
+    "HEU-008": 2,
+    "HEU-001": 1,
+    "HEU-002": 1,
+    "HEU-005": 1,
+    "HEU-007": 1,
+    "HEU-009": 1,
+    "HEU-010": 1
+  },
+  "unused_heuristics": [],
+  "comparison_to_blanket": {
+    "blanket_injection": "5 IRON RULES per scenario (always)",
+    "selective_injection": "1.3 heuristics per scenario (average, mixed HEU+IRON)",
+    "reduction_factor": 3.8,
+    "note": "Selective injection reduces average context by ~74% vs blanket. 4 scenarios get 0 injection (vs 5 IRON RULES blanket). 10 scenarios get HEU-specific heuristics that blanket injection would miss."
+  },
+  "known_issues": {
+    "018-feature-flag-debt": "IRON-004 matched but known to mislead on this scenario (Phase 45 regression). Selective injection would STILL inject the harmful heuristic here — trigger matching alone cannot detect harmful matches."
+  }
+}

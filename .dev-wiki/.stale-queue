@@ -70,3 +70,10 @@ eval/reasoning/with-anti-patterns/checkpoint-a.json
 eval/reasoning/with-self-dialogue-inline/results.json
 eval/reasoning/with-self-dialogue-subagent/results.json
 eval/reasoning/trace-schema.json
+eval/reasoning/corpus/021-microservice-extraction-timing.json
+eval/reasoning/corpus/022-incident-response-vs-prevention.json
+eval/reasoning/corpus/023-team-topology-bottleneck.json
+eval/reasoning/corpus/024-vendor-lock-in-vs-velocity.json
+eval/reasoning/corpus/025-test-coverage-mandate.json
+eval/reasoning/selective/ground-truth.json
+eval/reasoning/selective/results.json

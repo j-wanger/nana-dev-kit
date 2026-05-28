@@ -224,6 +224,7 @@ Critique the approach using a subagent. This is an **agent-internal quality chec
    - Score 6-10: Incorporate feedback into approach, proceed to Step 7.
    - Score 1-5: Revise approach to address CRITICAL issues, then proceed to Step 7. Note unresolved concerns in the phase article.
 5. **Graceful fallback:** If companion file missing or subagent times out, proceed to Step 7 without critique.
+6. **Heuristic judge (optional):** If `$ROOT/wiki/heuristics/` exists with ≥1 article: **Read** `~/.claude/skills/dev-plan/heuristic-matcher.md`, dispatch trigger matcher subagent with phase objective/scope. If ≥1 match: **Read** `~/.claude/skills/dev-plan/heuristic-judge-prompt.md`, dispatch judge subagent with approach + matched heuristic content (≤1200 chars). Merge heuristic judge verdict with approach reviewer verdict (lower score wins). **Timeout:** 60 seconds combined. **Fail-open:** skip silently if wiki missing, no matches, or timeout.
 
 ### Step 7: User Approves Direction (Direction Gate)
 

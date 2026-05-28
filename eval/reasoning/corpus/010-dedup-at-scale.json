@@ -1,5 +1,6 @@
 {
   "id": "010-dedup-at-scale",
+  "scenario_type": "capacity-constraint",
   "context": "A knowledge store uses near-duplicate detection on every write operation to prevent storing entries that are semantically equivalent to existing ones. The dedup check computes similarity scores (cosine similarity on embeddings when available, word-overlap ratio as fallback) between the new entry and all existing entries. This works well at small scale but performs an O(n^2) full table scan: every new entry is compared against every existing entry. The store currently has hundreds of entries and is growing steadily. The similarity thresholds (>0.90 for exact match, >0.85 for warning) are well-calibrated and should not change.",
   "question": "How should the dedup check be optimized to handle growth without changing the similarity thresholds or detection quality?",
   "expert_answer": "Replace the full table scan with index-prefiltered candidate retrieval: use KNN (k-nearest-neighbor) vector search to get the top ~50 candidates when embeddings are available, or FTS5 full-text search to get the top ~50 candidates as fallback. Apply the existing similarity thresholds only to these candidates.",

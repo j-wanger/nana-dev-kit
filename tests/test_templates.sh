@@ -908,4 +908,48 @@ else
   test_fail "eval/reasoning/README.md missing ablation section"
 fi
 
+# Phase 51: Heuristic-informed runtime judging
+test_start "heuristic-matcher.md exists"
+if test -f "$PROJECT_ROOT/templates/.claude/skills/dev-plan/heuristic-matcher.md"; then
+  test_pass
+else
+  test_fail "templates/.claude/skills/dev-plan/heuristic-matcher.md missing"
+fi
+
+test_start "heuristic-judge-prompt.md exists"
+if test -f "$PROJECT_ROOT/templates/.claude/skills/dev-plan/heuristic-judge-prompt.md"; then
+  test_pass
+else
+  test_fail "templates/.claude/skills/dev-plan/heuristic-judge-prompt.md missing"
+fi
+
+test_start "SKILL.md references heuristic-matcher"
+if grep -q 'heuristic-matcher' "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md"; then
+  test_pass
+else
+  test_fail "dev-plan SKILL.md missing heuristic-matcher reference"
+fi
+
+test_start "dev-plan SKILL.md ≤350 lines"
+SKILL_LINES=$(wc -l < "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md")
+if [ "$SKILL_LINES" -le 350 ]; then
+  test_pass
+else
+  test_fail "dev-plan SKILL.md is $SKILL_LINES lines (max 350)"
+fi
+
+test_start "ground-truth.json has 25+ scenarios"
+if python3 -c "import json; g=json.load(open('$PROJECT_ROOT/eval/reasoning/selective/ground-truth.json')); assert len(g) >= 25" 2>/dev/null; then
+  test_pass
+else
+  test_fail "ground-truth.json missing or has <25 scenarios"
+fi
+
+test_start "run-eval.py has --selective mode"
+if python3 "$PROJECT_ROOT/eval/reasoning/run-eval.py" --help 2>&1 | grep -q 'selective'; then
+  test_pass
+else
+  test_fail "run-eval.py missing --selective mode"
+fi
+
 test_summary "test_templates"

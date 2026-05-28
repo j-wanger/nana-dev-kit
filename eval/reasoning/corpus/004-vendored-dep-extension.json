@@ -1,5 +1,6 @@
 {
   "id": "004-vendored-dep-extension",
+  "scenario_type": "domain-nuance",
   "context": "A project vendors an open-source memory/knowledge-base server (approximately 2,400 lines of Python across 12 files). The vendored copy has near-zero divergence from upstream -- only a single function differs. A new feature is needed: the ability to consolidate duplicate entries by merging similar records. The vendored server already exposes search, store, and delete operations via its API.",
   "question": "Should the consolidation feature be implemented by modifying the vendored server code, or by building a wrapper that uses the server's existing API?",
   "expert_answer": "Build it as a wrapper using the existing API (search to find duplicates, store to write merged entries, delete to remove originals). Do not modify the vendored source.",

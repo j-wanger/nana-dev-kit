@@ -1,0 +1,102 @@
+{
+  "001-database-choice": {
+    "relevant": ["HEU-001", "IRON-004"],
+    "rationale": "HEU-001 trigger directly matches (storage backend for single-user dev tool). IRON-004 applies (SQLite is the simpler system vs PostgreSQL)."
+  },
+  "002-hook-error-strategy": {
+    "relevant": ["HEU-003", "HEU-008"],
+    "rationale": "HEU-003 trigger matches (fail-stop vs fail-open for install script vs hooks). HEU-008 applies (hooks run on every tool invocation — latency-critical)."
+  },
+  "003-structural-vs-functional-tests": {
+    "relevant": ["HEU-004"],
+    "rationale": "HEU-004 trigger matches (verifying that configured/registered components actually work, not just that config is structurally valid)."
+  },
+  "004-vendored-dep-extension": {
+    "relevant": ["HEU-010", "IRON-004"],
+    "rationale": "HEU-010 trigger directly matches (adding functionality to vendored dependency). IRON-004 applies (surgical patch is simpler than fork)."
+  },
+  "005-ceremony-reduction": {
+    "relevant": ["HEU-006", "IRON-004"],
+    "rationale": "HEU-006 trigger matches (designing a review/validation process for downstream artifacts). IRON-004 applies (fewer gates = simpler ceremony)."
+  },
+  "006-cross-domain-port": {
+    "relevant": ["HEU-009"],
+    "rationale": "HEU-009 trigger directly matches (porting/adapting a solution from one language/framework/domain to another — Python to TypeScript)."
+  },
+  "007-optional-subsystem-failure": {
+    "relevant": ["HEU-002", "HEU-003", "IRON-005"],
+    "rationale": "HEU-002 trigger directly matches (error handling for optional subsystem that could silently break). HEU-003 applies (fail-open for optional subsystem). IRON-005 applies (making subsystem failure visible, not silent)."
+  },
+  "008-false-positive-detection": {
+    "relevant": ["HEU-007"],
+    "rationale": "HEU-007 trigger directly matches (detection signal produces too many false positives — crash recovery dual-condition)."
+  },
+  "009-latency-budget-language": {
+    "relevant": ["HEU-008", "IRON-004"],
+    "rationale": "HEU-008 trigger directly matches (implementing logic in latency-critical hook path). IRON-004 applies (pure bash is simpler than Python for hooks)."
+  },
+  "010-dedup-at-scale": {
+    "relevant": ["HEU-005", "IRON-001"],
+    "rationale": "HEU-005 trigger directly matches (applying expensive similarity checks to large dataset). IRON-001 applies (measure current duplicate rate before optimizing)."
+  },
+  "011-monorepo-migration-timing": {
+    "relevant": [],
+    "rationale": "No heuristic trigger directly matches monorepo migration timing decisions. IRON-001 is tangentially related but the scenario is about coordination overhead, not performance."
+  },
+  "012-api-backward-compat": {
+    "relevant": ["IRON-003"],
+    "rationale": "IRON-003 trigger matches (designing API contracts and system integration points — response format change affecting multiple consumers)."
+  },
+  "013-ci-slow-flaky": {
+    "relevant": ["IRON-001"],
+    "rationale": "IRON-001 trigger matches (performance optimization of CI pipeline — need to measure which tests are flaky vs which are slow before deciding approach)."
+  },
+  "014-library-dep-pinning": {
+    "relevant": ["IRON-003"],
+    "rationale": "IRON-003 trigger matches (designing system integration points — dependency version contracts between library and consumers)."
+  },
+  "015-rewrite-vs-refactor-auth": {
+    "relevant": ["IRON-005"],
+    "rationale": "IRON-005 trigger matches (designing failure recovery — incremental approach makes each step's failure visible via production validation, vs big-bang rewrite where failure is invisible until cutover)."
+  },
+  "016-build-vs-buy-observability": {
+    "relevant": ["IRON-002"],
+    "rationale": "IRON-002 trigger directly matches (proposing a new observability system — should check existing SaaS tools before building custom)."
+  },
+  "017-schema-migration-strategy": {
+    "relevant": ["IRON-003", "IRON-005"],
+    "rationale": "IRON-003 trigger matches (system integration — schema change affecting live service). IRON-005 applies (migration strategy must make failure visible via rollback capability)."
+  },
+  "018-feature-flag-debt": {
+    "relevant": ["IRON-004"],
+    "rationale": "IRON-004 trigger matches (choosing between approaches where one is simpler). NOTE: Phase 45 showed IRON-004 MISLEADS on this scenario — it pushes toward incremental cleanup when expert recommends dedicated sprint. Marked as relevant because trigger matches, but known to be harmful here."
+  },
+  "019-consistency-vs-availability": {
+    "relevant": [],
+    "rationale": "No heuristic trigger directly matches distributed systems consistency-vs-availability tradeoffs. This is a domain-specific question about CAP theorem application, not covered by current heuristic set."
+  },
+  "020-tech-debt-triage": {
+    "relevant": [],
+    "rationale": "No heuristic trigger matches capacity-multiplier reasoning (choosing the initiative that unblocks other initiatives). This is a documented reasoning gap — the meta-decision pattern is not covered by current heuristics."
+  },
+  "021-microservice-extraction-timing": {
+    "relevant": ["IRON-001", "IRON-002"],
+    "rationale": "IRON-001 trigger matches (performance optimization — measure actual scaling bottleneck before extracting). IRON-002 applies (check if vertical scaling or query optimization already solves the problem before building a new microservice)."
+  },
+  "022-incident-response-vs-prevention": {
+    "relevant": ["IRON-005"],
+    "rationale": "IRON-005 trigger matches (designing failure recovery — making the failure pattern visible through better error handling before adding prevention complexity)."
+  },
+  "023-team-topology-bottleneck": {
+    "relevant": [],
+    "rationale": "No heuristic trigger directly matches team organization or deployment pipeline bottleneck decisions. This is an organizational design question, not a technical architecture question."
+  },
+  "024-vendor-lock-in-vs-velocity": {
+    "relevant": ["IRON-002", "IRON-004"],
+    "rationale": "IRON-002 trigger matches (proposing a new workflow system — check if existing cloud-managed service covers requirements). IRON-004 applies (managed service is simpler than building custom)."
+  },
+  "025-test-coverage-mandate": {
+    "relevant": ["HEU-004", "HEU-006"],
+    "rationale": "HEU-004 trigger matches (verifying that test coverage actually validates component behavior, not just line counts). HEU-006 applies (designing a review/validation process for audit evidence)."
+  }
+}

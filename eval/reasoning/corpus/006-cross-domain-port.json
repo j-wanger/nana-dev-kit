@@ -1,5 +1,6 @@
 {
   "id": "006-cross-domain-port",
+  "scenario_type": "domain-nuance",
   "context": "A project scaffolding tool successfully generates Python projects with a specific structure: config files, test setup, linting configuration, CI pipelines, and development conventions. The team wants to add TypeScript project scaffolding with equivalent functionality. The Python scaffold has been refined over many iterations and encodes dozens of implicit assumptions about package managers, test runners, linting tools, and directory conventions.",
   "question": "What is the right approach to building the TypeScript scaffold: write a design spec mapping every Python assumption to its TypeScript equivalent first, or clone the Python scaffold and modify it for TypeScript?",
   "expert_answer": "Write a design spec first. Map every assumption in the Python scaffold (package manager, test runner, linter, directory structure, CI config, type checking) to the TypeScript equivalent, identifying where the ecosystems diverge and where the mapping is non-obvious.",

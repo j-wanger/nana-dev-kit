@@ -1,5 +1,6 @@
 {
   "id": "001-database-choice",
+  "scenario_type": "domain-nuance",
   "context": "A CLI developer tool needs persistent storage for user entries (facts, preferences, corrections). The tool runs locally on a single developer's machine, is distributed via a simple install script, and should work offline without additional setup. Entries are text-heavy with full-text search requirements. The expected dataset size is hundreds to low thousands of records.",
   "question": "Should the tool use SQLite (embedded, file-based) or PostgreSQL (client-server) for its storage backend?",
   "expert_answer": "SQLite. It requires zero setup, ships as a single file, works offline by default, and handles full-text search via FTS5. The dataset size is well within SQLite's comfort zone.",

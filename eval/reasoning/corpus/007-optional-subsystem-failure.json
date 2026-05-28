@@ -1,5 +1,6 @@
 {
   "id": "007-optional-subsystem-failure",
+  "scenario_type": "domain-nuance",
   "context": "A developer toolkit includes an optional memory/knowledge subsystem that stores facts and preferences across sessions. The subsystem runs as a background server configured via a JSON settings file. A configuration bug (wrong working directory) caused the server to silently fail to start for 33 development iterations. No error was reported because the toolkit treated 'server not responding' the same as 'server not configured' -- both resulted in no memory features, which looked intentional to users who hadn't set it up.",
   "question": "How should the toolkit report the status of this optional subsystem to distinguish between intentional absence and broken configuration?",
   "expert_answer": "Implement a 3-state health probe that reports: healthy (server running, N entries), broken (configured but failing, with reason), or not-configured (no configuration present). Display the result at session start.",

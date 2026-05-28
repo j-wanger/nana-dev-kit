@@ -1,5 +1,6 @@
 {
   "id": "005-ceremony-reduction",
+  "scenario_type": "domain-nuance",
   "context": "An AI-assisted development workflow has 4 sequential approval gates: (1) spec review -- validate the written specification, (2) approach review -- approve the technical approach, (3) plan review -- approve the implementation plan, and (4) task review -- approve individual tasks. Each gate requires the human developer to stop, review, and explicitly approve before the agent proceeds. In practice, the developer finds that gates 2 and 3 blend together and the agent produces better work when given autonomy between clear boundaries.",
   "question": "How should the approval gates be restructured to reduce friction while maintaining quality control?",
   "expert_answer": "Collapse to 2 boundary gates: direction (human confirms intent and scope before work begins) and delivery (human reviews the finished work product before it ships). The agent operates autonomously between these two gates.",

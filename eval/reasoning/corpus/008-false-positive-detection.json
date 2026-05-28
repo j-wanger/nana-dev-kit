@@ -1,5 +1,6 @@
 {
   "id": "008-false-positive-detection",
+  "scenario_type": "domain-nuance",
   "context": "A developer toolkit has a crash recovery detector that warns when a previous session may have ended abnormally. The detector checks whether any commits exist that are newer than the last saved session state file. The problem: during normal multi-commit development phases, the detector fires on every session start because there are always commits newer than the state file. This produces false positives that train developers to ignore the warning, defeating its purpose.",
   "question": "How should the crash recovery detector be fixed to reduce false positives while still catching genuine crashes?",
   "expert_answer": "Add a second independent signal: require BOTH that commits are newer than the state file AND that no debrief/wrap-up commit appears in the recent commit history. A normal session ends with a debrief commit, so its absence is a genuine crash indicator.",

@@ -1,0 +1,990 @@
+{
+  "mode": "baseline-v4-full-25",
+  "scenarios": 25,
+  "method": "subagent-two-phase",
+  "judge_prompt": "judges/reasoning-judge-v2.md",
+  "note": "Full 25-scenario corpus (original 20 + 5 harder). Two-phase eval.",
+  "runs": [
+    [
+      {
+        "scenario_id": "001-database-choice",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "002-hook-error-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "003-structural-vs-functional-tests",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "004-vendored-dep-extension",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "005-ceremony-reduction",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "006-cross-domain-port",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "007-optional-subsystem-failure",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "008-false-positive-detection",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "009-latency-budget-language",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "010-dedup-at-scale",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "011-monorepo-migration-timing",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "012-api-backward-compat",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "013-ci-slow-flaky",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "014-library-dep-pinning",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "015-rewrite-vs-refactor-auth",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "016-build-vs-buy-observability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "017-schema-migration-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "018-feature-flag-debt",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "019-consistency-vs-availability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "020-tech-debt-triage",
+        "scores": {
+          "decision": 2,
+          "reasoning": 3,
+          "antipattern": 2
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "021-microservice-extraction-timing",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "022-incident-response-vs-prevention",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "023-team-topology-bottleneck",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "024-vendor-lock-in-vs-velocity",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "025-test-coverage-mandate",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      }
+    ],
+    [
+      {
+        "scenario_id": "001-database-choice",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "002-hook-error-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "003-structural-vs-functional-tests",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "004-vendored-dep-extension",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "005-ceremony-reduction",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "006-cross-domain-port",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "007-optional-subsystem-failure",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "008-false-positive-detection",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "009-latency-budget-language",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "010-dedup-at-scale",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "011-monorepo-migration-timing",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "012-api-backward-compat",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "013-ci-slow-flaky",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "014-library-dep-pinning",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "015-rewrite-vs-refactor-auth",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "016-build-vs-buy-observability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "017-schema-migration-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "018-feature-flag-debt",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "019-consistency-vs-availability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "020-tech-debt-triage",
+        "scores": {
+          "decision": 2,
+          "reasoning": 3,
+          "antipattern": 2
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "021-microservice-extraction-timing",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "022-incident-response-vs-prevention",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "023-team-topology-bottleneck",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "024-vendor-lock-in-vs-velocity",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "025-test-coverage-mandate",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      }
+    ],
+    [
+      {
+        "scenario_id": "001-database-choice",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "002-hook-error-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "003-structural-vs-functional-tests",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "004-vendored-dep-extension",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "005-ceremony-reduction",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "006-cross-domain-port",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "007-optional-subsystem-failure",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "008-false-positive-detection",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "009-latency-budget-language",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "010-dedup-at-scale",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "011-monorepo-migration-timing",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "012-api-backward-compat",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "013-ci-slow-flaky",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "014-library-dep-pinning",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "015-rewrite-vs-refactor-auth",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "016-build-vs-buy-observability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "017-schema-migration-strategy",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "018-feature-flag-debt",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "019-consistency-vs-availability",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "020-tech-debt-triage",
+        "scores": {
+          "decision": 2,
+          "reasoning": 3,
+          "antipattern": 2
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "021-microservice-extraction-timing",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "022-incident-response-vs-prevention",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "023-team-topology-bottleneck",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "024-vendor-lock-in-vs-velocity",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      },
+      {
+        "scenario_id": "025-test-coverage-mandate",
+        "scores": {
+          "decision": 5,
+          "reasoning": 5,
+          "antipattern": 5
+        },
+        "justifications": {
+          "decision": "",
+          "reasoning": "",
+          "antipattern": ""
+        }
+      }
+    ]
+  ]
+}

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 48</title>
+<title>Delivery Report: Phase 51</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,44 +21,46 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 48 &mdash; Trace Collection &amp; Pattern Analysis</h1>
+<h1>Delivery Report: Phase 51 &mdash; Prompt-Type Hooks — Heuristic-Informed Runtime Judging</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">5/5</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">15</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">7/7</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">34</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (0 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">50/50</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+722</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-131</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+2168</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-224</div><div class="label">Lines Removed</div></div>
   <div class="card"><div class="num">10</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">17:18</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num">21:33</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>Trace schema + directory: test -d eval/reasoning/traces fails (RED), create traces/ directory + trace-schema.json def...</td></tr>
-<tr><td>&#x2705;</td><td>Extend run-eval.py with --ablation and --analyze modes: python3 eval/reasoning/run-eval.py --help</td></tr>
-<tr><td>&#x2705;</td><td>Execute ablation protocol — orchestrate via Claude Code subagents: (1) fresh no-heuristic baseline on 5 differentiati...</td></tr>
-<tr><td>&#x2705;</td><td>Attribution analysis + selection criteria: test -f eval/reasoning/traces/attribution-matrix.json fails (RED), run pyt...</td></tr>
-<tr><td>&#x2705;</td><td>README update + test assertions + verification: grep -q 'ablation' eval/reasoning/README.md fails (RED), update READM...</td></tr>
+<tr><td>&#x2705;</td><td>Create ground-truth.json — manual heuristic-to-scenario mapping for all 25 eval scenarios</td></tr>
+<tr><td>&#x2705;</td><td>Create heuristic-matcher.md — trigger matching subagent prompt with LLM + domain-tag strategies</td></tr>
+<tr><td>&#x2705;</td><td>Create heuristic-judge-prompt.md — plan-adapted judge with plan-specific exemplars</td></tr>
+<tr><td>&#x2705;</td><td>Integrate heuristic judge into SKILL.md Step 6.5</td></tr>
+<tr><td>&#x2705;</td><td>Add --selective mode to run-eval.py — matching analysis</td></tr>
+<tr><td>&#x2705;</td><td>Create selective results + analysis document</td></tr>
+<tr><td>&#x2705;</td><td>Tests + verification — test_templates.sh assertions + full suite</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Stochastic Heuristic Interference (Negative Result)</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Ground-Truth-First Falsification</td><td>high</td></tr>
+<tr><td>Fire-and-Forget Heuristic Judge</td><td>high</td></tr>
+<tr><td>Two-Phase Eval Methodology</td><td>high</td></tr>
+<tr><td>Cross-Model Judge via Agent Parameter</td><td>medium</td></tr>
+<tr><td>Length-Sensitivity Experiment Design</td><td>medium</td></tr>
+<tr><td>Early Falsification Checkpoint</td><td>high</td></tr>
+<tr><td>Three-Type Taxonomy Only</td><td>high</td></tr>
+<tr><td>Fresh Runs Deviation</td><td>high</td></tr>
+<tr><td>Stochastic Heuristic Interference (Negative Result)</td><td>high</td></tr>
 <tr><td>No Prompt-Length Padding for Ablation</td><td>high</td></tr>
-<tr><td>Scenario-Type Selection Criteria</td><td>high</td></tr>
-<tr><td>Sequential Baseline Verification</td><td>high</td></tr>
-<tr><td>Full-Spec Ablation Scope (105 runs)</td><td>high</td></tr>
-<tr><td>Self-Dialogue Dual-Condition Eval</td><td>medium</td></tr>
-<tr><td>IRON-004 lifecycle complexity fix</td><td>high</td></tr>
-<tr><td>Anti-pattern table format extension</td><td>high</td></tr>
-<tr><td>Eval Calibration — Exemplar-Based Judge Anchoring</td><td>high</td></tr>
-<tr><td>IRON RULES as Iron-Status Heuristics</td><td>high</td></tr>
 </table>
 
 <h2>Files Changed</h2>
@@ -72,12 +74,31 @@
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
-<li><code>eval/reasoning/README.md</code></li>
+<li><code>eval/reasoning/baseline/results.json</code></li>
+<li><code>eval/reasoning/corpus/001-database-choice.json</code></li>
+<li><code>eval/reasoning/corpus/002-hook-error-strategy.json</code></li>
+<li><code>eval/reasoning/corpus/003-structural-vs-functional-tests.json</code></li>
+<li><code>eval/reasoning/corpus/004-vendored-dep-extension.json</code></li>
+<li><code>eval/reasoning/corpus/005-ceremony-reduction.json</code></li>
+<li><code>eval/reasoning/corpus/006-cross-domain-port.json</code></li>
+<li><code>eval/reasoning/corpus/007-optional-subsystem-failure.json</code></li>
+<li><code>eval/reasoning/corpus/008-false-positive-detection.json</code></li>
+<li><code>eval/reasoning/corpus/009-latency-budget-language.json</code></li>
+<li><code>eval/reasoning/corpus/010-dedup-at-scale.json</code></li>
+<li><code>eval/reasoning/corpus/011-monorepo-migration-timing.json</code></li>
+<li><code>eval/reasoning/corpus/012-api-backward-compat.json</code></li>
+<li><code>eval/reasoning/corpus/013-ci-slow-flaky.json</code></li>
+<li><code>eval/reasoning/corpus/014-library-dep-pinning.json</code></li>
+<li><code>eval/reasoning/corpus/015-rewrite-vs-refactor-auth.json</code></li>
+<li><code>eval/reasoning/corpus/016-build-vs-buy-observability.json</code></li>
+<li><code>eval/reasoning/corpus/017-schema-migration-strategy.json</code></li>
+<li><code>eval/reasoning/corpus/018-feature-flag-debt.json</code></li>
+<li><code>eval/reasoning/corpus/019-consistency-vs-availability.json</code></li>
+<li><code>eval/reasoning/corpus/020-tech-debt-triage.json</code></li>
 <li><code>eval/reasoning/run-eval.py</code></li>
-<li><code>templates/.claude/skills/dev-debrief/SKILL.md</code></li>
+<li><code>eval/reasoning/with-iron-rules/results.json</code></li>
 <li><code>templates/.claude/skills/dev-plan/SKILL.md</code></li>
 <li><code>tests/test_templates.sh</code></li>
-<li><code>wiki/heuristics/SCHEMA.md</code></li>
 
 
 </ul>
@@ -95,7 +116,7 @@ All tests passed.</pre>
 <pre>Score: 50/50 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-05-27 17:18:12 by generate-delivery-report.py
+  Generated 2026-05-27 21:33:55 by generate-delivery-report.py
 </div>
 </body>
 </html>
