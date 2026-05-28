@@ -55,7 +55,7 @@
 - [[phase-50-eval-advancement|Phase 50: Eval Advancement — Cross-Model Judging, Harder Scenarios & Length-Sensitivity]] -- completed
 - [[phase-51-prompt-type-hooks|Phase 51: Prompt-Type Hooks — Heuristic-Informed Runtime Judging]] -- completed
 - [[phase-52-heuristic-evolution|Phase 52: Heuristic Evolution — Counter Scoring, Deprecation Lifecycle, Dashboard]] -- completed
-- [[phase-53-open-questions|Phase 53: Open Questions — IRON-004 Scoping, Meta-Decision Expansion, MCP Memory]] -- active
+- [[phase-53-open-questions|Phase 53: Open Questions — IRON-004 Scoping, Meta-Decision Expansion, MCP Memory]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -159,6 +159,8 @@
 - [[ground-truth-first-falsification|Ground-Truth-First Falsification]] -- high confidence, accepted
 - [[verification-first-iron004|Verification-First Approach for IRON-004 Investigation]] -- medium confidence, accepted
 - [[counter-attribution-uniform-global-verdict|Counter Attribution — Uniform Global Verdict]] -- medium confidence, accepted
+- [[mcp-memory-diagnosis|MCP Memory Data Loss Diagnosis]] -- high confidence, accepted
+- [[phase-53-investigation-findings|Phase 53 Investigation Findings]] -- high confidence, active
 - [[nana-init-rename-and-expand|Rename /init to /nana-init and expand to multi-stage orchestrator]] -- high confidence, accepted
 - [[turn-level-hybrid-recommended|Turn-level hybrid RRF is the winning strategy]] -- high confidence, accepted
 - [[diagnostic-first-benchmark|Diagnostic-first benchmark]] -- high confidence, accepted
@@ -193,6 +195,8 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-27-phase-53-open-questions-complete|Phase 53 complete (open questions — IRON-004 scoping, HEU-011, MCP memory)]] -- 2026-05-27
+- [[2026-05-27-phase-52-heuristic-evolution-complete|Phase 52 complete (heuristic evolution — counter scoring, deprecation lifecycle, dashboard)]] -- 2026-05-27
 - [[2026-05-27-phase-51-prompt-type-hooks-complete|Phase 51 complete (heuristic-informed runtime judging)]] -- 2026-05-27
 - [[2026-05-27-phase-50-eval-advancement-complete|Phase 50 complete (length-sensitivity negative, Haiku judge passes, harder scenarios 15/15)]] -- 2026-05-27
 - [[2026-05-27-phase-49-conditional-heuristic-injection-complete|Phase 49 complete (negative result — conditional injection zero delta)]] -- 2026-05-27
@@ -272,6 +276,7 @@
 
 ## Recent
 
+- 2026-05-27: Phase 53 completed -- 6/6 tasks, 1 decision (verification-first-iron004), 3 investigations resolved (MCP memory CWD mismatch, IRON-004 selective injection resolves, HEU-011 drafted + eval at ceiling), +3 test assertions (11 total), 52/52 eval
 - 2026-05-27: Phase 53 planned -- 6 tasks (2S 3M 1S), 1 decision (verification-first-iron004), open questions: MCP memory diagnosis, IRON-004 matcher verification, HEU-011 capacity-multiplier draft + eval
 - 2026-05-27: Phase 52 planned -- 7 tasks (3M 4S), 1 decision (counter-attribution-uniform-global-verdict), heuristic evolution: counter scoring, deprecation lifecycle, dashboard
 - 2026-05-27: Phase 51 completed -- 7/7 tasks, 2 decisions (fire-and-forget-heuristic-judge high, ground-truth-first-falsification upgraded medium->high), ground-truth.json (25 scenarios, 84% coverage), heuristic-matcher + judge prompts, SKILL.md Step 6.5, --selective mode, +6 tests, 96/96 companions, 50/50 eval

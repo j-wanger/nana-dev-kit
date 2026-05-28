@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-27
 updated: 2026-05-27
 source: plan
-status: active
+status: completed
 scope: [".dev-wiki/articles/decisions/**", "wiki/heuristics/**", "eval/reasoning/**", "tests/test_heuristic_evolution.sh", "scripts/heuristic-dashboard.py"]
 entry_criteria: "Phase 52 complete, open questions documented in _CURRENT_STATE.md"
 exit_criteria: "3 investigations documented, HEU-011 drafted + eval'd, make test + make eval pass"

@@ -598,7 +598,7 @@
 - [x] [M] tests/test_heuristic_evolution.sh — RED: `test -f tests/test_heuristic_evolution.sh` fails. GREEN: Write fixture-based test script with 8 assertions: (1) helpful increment on score≥6, (2) harmful increment on score≤4+reviewer≥6, (3) no-update on score=5, (4) iron status immune to lifecycle transition, (5) under-review threshold fires at 2/5 ratio, (6) no transition at 1/4 ratio, (7) dashboard zero-counter handling, (8) dashboard output keyed by id. Wire into Makefile test target. Depends: Tasks 1, 2, 5. | scope: tests/test_heuristic_evolution.sh, Makefile | success: `bash tests/test_heuristic_evolution.sh && grep -q 'test_heuristic_evolution' Makefile && [ $(grep -c 'test_' tests/test_heuristic_evolution.sh) -ge 8 ]` | size: M
 - [x] [S] Eval scenarios + roadmap update + final verify — RED: roadmap shows Phase 7 as PLANNED. GREEN: Add 2 eval scenarios (counter-update-helpful, counter-update-iron-immune). Update roadmap-cognitive-enhancement.md (Phase 7 → **DONE**, add Phase 52 as actual phase). Run make test && make eval. Depends: all. | scope: eval/corpus/*, .dev-wiki/articles/roadmap-cognitive-enhancement.md | success: `[ $(find eval/corpus -type d -name '*counter*' -o -name '*evolution*' 2>/dev/null | wc -l) -ge 2 ] && grep -q '\*\*DONE\*\*' .dev-wiki/articles/roadmap-cognitive-enhancement.md && make test && make eval` | size: S
 
-<!-- gate-log:phase-53 direction=approved delivery=pending -->
+<!-- gate-log:phase-53 direction=approved delivery=accepted -->
 
 <!-- phase:phase-53-open-questions -->
 ## Phase 53: Open Questions — IRON-004 Scoping, Meta-Decision Expansion, MCP Memory

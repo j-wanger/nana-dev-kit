@@ -1,6 +1,14 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
+- [uses: 1] Clean baseline solves scenario 020 correctly (5/5/5). The "8/9 wrong" finding (Phase 50) was from IRON-RULES-injected conditions — IRON-005 biases toward dependency upgrade over capacity multiplier. HEU-011's value is as IRON-005 counterweight, not standalone improvement. IRON-RULES-condition eval deferred.
+  source: [[active-knowledge:phase-53]] | activated: 2026-05-27
+- [uses: 1] MCP memory CWD mismatch: Claude Code ignores settings.json cwd, uses project directory. DB at <project_root>/.memory/memory.db, not ~/.claude/.memory/. Health probe (memory-nudge.sh) checks wrong path + wrong column (is_active vs active). Phase 19-48 entries irrecoverable. 11 current entries from Phase 49+.
+  source: [[active-knowledge:phase-53]] | activated: 2026-05-27
+- [uses: 1] IRON-004/015 concern resolved by selective injection (Phase 51). Ground-truth maps 015 to IRON-005 only. IRON-004 would give correct answer on 015 anyway (reasoning framing issue, not decision quality). No IRON-004 content change needed.
+  source: [[active-knowledge:phase-53]] | activated: 2026-05-27
+- [uses: 1] Verification-first pattern: run cheapest check before committing to expensive work. Phase 53: matcher check (~1 call) before 6 eval runs (~30 min). Closed IRON-004 question without any eval runs. Generalizes early-falsification-checkpoint (Phase 49).
+  source: [[active-knowledge:phase-53]] | activated: 2026-05-27
 - [uses: 1] Heuristic counter evolution: judge verdicts update helpful/harmful counters via heuristic-counter-update.md companion. Attribution: helpful on score>=6/10, harmful on score<=4/10 AND reviewer>=6/10, no-update at 5. Uniform global verdict to all matched heuristics (known approximation). Counters are retrospective analytics only, never influence matcher selection.
   source: [[active-knowledge:phase-52]] | activated: 2026-05-27
 - [uses: 1] Heuristic deprecation lifecycle: active->under-review at harmful/(helpful+harmful) ratio>0.3 AND total>=5. Iron status immune to all transitions. Deprecated is terminal state. Defined in heuristic-lifecycle.md companion, codified in SCHEMA.md lifecycle section.
@@ -167,30 +175,14 @@
   source: [[decision:postcommit-hook-architecture]] | activated: 2026-05-22
 - [uses: 3] Eval design: binary scoring only (pass=1.0, fail=0.0), jq hard dependency, eval/ top-level directory separate from tests/; make eval never called by make test; 50 scenarios in 4 categories (hook, skill, context, lifecycle); eval/comparison/ for harness effectiveness
   source: [[decision:eval-binary-scoring-only]] + [[decision:eval-jq-hard-dependency]] + [[decision:eval-top-level-directory]] | activated: 2026-05-22
-- [uses: 1] Context eval is a new runner category (not folded into hook/skill); eval report shows "context 4/4" directly answering "do rules reach the model?"; checks array with file_exists, section_present, hook_output types
-  source: [[decision:context-eval-new-category]] | activated: 2026-05-22
-- [uses: 1] Fixture JSON must match per-hook stdin field paths: audit-log/auto-ruff/scan-secrets use {"input":{"file_path":"..."}}, block-dangerous-bash uses {"input":{"command":"..."}}, check-tests-were-run uses {"tool_uses":[...]}
-  source: [[decision:hook-stdin-per-hook-contracts]] | activated: 2026-05-22
-- [uses: 1] scan-secrets.sh has macOS BSD grep compatibility bug: \x27 in pattern doesn't match single quotes; eval fixture uses double quotes as workaround
-  source: [[journal:2026-05-22-phase-21-eval-expansion-complete]] | activated: 2026-05-22
 - [uses: 2] Eval harnesses should measure 3 layers: outcome (did it work), trajectory (was path efficient), system metrics (cost/latency); for dev-kit self-eval, focus on outcome + trajectory, defer system metrics. Self-grading bias: same LLM writing + evaluating inflates pass rates — methodology must acknowledge.
   source: [[wiki:agentic-eval-3-layer-model]] | activated: 2026-05-22
-- [uses: 1] Scenario-based eval needs 4 components per case: initial context (fixture), interaction script (input), oracle assertions (expected), timeouts; structured JSON manifest per scenario
-  source: [[wiki:scenario-eval-structure]] | activated: 2026-05-22
-- [uses: 1] Memory store Category enum: fact/preference/correction/entity/custom -- no "decision" category; use category="custom" with tags=["bridge-decision"] for all bridge entries
-  source: [[decision:memory-bridge-category-custom]] | activated: 2026-05-22
-- [uses: 1] Budget guard for memory entries uses memory_stats MCP tool (not empty-query memory_search which returns 0 after FTS sanitization); fallback: memory_search("bridge-decision", limit=50) count
-  source: [[decision:memory-bridge-budget-guard-stats]] | activated: 2026-05-22
-- [uses: 1] Memory bridge runs inline in dev-plan orchestrator after artifact-writer subagent returns -- Agent subagents cannot access MCP tools (memory_store/memory_stats)
-  source: [[decision:memory-bridge-inline-orchestrator]] | activated: 2026-05-22
 - [uses: 2] Skill tool `Skill(skill="spec", args=...)` is the established pattern for cross-skill calls; companion files isolate orchestration logic from main SKILL.md; cp -r auto-distributes new companions without install.sh changes
   source: [[wiki:skill-tool-invocation-pattern]] | activated: 2026-05-22
 - [uses: 1] spec SKILL.md pre-check blocks when dev-wiki has uncompleted tasks; between phases (all tasks done) the guard does NOT fire -- auto-invocation is safe
   source: [[wiki:spec-precheck-between-phases]] | activated: 2026-05-22
 - [uses: 1] install.sh directory-based copy (`cp -r`) means new companion files in existing skill dirs auto-distribute without install.sh changes
   source: [[journal:2026-05-22-phase-18-spec-devplan-ux-complete]] | activated: 2026-05-22
-- [uses: 1] .dev-wiki/ is committed as project lifecycle artifact; .claude/settings.local.json is excluded via .gitignore
-  source: [[wiki:commit-dev-wiki-in-initial-commit]] | activated: 2026-05-15
 - [uses: 2] memory_server/ vendored from nanaclaw (12 .py, 2,376 LOC); runs via MCP stdio (python -m memory_server). Near-zero divergence from upstream (900 vs 903 lines, only _sanitize_fts_query differs). Patch at patches/nanaclaw-sanitize-fts.patch.
   source: [[decision:vendor-memory-server]] + [[decision:nanaclaw-divergence-inventory]] | activated: 2026-05-24
 - [uses: 2] MCP registration uses idempotent JSON merge via scripts/register-settings.py (was inline python3, extracted Phase 40); handles 3 cases: no settings.json, existing without mcpServers, existing with mcpServers

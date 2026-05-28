@@ -1,19 +1,19 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-27 by /dev-plan (Phase 53 planned)
+> Last updated: 2026-05-27 by /dev-debrief (Phase 53 completed)
 
 ## Recommended Next Action
 
-Start Phase 53 implementation. Task 1: MCP Memory Diagnosis (S, orthogonal quick diagnostic). Back up DB files, check CWD config, document root cause.
+Run `/dev-plan` when ready for next phase. Candidates: fix memory-nudge.sh bugs (hooks maintenance), run HEU-011 under IRON-RULES condition (counterweight eval), or update working-knowledge entries corrected by Phase 53 findings.
 
 ## Active Phase
 
-**[[phase-53-open-questions|Phase 53: Open Questions — IRON-004 Scoping, Meta-Decision Expansion, MCP Memory]]** (status: active)
+**[[phase-53-open-questions|Phase 53: Open Questions — IRON-004 Scoping, Meta-Decision Expansion, MCP Memory]]** (status: completed)
 
 Entry criteria: MET (Phase 52 complete, open questions documented)
-Exit criteria: 3 investigations documented with findings, HEU-011 drafted + eval'd, make test + make eval pass
+Exit criteria: All 7 exit criteria met — 3 investigations documented, HEU-011 drafted + eval'd, make test + make eval pass
 
-Progress: ~0% (0/6 tasks done)
+Progress: 100% (6/6 tasks done)
 
 ## Active Phase Contract
 
@@ -41,32 +41,32 @@ Abort: if blocked >3 attempts, ask user: skip or abort
 
 | Path | Purpose | Last Modified |
 |------|---------|---------------|
-| `templates/.claude/skills/dev-plan/heuristic-counter-update.md` | Counter attribution rules (helpful/harmful updates) | 2026-05-27 |
-| `templates/.claude/skills/dev-plan/heuristic-lifecycle.md` | Deprecation lifecycle transitions (active->under-review) | 2026-05-27 |
-| `templates/.claude/skills/dev-plan/SKILL.md` | Step 6.5 with counter + lifecycle pointers (317/350 lines) | 2026-05-27 |
+| `wiki/heuristics/HEU-011-capacity-multiplier.md` | 16th heuristic article (capacity-multiplier for meta-decisions) | 2026-05-27 |
+| `.dev-wiki/articles/decisions/mcp-memory-diagnosis.md` | MCP memory data loss root cause (CWD mismatch + probe bugs) | 2026-05-27 |
+| `.dev-wiki/articles/decisions/phase-53-investigation-findings.md` | All 3 investigation findings consolidated | 2026-05-27 |
+| `eval/reasoning/selective/ground-truth.json` | Manual heuristic-to-scenario mapping (25 scenarios, HEU-011 added) | 2026-05-27 |
+| `tests/test_heuristic_evolution.sh` | 11 assertions covering counters, lifecycle, dashboard, HEU-011 | 2026-05-27 |
 | `scripts/heuristic-dashboard.py` | Terminal table of heuristic counter stats (~70 lines) | 2026-05-27 |
-| `wiki/heuristics/SCHEMA.md` | Heuristic schema with lifecycle transitions | 2026-05-27 |
-| `tests/test_heuristic_evolution.sh` | 8 assertions covering counters, lifecycle, dashboard | 2026-05-27 |
-| `eval/reasoning/selective/ground-truth.json` | Manual heuristic-to-scenario mapping (25 scenarios, 84% coverage) | 2026-05-27 |
+| `templates/.claude/skills/dev-plan/SKILL.md` | Step 6.5 with counter + lifecycle pointers (317/350 lines) | 2026-05-27 |
 
 ## Session Journal (last 5)
 
+- [2026-05-27] [[2026-05-27-phase-53-open-questions-complete|Phase 53 complete (open questions — IRON-004 scoping, HEU-011, MCP memory)]] -- 3 investigations resolved, HEU-011 drafted (1/25 match), clean baseline solves 020 (corrects Phase 50 claim), MCP CWD root cause, +3 test assertions (11 total), 52/52 eval
 - [2026-05-27] [[2026-05-27-phase-52-heuristic-evolution-complete|Phase 52 complete (heuristic evolution — counter scoring, deprecation lifecycle, dashboard)]] -- heuristic-counter-update.md, heuristic-lifecycle.md, SKILL.md pointer (317/350), dashboard + make target, SCHEMA.md lifecycle, 8 tests, 2 eval scenarios (52/52 100%), roadmap Phase 7 DONE, 1 decision confirmed
 - [2026-05-27] [[2026-05-27-phase-51-prompt-type-hooks-complete|Phase 51 complete (heuristic-informed runtime judging)]] -- ground-truth.json (25 scenarios, 84% coverage), heuristic-matcher.md, heuristic-judge-prompt.md, SKILL.md Step 6.5 integration, --selective mode, 2 decisions (1 upgraded), +6 test assertions, 96/96 companions, 50/50 eval
 - [2026-05-27] [[2026-05-27-phase-50-eval-advancement-complete|Phase 50 complete (length-sensitivity negative, Haiku judge passes, harder scenarios 15/15)]] -- 3 experiments: filler text discarded by model, Haiku passes calibration (mean=4.07, 37.8% below 5), 5 harder scenarios at ceiling, two-phase eval methodology discovered, 1 decision, make test + make eval pass
 - [2026-05-27] [[2026-05-27-phase-49-conditional-heuristic-injection-complete|Phase 49 complete (negative result — conditional injection zero delta)]] -- 3-type taxonomy, 20 scenario_type fields, conditional template, --conditional mode, 3-condition fresh eval, stochastic interference did not reproduce, 0 new decisions (3 existing confirmed), 162+ tests, 50/50 eval
-- [2026-05-27] [[2026-05-27-phase-48-trace-collection-pattern-analysis-complete|Phase 48 complete (stochastic interference — negative result)]] -- LOO ablation on 5 IRON RULES x 3 training scenarios (~75 invocations), stochastic interference finding, IRON-001 load-bearing, attribution matrix + selection criteria, 5 decisions (4 upgraded, 1 new), +5 test assertions, 162+ tests, 50/50 eval
 
 ## Cross-References
 
 - Status: [[2026-05-27-codebase-snapshot|Codebase Snapshot 2026-05-27]]
-- Phases 1-52: 52 completed (see index.md)
+- Phases 1-53: 53 completed (see index.md)
+- Decision: [[verification-first-iron004|Verification-First IRON-004]] -- medium, Phase 53
 - Decision: [[counter-attribution-uniform-global-verdict|Counter Attribution — Uniform Global Verdict]] -- medium (confirmed), Phase 52
-- Decision: [[fire-and-forget-heuristic-judge|Fire-and-Forget Heuristic Judge]] -- high confidence, Phase 51
-- Spec: specs/phase-52-heuristic-evolution.md
+- Spec: specs/phase-53-open-questions.md
 - Roadmap: [[roadmap-gap-analysis|Engineering Gap Analysis]] -- 1 OPEN gap remains (4.1 language-agnostic core)
 - Roadmap: [[roadmap-cognitive-enhancement|Cognitive Enhancement]] -- 7/7 phases done (all complete)
 - Release: v0.5.0 tagged and pushed
 - Benchmark: FTS5 recall@5 91.0%, hybrid/turn ~95% estimated (LongMemEval-S)
-- Knowledge wiki: wiki/ (cognitive-patterns) -- 10 heuristics + 5 IRON RULES, heuristic judge + matcher wired at Step 6.5, counter + lifecycle evolution loop
+- Knowledge wiki: wiki/ (cognitive-patterns) -- 11 heuristics + 5 IRON RULES (HEU-011 added), heuristic judge + matcher wired at Step 6.5, counter + lifecycle evolution loop
 - Retro: Phases 46-50 clean (0 recurring blockers, 0 reversals, 2 documented user overrides)
