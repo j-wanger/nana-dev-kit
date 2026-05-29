@@ -39,15 +39,15 @@ When it returns, you receive: project state summary, scope analysis, wiki knowle
 
 - **Step 9:** Ask user goal-oriented questions (informed by state loader's design questions + your own memory/knowledge recall)
 - **Step 10:** Propose approach (using state loader's wiki insights + your judgment)
-- **Step 13:** Dispatch approach reviewer (agent-internal quality check — incorporate findings, do not present to user)
-- **Step 14:** Present approach, get user approval — this is the **direction gate**
-- **Step 15:** Draft tasks, dispatch plan reviewer (agent-internal — incorporate findings, proceed to Step 16)
+- **Step 12:** Dispatch approach reviewer (agent-internal quality check — incorporate findings, do not present to user)
+- **Step 13:** Present approach, get user approval — this is the **direction gate**
+- **Step 14:** Draft tasks, dispatch plan reviewer (agent-internal — incorporate findings, proceed to Step 15)
 
 Before formulating your approach (Step 10), search memory and knowledge for relevant prior context. Form a position — don't default to asking the user.
 
-### Dispatch 2: Artifact Writing (Step 16)
+### Dispatch 2: Artifact Writing (Step 15)
 
-After user approves the direction (Step 14) and tasks are drafted (Step 15), dispatch artifact writing:
+After user approves the direction (Step 13) and tasks are drafted (Step 14), dispatch artifact writing:
 
 ```
 Agent({
@@ -69,9 +69,9 @@ Agent({
 ### After artifact writer returns
 
 1. Parse the structured return
-2. If `cross_phase_facts > 0`, ask user about working-knowledge seeding (Step 16f-ter)
-3. Mirror tasks to TodoWrite (Step 16g) — do this inline since TodoWrite is orchestrator-side
-4. Present Step 17 implementation transition gate (interactive)
+2. If `cross_phase_facts > 0`, ask user about working-knowledge seeding (Step 15f-ter)
+3. Mirror tasks to TodoWrite (Step 15g) — do this inline since TodoWrite is orchestrator-side
+4. Present Step 16 implementation transition gate (interactive)
 5. Report conversationally — "Phase N is planned with X tasks. Here's the approach: ..."
 
 ---
@@ -85,14 +85,14 @@ This skill OWNS and rewrites these sections (preserve all others verbatim):
 - `## Recent Decisions`
 
 May APPEND to: `## Blockers and Open Questions` (planning questions only — do not rewrite or remove existing entries).
-May SEED: `.claude/rules/working-knowledge.md` (Step 16f-ter, user-gated). wiki-query also writes this file (Steps 7a, 8) — caps are idempotent.
+May SEED: `.claude/rules/working-knowledge.md` (Step 15f-ter, user-gated). wiki-query also writes this file (Steps 7a, 8) — caps are idempotent.
 
 ---
 
 ## Direction Gate
 
 <HARD-GATE>
-Do NOT write any implementation code until the user has approved the direction in Step 14.
+Do NOT write any implementation code until the user has approved the direction in Step 13.
 </HARD-GATE>
 
 ---
@@ -105,7 +105,7 @@ Do NOT write any implementation code until the user has approved the direction i
 
 1. **Discover dev wiki.** Run `git rev-parse --show-toplevel 2>/dev/null || pwd` to find `$ROOT`. Check `$ROOT/.dev-wiki/_CURRENT_STATE.md`. If missing: "No dev wiki found. Run `/dev init` first." STOP.
 
-2. **Verify living documents.** Confirm `_CURRENT_STATE.md`, `_ARCHITECTURE.md`, `tasks.md` exist under `.dev-wiki/`. If any are missing, note which ones -- they will be created during Step 16.
+2. **Verify living documents.** Confirm `_CURRENT_STATE.md`, `_ARCHITECTURE.md`, `tasks.md` exist under `.dev-wiki/`. If any are missing, note which ones -- they will be created during Step 15.
 
 3. **Determine target phase.** Use the Read tool on `_CURRENT_STATE.md`:
    - If active phase has open tasks: "Phase N has X open tasks. Continue implementation." STOP.
@@ -201,23 +201,17 @@ Based on user's answers (or prior constraints), propose the approach for THIS PH
 
 **PERSIST immediately:** Write draft decision article at `$WIKI/articles/decisions/<slug>.md` with `confidence: low`. Read `~/.claude/skills/dev-wiki/decision-template.md` for the decision article template.
 
-### Step 11: Self-Dialogue (Devil's Advocate) *(Lite: skip)*
-
-Read `~/.claude/skills/dev-plan/self-dialogue-prompt.md`. Dispatch Agent with: self-dialogue prompt + proposed approach text + condensed IRON RULES (`iron-rules-injection-v2.md` format) + phase objective/exit criteria. Collect 2-3 counterarguments with IRON RULE citations. **Timeout:** 60 seconds.
-
-**Resolve inline:** For each counterargument: accept (revise approach) or reject (state specific reason). Update the approach text before proceeding. **Fail-open:** If companion missing, subagent times out, or output contains no `IRON-` citations, skip — proceed with unmodified approach.
-
-### Step 12: Contradiction Check (Inline) *(Lite: skip)*
+### Step 11: Contradiction Check (Inline) *(Lite: skip)*
 
 Search for wiki knowledge that might contradict the proposed approach. Serial inline (not subagent).
 
 1. Extract 3-5 key claims from the proposed approach.
 2. Search wiki indexes for tag-overlapping articles NOT in the Steps 4/5 retrieval set.
-3. **HARD skip:** If 0 unread articles found, proceed to Step 13.
+3. **HARD skip:** If 0 unread articles found, proceed to Step 12.
 4. Read up to 3 new articles. Flag contradictions or better alternatives.
 5. If contradictions found, revise approach before dispatching the reviewer.
 
-### Step 13: Automatic Approach Critique *(Lite: skip)* — Agent-Internal
+### Step 12: Automatic Approach Critique *(Lite: skip)* — Agent-Internal
 
 Critique the approach using a subagent. This is an **agent-internal quality check** — incorporate findings automatically, do not present reviewer output to the user.
 
@@ -225,13 +219,11 @@ Critique the approach using a subagent. This is an **agent-internal quality chec
 2. **Dispatch** Agent with: approach-reviewer prompt + proposed approach + phase article (objective, exit criteria) + top 3-5 articles from Steps 4/5 + prior decision articles (Step 3).
 3. **Collect** Score/Issues/Suggestions/Verdict. **Timeout:** 120 seconds.
 4. **Handle verdict:**
-   - Score 6-10: Incorporate feedback into approach, proceed to Step 14.
-   - Score 1-5: Revise approach to address CRITICAL issues, then proceed to Step 14. Note unresolved concerns in the phase article.
-5. **Graceful fallback:** If companion file missing or subagent times out, proceed to Step 14 without critique.
-6. **Heuristic judge (optional):** If `$ROOT/wiki/heuristics/` exists with ≥1 article: **Read** `~/.claude/skills/dev-plan/heuristic-matcher.md`, dispatch trigger matcher subagent with phase objective/scope. If ≥1 match: **Read** `~/.claude/skills/dev-plan/heuristic-judge-prompt.md`, dispatch judge subagent with approach + matched heuristic content (≤1200 chars). Merge heuristic judge verdict with approach reviewer verdict (lower score wins). **Timeout:** 60 seconds combined. **Fail-open:** skip silently if wiki missing, no matches, or timeout.
-7. **Counter update (after judge):** If heuristic judge ran and produced a verdict: **Read** `~/.claude/skills/dev-plan/heuristic-counter-update.md`, update helpful/harmful counters on matched heuristic articles. Then **Read** `~/.claude/skills/dev-plan/heuristic-lifecycle.md`, evaluate lifecycle transitions. Both are fail-open.
+   - Score 6-10: Incorporate feedback into approach, proceed to Step 13.
+   - Score 1-5: Revise approach to address CRITICAL issues, then proceed to Step 13. Note unresolved concerns in the phase article.
+5. **Graceful fallback:** If companion file missing or subagent times out, proceed to Step 13 without critique.
 
-### Step 14: User Approves Direction (Direction Gate)
+### Step 13: User Approves Direction (Direction Gate)
 
 Present the approach and wait for explicit approval. This is the **direction gate** — the only pre-implementation user approval point. The user confirms intent and scope, not technical details.
 
@@ -242,34 +234,34 @@ A vague "sure" counts as approval. Silence does NOT.
 
 If the user requests changes, revise, update the draft decision article, and re-present. **Maximum 3 revision rounds.** After 3: proceed with the best available version and note unresolved concerns in the phase article.
 
-### Step 15: Draft Tasks and Review Plan Quality *(Lite: skip — merge into Step 14)*
+### Step 14: Draft Tasks and Review Plan Quality *(Lite: skip — merge into Step 13)*
 
-Read `~/.claude/skills/dev-plan/plan-review-companion.md` for the full protocol: draft tasks, dispatch plan reviewer subagent, handle verdict. This step is **agent-internal** — incorporate reviewer findings and proceed to Step 16 without blocking on user approval. The direction gate (Step 14) already confirmed the approach.
+Read `~/.claude/skills/dev-plan/plan-review-companion.md` for the full protocol: draft tasks, dispatch plan reviewer subagent, handle verdict. This step is **agent-internal** — incorporate reviewer findings and proceed to Step 15 without blocking on user approval. The direction gate (Step 13) already confirmed the approach.
 
-### Step 16: Write to Dev Wiki
+### Step 15: Write to Dev Wiki
 
 All wiki artifacts are updated atomically. Follow this order:
 
-#### 16a: Finalize Decision Articles *(Lite: skip)*
+#### 15a: Finalize Decision Articles *(Lite: skip)*
 Update draft decisions: set `confidence` to `medium`/`high`, set `source: plan`. Create additional articles for new decisions from Steps 9-14.
 
-#### 16a-bis: Memory Bridge *(Lite: skip)*
+#### 15a-bis: Memory Bridge *(Lite: skip)*
 Read `~/.claude/skills/dev-plan/memory-bridge.md` and follow the procedure: budget guard via `memory_stats`, select 1-3 key decisions, store to memory with `category="custom"` and `tags=["bridge-decision"]`. Fail-open — skip silently on any error.
 
-#### 16b: Write Tasks to tasks.md
+#### 15b: Write Tasks to tasks.md
 Write tasks for the target phase (see `~/.claude/skills/dev-plan/task-schema.md` for enriched task schema, `~/.claude/skills/dev-wiki/size-budgets.md` for size budgets). Each task MUST include TDD cycle (RED/GREEN/REFACTOR), scope, success criterion, and size *(Lite: simplified — description+scope+success only)*. Order by dependency. At most 1 L task per phase.
 
-#### 16c: Update _CURRENT_STATE.md
+#### 15c: Update _CURRENT_STATE.md
 Rewrite `## Recommended Next Action`, `## Active Phase` (status: active, ~0%), `## Active Phase Contract`, `## Recent Decisions`, and `## Blockers and Open Questions` (remove resolved `[planning]` questions). Read `~/.claude/skills/dev-wiki/state-template.md` for the template.
 
-#### 16d: Update _ARCHITECTURE.md
+#### 15d: Update _ARCHITECTURE.md
 Only update if the approach changes project structure. If no structural changes, skip.
 
-#### 16e: Update Phase Article
+#### 15e: Update Phase Article
 Set `status: active`, `updated: <today>`. If creating a new phase article, read `~/.claude/skills/dev-wiki/phase-template.md` for the template.
 
-#### 16f: Write Compaction Anchor -- active-phase.md
-Do NOT create any other hooks or rules files beyond `active-phase.md` and `active-knowledge.md` (Steps 16f and 16f-bis). Ensure `$ROOT/.claude/rules/` exists (`mkdir -p`). Write `$ROOT/.claude/rules/active-phase.md` with: Phase, Objective, Scope (file globs), Key constraints (from decisions), Exit criteria, Abort rule, **and a Gates section**. Size: 10-20 lines.
+#### 15f: Write Compaction Anchor -- active-phase.md
+Do NOT create any other hooks or rules files beyond `active-phase.md` and `active-knowledge.md` (Steps 15f and 15f-bis). Ensure `$ROOT/.claude/rules/` exists (`mkdir -p`). Write `$ROOT/.claude/rules/active-phase.md` with: Phase, Objective, Scope (file globs), Key constraints (from decisions), Exit criteria, Abort rule, **and a Gates section**. Size: 10-20 lines.
 
 The Gates section tracks the two boundary checkpoints (2-gate ceremony model):
 
@@ -281,31 +273,31 @@ Gates:
 
 The direction gate must be marked before implementation begins. The delivery gate is marked post-implementation when the user accepts the delivery report (see dev-debrief).
 
-#### 16f-bis: Write Compaction Anchor -- active-knowledge.md *(Lite: skip)*
+#### 15f-bis: Write Compaction Anchor -- active-knowledge.md *(Lite: skip)*
 
 Distill cross-wiki articles from Step 4 and phase decisions from Steps 9-14 into `.claude/rules/active-knowledge.md`. Read `~/.claude/skills/dev-wiki/active-knowledge-spec.md` for the template, evaluation criteria, and size budget.
 
-**Process:** (1) Extract 2-5 key propositions per source. (2) Evaluate each: must pass 2 of 3 filters from `~/.claude/skills/dev-wiki/active-knowledge-spec.md` (multi-turn, non-obvious, phase-dependent) -- drop the rest. (3) Assemble using the template. (4) Count lines: if >30 re-distill; if still >40: skip writing active-knowledge.md, report: "Active knowledge exceeds 40-line cap. Skipping." Continue with Step 16g. (5) Write to `$ROOT/.claude/rules/active-knowledge.md`, overwriting any prior phase file.
+**Process:** (1) Extract 2-5 key propositions per source. (2) Evaluate each: must pass 2 of 3 filters from `~/.claude/skills/dev-wiki/active-knowledge-spec.md` (multi-turn, non-obvious, phase-dependent) -- drop the rest. (3) Assemble using the template. (4) Count lines: if >30 re-distill; if still >40: skip writing active-knowledge.md, report: "Active knowledge exceeds 40-line cap. Skipping." Continue with Step 15g. (5) Write to `$ROOT/.claude/rules/active-knowledge.md`, overwriting any prior phase file.
 
 **Skip:** If no knowledge wiki and no new decisions in Steps 9-14, skip entirely. Delete any prior-phase file if it exists; if absent, skip silently.
 
-#### 16f-ter: Seed Working Knowledge (Cross-Phase Facts)
+#### 15f-ter: Seed Working Knowledge (Cross-Phase Facts)
 
 After writing active-knowledge.md, evaluate retrieved facts from Step 4 that were NOT included in active-knowledge (failed phase-dependent filter but passed multi-turn + non-obvious). These are cross-phase facts useful beyond this phase. If any exist, offer: `"N cross-phase facts available for working knowledge. Activate? (y/n)"`. On confirmation: (1) read existing `.claude/rules/working-knowledge.md` if it exists, (2) append genuinely new entries as `[uses: 1]` with `activated: <today>`. Dedup (by proposition text, NOT source slug), the 100-entry cap, and ordering are enforced deterministically by the session-start curator — see `~/.claude/skills/dev-wiki/working-knowledge-spec.md`; do NOT hand-dedup, hand-sort, or hand-prune here. Skip if no cross-phase facts found.
 
-#### 16g: Mirror Tasks to TodoWrite (Compaction Anchor)
-Write each task to TodoWrite with embedded constraints. Set all to `pending`. Set first to `in_progress` only if user will continue in this session (determined in Step 17).
+#### 15g: Mirror Tasks to TodoWrite (Compaction Anchor)
+Write each task to TodoWrite with embedded constraints. Set all to `pending`. Set first to `in_progress` only if user will continue in this session (determined in Step 16).
 
-#### 16h: Append to log.md; 16i: Update index.md
+#### 15h: Append to log.md; 15i: Update index.md
 `[<ISO-timestamp>] PLAN -- Phase N planned, X tasks, Y decisions`. Add new decision articles and update the phase article entry in index.md.
 
-### Step 17: Auto-Transition to Implementation
+### Step 16: Auto-Transition to Implementation
 
-Report: "Phase N planned with X tasks. Beginning implementation." Set `Transition: continue` in contract. Proceed to Step 18 automatically — no user choice menu.
+Report: "Phase N planned with X tasks. Beginning implementation." Set `Transition: continue` in contract. Proceed to Step 17 automatically — no user choice menu.
 
 For phases with 8+ tasks, note in the report that a fresh session may be beneficial, but do not block.
 
-### Step 18: Begin Implementation
+### Step 17: Begin Implementation
 
 Read `~/.claude/skills/dev-plan/implementation-guide.md` for implementation instructions.
 

@@ -65,7 +65,8 @@
 - [[phase-60-harness-activation-residuals|Phase 60: Harness Activation Residuals]] -- completed
 - [[phase-61-validate-memory-knowledge-integration|Phase 61: Validate Memory & Knowledge Integration]] -- completed
 - [[phase-62-harden-hot-cache-curation|Phase 62: Harden Hot-Cache Curation]] -- completed
-- [[phase-63-harness-assessment-eval-validity|Phase 63: Harness Assessment & Eval-Validity]] -- active
+- [[phase-63-harness-assessment-eval-validity|Phase 63: Harness Assessment & Eval-Validity]] -- completed
+- [[phase-64-cut-heuristic-scoring-machinery-self-dialogue|Phase 64: Cut heuristic scoring machinery + self-dialogue]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -84,6 +85,9 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[cut-heuristic-scoring-keep-articles|Cut the heuristic SCORING machinery, keep the 17 articles (Phase 64)]] -- high confidence, accepted
+- [[batch-self-dialogue-with-heuristic-renumber|Batch self-dialogue removal with the heuristic cut — one renumber pass (Phase 64)]] -- high confidence, accepted
+- [[eval-total-is-dynamic|The corpus eval total is computed dynamically, not asserted as a literal (Phase 64)]] -- high confidence, accepted
 - [[harness-self-assessment-multi-angle|Phase 63 is a multi-angle harness self-assessment that cuts, not another feature micro-opt (Phase 63)]] -- high confidence, accepted
 - [[eval-validity-instrument-sensitivity-probe|Net-zero is ambiguous; an instrument-sensitivity probe must precede any cut-by-eval (Phase 63)]] -- high confidence, accepted
 - [[deadweight-requires-affirmative-evidence|DEADWEIGHT requires a firing test or ablation, never loadedness or log-absence (Phase 63)]] -- high confidence, accepted
@@ -323,6 +327,7 @@
 
 ## Recent
 
+- 2026-05-29: Phase 64 planned (Cut heuristic scoring machinery + self-dialogue) -- 4 tasks (2S 1M 1L), 3 decisions (cut-heuristic-scoring-keep-articles, batch-self-dialogue-with-heuristic-renumber, eval-total-is-dynamic). Top item of the Phase-63 remediation roadmap: remove the never-fired heuristic SCORING machinery (matcher/judge/counter-update/lifecycle/dashboard + dev-plan Step 13 sub-items 6-7 + dev-debrief Step 7 heuristic-capture) and the net-neutral self-dialogue step (dev-plan Step 11), KEEPING the 17 wiki/heuristics/*.md articles (live fixtures + eval/reasoning corpus). Batched as ONE renumber pass (dev-plan 12-18→11-17, dev-debrief 8-26→7-25). Walk UPSTREAM (producer + consumer). test_step_numbering.sh checks HEADINGS only — sub-letters 16x→15x swept manually. Eval total dynamic → 52/52, zero literal edits. Spec nana:approved (spec-reviewer-verified). Direction confirmed; delivery pending.
 - 2026-05-29: Phase 62 complete (READY FOR COMPLETION, delivery gate pending) -- 4/4 tasks, 0 new decisions (4 plan-time decisions unchanged), 1 journal. Deterministic hot-cache curator landed: wk-prune.sh extended (cap-enforce + exact-proposition dedup keeping max uses + well-formedness whole-file bail + atomic validate-temp→rename; bash-3.2 wrapper + inline python3). New tests/test_working_knowledge_curation.sh (11 invariants) wired into make test (12→13 scripts green). Wrong slug-dedup key fixed across all 4 touchpoints + policy consolidated to one source of truth (working-knowledge-spec.md). Dogfood on live cache (at 100) = byte-identical no-op. make eval 54/54; test_step_numbering.sh intact. Phase-63 candidate: hot-cache eviction value-signal (usage counter empirically inert ⇒ cap-eviction is de-facto recency).
 - 2026-05-29: Phase 62 planned (Harden Hot-Cache Curation) -- 4 tasks (1L 1M 2S), 4 decisions (harden-hot-cache-curation-deterministic, dedup-key-proposition-not-slug, curator-fail-safe-atomic, extend-wk-prune-not-new-hook). Deterministic hot-cache curator (cap-enforce + content-keyed dedup + well-formedness bail + atomic write) extending wk-prune.sh; fix the wrong slug-dedup key + consolidate cap/dedup/eviction policy to one source of truth; new invariant test wired into make test (no judge-eval — the test IS the validation, sidesteps the Phase-59 unmeasurability trap). Spec nana:approved. Direction confirmed; delivery pending.
 - 2026-05-29: Phase 61 complete (READY FOR COMPLETION, delivery gate pending) -- 7/7 tasks, 4 decisions (hot-cache-is-the-effective-retrieval-layer, cut-mcp-memory-read-path-d2, two-tier-curate-into-hot-cache, step-renumber-whole-number-invariant), 1 journal, status snapshot. Experiment-first A/B: ALL 5 runtime-retrieval directions CUT (D1 wiki-search Δ=−0.67, D2 MCP memory read-path Δ=0.00, D3 2-tier, D4 moot, D5 firewall). Meta-finding: the always-loaded markdown hot cache IS the effective retrieval layer. T6 deterministic step-renumber (dev-plan 1..18 / dev-debrief 1..26 / spec 1..9, ~200 ref edits, new test_step_numbering.sh). make test 12 scripts green, eval 54/54. Retro (Phases 51-60): no systemic issues. Phase-62 candidate: hot-cache curation quality.

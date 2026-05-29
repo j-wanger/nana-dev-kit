@@ -27,18 +27,8 @@
   source: [[active-knowledge:phase-53]] | activated: 2026-05-27
 - [uses: 1] Verification-first pattern: run cheapest check before committing to expensive work. Phase 53: matcher check (~1 call) before 6 eval runs (~30 min). Closed IRON-004 question without any eval runs. Generalizes early-falsification-checkpoint (Phase 49).
   source: [[active-knowledge:phase-53]] | activated: 2026-05-27
-- [uses: 1] Heuristic counter evolution: judge verdicts update helpful/harmful counters via heuristic-counter-update.md companion. Attribution: helpful on score>=6/10, harmful on score<=4/10 AND reviewer>=6/10, no-update at 5. Uniform global verdict to all matched heuristics (known approximation). Counters are retrospective analytics only, never influence matcher selection.
-  source: [[active-knowledge:phase-52]] | activated: 2026-05-27
-- [uses: 1] Heuristic deprecation lifecycle: active->under-review at harmful/(helpful+harmful) ratio>0.3 AND total>=5. Iron status immune to all transitions. Deprecated is terminal state. Defined in heuristic-lifecycle.md companion, codified in SCHEMA.md lifecycle section.
-  source: [[active-knowledge:phase-52]] | activated: 2026-05-27
-- [uses: 1] Heuristic dashboard: scripts/heuristic-dashboard.py reads wiki/heuristics/*.md, regex YAML parsing, terminal table output. `make dashboard` target. Handles zero-counter "unscored" state, surfaces never-matched heuristics, keys on id: field. All 15 heuristics currently at 0/0.
-  source: [[active-knowledge:phase-52]] | activated: 2026-05-27
 - [uses: 1] Cognitive Enhancement Roadmap complete (7/7 phases): foundation (44) -> capture (46) -> IRON RULES (45+46) -> self-dialogue (47, negative) -> trace collection (48, negative) -> prompt-type hooks (51) -> evolution (52). Future heuristic work is ad-hoc.
   source: [[active-knowledge:phase-52]] | activated: 2026-05-27
-- [uses: 1] Heuristic trigger matching uses LLM subagent + domain-tag fallback. Max 3 heuristics per invocation, 1200-char combined injection cap (below ~400-token context dilution threshold). Matcher prompt at heuristic-matcher.md, judge at heuristic-judge-prompt.md.
-  source: [[active-knowledge:phase-51]] | activated: 2026-05-27
-- [uses: 1] Fire-and-forget heuristic judge: scores used for routing only (accept/revise/reject verdict), never injected back into planner context. Phase 47 showed same-context critique causes hedging. Judge + approach reviewer verdicts merged at Step 6.5.
-  source: [[decision:fire-and-forget-heuristic-judge]] | activated: 2026-05-27
 - [uses: 1] Ground-truth heuristic mapping: 84% scenario coverage (21/25 have at least 1 matching heuristic). 4 blind-spot scenarios (011, 019, 020, 023) in organizational/distributed-systems domains. IRON-004 most broadly applicable (6/25) but known harmful on 018.
   source: [[active-knowledge:phase-51]] | activated: 2026-05-27
 - [uses: 1] Two-phase eval methodology: single-call eval (agent sees expert answers) produces 100% ceiling (20/20 at 5/5/5). Two-phase (agent blind, separate judge) produces meaningful differentiation. Essential for all future eval runs.
@@ -69,7 +59,7 @@
   source: [[decision:no-prompt-length-padding]] | activated: 2026-05-27
 - [uses: 1] Self-dialogue negative result: devil's advocate with IRON RULE citations does not improve reasoning quality. Inline is net negative (adds hedging), subagent is net neutral. Technique generates shallow counterarguments without novel insights when same-context agent plays both sides.
   source: [[journal:2026-05-27-phase-47-self-dialogue-in-dev-plan-complete]] | activated: 2026-05-27
-- [uses: 1] Adversarial subagent pattern (prior art): adversarial-constraints-prompt.md (spec skill, Step 2.5) is the established clean-context subagent pattern. self-dialogue-prompt.md follows same architecture but armed with IRON RULES. Subagent receives only objective + context (no approach/decisions).
+- [uses: 1] Adversarial subagent pattern (prior art): adversarial-constraints-prompt.md (spec skill) is the established clean-context subagent pattern. Subagent receives only objective + context (no approach/decisions).
   source: [[active-knowledge:phase-47]] | activated: 2026-05-27
 - [uses: 1] Context dilution checkpoint protocol: 200-word cap on self-dialogue output, checkpoint after condition A run 1 — if scenario 012 mean < 4.0, compress injection before continuing. Applied successfully in Phase 47 eval.
   source: [[active-knowledge:phase-47]] | activated: 2026-05-27
@@ -81,7 +71,7 @@
   source: [[active-knowledge:phase-46]] | activated: 2026-05-27
 - [uses: 1] IRON-004 regression fix: Never clause distinguishing "less effort now" from "simpler system" via total lifecycle complexity. Must stay domain-agnostic (transferability test). Scenario 018 improved +2.67 after fix.
   source: [[decision:iron-004-lifecycle-complexity-fix]] | activated: 2026-05-27
-- [uses: 1] Dev-debrief companion file pattern: at 315/350 lines, new features require companion files (not inline). memory-harvest.md at Step 4.7, heuristic-capture.md at Step 4.8. Companions read standalone.
+- [uses: 1] Dev-debrief companion file pattern: at 315/350 lines, new features require companion files (not inline); e.g. memory-harvest.md. Companions read standalone.
   source: [[active-knowledge:phase-46]] | activated: 2026-05-27
 - [uses: 1] Context dilution from expanded injection payload: scenario 012 consistently dropped from 5/5/5 to 5/4/4 across 3 runs when anti-pattern tables added. Detection signal: when injection text grows, check for non-target scenario regressions.
   source: [[active-knowledge:phase-46]] | activated: 2026-05-27

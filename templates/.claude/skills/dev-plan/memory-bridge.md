@@ -1,11 +1,11 @@
 ---
 parent: dev-plan
-referenced_at: "Step 16a-bis"
+referenced_at: "Step 15a-bis"
 ---
 
-# Memory Bridge (Step 16a-bis)
+# Memory Bridge (Step 15a-bis)
 
-Auto-store key phase decisions to memory after decision articles are finalized (Step 16a). Runs inline in the orchestrator — Agent subagents cannot access MCP tools.
+Auto-store key phase decisions to memory after decision articles are finalized (Step 15a). Runs inline in the orchestrator — Agent subagents cannot access MCP tools.
 
 ## Scope Boundary
 
@@ -35,7 +35,7 @@ For each result tagged `bridge-decision` whose content conflicts with the new de
 
 ### 2. Select Key Decisions
 
-From the decisions finalized in Step 16a, select 1-3 that are "key": constrains implementation choices OR would need recall in a future phase. Exclude routine choices (variable naming, file ordering, cosmetic formatting).
+From the decisions finalized in Step 15a, select 1-3 that are "key": constrains implementation choices OR would need recall in a future phase. Exclude routine choices (variable naming, file ordering, cosmetic formatting).
 
 ### 3. Store Each Decision
 

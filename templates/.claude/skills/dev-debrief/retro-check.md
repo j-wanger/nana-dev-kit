@@ -3,7 +3,7 @@ parent: dev-debrief
 referenced_at: "Step 0"
 ---
 
-# Retro Check (Step 21)
+# Retro Check (Step 20)
 
 Lightweight retrospective analysis, run conditionally during debrief. Replaces the former standalone `/dev-retro` skill. Analyzes only the 3 highest-signal dimensions (retired dims 4-9 per v2 redesign item 7).
 
@@ -26,7 +26,7 @@ Scan for: user overrides of agent decisions, restorations of prior state, "user 
 
 ## Output
 
-Include findings in the debrief journal entry (Step 9) under `### Retro Check (Phases N-M)`:
+Include findings in the debrief journal entry (Step 8) under `### Retro Check (Phases N-M)`:
 
 ```markdown
 ### Retro Check (Phases N-M)
@@ -43,4 +43,4 @@ Recommendations:
 
 If all dimensions show "none", emit: "Retro check: no systemic issues in last 10 phases." and skip the table.
 
-If findings are systemic (2+ high-signal dimensions), add to Step 26 report: "Retro check flagged systemic issues. Consider a dedicated improvement phase."
+If findings are systemic (2+ high-signal dimensions), add to Step 25 report: "Retro check flagged systemic issues. Consider a dedicated improvement phase."

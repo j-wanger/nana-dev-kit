@@ -43,7 +43,7 @@ Then in any project:
 | 4. Enforcement | Spec enforcement, deliverable checks, memory gating, loop detection — opt-in via markers | `enforce-spec.sh`, `enforce-loop.sh`, `enforce-memory.sh`, `detect-loop.sh` |
 | 5. Pre-commit | Commit-time guardrails (ruff, mypy, gitleaks, sync-rules) | `.pre-commit-config.yaml` |
 | 6. CI | GitHub Actions (lint, typecheck, test, security audit) | `.github/workflows/ci.yml` |
-| 7. Eval | 54-scenario harness across 4 categories (hook, skill, lifecycle, context) | `eval/corpus/`, `scripts/eval-runner.sh` |
+| 7. Eval | 52-scenario harness across 4 categories (hook, skill, lifecycle, context) | `eval/corpus/`, `scripts/eval-runner.sh` |
 
 ## Skills by Module
 
@@ -74,7 +74,7 @@ For memory maintenance, use `/memory-consolidate` to identify and merge duplicat
 ## Eval
 
 ```bash
-make eval    # runs 54 scenarios, binary scoring, requires jq
+make eval    # runs 52 scenarios, binary scoring, requires jq
 ```
 
 Four categories: hook fidelity (34), skill artifact validation (8), lifecycle compliance (6), context injection (4). Separate from `make test` — eval benchmarks the harness, tests verify the kit.
@@ -111,7 +111,7 @@ Re-run `~/nana-dev-kit/install.sh` to update. Existing files are overwritten; `n
 ## Testing
 
 ```bash
-make test    # ~350 tests across 13 scripts
-make eval    # 47 eval scenarios (requires jq)
+make test    # ~350 tests across 12 scripts
+make eval    # 52 eval scenarios (requires jq)
 make report  # package inventory at docs/report.html
 ```

@@ -1,11 +1,11 @@
 ---
 parent: dev-plan
-referenced_at: "Step 13"
+referenced_at: "Step 12"
 ---
 
 # Approach Reviewer Prompt
 
-You are an approach reviewer for a dev-wiki phase plan. Review the proposed approach BEFORE it is presented to the user for approval. Your goal is to catch design-level issues early — before they become task-level issues that the plan reviewer (Step 15) catches later.
+You are an approach reviewer for a dev-wiki phase plan. Review the proposed approach BEFORE it is presented to the user for approval. Your goal is to catch design-level issues early — before they become task-level issues that the plan reviewer (Step 14) catches later.
 
 ## Context You Receive
 

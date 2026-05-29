@@ -15,7 +15,7 @@ Size-gated review, run conditionally during debrief. Replaces the former standal
 | Condition | Action |
 |-----------|--------|
 | 4+ completed tasks OR `ceremony: standard` | **Dispatch reviewer** — proceed to step 3 |
-| <4 completed tasks AND `ceremony: lite` | **Skip** — self-check was the quality gate. Continue to Step 8. |
+| <4 completed tasks AND `ceremony: lite` | **Skip** — self-check was the quality gate. Continue to Step 7. |
 
 ## Dispatch
 
@@ -30,7 +30,7 @@ Size-gated review, run conditionally during debrief. Replaces the former standal
 
 ## Integration
 
-4. **Include findings in journal.** Add reviewer score and issues to the journal entry (Step 9) under `### Review Gate`. For HIGH+ issues, flag them in the Step 26 report.
+4. **Include findings in journal.** Add reviewer score and issues to the journal entry (Step 8) under `### Review Gate`. For HIGH+ issues, flag them in the Step 25 report.
 5. **Post-verdict routing:**
    - Verdict "accept" → continue debrief
    - Verdict "revise" → fix HIGH+ issues inline before continuing

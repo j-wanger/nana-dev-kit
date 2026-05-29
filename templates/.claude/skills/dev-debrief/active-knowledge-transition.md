@@ -1,11 +1,11 @@
 ---
 parent: dev-debrief
-referenced_at: "Step 20"
+referenced_at: "Step 19"
 ---
 
 # dev-debrief — Active Knowledge Transition Logic
 
-Companion to `SKILL.md` Step 20. Handle `.claude/rules/active-knowledge.md` based on phase state. Read `~/.claude/skills/dev-wiki/active-knowledge-spec.md` for the specification.
+Companion to `SKILL.md` Step 19. Handle `.claude/rules/active-knowledge.md` based on phase state. Read `~/.claude/skills/dev-wiki/active-knowledge-spec.md` for the specification.
 
 ## If phase changed this session (phase transitioned to a new phase, or phase marked completed)
 

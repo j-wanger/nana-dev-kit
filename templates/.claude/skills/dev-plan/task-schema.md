@@ -1,6 +1,6 @@
 ---
 parent: dev-plan
-referenced_at: "Step 16b"
+referenced_at: "Step 15b"
 ---
 
 # task-schema.md
@@ -76,7 +76,7 @@ Order tasks by dependency. If task B depends on task A, A comes first. Independe
 
 ### Plan Review Dimensions
 
-Applied by the plan reviewer subagent (Step 15) before tasks are committed. Knowledge completeness is the primary gate — checked first because insufficient knowledge produces both approach and task-level gaps.
+Applied by the plan reviewer subagent (Step 14) before tasks are committed. Knowledge completeness is the primary gate — checked first because insufficient knowledge produces both approach and task-level gaps.
 
 | # | Dimension | Pass Criterion | Severity if Failed |
 |---|-----------|---------------|-------------------|

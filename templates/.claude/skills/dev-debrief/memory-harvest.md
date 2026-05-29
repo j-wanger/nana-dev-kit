@@ -5,7 +5,7 @@ referenced_at: "Step 6"
 
 # Memory Harvest (Step 6)
 
-Extract conversation-level institutional knowledge and route to `memory_store` MCP calls. Runs during full debrief, after conversation analysis (Step 4) but before decision extraction (Step 8).
+Extract conversation-level institutional knowledge and route to `memory_store` MCP calls. Runs during full debrief, after conversation analysis (Step 4) but before decision extraction (Step 7).
 
 ## What to Extract
 
@@ -18,9 +18,9 @@ Scan the conversation analysis output (Step 4) for knowledge that survives beyon
 
 ## What NOT to Extract
 
-- **Phase decisions** — these go to wiki decision articles (Step 8). Do not duplicate.
-- **Task progress** — this goes to tasks.md (Step 12). Do not duplicate.
-- **Architecture facts** — these go to _ARCHITECTURE.md (Step 15). Do not duplicate.
+- **Phase decisions** — these go to wiki decision articles (Step 7). Do not duplicate.
+- **Task progress** — this goes to tasks.md (Step 11). Do not duplicate.
+- **Architecture facts** — these go to _ARCHITECTURE.md (Step 14). Do not duplicate.
 - **Anything already in memory** — call `memory_search` with key terms before storing. Skip duplicates.
 
 ## Output Format

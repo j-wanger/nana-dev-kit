@@ -858,20 +858,6 @@ else
   test_fail "$IRON_TABLE_MISSING IRON RULES missing anti-pattern tables"
 fi
 
-test_start "heuristic-capture.md exists"
-if test -f "$PROJECT_ROOT/templates/.claude/skills/dev-debrief/heuristic-capture.md"; then
-  test_pass
-else
-  test_fail "templates/.claude/skills/dev-debrief/heuristic-capture.md missing"
-fi
-
-test_start "dev-debrief SKILL.md references heuristic capture"
-if grep -q 'heuristic.capture' "$PROJECT_ROOT/templates/.claude/skills/dev-debrief/SKILL.md"; then
-  test_pass
-else
-  test_fail "dev-debrief SKILL.md missing heuristic-capture reference"
-fi
-
 test_start "dev-debrief SKILL.md under 350 lines"
 DEBRIEF_LINES=$(wc -l < "$PROJECT_ROOT/templates/.claude/skills/dev-debrief/SKILL.md" | tr -d ' ')
 if [ "$DEBRIEF_LINES" -le 350 ]; then
@@ -880,21 +866,7 @@ else
   test_fail "dev-debrief SKILL.md is $DEBRIEF_LINES lines (max 350)"
 fi
 
-# === Phase 47: Self-Dialogue ===
-
-test_start "self-dialogue-prompt.md exists"
-if test -f "$PROJECT_ROOT/templates/.claude/skills/dev-plan/self-dialogue-prompt.md"; then
-  test_pass
-else
-  test_fail "templates/.claude/skills/dev-plan/self-dialogue-prompt.md missing"
-fi
-
-test_start "dev-plan SKILL.md references self-dialogue"
-if grep -q 'self-dialogue' "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md"; then
-  test_pass
-else
-  test_fail "dev-plan SKILL.md missing self-dialogue reference"
-fi
+# === Self-Dialogue removed (Phase 64); the eval/reasoning injection fixture is retained ===
 
 test_start "dev-plan SKILL.md under 350 lines"
 DEVPLAN_LINES=$(wc -l < "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md" | tr -d ' ')
@@ -947,28 +919,7 @@ else
   test_fail "eval/reasoning/README.md missing ablation section"
 fi
 
-# Phase 51: Heuristic-informed runtime judging
-test_start "heuristic-matcher.md exists"
-if test -f "$PROJECT_ROOT/templates/.claude/skills/dev-plan/heuristic-matcher.md"; then
-  test_pass
-else
-  test_fail "templates/.claude/skills/dev-plan/heuristic-matcher.md missing"
-fi
-
-test_start "heuristic-judge-prompt.md exists"
-if test -f "$PROJECT_ROOT/templates/.claude/skills/dev-plan/heuristic-judge-prompt.md"; then
-  test_pass
-else
-  test_fail "templates/.claude/skills/dev-plan/heuristic-judge-prompt.md missing"
-fi
-
-test_start "SKILL.md references heuristic-matcher"
-if grep -q 'heuristic-matcher' "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md"; then
-  test_pass
-else
-  test_fail "dev-plan SKILL.md missing heuristic-matcher reference"
-fi
-
+# Heuristic scoring machinery (matcher/judge/counter/lifecycle) removed Phase 64; the 17 articles are retained as fixtures.
 test_start "dev-plan SKILL.md ≤350 lines"
 SKILL_LINES=$(wc -l < "$PROJECT_ROOT/templates/.claude/skills/dev-plan/SKILL.md")
 if [ "$SKILL_LINES" -le 350 ]; then

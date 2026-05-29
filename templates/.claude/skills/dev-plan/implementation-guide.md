@@ -1,11 +1,11 @@
 ---
 parent: dev-plan
-referenced_at: "Step 18"
+referenced_at: "Step 17"
 ---
 
 # Implementation Guide
 
-Extracted from dev-plan Step 18. Read when beginning implementation.
+Extracted from dev-plan Step 17. Read when beginning implementation.
 
 ## Pre-Flight Gate Verification
 
