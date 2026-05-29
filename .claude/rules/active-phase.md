@@ -1,14 +1,25 @@
 # Active Phase Context
 
-Phase: 59 - Validate Active-Research Residual Delta
-Status: COMPLETED (7/7 tasks; 2/2 gates; delivery accepted, committed). Next: /dev-plan for Phase 60.
-Objective: Turn Phase 58's n=1 threshold delta (+0.5, reasoning-only, research-favorable) into a defensible keep/trim/cut call for dev-plan Step 2.7, re-running the Phase-58 A/B methodology held fixed across ≥3 wiki-uncovered topics (incl. ≥1 research-POOR) at ≥3 runs/condition against a pre-registered rule.
-Result: VERDICT CUT. Poor topic (commit-convention) delta=−1.0 REAL harm; rich topics (retry/backoff 0.0, ledger −0.4) variance-dominated at n=5; not one n≥3 topic positive; Phase 58's +0.5 sits inside the noise band. Removed Step 2.7 + Step-6 citation bullet from SKILL.md (326→321) and deleted domain-research-spec.md. test_templates 169/169, make test green, eval 54/54.
+Phase: 60 - Harness Activation Residuals
+Status: COMPLETED (3/3 tasks; 2/2 gates; review 9/10 accept; delivery accepted + committed). Closed the Phase 57+ harness-activation roadmap (Fixes 1–5 all done). Next: /dev-plan for Phase 61.
+Objective: Two deterministic residual fixes, each test-backed:
+  - Fix 3: trim templates/AGENTS.md for instruction-budget + salience (dedup the doubled lint/type/test triplet, lead with Hard Rules, codify the line cap as a test assertion).
+  - Fix 5: emit a "run /nana-init" nudge from cognitive-readiness.sh when .dev-wiki/ is missing (verify firing, not presence).
 
-Scope: eval/research-measurement/results.md; templates/.claude/skills/dev-plan/{SKILL.md (edited), domain-research-spec.md (deleted)}; tests/
+Scope: templates/AGENTS.md; templates/.claude/hooks/session-start.d/cognitive-readiness.sh; tests/test_templates.sh; tests/test_cognitive_readiness.sh (new); Makefile
 
-Exit criteria: ALL MET (Phase-59 section appended w/ pre-reg ordered first; 3 per-topic deltas w/ mean(A)/mean(B) over n≥3; both richness classes incl. verified poor topic; gate-fired + retrieval + load-bearing recorded; mechanical CUT verdict quoting numbers; make test + eval 100%; trim/cut remediation done w/ SKILL.md ≤350).
+Key constraints:
+  - Deterministic phase — NO judge A/B eval (process theatre for a mechanical change); success = structural asserts + bidirectional firing tests.
+  - Over-trim guard: every removed line traces to dedup/reorder; preserve all distinct rules, the {{...}} placeholders, and the 'Pre-commit sequence' section (existing tests).
+  - Fix 5 reuses the existing needs_attention path (no parallel emit); suppress moot enforce/wiki/memory recs when uninitialized.
+  - Trimmed AGENTS.md must be < 86 lines; line cap sits just above trimmed size.
 
-Next: /dev-plan for Phase 60 (candidates: Fix 3 AGENTS.md reshape, Fix 5 residual session-start nudge, vector-search-default-on).
+Exit criteria: AGENTS.md < 86 lines, ruff + pytest lines each 1×, Hard Rules before Project Structure, line-cap assertion added, placeholders + Pre-commit sequence preserved; nudge fires when .dev-wiki/ absent + silent when present (firing test wired into make test); make test green + make eval 100%.
 
-Gates: [x] Direction confirmed (approach approved)  [x] Delivery accepted
+Abort: if either fix can't meet its deterministic success criterion after 3 attempts, mark [blocked:], report, ask skip/abort.
+
+Next: implement T1 (Fix 5) → T2 (Fix 3) → T3 (integration), then /dev-debrief.
+
+Gates:
+- [x] Direction confirmed (USER OVERRIDE: user waived the direction gate — "no need to wait for my confirmation on direction... go through all the necessary steps to complete this phase"; Fix 3+5 combo + scopes chosen via AskUserQuestion)
+- [x] Delivery accepted (user pre-authorized completion; delivery report generated, review gate 9/10, committed)

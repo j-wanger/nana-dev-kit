@@ -2,15 +2,35 @@
 # Cognitive readiness diagnostic — structured report of harness activation state.
 # Sourced by session-start.sh. Consolidates enforcement, wiki, heuristic, and memory status.
 
+# Kit inventory line (shared by the normal and uninitialized paths).
+_nana_kit_summary() {
+  local skill_count=0 hook_count=0 kit_ver="" kp
+  [ -d "$HOME/.claude/skills" ] && skill_count=$(find "$HOME/.claude/skills" -maxdepth 2 -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+  [ -d "$HOME/.claude/hooks" ] && hook_count=$(find "$HOME/.claude/hooks" -maxdepth 1 -name "*.sh" 2>/dev/null | wc -l | tr -d ' ')
+  if [ -f "$HOME/.claude/.nana-dev-kit-path" ]; then
+    kp=$(cat "$HOME/.claude/.nana-dev-kit-path" 2>/dev/null || true)
+    [ -n "$kp" ] && [ -f "$kp/VERSION" ] && kit_ver=" v$(cat "$kp/VERSION")"
+  fi
+  echo "  kit: ${skill_count} skills, ${hook_count} hooks${kit_ver}"
+}
+
 check_cognitive_readiness() {
+  # Uninitialized project (no .dev-wiki/): the root action is /nana-init, not a
+  # wall of inactive sub-statuses. Emit one actionable nudge and skip the
+  # per-component probes (including the memory import check) — they are all moot
+  # before the project is bootstrapped.
+  if [ ! -d ".dev-wiki" ]; then
+    echo "[nana:cognitive] Project not initialized — no .dev-wiki/ found."
+    echo "  Run /nana-init to bootstrap dev-wiki lifecycle, harness rules, and (optional) knowledge wiki."
+    _nana_kit_summary
+    return 0
+  fi
+
   local enforce_status="inactive"
   local wiki_status="none"
   local heuristic_count=0
   local domain_article_count=0
   local mem_status="not configured"
-  local skill_count=0
-  local hook_count=0
-  local kit_ver=""
   local needs_attention=""
 
   # Enforcement
@@ -67,15 +87,6 @@ check_cognitive_readiness() {
     fi
   fi
 
-  # Kit inventory
-  [ -d "$HOME/.claude/skills" ] && skill_count=$(find "$HOME/.claude/skills" -maxdepth 2 -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
-  [ -d "$HOME/.claude/hooks" ] && hook_count=$(find "$HOME/.claude/hooks" -maxdepth 1 -name "*.sh" 2>/dev/null | wc -l | tr -d ' ')
-  if [ -f "$HOME/.claude/.nana-dev-kit-path" ]; then
-    local kp
-    kp=$(cat "$HOME/.claude/.nana-dev-kit-path" 2>/dev/null || true)
-    [ -n "$kp" ] && [ -f "$kp/VERSION" ] && kit_ver=" v$(cat "$kp/VERSION")"
-  fi
-
   # Memory search guidance
   local mem_query=""
   if [ -f ".dev-wiki/tasks.md" ]; then
@@ -88,7 +99,7 @@ check_cognitive_readiness() {
   echo "  wiki: $wiki_status"
   echo "  heuristics: $heuristic_count"
   echo "  memory: $mem_status"
-  echo "  kit: ${skill_count} skills, ${hook_count} hooks${kit_ver}"
+  _nana_kit_summary
   if [ -n "$mem_query" ]; then
     echo "  search: memory_search \"$mem_query\""
   fi

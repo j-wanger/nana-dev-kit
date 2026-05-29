@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 59</title>
+<title>Delivery Report: Phase 60</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,60 +21,58 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 59 &mdash; Validate Active-Research Residual Delta</h1>
+<h1>Delivery Report: Phase 60 &mdash; Harness Activation Residuals</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">7/7</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">11</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">3/3</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">12</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (50 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">54/54</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+315</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-116</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">0</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">00:06</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+125</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-57</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">1</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">00:47</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>[M] T1 Pre-flight + pre-registration — verify WebSearch/WebFetch are live and the Phase-58 judge/generation prompts a...</td></tr>
-<tr><td>&#x2705;</td><td>[M] T2 Verify + lock topics — for each topic confirm wiki-query returns no coverage (gate FIRES). For the POOR candid...</td></tr>
-<tr><td>&#x2705;</td><td>[M] T3 Measure POOR topic (load-bearing) via Workflow — research pass (record search/fetch counts + injected_findings...</td></tr>
-<tr><td>&#x2705;</td><td>[M] T4 Measure RICH topics (≥2) via Workflow — same per-topic protocol (research pass with counts → ≥3 A + ≥3 B → bli...</td></tr>
-<tr><td>&#x2705;</td><td>[S] T5 Aggregate + decide — write per-topic deltas (per-dimension + composite), mean, cross-topic spread, and the cos...</td></tr>
-<tr><td>&#x2705;</td><td>[S] T6 Minimal companion remediation (CONDITIONAL — only if T5 decision is trim/cut) — implement the minimal change t...</td></tr>
-<tr><td>&#x2705;</td><td>[S] T7 Regression gate — full suite green + anchored eval 100% (regression gates only; they do not score Step 2.7's v...</td></tr>
+<tr><td>&#x2705;</td><td>[S] T1 Fix 5 — kit-uninitialized /nana-init nudge in cognitive-readiness.sh. When session-start runs in a project wit...</td></tr>
+<tr><td>&#x2705;</td><td>[S] T2 Fix 3 — templates/AGENTS.md budget + salience trim. Dedup the lint/type/test triplet (currently 2× at lines 9-...</td></tr>
+<tr><td>&#x2705;</td><td>[S] T3 Integration regression gate — full suite green + anchored eval 100%; new test script wired into the Makefile t...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<p>No new decisions this phase.</p>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Deterministic success criteria over eval ceremony for mechanical changes</td><td>high</td></tr>
+</table>
 
 <h2>Files Changed</h2>
 <ul>
 <li><code>.claude/rules/active-phase.md</code></li>
-<li><code>.claude/rules/working-knowledge.md</code></li>
+<li><code>.dev-wiki/.stale-queue</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
 <li><code>.dev-wiki/enforcement.log</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
-<li><code>.memory/memory.db-wal</code></li>
-<li><code>eval/research-measurement/results.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/SKILL.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/domain-research-spec.md</code></li>
+<li><code>Makefile</code></li>
+<li><code>README.md</code></li>
+<li><code>templates/.claude/hooks/session-start.d/cognitive-readiness.sh</code></li>
+<li><code>templates/AGENTS.md</code></li>
+<li><code>tests/test_templates.sh</code></li>
 
 
 </ul>
 
 <h2>Test Results</h2>
 <p><span class="status" style="background:#2d7d2d">PASS</span> 50 passed, 0 failed</p>
-<pre>  PASS: ts-init copies the enforce marker
+<pre>  nudge is silent when .dev-wiki/ is present         OK
 
-Settings template integrity: all checks passed
+test_cognitive_readiness.sh: 3 run, 3 passed, 0 failed
 
 All tests passed.</pre>
 
@@ -83,7 +81,7 @@ All tests passed.</pre>
 <pre>Score: 54/54 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-05-29 00:06:03 by generate-delivery-report.py
+  Generated 2026-05-29 00:47:15 by generate-delivery-report.py
 </div>
 </body>
 </html>

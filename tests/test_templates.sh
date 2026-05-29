@@ -65,6 +65,35 @@ assert_exit_code 1 grep -qi 'jake' "$SOUL"
 test_start "AGENTS.md has 'Pre-commit sequence' section"
 assert_contains "$PROJECT_ROOT/templates/AGENTS.md" 'Pre-commit sequence'
 
+# --- AGENTS.md budget + salience trim (Phase 60, Fix 3) ---
+AGENTS_MD="$PROJECT_ROOT/templates/AGENTS.md"
+
+# Dedup: the lint/type/test triplet is stated ONCE (canonical Pre-commit sequence),
+# not re-spelled in Toolchain. Check the whole triplet, not just pytest.
+test_start "AGENTS.md states 'uv run pytest' exactly once (dedup)"
+assert_eq 1 "$(grep -cF 'uv run pytest' "$AGENTS_MD" || true)" "pytest command duplicated"
+
+test_start "AGENTS.md states 'uv run ruff check --fix' exactly once (dedup)"
+assert_eq 1 "$(grep -cF 'uv run ruff check --fix' "$AGENTS_MD" || true)" "ruff command duplicated"
+
+# Budget: always-loaded line cap is a test assertion, not just a comment.
+test_start "AGENTS.md stays within line-cap budget"
+AGENTS_LINES=$(wc -l < "$AGENTS_MD")
+if [ "$AGENTS_LINES" -le 84 ]; then
+  echo -n "($AGENTS_LINES/84) "
+  test_pass
+else
+  test_fail "AGENTS.md: $AGENTS_LINES / 84 lines OVER"
+fi
+
+# Salience: highest-leverage rules lead — Hard Rules precede Conventions.
+test_start "AGENTS.md leads with Hard Rules (before Conventions)"
+if awk '/^## Hard Rules/{h=NR} /^## Conventions/{c=NR} END{exit !(h>0 && c>0 && h<c)}' "$AGENTS_MD"; then
+  test_pass
+else
+  test_fail "Hard Rules should precede Conventions (salience ordering)"
+fi
+
 # --- Personal profile template (no user-specific data) ---
 test_start "nana-personal.md exists"
 assert_file_exists "$PROJECT_ROOT/templates/.claude/rules/nana-personal.md"

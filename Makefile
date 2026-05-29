@@ -24,6 +24,7 @@ test:
 	@bash "$(NANA_KIT_DIR)tests/test_heuristic_evolution.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_registration.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_settings_template.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_cognitive_readiness.sh"
 	@echo ""
 	@echo "All tests passed."
 
