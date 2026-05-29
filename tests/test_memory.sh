@@ -15,6 +15,25 @@ if [ ! -f "$VENV_PY" ]; then
   exit 0
 fi
 
+# sqlite-vec is an OPTIONAL dependency (requirements-optional.txt): without it,
+# memory_server runs in FTS5-only mode. The cosine/vec tests below require the
+# extension to load (they write to the memories_vec virtual table). Probe once
+# and skip only those tests when it is absent — do NOT hard-fail, or the whole
+# suite halts on a missing optional dep (the Phase 56-58 "make test halts" bug).
+VEC_OK=0
+if "$VENV_PY" - <<'PROBE' 2>/dev/null
+import sqlite3, sqlite_vec
+c = sqlite3.connect(":memory:")
+c.enable_load_extension(True)
+sqlite_vec.load(c)
+PROBE
+then
+  VEC_OK=1
+else
+  echo "  [note] sqlite-vec unavailable — running FTS5-only tests, skipping vec/cosine tests."
+  echo "         Install with: uv pip install --python \"$VENV_PY\" 'sqlite-vec>=0.1.6'"
+fi
+
 run_py() {
   "$VENV_PY" -c "
 import sys, os, tempfile, struct, math
@@ -96,7 +115,9 @@ os.unlink(db_path)
 ')
 assert_eq "ok" "$result" "word overlap <0.90 no warn"
 
-# --- Cosine threshold tests via _find_near_duplicate ---
+# --- Cosine threshold tests via _find_near_duplicate (require sqlite-vec) ---
+
+if [ "$VEC_OK" = "1" ]; then
 
 test_start "cosine: >0.90 similarity reinforces"
 result=$(run_py '
@@ -188,7 +209,9 @@ os.unlink(db_path)
 ')
 assert_eq "ok" "$result" "cosine <0.85 no match"
 
-# --- FTS5-only mode test ---
+fi  # end VEC_OK guard (cosine threshold tests)
+
+# --- FTS5-only mode test (works without sqlite-vec) ---
 
 test_start "fts5_only: store works with _vec_available=False"
 result=$(run_py '
@@ -213,7 +236,9 @@ os.unlink(db_path)
 ')
 assert_eq "ok" "$result" "fts5-only store works"
 
-# --- n=1 edge case ---
+# --- n=1 edge case (requires sqlite-vec: stores embeddings) ---
+
+if [ "$VEC_OK" = "1" ]; then
 
 test_start "n1_edge: near-duplicate detection with single entry"
 result=$(run_py '
@@ -243,7 +268,9 @@ os.unlink(db_path)
 ')
 assert_eq "ok" "$result" "n=1 cosine dedup"
 
-# --- Exact duplicate always reinforces ---
+fi  # end VEC_OK guard (n=1 edge)
+
+# --- Exact duplicate always reinforces (works without sqlite-vec) ---
 
 test_start "exact_duplicate: reinforces regardless of mode"
 result=$(run_py '
