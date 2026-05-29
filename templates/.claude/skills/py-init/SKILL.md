@@ -131,6 +131,7 @@ Read `transform.md` (in this skill directory) and follow its procedure. Uses `so
    # Audit log directory (gitignored)
    mkdir -p .nana
    echo '.nana/' >> .gitignore
+   echo '.dev-wiki/enforcement.log' >> .gitignore   # enforcement firing log: runtime state, not source
    ```
 
 5. **Run sync** to generate per-surface copies from AGENTS.md:

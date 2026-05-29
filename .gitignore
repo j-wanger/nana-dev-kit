@@ -11,6 +11,8 @@ benchmark/.venv/
 .dev-wiki/.session-end
 .dev-wiki/.pending-commit
 .dev-wiki/.stale-queue
+.dev-wiki/enforcement.log
+.dev-wiki/enforcement.log.*
 .claude/.session-anchor
 .claude/.context-warned
 .claude/.memory-consulted

@@ -18,6 +18,7 @@ test:
 	@bash "$(NANA_KIT_DIR)tests/test_sync_rules.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_templates.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_enforce.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_firing_log.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_harden.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_memory.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_companions.sh"

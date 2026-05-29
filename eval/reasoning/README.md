@@ -2,6 +2,15 @@
 
 Measures AI agent reasoning quality on software engineering decisions using LLM-as-judge scoring.
 
+> **Status: calibration tool only (demoted Phase 65).** Per the Phase-63 eval-validity verdict
+> ([[eval-validity-verdict]]), this LLM-as-judge eval is **blind-by-construction** at the n it runs: its
+> composite deltas (Phase 58/59/61: 0.00 / −0.40 / −0.67) sit *inside* their own run-to-run spread, so it
+> cannot distinguish a useful feature from a worthless one. It is retained for **judge-calibration research**
+> (rubric/exemplar tuning, the ablation method below) and is **never used to gate features or shipping** —
+> it is run only on explicit invocation, never by `make eval` or `make test`. The trusted contract gate is the
+> deterministic binary corpus (`make eval`); the non-blind, observed-action substrate is Phase 65's enforcement
+> firing log (its scorer lands in Phase 66). Run-on-demand for calibration only.
+
 ## Methodology
 
 Each scenario presents a decision the agent must make, with:

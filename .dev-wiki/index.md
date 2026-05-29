@@ -66,7 +66,8 @@
 - [[phase-61-validate-memory-knowledge-integration|Phase 61: Validate Memory & Knowledge Integration]] -- completed
 - [[phase-62-harden-hot-cache-curation|Phase 62: Harden Hot-Cache Curation]] -- completed
 - [[phase-63-harness-assessment-eval-validity|Phase 63: Harness Assessment & Eval-Validity]] -- completed
-- [[phase-64-cut-heuristic-scoring-machinery-self-dialogue|Phase 64: Cut heuristic scoring machinery + self-dialogue]] -- active
+- [[phase-64-cut-heuristic-scoring-machinery-self-dialogue|Phase 64: Cut heuristic scoring machinery + self-dialogue]] -- completed
+- [[phase-65-enforcement-trace-instrumentation|Phase 65: Enforcement-Trace Instrumentation + Eval-Apparatus Disposition]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -85,6 +86,7 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[instrument-not-score-enforcement-firing-substrate|Build the enforcement-firing substrate, not a scorer — fixture-replay duplicates the corpus (Phase 65)]] -- high confidence, accepted
 - [[cut-heuristic-scoring-keep-articles|Cut the heuristic SCORING machinery, keep the 17 articles (Phase 64)]] -- high confidence, accepted
 - [[batch-self-dialogue-with-heuristic-renumber|Batch self-dialogue removal with the heuristic cut — one renumber pass (Phase 64)]] -- high confidence, accepted
 - [[eval-total-is-dynamic|The corpus eval total is computed dynamically, not asserted as a literal (Phase 64)]] -- high confidence, accepted
@@ -234,6 +236,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-29-phase-65-enforcement-trace-instrumentation-complete|Phase 65 complete — Enforcement-Trace Instrumentation + Eval-Apparatus Disposition]] -- 2026-05-29
 - [[2026-05-29-phase-62-harden-hot-cache-curation-complete|Phase 62 complete — Harden Hot-Cache Curation (deterministic curator + invariant test)]] -- 2026-05-29
 - [[2026-05-29-phase-61-memory-knowledge-integration-ab-complete|Phase 61 complete — Memory & Knowledge Integration A/B (all 5 directions CUT) + step-renumber]] -- 2026-05-29
 - [[2026-05-29-phase-60-harness-activation-residuals-complete|Phase 60 complete — Harness Activation Residuals (AGENTS.md trim + kit-uninitialized nudge)]] -- 2026-05-29

@@ -95,7 +95,7 @@ Add lint-staged config to package.json.
 
 **AGENTS.md:** If neither AGENTS.md nor CLAUDE.md exists, copy AGENTS-ts.md template as AGENTS.md and replace placeholders. If CLAUDE.md exists, skip (tell user to merge manually). If AGENTS.md exists, leave as-is.
 
-**Copy remaining template files if absent:** instructions, skills, hooks (recursively — include the `session-start.d/` subdir, which `session-start.sh` sources under `set -euo pipefail`; omitting it aborts the whole SessionStart hook), rules, CI (ci-ts.yml → ci.yml), PR template, CODEOWNERS, sync-rules.sh. Add `dist/`, `node_modules/`, `.nana/` to .gitignore if missing. Run `bash scripts/sync-rules.sh . .` after copy.
+**Copy remaining template files if absent:** instructions, skills, hooks (recursively — include the `session-start.d/` subdir, which `session-start.sh` sources under `set -euo pipefail`; omitting it aborts the whole SessionStart hook), rules, CI (ci-ts.yml → ci.yml), PR template, CODEOWNERS, sync-rules.sh. Add `dist/`, `node_modules/`, `.nana/`, `.dev-wiki/enforcement.log` to .gitignore if missing. Run `bash scripts/sync-rules.sh . .` after copy.
 
 ## Post-Transform Validation
 

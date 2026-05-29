@@ -5,6 +5,21 @@
 
 set -euo pipefail
 
+# --- Phase 65 fail-open firing log: one JSONL record {schema_version,ts,hook,action,reason,phase} ---
+# Exit-code-neutral (never aborts the hook under set -e); records controlled-vocab reasons only,
+# never raw paths/commands (the bash command is NEVER logged). Gate = .dev-wiki present. Call: log_firing <action> <reason>
+log_firing() {
+  [ -d ".dev-wiki" ] || return 0
+  command -v jq >/dev/null 2>&1 || return 0
+  local action="${1:-}" reason="${2:-unspecified}" log=".dev-wiki/enforcement.log" phase ts
+  phase=$(sed -n 's/^Phase: *\([0-9][0-9]*\).*/\1/p' ".claude/rules/active-phase.md" 2>/dev/null | head -n1) || true
+  [ -n "$phase" ] || phase="unknown"
+  ts=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null) || true
+  { jq -nc --arg ts "$ts" --arg hook "detect-loop" --arg action "$action" --arg reason "$reason" --arg phase "$phase" \
+      '{schema_version:1,ts:$ts,hook:$hook,action:$action,reason:$reason,phase:$phase}' >> "$log"; } 2>/dev/null || return 0
+  return 0
+}
+
 LOOP_STATE=".claude/.loop-state"
 
 # Bail if no enforce marker (opt-in)
@@ -53,6 +68,7 @@ COUNT=$(wc -l < "$LOOP_STATE" 2>/dev/null | tr -d ' ')
 
 if [ "$COUNT" -ge 3 ] 2>/dev/null; then
   echo "[nana:loop] Same command failed $COUNT times consecutively. Consider a different approach."
+  log_firing advisory repeated-failure || true
 fi
 
 exit 0

@@ -1,5 +1,16 @@
 # Harness Effectiveness Validation — Methodology
 
+> **RETIRED (Phase 65).** This manual three-condition (A/B/C) comparison apparatus is retired and no longer
+> maintained; the run scripts/, starters/, tasks/, CONDITION-C-INSTRUCTIONS.md, run-guide.md, and results-template.md
+> were removed. The **A-vs-C arm is confounded by construction** — conditions A/B run as Agent subagents without
+> Skill/MCP/hook access (see Limitations §"Subagent capability gap"), so any A-vs-C difference conflates harness
+> value with a tool-access gap. The **A-vs-B comparison is the clean one** (identical tool access) and its result is
+> preserved in project history (Phase 42/43: A 3/4, B 3/4, C 4/4 — the C win was the acceptance-test confound, not
+> measured lift). Per the Phase-63 [[eval-validity-verdict]], the trusted feature-gate is the binary corpus
+> (`make eval`); the LLM-judge reasoning eval is **calibration-only, never a gate**. This file is kept as the
+> rationale tombstone — **do not rebuild the apparatus.**
+
+
 ## Overview
 
 A controlled clean-room comparison measuring whether nana-dev-kit improves development outcomes when used with Claude Code. Three conditions, two tasks, parallel execution.

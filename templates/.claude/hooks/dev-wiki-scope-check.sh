@@ -4,6 +4,22 @@
 
 set -euo pipefail
 
+# --- Phase 65 fail-open firing log: one JSONL record {schema_version,ts,hook,action,reason,phase} ---
+# Exit-code-neutral (never aborts the hook under set -e); records controlled-vocab reasons only,
+# never raw paths/commands. Gate = .dev-wiki present (the log lives there; same gate as the enforce-*
+# loggers). Append-only + atomic (single >>; no read-modify-write truncation). Call: log_firing <action> <reason>
+log_firing() {
+  [ -d ".dev-wiki" ] || return 0
+  command -v jq >/dev/null 2>&1 || return 0
+  local action="${1:-}" reason="${2:-unspecified}" log=".dev-wiki/enforcement.log" phase ts
+  phase=$(sed -n 's/^Phase: *\([0-9][0-9]*\).*/\1/p' ".claude/rules/active-phase.md" 2>/dev/null | head -n1) || true
+  [ -n "$phase" ] || phase="unknown"
+  ts=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null) || true
+  { jq -nc --arg ts "$ts" --arg hook "dev-wiki-scope-check" --arg action "$action" --arg reason "$reason" --arg phase "$phase" \
+      '{schema_version:1,ts:$ts,hook:$hook,action:$action,reason:$reason,phase:$phase}' >> "$log"; } 2>/dev/null || return 0
+  return 0
+}
+
 ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
 [ -d "$ROOT/.dev-wiki" ] && [ -f "$ROOT/.dev-wiki/tasks.md" ] || exit 0
 
@@ -16,13 +32,14 @@ FILE_PATH=$(echo "$INPUT" | jq -r '.input.file_path // empty' 2>/dev/null || ech
 
 # Always allow dev-wiki state, project rules, and knowledge wiki paths
 case "$FILE_PATH" in
-  "$ROOT/.dev-wiki/"* | "$ROOT/.claude/rules/"* | "$ROOT/wiki/"* ) exit 0 ;;
+  "$ROOT/.dev-wiki/"* | "$ROOT/.claude/rules/"* | "$ROOT/wiki/"* ) log_firing allow allowlisted-path || true; exit 0 ;;
 esac
 
 # Find first open task in tasks.md
 TASK_LINE=$(grep -m1 '^- \[ \]' "$ROOT/.dev-wiki/tasks.md" 2>/dev/null || echo "")
 if [ -z "$TASK_LINE" ]; then
   echo '[dev-wiki:scope-check] No open tasks in tasks.md.'
+  log_firing skipped no-open-tasks || true
   exit 0
 fi
 
@@ -47,6 +64,9 @@ done
 
 if [ "$MATCHED" = false ]; then
   echo "[dev-wiki:scope-check] $FILE_PATH is outside active task scope."
+  log_firing advisory out-of-scope || true
+else
+  log_firing allow in-scope || true
 fi
 
 exit 0

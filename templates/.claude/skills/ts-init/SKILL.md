@@ -168,6 +168,7 @@ Read `transform.md` (in this skill directory) and follow its procedure. Key oper
    echo '.nana/' >> .gitignore
    echo 'dist/' >> .gitignore
    echo 'node_modules/' >> .gitignore
+   echo '.dev-wiki/enforcement.log' >> .gitignore   # enforcement firing log: runtime state, not source
    ```
 
 10. **Run sync** to generate per-surface copies from AGENTS.md:

@@ -7,13 +7,20 @@ set -euo pipefail
 
 INPUT=$(cat)
 
-LOG=".dev-wiki/enforcement.log"
-
-log_event() {
+# --- Phase 65 fail-open firing log: one JSONL record {schema_version,ts,hook,action,reason,phase} ---
+# Exit-code-neutral (never aborts the hook under set -e); records controlled-vocab reasons only,
+# never raw paths/commands. Gate = .dev-wiki present (the log lives there). Append-only + atomic
+# (single >>; no read-modify-write truncation — that raced under concurrent fires). Call: log_firing <action> <reason>
+log_firing() {
   [ -d ".dev-wiki" ] || return 0
-  local action="$1" reason="$2"
-  echo "{\"ts\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"hook\":\"enforce-loop\",\"action\":\"$action\",\"reason\":\"$reason\"}" >> "$LOG"
-  tail -n 500 "$LOG" > "$LOG.tmp" && mv "$LOG.tmp" "$LOG"
+  command -v jq >/dev/null 2>&1 || return 0
+  local action="${1:-}" reason="${2:-unspecified}" log=".dev-wiki/enforcement.log" phase ts
+  phase=$(sed -n 's/^Phase: *\([0-9][0-9]*\).*/\1/p' ".claude/rules/active-phase.md" 2>/dev/null | head -n1) || true
+  [ -n "$phase" ] || phase="unknown"
+  ts=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null) || true
+  { jq -nc --arg ts "$ts" --arg hook "enforce-loop" --arg action "$action" --arg reason "$reason" --arg phase "$phase" \
+      '{schema_version:1,ts:$ts,hook:$hook,action:$action,reason:$reason,phase:$phase}' >> "$log"; } 2>/dev/null || return 0
+  return 0
 }
 
 # --- Opt-in check: disabled unless a project-local OR global marker is present ---
@@ -72,7 +79,7 @@ if [ -f "$SPEC_FILE" ]; then
   done < <(grep -E '^\- \[ \] `' "$SPEC_FILE" 2>/dev/null || true)
 
   if [ -n "$FAILED" ]; then
-    log_event "block" "deliverable-missing"
+    log_firing "block" "deliverable-missing" || true
     echo "[nana:enforce-loop] Deliverable missing. Exit criterion not met: $FAILED" >&2
     exit 2
   fi
@@ -103,5 +110,5 @@ if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/n
   fi
 fi
 
-log_event "allow" "all-checks-passed"
+log_firing "allow" "all-checks-passed"
 exit 0

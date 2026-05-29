@@ -69,6 +69,7 @@ for f in "$KIT/templates/.claude/rules/"*.md; do n=$(basename "$f"); [ -f ".clau
 [ -f .github/PULL_REQUEST_TEMPLATE.md ] || cp "$KIT/templates/.github/PULL_REQUEST_TEMPLATE.md" .github/
 [ -f .github/CODEOWNERS ] || cp "$KIT/templates/.github/CODEOWNERS" .github/
 grep -q '.nana/' .gitignore 2>/dev/null || echo '.nana/' >> .gitignore
+grep -q 'enforcement.log' .gitignore 2>/dev/null || echo '.dev-wiki/enforcement.log' >> .gitignore
 ```
 
 ## Step 6: Sync and Install
