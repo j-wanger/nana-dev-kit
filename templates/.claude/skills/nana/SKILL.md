@@ -15,7 +15,7 @@ Show all installed skills with descriptions, grouped by module.
 
 3. **Group by module.** Organize skills into groups by directory prefix:
    - **Development lifecycle:** `dev-*` (dev-init, dev-plan, dev-check, dev-debrief, dev-scan, dev-wiki)
-   - **Knowledge wiki:** `wiki-*`, `knowledge-wiki` (wiki-init, wiki-add, wiki-query, wiki-absorb, wiki-health, wiki-reorg, wiki-bootstrap, wiki-consolidate, wiki-index, wiki-registry, knowledge-wiki)
+   - **Knowledge wiki:** `wiki-*`, `knowledge-wiki` (wiki-init, wiki-add, wiki-query, wiki-absorb, wiki-health, wiki-reorg, wiki-bootstrap, wiki-index, wiki-registry, knowledge-wiki)
    - **Python:** `py-*` (py-init)
    - **Spec & review:** `spec`
    - **Other:** anything not matching the above prefixes (nana, memory-consolidate, etc.)

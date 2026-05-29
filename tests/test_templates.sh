@@ -144,6 +144,15 @@ assert_contains "$PROJECT_ROOT/templates/.claude/hooks/session-start.d/cognitive
 test_start "session-start.sh passes syntax check"
 assert_exit_code 0 bash -n "$PROJECT_ROOT/templates/.claude/hooks/session-start.sh"
 
+# --- Init skills copy the session-start.d/ subdir (Phase 63 regression guard) ---
+# Bug fixed in Phase 63: non-recursive `cp hooks/*.sh` omitted session-start.d/, so a
+# scaffolded session-start.sh aborted at its `source` line under `set -euo pipefail`,
+# silently disabling the WHOLE SessionStart hook (curator, cognitive-readiness, gate check).
+for f in py-init/SKILL.md ts-init/SKILL.md py-init/transform.md ts-init/transform.md; do
+  test_start "init copies session-start.d/ subdir: $f"
+  assert_contains "$PROJECT_ROOT/templates/.claude/skills/$f" 'session-start.d'
+done
+
 # --- Hook jq migration ---
 for hook in audit-log auto-ruff-format block-dangerous-bash scan-secrets enforce-spec check-tests-were-run; do
   test_start "$hook.sh uses jq (not python3 -c)"

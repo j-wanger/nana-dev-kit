@@ -18,7 +18,7 @@ This is a single-agent skill. Claude does all work directly -- no subagent dispa
 ## Pre-checks
 
 1. **Dev wiki exists:** Locate project root: `git rev-parse --show-toplevel 2>/dev/null || pwd`
-   - If `.dev-wiki/_CURRENT_STATE.md` exists: "Dev wiki already exists. Use `/dev-context` to load project state." STOP.
+   - If `.dev-wiki/_CURRENT_STATE.md` exists: "Dev wiki already exists — project state auto-loads at session start. Use `/dev-check` to validate it." STOP.
    - If `.dev-wiki/` exists but `_CURRENT_STATE.md` is missing: ask user "Found incomplete dev wiki. Overwrite and reinitialize?" If no, STOP.
 
 2. **Git availability:** Run `git rev-parse --show-toplevel`.
@@ -192,7 +192,7 @@ Dev wiki initialized at .dev-wiki/
 
 Next steps:
 - Run /dev-plan to create your first phase and tasks
-- Run /dev-context at the start of future sessions to load project state
+- Project state auto-loads at the start of future sessions (the SessionStart hook reads `.dev-wiki/`)
 - Run /dev-debrief before ending sessions to capture decisions and progress
 - Run /dev-scan anytime for deep code analysis with dependency mapping
 

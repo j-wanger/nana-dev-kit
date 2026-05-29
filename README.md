@@ -56,7 +56,7 @@ Scaffold the Nana 5-layer TS dev harness: pnpm + Biome (lint + format) + tsc (ty
 **Development Lifecycle** — `/dev-init`, `/dev-plan`, `/dev-debrief`, `/dev-check`, `/dev-scan`, `/spec`
 Phase-based planning with TDD task schemas, automated debriefs, spec contracts with adversarial constraints and two-tier review gates.
 
-**Knowledge Wiki** — `/wiki-init`, `/wiki-add`, `/wiki-query`, `/wiki-absorb`, `/wiki-bootstrap`, `/wiki-health`, `/wiki-reorg`, `/wiki-consolidate`, `/wiki-index`, `/wiki-registry`
+**Knowledge Wiki** — `/wiki-init`, `/wiki-add`, `/wiki-query`, `/wiki-absorb`, `/wiki-bootstrap`, `/wiki-health`, `/wiki-reorg`, `/wiki-index`, `/wiki-registry`
 Project knowledge base with FTS5 search, episodic consolidation, and cross-wiki retrieval.
 
 ## Memory & Wiki Integration

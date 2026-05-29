@@ -96,11 +96,6 @@ f7b5e8efc295713f10956d3602675fc9  templates/.claude/skills/wiki-bootstrap/resear
 87a9968c125a9dfd82c0c6abb4d8ec23  templates/.claude/skills/wiki-bootstrap/research-loop-spec.md
 f68f9a377f23068075d5627150dd9006  templates/.claude/skills/wiki-bootstrap/reviewer-prompt.md
 0d83c1b97d243067d575624459afd1e6  templates/.claude/skills/wiki-bootstrap/writer-prompt.md
-1ec521d03d914490c2c6a06ae8cdc535  templates/.claude/skills/wiki-consolidate/SKILL.md
-6a26fef3ee9c87a8b02bcf09f599731f  templates/.claude/skills/wiki-consolidate/analyst-prompt.md
-96f5192625d11ec6c45f1d8805ee5940  templates/.claude/skills/wiki-consolidate/consolidate.py
-6d39e1358541793d685d3782f349d48e  templates/.claude/skills/wiki-consolidate/reviewer-prompt.md
-0b2773580fd6bf52a67cb6e4d163ee61  templates/.claude/skills/wiki-consolidate/writer-prompt.md
 7bf9bf5d5ef665018117c540d589bb66  templates/.claude/skills/wiki-health/SKILL.md
 cbf169fa7abde108e9e4dde86f1f2d06  templates/.claude/skills/wiki-health/dashboard-spec.md
 093dba883dd4470910e42885d160b8f4  templates/.claude/skills/wiki-health/empirical-anchor-spec.md
@@ -127,11 +122,11 @@ ec297f639a856b595197ac37a26ded8f  templates/.claude/skills/wiki-reorg/SKILL.md
 
 # Skill descriptions
 # dev-check: "Validate dev wiki integrity and fix drift. Run when state feels stale, after long breaks, or when drift warnings appear. Do NOT use for knowledge wiki health (use wiki-lint) or for session startup (use AGENTS.md)."
-# dev-debrief: "Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (use dev-context) or to fix wiki structural issues (use dev-check)."
+# dev-debrief: "Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."
 # dev-init: "Use when a project has no .dev-wiki/ yet. Bootstraps phases, architecture, state, and tasks. Do NOT use for knowledge wikis (use wiki-init) or if .dev-wiki/ already exists."
 # dev-plan: "Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."
 # dev-scan: "Use when adopting dev-wiki on an existing project, when _ARCHITECTURE.md is shallow, or after major structural changes. Scans code structure, modules, dependencies, entry points, and design patterns. Do NOT use for ad-hoc code questions — use Grep/Read directly."
-# dev-wiki: "Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-context, dev-plan, etc.)."
+# dev-wiki: "Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."
 # nana-init: Bootstrap the full Nana experience — language scaffold, dev-wiki lifecycle, optional knowledge wiki. Use when starting a new project or completing activation on an existing one.
 # knowledge-wiki: "Route wiki operations and enforce wiki workflow discipline. Use when the user mentions 'wiki', 'knowledge base', or wants to manage project knowledge. Also activated by SessionStart hook when a registered wiki applies to the current directory. Do NOT invoke directly when the user names a specific wiki command — invoke that command instead (wiki-query, wiki-add, etc.)."
 # memory-consolidate: "Consolidate duplicate/overlapping memory entries using Claude. Use when memory_search returns redundant results, after many phases, or for periodic memory maintenance."
@@ -145,7 +140,6 @@ ec297f639a856b595197ac37a26ded8f  templates/.claude/skills/wiki-reorg/SKILL.md
 # wiki-absorb: "Use when the wiki inbox has 3+ unprocessed entries or before running query/lint/reorg. Converts raw captures into polished cross-linked articles. Do NOT use for capturing new insights (use wiki-add) or when the inbox is empty."
 # wiki-add: "Use when adding content to the wiki inbox — either capturing insights from conversation or ingesting external files, URLs, or pasted material. Do NOT use for processing inbox into articles — use wiki-absorb."
 # wiki-bootstrap: "Use when seeding a new wiki OR researching specific topics to enrich a mature wiki via online research. Focus-topic mode works at any wiki size; full-domain-gap-analysis mode is best for sparse wikis. Do NOT use when no wiki exists yet (use wiki-init) or for capturing a single insight (use wiki-add)."
-# wiki-consolidate: "Use when episodic/ has 5+ unconsolidated entries. Converts raw episodic findings into staged inbox entries via dedup + fact extraction. Do NOT use for capturing new insights (use wiki-add) or for processing inbox entries (use wiki-absorb)."
 # wiki-health: "Use for wiki health checks: dashboard metrics, structural audit, and staleness marking. Default mode shows full report. Use --audit-only for structural checks only, --mark-stale to detect and mark stale articles. Do NOT use for dev wiki validation (use dev-check) or for fixing issues (use wiki-reorg)."
 # wiki-index: "Build and manage the hybrid search index for a wiki. Creates a per-wiki SQLite database with FTS5 full-text search and optional vector embeddings. Use when wiki has 50+ articles or search quality needs improving. Do NOT use for querying — use wiki-query (which calls search automatically)."
 # wiki-init: "Use when starting a wiki for a project that does not have one. Interviews the user and scaffolds the wiki directory with schema.md. Do NOT use if a wiki already exists in the project — use wiki-bootstrap to seed content into an existing wiki."

@@ -15,3 +15,4 @@ benchmark/.venv/
 .claude/.context-warned
 .claude/.memory-consulted
 .claude/scheduled_tasks.lock
+.memory/*.db*

@@ -61,8 +61,8 @@ mkdir -p .github/instructions .claude/skills .claude/hooks .claude/rules scripts
 [ -f .github/instructions/nana.instructions.md ] || cp "$KIT/templates/.github/instructions/nana.instructions.md" .github/instructions/
 [ -f .github/instructions/workflow.instructions.md ] || cp "$KIT/templates/.github/instructions/workflow.instructions.md" .github/instructions/
 for d in "$KIT/templates/.claude/skills/"*/; do n=$(basename "$d"); [ -d ".claude/skills/$n" ] || cp -r "$d" ".claude/skills/$n"; done
-for f in "$KIT/templates/.claude/hooks/"*; do n=$(basename "$f"); [ -f ".claude/hooks/$n" ] || cp "$f" ".claude/hooks/$n"; done
-chmod +x .claude/hooks/*.sh 2>/dev/null
+for f in "$KIT/templates/.claude/hooks/"*; do n=$(basename "$f"); [ -e ".claude/hooks/$n" ] || cp -r "$f" ".claude/hooks/$n"; done   # cp -r + -e: also copies the session-start.d/ subdir (sourced by session-start.sh under set -euo pipefail)
+chmod +x .claude/hooks/*.sh .claude/hooks/session-start.d/*.sh 2>/dev/null
 for f in "$KIT/templates/.claude/rules/"*.md; do n=$(basename "$f"); [ -f ".claude/rules/$n" ] || cp "$f" ".claude/rules/$n"; done
 [ -f scripts/sync-rules.sh ] || cp "$KIT/scripts/sync-rules.sh" scripts/ && chmod +x scripts/sync-rules.sh
 [ -f .github/workflows/ci.yml ] || cp "$KIT/templates/.github/workflows/ci.yml" .github/workflows/

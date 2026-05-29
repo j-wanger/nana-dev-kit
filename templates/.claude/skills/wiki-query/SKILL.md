@@ -4,7 +4,7 @@ description: "Use when the user asks a domain question that the wiki may already
 reads: [<wiki_path>/schema.md, <wiki_path>/index.md, <wiki_path>/articles/**/*.md, $ROOT/.claude/rules/working-knowledge.md]
 writes:
   # Tier 1 — unconditional on successful query
-  - $ROOT/.claude/rules/working-knowledge.md(uses increment, sort)  # Step 7a
+  - $ROOT/.claude/rules/working-knowledge.md(uses increment)  # Step 7a — ordering/cap/dedup owned by the curator (wk-prune.sh), not this skill
   # Tier 2 — user-gated
   - $ROOT/.claude/rules/working-knowledge.md(append new entries)           # Step 8
   - $ROOT/.claude/rules/active-knowledge.md(promoted entries)              # Step 8a (user-confirmed; uses >= 5 promotion gate)
@@ -44,10 +44,12 @@ If the user's question reveals a gap or error in the wiki, report it in the answ
 ## Section Ownership
 
 This skill OWNS:
-- `.claude/rules/working-knowledge.md` — Step 7a (increment/sort, unconditional when file exists)
+- `.claude/rules/working-knowledge.md` — Step 7a (uses increment in place, unconditional when file exists)
 
 May UPDATE (user-gated):
-- `.claude/rules/working-knowledge.md` — Step 8 (append new entries, evict)
+- `.claude/rules/working-knowledge.md` — Step 8 (append new entries)
+
+Ordering, the entry cap, and dedup are NOT this skill's job — they are owned by the deterministic curator (`wk-prune.sh`, session-start). This skill only increments and appends; the curator normalizes on next session start. See `~/.claude/skills/dev-wiki/working-knowledge-spec.md` (the single source of truth for the cap/dedup/ordering policy).
 - `.claude/rules/active-knowledge.md` — Step 8a (promotion, user confirms)
 
 Read-only: all files under `<wiki_path>/`.
@@ -157,8 +159,7 @@ If `$ROOT/.claude/rules/working-knowledge.md` exists (where `$ROOT` is the proje
 1. Read the file. Parse each entry's `[uses: N]` prefix and proposition text.
 2. For each entry, check if the answer generated in Step 7 semantically references that fact (same concept, not exact string match).
 3. For each matched entry, increment `[uses: N]` → `[uses: N+1]`.
-4. Re-sort all entries by usage count descending (ties broken by most recent `activated:` date).
-5. Write the updated file back.
+4. Write the updated file back **in place** — do NOT reorder. Ordering, the entry cap, and dedup are owned by the deterministic curator (`wk-prune.sh`, session-start); producers like this skill only increment + append. See `~/.claude/skills/dev-wiki/working-knowledge-spec.md`.
 
 If the file does not exist, skip entirely. If an entry cannot be parsed (missing `[uses:` prefix or missing `source:` line), skip that entry and warn: `"Skipped malformed entry at line N. Run /dev check W3 to diagnose."`
 
@@ -192,11 +193,8 @@ Activate key facts into working knowledge? (y/n)
      source: [[wiki:<slug>]] | activated: <today>
    ```
 4. Read existing `.claude/rules/working-knowledge.md` if it exists. When parsing existing entries, skip any that are malformed (missing `[uses:` prefix or `source:` metadata line) and warn: `"Skipped malformed entry at line N. Run /dev check W3 to diagnose."`
-5. Append new entries.
-6. Sort all entries by usage count descending.
-7. If >100 entries, evict lowest-count entries (ties: oldest `activated:` date first) until at 100.
-8. Enforce 210-line hard cap. If exceeded after eviction, evict lowest-count entries (ties: oldest `activated:` date first) until within cap.
-9. Write the file.
+5. Append new entries (in insertion order — do NOT sort, evict, or prune).
+6. Write the file. The deterministic curator (`wk-prune.sh`, session-start) enforces the entry cap, ordering, and dedup on the next session start — see `~/.claude/skills/dev-wiki/working-knowledge-spec.md`. This skill only increments + appends.
 
 Report: `"Activated N facts into working knowledge (M total entries)."`
 

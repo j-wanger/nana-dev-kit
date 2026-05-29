@@ -64,7 +64,8 @@
 - [[phase-59-validate-research-delta|Phase 59: Validate Active-Research Residual Delta]] -- completed
 - [[phase-60-harness-activation-residuals|Phase 60: Harness Activation Residuals]] -- completed
 - [[phase-61-validate-memory-knowledge-integration|Phase 61: Validate Memory & Knowledge Integration]] -- completed
-- [[phase-62-harden-hot-cache-curation|Phase 62: Harden Hot-Cache Curation]] -- active (READY FOR COMPLETION, delivery gate pending)
+- [[phase-62-harden-hot-cache-curation|Phase 62: Harden Hot-Cache Curation]] -- completed
+- [[phase-63-harness-assessment-eval-validity|Phase 63: Harness Assessment & Eval-Validity]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -83,6 +84,11 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[harness-self-assessment-multi-angle|Phase 63 is a multi-angle harness self-assessment that cuts, not another feature micro-opt (Phase 63)]] -- high confidence, accepted
+- [[eval-validity-instrument-sensitivity-probe|Net-zero is ambiguous; an instrument-sensitivity probe must precede any cut-by-eval (Phase 63)]] -- high confidence, accepted
+- [[deadweight-requires-affirmative-evidence|DEADWEIGHT requires a firing test or ablation, never loadedness or log-absence (Phase 63)]] -- high confidence, accepted
+- [[cuts-are-frozen-batched-migrations|Assess over a frozen state; batch cuts at the end as quarantine-first migrations (Phase 63)]] -- high confidence, accepted
+- [[roadmap-decidable-when|Every deferred roadmap item carries a canonical decidable-when: line (Phase 63)]] -- medium confidence, accepted
 - [[harden-hot-cache-curation-deterministic|Harden hot-cache curation deterministically, not a distillation judge-eval (Phase 62)]] -- high confidence, accepted
 - [[dedup-key-proposition-not-slug|Dedup key is proposition content, not source slug (Phase 62)]] -- high confidence, accepted
 - [[curator-fail-safe-atomic|Curator is fail-safe: atomic write + bail on malformed + pinned-immune (Phase 62)]] -- high confidence, accepted

@@ -98,3 +98,5 @@ tests/test_cognitive_readiness.sh
 tests/test_step_numbering.sh
 tests/test_working_knowledge_curation.sh
 templates/.claude/hooks/session-start.d/wk-prune.sh
+templates/.claude/hooks/block-dangerous-bash.sh
+scripts/harness-audit.sh

@@ -34,7 +34,7 @@ These files are written and pruned by skills; treat as machine-generated:
 
 ## Project Pointers
 
-{{HAS_DEV_WIKI}}- **Dev-wiki:** `.dev-wiki/` — project lifecycle (phases, decisions, journal, status). Run `/dev-context` at session start.
+{{HAS_DEV_WIKI}}- **Dev-wiki:** `.dev-wiki/` — project lifecycle (phases, decisions, journal, status). Project state auto-loads at session start (the SessionStart hook reads `.dev-wiki/`).
 {{HAS_KNOWLEDGE_WIKI}}- **Knowledge wiki:** `wiki/` — domain knowledge consumed by `/dev-plan` and `/wiki-query`.
 
 ## Precedence

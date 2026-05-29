@@ -107,7 +107,8 @@ Read `transform.md` (in this skill directory) and follow its procedure. Uses `so
    cp "$KIT/templates/.claude/enforce" .claude/enforce   # opt-in marker → scaffold self-enforces
    cp "$KIT/templates/.claude/hooks/"*.sh .claude/hooks/
    cp "$KIT/templates/.claude/hooks/"*.md .claude/hooks/
-   chmod +x .claude/hooks/*.sh
+   cp -r "$KIT/templates/.claude/hooks/session-start.d" .claude/hooks/   # sourced by session-start.sh under `set -euo pipefail` — omitting it aborts the whole SessionStart hook
+   chmod +x .claude/hooks/*.sh .claude/hooks/session-start.d/*.sh
    
    # Layer 3: Identity rule + session state template
    mkdir -p .claude/rules

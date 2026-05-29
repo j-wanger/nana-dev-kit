@@ -97,7 +97,7 @@ Do NOT write any implementation code until the user has approved the direction i
 
 ---
 
-**Triggers:** `/dev context` suggests `/dev plan` when: active phase has 0 open tasks, all tasks are done, or user invokes it directly. If no `.dev-wiki/` exists: "No dev wiki found. Run `/dev init` first." STOP.
+**Triggers:** the dev-wiki session-start protocol suggests `/dev-plan` when: active phase has 0 open tasks, all tasks are done, or user invokes it directly. If no `.dev-wiki/` exists: "No dev wiki found. Run `/dev-init` first." STOP.
 
 ## Pre-checks
 

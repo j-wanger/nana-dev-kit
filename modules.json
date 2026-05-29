@@ -42,7 +42,7 @@
       "name": "knowledge-wiki",
       "depends_on": ["core"],
       "flags": {},
-      "skills": ["knowledge-wiki", "wiki-absorb", "wiki-add", "wiki-bootstrap", "wiki-consolidate", "wiki-health", "wiki-index", "wiki-init", "wiki-query", "wiki-reorg", "wiki-registry"],
+      "skills": ["knowledge-wiki", "wiki-absorb", "wiki-add", "wiki-bootstrap", "wiki-health", "wiki-index", "wiki-init", "wiki-query", "wiki-reorg", "wiki-registry"],
       "rules": [],
       "markers": []
     }
