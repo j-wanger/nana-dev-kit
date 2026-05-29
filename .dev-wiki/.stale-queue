@@ -95,3 +95,4 @@ scripts/generate-workflow.py
 scripts/generate-report.py
 tests/test_memory.sh
 tests/test_cognitive_readiness.sh
+tests/test_step_numbering.sh

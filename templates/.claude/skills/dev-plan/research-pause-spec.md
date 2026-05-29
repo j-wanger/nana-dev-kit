@@ -26,13 +26,13 @@ paused_reason: "User needs RAG research before committing to phase direction"
 
 Required fields: `phase_target`, `candidates_explored`, `rejected_directions`, `paused_at`, `paused_reason`. `candidates_explored` captures options presented with their status. `rejected_directions` captures explicitly rejected approaches with reasoning.
 
-## Save Protocol (triggered from Step 5)
+## Save Protocol (triggered from Step 9)
 
 When the user's answer indicates they need research:
 
 1. Write `.planning-pause` breadcrumb with current state
-2. Emit: "Planning paused. Research first, then run `/dev-plan --resume` to continue from Step 5 with saved context."
-3. STOP (do not proceed to Step 6)
+2. Emit: "Planning paused. Research first, then run `/dev-plan --resume` to continue from Step 9 with saved context."
+3. STOP (do not proceed to Step 10)
 
 ## Resume Protocol (triggered from Pre-check 0)
 
@@ -43,15 +43,15 @@ When invoked with `--resume` and `.planning-pause` exists:
 3. Read the target phase article if it exists
 4. Present saved candidates and rejected directions to the user:
    "Resuming Phase N planning. Previously explored: [candidates]. Rejected: [directions]. What direction now?"
-5. Continue from Step 5 (ask user questions) with the saved context
-6. Delete `.planning-pause` after the user provides a non-pause answer (i.e., Step 6 begins). If the user pauses again, the save protocol overwrites the breadcrumb.
+5. Continue from Step 9 (ask user questions) with the saved context
+6. Delete `.planning-pause` after the user provides a non-pause answer (i.e., Step 10 begins). If the user pauses again, the save protocol overwrites the breadcrumb.
 
 If `--resume` is used but `.planning-pause` does not exist: "No planning pause found. Running full /dev-plan." Continue with normal Pre-checks.
 
 ## Lifecycle
 
-- Created by: Step 5 save protocol
+- Created by: Step 9 save protocol
 - Read by: Pre-check 0 resume protocol
-- Deleted by: Resume protocol (after Step 6 begins), or manually by user
+- Deleted by: Resume protocol (after Step 10 begins), or manually by user
 - Survives: session boundaries, context compaction
 - Does NOT survive: `/dev-init` (which resets all state)

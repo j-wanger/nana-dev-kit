@@ -1,11 +1,11 @@
 ---
 parent: dev-debrief
-referenced_at: Step 4.8
+referenced_at: Step 7
 ---
 
-# Heuristic Capture (Step 4.8)
+# Heuristic Capture (Step 7)
 
-Extract transferable reasoning patterns from phase decisions and propose as new heuristic articles. Runs after memory harvest (Step 4.7), before decision extraction (Step 5).
+Extract transferable reasoning patterns from phase decisions and propose as new heuristic articles. Runs after memory harvest (Step 6), before decision extraction (Step 8).
 
 ## Input
 

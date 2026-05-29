@@ -1,11 +1,11 @@
 ---
 parent: dev-plan
-referenced_at: "Step 3"
+referenced_at: "Step 6"
 ---
 
 # Scope Exploration Protocol
 
-Explore the phase scope to understand files, dependencies, and blast radius. Called from dev-plan Step 3.
+Explore the phase scope to understand files, dependencies, and blast radius. Called from dev-plan Step 6.
 
 ## Inputs
 

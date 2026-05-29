@@ -82,6 +82,10 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[hot-cache-is-the-effective-retrieval-layer|The always-loaded markdown hot cache IS the effective retrieval layer (Phase 61 meta-finding)]] -- high confidence, accepted
+- [[cut-mcp-memory-read-path-d2|CUT the MCP memory_search read-path into planning — D2 (Phase 61)]] -- high confidence, accepted
+- [[two-tier-curate-into-hot-cache|2-tier architecture: curate-into-hot-cache, no 3rd runtime tier — D3 (Phase 61)]] -- high confidence, accepted
+- [[step-renumber-whole-number-invariant|Whole-number gap-free Step headings across lifecycle SKILL templates, test-enforced (Phase 61)]] -- high confidence, accepted
 - [[memory-knowledge-integration-diagnosis|Memory & knowledge subsystems own retrieval engines the flow never uses (Phase 61)]] -- medium confidence, accepted
 - [[deterministic-success-over-eval-ceremony|Deterministic success criteria over eval ceremony for mechanical changes (Phase 60)]] -- high confidence, accepted
 - [[cut-active-research-step-2-7|CUT active web-research injection from dev-plan Step 2.7 (Phase 59)]] -- high confidence, accepted
@@ -215,6 +219,9 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-29-phase-61-memory-knowledge-integration-ab-complete|Phase 61 complete — Memory & Knowledge Integration A/B (all 5 directions CUT) + step-renumber]] -- 2026-05-29
+- [[2026-05-29-phase-60-harness-activation-residuals-complete|Phase 60 complete — Harness Activation Residuals (AGENTS.md trim + kit-uninitialized nudge)]] -- 2026-05-29
+- [[2026-05-28-phase-59-validate-research-delta-cut|Phase 59 → VERDICT CUT (active research removed from dev-plan Step 2.7)]] -- 2026-05-28
 - [[2026-05-28-memory-venv-fix-make-test-green|Maintenance: memory venv fix — make test green end-to-end]] -- 2026-05-28
 - [[2026-05-28-phase-58-active-domain-research-complete|Phase 58 complete (active domain research in dev-plan — Fix 2)]] -- 2026-05-28
 - [[2026-05-28-phase-57-hook-consolidation-enforcement-activation-complete|Phase 57 complete (hook consolidation & enforcement activation — Fix 1)]] -- 2026-05-28
@@ -279,6 +286,7 @@
 - [[roadmap-cognitive-enhancement|Cognitive Enhancement Roadmap]] -- active, 7-phase heuristic learning plan (7/7 done)
 
 ### Status
+- [[2026-05-29-codebase-snapshot|Codebase Snapshot (Phase 61 complete)]] -- 2026-05-29
 - [[2026-05-28-codebase-snapshot|Codebase Snapshot]] -- 2026-05-28
 - [[2026-05-27-codebase-snapshot|Codebase Snapshot]] -- 2026-05-27
 - [[2026-05-26-codebase-snapshot|Codebase Snapshot]] -- 2026-05-26
@@ -303,6 +311,9 @@
 
 ## Recent
 
+- 2026-05-29: Phase 61 complete (READY FOR COMPLETION, delivery gate pending) -- 7/7 tasks, 4 decisions (hot-cache-is-the-effective-retrieval-layer, cut-mcp-memory-read-path-d2, two-tier-curate-into-hot-cache, step-renumber-whole-number-invariant), 1 journal, status snapshot. Experiment-first A/B: ALL 5 runtime-retrieval directions CUT (D1 wiki-search Δ=−0.67, D2 MCP memory read-path Δ=0.00, D3 2-tier, D4 moot, D5 firewall). Meta-finding: the always-loaded markdown hot cache IS the effective retrieval layer. T6 deterministic step-renumber (dev-plan 1..18 / dev-debrief 1..26 / spec 1..9, ~200 ref edits, new test_step_numbering.sh). make test 12 scripts green, eval 54/54. Retro (Phases 51-60): no systemic issues. Phase-62 candidate: hot-cache curation quality.
+- 2026-05-29: Phase 60 completed -- 3/3 tasks, 1 decision (deterministic-success-over-eval-ceremony), AGENTS.md trim (86→82) + kit-uninitialized /nana-init nudge, harness-activation roadmap (Fixes 1-5) CLOSED, make test 11 scripts green, 54/54 eval, review gate 9/10
+- 2026-05-28: Phase 59 completed (VERDICT CUT) -- 4 tasks, 3 decisions (cut-active-research-step-2-7, pre-registered-keep-trim-cut-measurement, measurement-fan-out-as-workflow), active research removed from dev-plan Step 2.7, pre-registered measurement caught an n=1 false positive, 54/54 eval
 - 2026-05-28: Maintenance (post-Phase-58, commit 74da87a) -- memory venv fix, `make test` green end-to-end. Root cause twofold (optional sqlite-vec absent + test_memory.sh hard-failing instead of skipping); fixed both (installed sqlite-vec==0.1.9 locally + guarded vec tests to skip cleanly FTS5-only). Verified 11/11 vec-present, 7/7 vec-absent (exit 0). 1 decision (guard-optional-dep-tests). Review gate skipped (0 phase tasks, single proven change). Closes recurring Phases 56-58 "make test halts" blocker.
 - 2026-05-28: Phase 58 implementation complete (delivery pending) -- 4/4 tasks, 2 decisions (domain-research-dev-plan-step-2-7, measure-residual-research-delta), gap-gated Step 2.7 companion (per-DRQ wiki-query gate, numeric caps, injection-safety, ~1200-char distill, provenance + contradiction-check persist, fail-open) wired via pointer (SKILL.md 326/350), residual delta +0.5 composite n=1 (reasoning 3→4) non-theatrical, kept at Checkpoint 2, 9/9 non-memory suites green, 54/54 eval
 - 2026-05-28: Phase 58 planned -- 4 tasks (1M 2S 1L), 2 decisions (domain-research-dev-plan-step-2-7, measure-residual-research-delta), active domain research in dev-plan (Fix 2): gap-gated Step 2.7 + residual-delta measurement vs Phase-55 baseline

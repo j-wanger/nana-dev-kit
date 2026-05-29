@@ -19,7 +19,7 @@ If dev-wiki exists but no uncompleted tasks, or no dev-wiki: proceed.
 
 ## Agent-Internal Mode (`--internal`)
 
-When invoked with `--internal` (e.g., from dev-plan Step 0.6): run Steps 1-4 and the two-tier review gate normally, auto-incorporate all Tier 0/1 findings, persist the spec with the `<!-- nana:approved -->` marker (Step 6), and return. **Skip Step 5** (no user approval gate). The spec is an agent-internal quality artifact — the user reviews output via the delivery report at phase end, not the spec itself.
+When invoked with `--internal` (e.g., from dev-plan Step 2): run Steps 1-6 and the two-tier review gate normally, auto-incorporate all Tier 0/1 findings, persist the spec with the `<!-- nana:approved -->` marker (Step 8), and return. **Skip Step 7** (no user approval gate). The spec is an agent-internal quality artifact — the user reviews output via the delivery report at phase end, not the spec itself.
 
 When invoked directly by the user (`/spec`): follow the full interactive flow below unchanged.
 
@@ -39,22 +39,22 @@ Before drafting, reason internally (no output artifact):
 
 If information is insufficient: ask the user targeted questions before drafting. Do NOT draft with gaps and hope the user catches them.
 
-## Step 2.5: Adversarial Constraint Generation (clean-context subagent)
+## Step 3: Adversarial Constraint Generation (clean-context subagent)
 
 Before drafting, dispatch a clean-context subagent to independently generate constraints:
 
 1. **Read** `adversarial-constraints-prompt.md` (companion file in this skill directory).
 2. **Dispatch** Agent with the adversarial prompt + ONLY the Objective and Context from Step 1. Do NOT include your thinking, approach ideas, scope decisions, or conversation history — the subagent must reason independently.
 3. **Collect** the subagent's constraints, edge cases, and scope risks.
-4. **Incorporate or reject:** For each item the subagent generated, either incorporate it into your draft (Step 3) or explicitly note why you're rejecting it. Do not silently ignore items.
+4. **Incorporate or reject:** For each item the subagent generated, either incorporate it into your draft (Step 5) or explicitly note why you're rejecting it. Do not silently ignore items.
 
-If Agent tool unavailable: warn `"Adversarial constraint generator unavailable — drafting with author-only constraints."` and proceed to Step 3.
+If Agent tool unavailable: warn `"Adversarial constraint generator unavailable — drafting with author-only constraints."` and proceed to Step 5.
 
-## Step 2.6: Functional Smoke Invariant
+## Step 4: Functional Smoke Invariant
 
 If the spec involves a new hook, skill, or install.sh change: the Exit Criteria MUST include at least one functional test that exercises the component (pipe real input through it, check output). Structural tests (file existence, grep for pattern) are necessary but not sufficient — they miss the silent breakage pattern where a component exists but doesn't work.
 
-## Step 3: Draft Spec
+## Step 5: Draft Spec
 
 Use this 9-section template. Fill every section — empty sections signal missing thinking.
 
@@ -104,7 +104,7 @@ What domain knowledge would separate a good implementation from a great one?]
 - [Assumption]. If false: [what to do instead]
 ```
 
-## Step 4: Two-Tier Review Gate
+## Step 6: Two-Tier Review Gate
 
 ### Tier 0 — Structural Lint (inline, no tokens)
 
@@ -130,16 +130,16 @@ Read `spec-reviewer-prompt.md` (companion file in this skill directory). Dispatc
 
 If Agent tool unavailable: warn "Spec reviewer unavailable" and present with disclaimer.
 
-## Step 5: User Approval (Hard Gate)
+## Step 7: User Approval (Hard Gate)
 
 Present the spec. Wait for explicit approval before any execution begins.
 
 **Do NOT implement anything until the user approves the spec.**
 
-## Step 6: Persist
+## Step 8: Persist
 
 Write to `specs/<slug>.md` (`mkdir -p specs/` first). Slug: kebab-case from Objective, ≤40 chars. Prepend `<!-- nana:approved YYYY-MM-DD -->` as the first line of the file (before the `# Spec:` heading). This provenance marker is checked by `enforce-spec.sh` to verify the spec went through the two-tier review process.
 
-## Step 6.5: Memory Bridge (fail-open)
+## Step 9: Memory Bridge (fail-open)
 
 After persisting, store one memory entry summarizing the spec. Call `memory_store(content: "Spec <slug>: <objective>. Key constraints: <c1>; <c2>; <c3>.", category: "custom", tags: ["bridge-decision", "<spec-slug>"], trust: "medium")`. If `memory_store` is unavailable or fails, emit `"⚠ Spec memory bridge: memory_store failed. Spec decision not persisted to memory. Run install.sh --status to diagnose."` Do not block the spec flow.

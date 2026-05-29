@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 60</title>
+<title>Delivery Report: Phase 61</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,58 +21,98 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 60 &mdash; Harness Activation Residuals</h1>
+<h1>Delivery Report: Phase 61 &mdash; Validate Memory &amp; Knowledge Integration</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">3/3</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">12</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">7/7</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">43</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (50 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">54/54</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+125</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-57</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">1</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">00:47</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+386</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-264</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">6</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">10:19</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>[S] T1 Fix 5 — kit-uninitialized /nana-init nudge in cognitive-readiness.sh. When session-start runs in a project wit...</td></tr>
-<tr><td>&#x2705;</td><td>[S] T2 Fix 3 — templates/AGENTS.md budget + salience trim. Dedup the lint/type/test triplet (currently 2× at lines 9-...</td></tr>
-<tr><td>&#x2705;</td><td>[S] T3 Integration regression gate — full suite green + anchored eval 100%; new test script wired into the Makefile t...</td></tr>
+<tr><td>&#x2705;</td><td>[M] T1 Pre-flight + wiki signal-quality gate + pre-registration — confirm the Phase 58-59 A/B harness (clean-context ...</td></tr>
+<tr><td>&#x2705;</td><td>[L] T2 Stage 0 falsification (CHECKPOINT) — best-case condition (wiki-search via subagent-firewall, weak-parametric+c...</td></tr>
+<tr><td>&#x2705;</td><td>[M] T3 Stage 1 source×mechanism (CONDITIONAL — only if T2 shows lift) — wiki-source (D1) + memory-source (D2), each r...</td></tr>
+<tr><td>&#x2705;</td><td>[M] T4 Stage 2 conclusions (CONDITIONAL) — 2-tier-vs-3-tier (D3) decided from the memory-source result; absorb-vs-sea...</td></tr>
+<tr><td>&#x2705;</td><td>[S] T5 Aggregate + per-direction decision (CHECKPOINT) — apply the pre-registered rules mechanically; write each dire...</td></tr>
+<tr><td>&#x2705;</td><td>[M] T6 Step-renumber to whole numbers (INDEPENDENT of A/B outcome, deterministic — no judge) — renumber dev-plan/dev-...</td></tr>
+<tr><td>&#x2705;</td><td>[S] T7 Regression gate — full suite green + anchored eval 100%; new test wired; no non-target regression. Depends: T5...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Deterministic success criteria over eval ceremony for mechanical changes</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Whole-number gap-free Step headings across lifecycle SKILL templates, test-enforced</td><td>high</td></tr>
+<tr><td>The always-loaded markdown hot cache IS the effective retrieval layer</td><td>high</td></tr>
+<tr><td>2-tier architecture: curate-into-hot-cache, no 3rd runtime-retrieved store tier (D3)</td><td>high</td></tr>
+<tr><td>CUT the MCP memory_search read-path into planning (D2)</td><td>high</td></tr>
+<tr><td>Memory &amp; knowledge subsystems own retrieval engines the harness flow never uses</td><td>medium</td></tr>
+<tr><td>Deterministic success criteria over eval ceremony for mechanical changes</td><td>high</td></tr>
 </table>
 
 <h2>Files Changed</h2>
 <ul>
 <li><code>.claude/rules/active-phase.md</code></li>
 <li><code>.dev-wiki/.stale-queue</code></li>
+<li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
+<li><code>.dev-wiki/articles/phases/phase-61-validate-memory-knowledge-integration.md</code></li>
 <li><code>.dev-wiki/enforcement.log</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
+<li><code>.memory/memory.db-wal</code></li>
 <li><code>Makefile</code></li>
 <li><code>README.md</code></li>
-<li><code>templates/.claude/hooks/session-start.d/cognitive-readiness.sh</code></li>
-<li><code>templates/AGENTS.md</code></li>
-<li><code>tests/test_templates.sh</code></li>
+<li><code>eval/memory-integration/results.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/SKILL.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/active-knowledge-transition.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/architecture-staleness-check.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/claude-md-refresh.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/debrief-finalization.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/executor-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/heuristic-capture.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/memory-harvest.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/quick-debrief-flow.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/retro-check.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/review-gate.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/SKILL.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/approach-reviewer-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/artifact-writer-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/compaction-anchors-spec.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/heuristic-counter-update.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/heuristic-judge-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/heuristic-lifecycle.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/heuristic-matcher.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/implementation-guide.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/iterative-retrieval-spec.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/memory-bridge.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/plan-review-companion.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/research-pause-spec.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/scope-exploration-spec.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/self-dialogue-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/spec-auto-invoke.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/state-loader-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/task-schema.md</code></li>
+<li><code>templates/.claude/skills/spec/SKILL.md</code></li>
 
 
 </ul>
 
 <h2>Test Results</h2>
 <p><span class="status" style="background:#2d7d2d">PASS</span> 50 passed, 0 failed</p>
-<pre>  nudge is silent when .dev-wiki/ is present         OK
+<pre>  spec: Step headings gap-free 1..9                  OK
 
-test_cognitive_readiness.sh: 3 run, 3 passed, 0 failed
+test_step_numbering.sh: 6 run, 6 passed, 0 failed
 
 All tests passed.</pre>
 
@@ -81,7 +121,7 @@ All tests passed.</pre>
 <pre>Score: 54/54 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-05-29 00:47:15 by generate-delivery-report.py
+  Generated 2026-05-29 10:19:45 by generate-delivery-report.py
 </div>
 </body>
 </html>

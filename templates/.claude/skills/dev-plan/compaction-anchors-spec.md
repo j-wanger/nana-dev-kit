@@ -1,11 +1,11 @@
 ---
 parent: dev-plan
-referenced_at: "Step 10"
+referenced_at: "Step 18"
 ---
 
 # Compaction Anchors and Error Handling
 
-Companion to `dev-plan/SKILL.md`. Behavioral reference for compaction anchor design and error handling. Steps 8f-8g in SKILL.md contain the orchestration logic; this companion provides the specification and rationale.
+Companion to `dev-plan/SKILL.md`. Behavioral reference for compaction anchor design and error handling. Steps 16f-16g in SKILL.md contain the orchestration logic; this companion provides the specification and rationale.
 
 ---
 
@@ -25,7 +25,7 @@ The agent reads this after compaction to know what phase it is in and what const
 ### 2. Knowledge Anchor — `active-knowledge.md`
 
 **Location:** `$ROOT/.claude/rules/active-knowledge.md` (rules layer, auto-loaded every turn)
-**Owner:** `/dev-plan` (writes at Step 8f-bis)
+**Owner:** `/dev-plan` (writes at Step 16f-bis)
 **Contents:** 2-5 distilled knowledge propositions from cross-wiki retrieval, each passing 2-of-3 activation filters (multi-turn, non-obvious, phase-dependent).
 **Budget:** 20-30 lines, ~150 tokens/turn. Hard cap: 40 lines.
 
@@ -34,7 +34,7 @@ Prevents the agent from losing phase-specific domain knowledge after compaction.
 ### 3. Task State Anchor — TodoWrite
 
 **Location:** Harness-managed task list (re-injected automatically after compaction)
-**Owner:** `/dev-plan` (creates at Step 8g), implementation workflow (updates status)
+**Owner:** `/dev-plan` (creates at Step 16g), implementation workflow (updates status)
 **Contents:** Each task description embeds scope, constraints, and TDD cycle.
 **Budget:** ~8 tasks, ~100 tokens/turn.
 
@@ -73,4 +73,4 @@ This sequence fully restores working context. The agent then states: "Resuming t
 | Plan reviewer timeout | Accept draft tasks without review score. Warn: "Plan reviewer unavailable." |
 | active-knowledge >40 lines | Skip writing. Report: "Active knowledge exceeds 40-line cap. Skipping." |
 | working-knowledge >100 entries or >210 lines | Evict lowest-count entries (ties: oldest activated date) until within cap. |
-| active-knowledge.md absent at recovery | Skip Step 4 in recovery protocol. Warn: "No active-knowledge.md — domain knowledge may be stale." |
+| active-knowledge.md absent at recovery | Skip Step 8 in recovery protocol. Warn: "No active-knowledge.md — domain knowledge may be stale." |

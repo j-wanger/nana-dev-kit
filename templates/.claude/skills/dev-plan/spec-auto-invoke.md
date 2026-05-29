@@ -1,11 +1,11 @@
 ---
 parent: dev-plan
-referenced_at: "Step 0.6"
+referenced_at: "Step 2"
 ---
 
 # Spec Auto-Invocation Protocol
 
-When dev-plan Step 0.6 finds no spec for the target phase (standard ceremony), follow this protocol instead of stopping.
+When dev-plan Step 2 finds no spec for the target phase (standard ceremony), follow this protocol instead of stopping.
 
 ## 1. Notify User
 
@@ -27,14 +27,14 @@ Exactly three outcomes — no silent continuation with partial or rejected specs
 
 The spec was approved by the user and persisted at `specs/<slug>.md`.
 
-1. Output: `"Spec approved. Resuming dev-plan from Step 1 (state loading)."`
+1. Output: `"Spec approved. Resuming dev-plan from Step 3 (state loading)."`
 2. Re-read `_CURRENT_STATE.md`, `tasks.md`, and the newly-created spec file
-3. Continue dev-plan from **Step 1** — do NOT resume mid-flow (the spec process may have surfaced scope changes that invalidate earlier context)
-4. Step 0.6 will pass on restart since the spec file now exists
+3. Continue dev-plan from **Step 3** — do NOT resume mid-flow (the spec process may have surfaced scope changes that invalidate earlier context)
+4. Step 2 will pass on restart since the spec file now exists
 
 ### Rejected by User
 
-The user explicitly rejected the spec during /spec Step 5.
+The user explicitly rejected the spec during /spec Step 7.
 
 1. Output: `"Spec rejected. Dev-plan aborted — refine the objective and re-run /dev-plan."`
 2. **STOP.** Do not continue dev-plan.

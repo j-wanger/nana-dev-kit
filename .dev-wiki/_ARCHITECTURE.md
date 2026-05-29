@@ -1,6 +1,6 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-05-27 by /dev-debrief (Phase 53 completed)
+> Last updated: 2026-05-29 by /dev-debrief (Phase 61 — test-suite count synced to 12 scripts; broader file inventory may be stale, run /dev-scan to refresh)
 
 ## Project Shape
 
@@ -30,7 +30,7 @@ nana-dev-kit/
     validators/                        # Bash validators for skill artifact contracts
     README.md                          # Corpus structure + scoring documentation
   scripts/                             # sync-rules.sh, generate-report.py (~350 lines), generate-workflow.py (~800 lines), eval-runner.sh (~310 lines), generate-delivery-report.py (196 lines), register-settings.py (~120 lines), heuristic-dashboard.py (~70 lines)
-  tests/                               # 8 scripts, ~337 tests (helpers.sh + test_*.sh)
+  tests/                               # 12 scripts, ~340 tests (helpers.sh + test_*.sh; incl. test_step_numbering.sh)
   templates/
     AGENTS.md, AGENTS-ts.md, pyproject.toml, .pre-commit-config.yaml
     .claude/
@@ -69,7 +69,7 @@ nana-dev-kit/
 | eval/ | Eval harness: benchmark corpus + scoring (52 scenarios) + harness effectiveness comparison + reasoning eval (25 scenarios, judge v2 exemplar-based, IRON RULES delta + self-dialogue + ablation traces + selective heuristic matching) | corpus/*/scenario.json, schemas/*.json, validators/*.sh, comparison/, reasoning/ (judges/, corpus/, baseline/, with-iron-rules/, with-self-dialogue-inline/, with-self-dialogue-subagent/, selective/, traces/) | templates/.claude/hooks/*, skill outputs, wiki/heuristics/ (reasoning eval) | Scored eval report (text), comparison results, reasoning baseline + IRON RULES delta + self-dialogue results + ablation attribution matrix + selective heuristic coverage |
 | docs/ | Generated reports (7-Layer architecture) | report.html (package inventory, Eval/Specs categories), workflow.html (12-hook table, Enforcement + Memory Bridge sections) | Project files, templates/.claude/skills/MANIFEST, templates/.claude/settings.json | HTML package inventory + workflow breakdown |
 | scripts/ | Multi-agent sync + report generation + eval + delivery + settings registration + heuristic dashboard | sync-rules.sh, generate-report.py (~350 lines), generate-workflow.py (~800 lines), eval-runner.sh (~310 lines), generate-delivery-report.py (196 lines), register-settings.py (~120 lines, hooks + mcp subcommands for JSON merge), heuristic-dashboard.py (~70 lines, regex YAML parsing, terminal table) | AGENTS.md, project tree, eval/corpus/, templates/.claude/skills/MANIFEST, templates/.claude/settings.json, modules.json, wiki/heuristics/*.md | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md, docs/report.html, docs/workflow.html, eval report (text), delivery report (HTML), settings.json (hook + MCP registration), heuristic stats (stdout) |
-| tests/ | Automated bash test suite (~337 tests, including 3 README accuracy + 6 report staleness + 23 functional verification + ~10 register-settings.py tests + 2 companion validation + 9 heuristic/eval assertions + 11 heuristic evolution assertions) | helpers.sh, test_*.sh | install.sh, scripts/, templates/, docs/, modules.json | stdout (pass/fail) |
+| tests/ | Automated bash test suite (~340 tests, 12 scripts, incl. 3 README accuracy + 6 report staleness + 23 functional verification + ~10 register-settings.py + 2 companion validation + 9 heuristic/eval + 11 heuristic evolution + cognitive-readiness firing + 6 step-numbering-continuity assertions) | helpers.sh, test_*.sh | install.sh, scripts/, templates/, docs/, modules.json | stdout (pass/fail) |
 | templates/.claude/hooks/ | Claude Code lifecycle hook templates (17 files + session-start.d/ with 2 modules). All hooks use `[nana:<hook>]` message prefix (exception: `[dev-wiki:post-commit]` kept as semantic trigger). All use jq for JSON parsing (detect-loop.sh is pure bash exception). enforce-spec.sh, enforce-loop.sh, enforce-memory.sh write enforcement.log (JSONL, 500-line cap). PostToolUse hooks use `.tool_input.file_path // .input.file_path` canonical path with defensive fallback. | session-start.sh, session-start.d/{wk-prune,memory-nudge}.sh, pre-compact.sh, post-compact.sh, post-commit.sh, context-size-check.sh, dev-wiki-scope-check.sh, session-stop.sh, stale-queue.sh, audit-log.sh, enforce-spec.sh, enforce-loop.sh, enforce-memory.sh, detect-loop.sh, scan-secrets.sh, etc. | .dev-wiki/ state, .claude/rules/, specs/*.md, .claude/enforce, ~/.claude/enforce-memory | stdout (context injection, safety gates, enforcement blocking, loop detection, commit notification, memory gate, scope check, stale queue), .dev-wiki/enforcement.log |
 | templates/.claude/rules/ | Identity + lifecycle rules (4 files) | nana-soul.md (59 lines), nana-personal.md, file-lifecycle.md, py-session-state.md | -- | -- |
 | templates/.claude/skills/ | 26 skill directories + MANIFEST with descriptions (~130 files) | SKILL.md files + companion .md files (incl. plan-review-companion.md, delivery-flow.md) | -- | -- |
@@ -94,7 +94,7 @@ Bash + jq (hooks + eval). memory_server requires python3 + pip deps (mcp, pydant
 
 ## Test Organization
 
-~337 automated tests (8 scripts) + 52 eval scenarios (4 categories) + 25 reasoning eval scenarios. `make test` runs regression tests. `make eval` runs scored eval (jq). `make dashboard` shows heuristic counter stats. Reasoning eval: `python3 eval/reasoning/run-eval.py` (subagent-based, non-deterministic, judge v2 exemplar-based; 9 modes including --ablation, --analyze, --selective for LOO trace analysis and heuristic coverage).
+~340 automated tests (12 scripts) + 52 eval scenarios (4 categories) + 25 reasoning eval scenarios. `make test` runs regression tests. `make eval` runs scored eval (jq). `make dashboard` shows heuristic counter stats. Reasoning eval: `python3 eval/reasoning/run-eval.py` (subagent-based, non-deterministic, judge v2 exemplar-based; 9 modes including --ablation, --analyze, --selective for LOO trace analysis and heuristic coverage).
 
 ## Known Issues
 

@@ -156,5 +156,115 @@ so retrieval's theoretical sweet spot remains unmeasured — the CUT is for the 
 **Stages 1–2 for the wiki arm: SKIPPED** per the checkpoint rule. Still live (independent): MCP-memory
 read-path (D2), 2-tier/3-tier (D3) — now informed by the hot-cache meta-finding — and the step-renumber (T6).
 
+### T3 — Stage 1 D2 (MCP-memory read-path) measured A/B
+
+**Cheapest-first probe (store inventory + retrieval, 2026-05-29):** `memory_stats` → **20 active entries**
+(all `category=custom`, the bridge/harvest channel) vs `working-knowledge.md` **~90 always-loaded entries**.
+`memory_search` on 3 diverse planning queries (research-cut, hook-source-of-truth, eval-methodology)
+returned top substantive hits that are **every one already verbatim in the always-loaded
+`working-knowledge.md`** (research-injection-cut, settings-generated-artifact, verify-firing, MCP-CWD,
+two-phase-eval, within-round-deltas, conditional-injection-negative, scenario-020). The only 2 entries NOT
+in the hot cache are a verbose spec-text restatement + a Phase-54 resolved-bug list — low-value, not
+planner-relevant. ⇒ **the MCP store is a strict, smaller SUBSET of the always-loaded hot cache**
+(store ⊂ cache; |store|=20 < |cache|≈90). The "pruned tail" value hypothesis (memory holds valuable
+entries the capped cache dropped) is falsified by inspection: there is no rich distinct tail. Per the
+verification-first rule this already supports a cut; ran the measured A/B anyway (user asked for measurement,
+not prior — same as T2).
+
+**Best-case design topic (T2-style, memory's strongest domain):** "Design a rigorous evaluation protocol to
+decide whether a context-injection feature earns its place vs the no-injection baseline (pre-registration /
+judge-variance / keep-cut rule)." The store's richest content is eval-methodology, so this is the topic most
+likely to show memory lift — best-case by construction.
+
+**Conditions (paired, within-round, controlled for the subagent auto-load confound):**
+- **A (baseline / status quo):** generation subagent answers T with the `working-knowledge.md` eval block
+  injected — guarantees the baseline carries the always-loaded hot cache (the real status quo).
+- **B (status quo + memory read-path):** A's setup PLUS the `memory_search`-retrieved slice for T (which,
+  per the probe, overlaps the hot-cache block). Isolates the marginal value of runtime memory re-retrieval
+  ON TOP of the always-loaded layer — the exact contrast for "should we wire memory_search into planning."
+
+**A/B result (blind judge, 3 runs/condition, within-round paired, decision_quality + reasoning_quality 1–5, composite=sum, presentation order randomized):**
+
+| condition | per-run composite | mean(A/B) | decision mean | reasoning mean |
+|-----------|-------------------|-----------|---------------|----------------|
+| A (baseline: parametric + always-loaded hot cache) | 9, 10, 9 | mean(A)=9.33 | 5.00 | 4.33 |
+| B (hot cache + memory_search retrieved slice) | 8, 10, 10 | mean(B)=9.33 | 4.67 | 4.67 |
+
+- **delta = mean(B) − mean(A) = 0.00 composite** (decision_quality −0.33; reasoning_quality +0.33 — a wash that nets exactly zero).
+- **Variance:** A spread = 1, B spread = 2; |delta| = 0.00 < both spreads ⇒ **variance-dominated / indistinguishable from zero**, point estimate flat.
+- **Cost ledger:** per fire = ≥1 `memory_search` round-trip + ~175 injected tokens (the retrieved slice). Non-zero cost for **zero** lift ⇒ net-negative.
+- **Context-poisoning / mechanism:** one B-run's decision_quality dipped to 4 (redundant re-injection added length without information); reasoning ticked up equivalently — net wash, no directional harm like D1's −0.67, but also no lift. Cleanest possible "redundant retrieval" signature: B = A + (subset of A) ⇒ Δ→0.
+
+### T3 — D2 VERDICT: CUT the MCP-memory read-path arm (D2)
+
+`mean(B) − mean(A) = 0.00 ≤ spread` ⇒ the pre-registered kill rule fires; burden-of-proof-on-the-feature ⇒
+a null is a cut. Even in memory's **best-case** domain (eval-methodology, which the store covers densely)
+wiring `memory_search` into planning produced **zero lift at non-zero cost**. Root cause is structural and
+matches the D1 meta-finding exactly: the MCP store is fed by the same bridge/harvest pipeline that curates
+`working-knowledge.md`, so it is a redundant subset of the always-loaded hot cache — runtime retrieval
+re-surfaces content the planner already holds. Escalation to n=5 not run: a flat-zero variance-dominated
+estimate cannot become a positive-lift keep by tightening.
+
+**UNTESTED caveat (honest, scoped to current store state):** if the MCP store one day grew to hold valuable
+entries the capped `working-knowledge.md` (100-entry ceiling) had to evict, D2's marginal value could turn
+positive (memory_search as overflow recall for the hot cache). The CUT is for the store AS IT STANDS
+(20 entries, ⊂ cache). Concrete future re-test trigger, not a present keep.
+
+### T4 — Stage 2 architecture conclusions (D3 tier model; D4 prep)
+
+**D3 — 2-tier vs 3-tier:** the question was whether to add a 3rd, runtime-retrieved store tier on top of
+(1) always-loaded markdown hot cache + (2) the dev-wiki/knowledge-wiki corpora. Both retrieval arms
+(D1 wiki-search, D2 memory read-path) measured **no lift** for the same reason: the always-loaded hot cache
+IS the effective retrieval layer, and it makes the baseline strong enough that runtime external retrieval is
+redundant-at-best / diluting-at-worst. ⇒ **Decision: 2-tier — curate-into-hot-cache; do NOT build a 3rd
+runtime-retrieved write-store tier.** Marginal engineering effort belongs in hot-cache curation quality
+(what gets distilled into `working-knowledge.md` / `active-knowledge.md` and how it's pruned), not in wiring
+a runtime retrieval engine into the planning flow. Keyed to: D1 delta = -0.67, D2 delta = 0.00.
+
+**D4 — absorb-vs-search-raw (wiki prep):** MOOT / not separately tested. D4 only had meaning inside the
+wiki-search arm (does absorbing raw scrapes into articles beat searching raw?), and that arm was cut at D1.
+The T1 signal gate already established the upstream cause (no wiki has absorbed articles; the raw→absorb
+pipeline never ran), so D4's answer is subsumed: absorbing the commodity content first would not rescue an
+arm that doesn't pay on that content. No separate measurement warranted.
+
+### T5 — Aggregate + per-direction decision (CHECKPOINT 3)
+
+Pre-registered rules applied mechanically; each direction's keep/cut keyed to a quoted delta.
+**Measured deltas: D1 delta = -0.67 (wiki-search), D2 delta = 0.00 (memory read-path)** — both
+variance-dominated, both fail the burden-of-proof bar, both CUT.
+
+| Direction | What it was | Measured | Decision |
+|-----------|-------------|----------|----------|
+| **D1 — wiki-search into planning** | wire knowledge.db FTS5/vector retrieval into dev-plan Step 2 | best-case firewall-distilled delta = -0.67 composite, variance-dominated, reasoning -0.67 (real mild harm) | **CUT** |
+| **D2 — MCP memory_search read-path** | wire memory_search into planning | best-case delta = 0.00 composite, variance-dominated, net-negative after cost | **CUT** |
+| **D3 — 2-tier vs 3-tier architecture** | add a runtime-retrieved store tier? | derived from D1+D2 nulls + hot-cache meta-finding | **2-tier (curate-into-hot-cache); 3rd runtime tier CUT/DEFERRED** |
+| **D4 — absorb-vs-search-raw prep** | absorb scrapes before searching? | moot (subsumed by D1 cut + T1 signal gate) | **CUT (not separately tested)** |
+| **D5 — retrieval-subagent firewall** | distill retrieved content in a clean subagent before injection | mechanism WORKED (rescued real signal D1's naive probe missed) but distilled content still didn't lift; length-matched control never triggered (no keep to defend) | **CUT as deployed; retain as a technique** |
+
+**Headline:** all five runtime-retrieval integrations measured net-zero-or-negative. The load-bearing
+positive finding is the **meta-conclusion**: the always-loaded markdown hot cache
+(`working-knowledge.md` / `active-knowledge.md`) is already the effective retrieval layer — it made every
+baseline strong. "Retrieval over parametric knowledge" (the nana-soul tenet) does NOT pay when the relevant
+knowledge is *already in context* via the always-loaded layer; the win is in curating that layer, not in
+bolting runtime retrieval engines onto planning.
+
+**Phase-62 build list (informed by the cut):**
+1. **NOT building:** runtime wiki-search-in-planning (D1), runtime memory_search-in-planning (D2), a 3rd
+   runtime-retrieved store tier (D3). Burden of proof unmet by measurement.
+2. **Build candidate — hot-cache curation quality:** since the hot cache is the effective layer, P62 value
+   is in *what gets distilled into it and how it's evicted* — improve the dev-debrief → `working-knowledge.md`
+   distillation, the 100-entry cap eviction policy (currently usage-count + oldest-date), and de-dup against
+   existing entries. The only memory/knowledge direction with affirmative evidence behind it (the baseline's
+   strength is the evidence).
+3. **Re-test trigger (deferred, not built):** if the MCP store grows past the hot-cache cap with valuable
+   distinct entries, re-run the D2 A/B (memory_search as overflow recall). A concrete numeric trigger, not a
+   standing feature.
+4. **Untested sweet spot (deferred):** genuinely weak-parametric + properly-absorbed + covered topics
+   (retrieval's theoretical sweet spot) remain unmeasured — would require building the absorb pipeline + a
+   non-commodity corpus first. Separate future call.
+
+CHECKPOINT 3: aggregate reported; mechanical rule application complete; per-direction keep/cut + Phase-62
+build list recorded. Keep/cut confirmed at the delivery gate.
+
 
 

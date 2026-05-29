@@ -17,7 +17,7 @@ Create a minimal journal entry at `$WIKI/articles/journal/<today>-<slug>.md`. Re
 Use the Read tool on `$WIKI/_CURRENT_STATE.md`. Update ONLY `## Recommended Next Action` and the `> Last updated` timestamp. Do not rewrite the entire file.
 
 ### QD Step 3a: Architecture Staleness Detection
-Run the same check as full debrief Step 9a (compare skill file mtimes against `_ARCHITECTURE.md` `Last updated` timestamp). Emit warning if stale.
+Run the same check as full debrief Step 16 (compare skill file mtimes against `_ARCHITECTURE.md` `Last updated` timestamp). Emit warning if stale.
 
 ### QD Step 4: Append to log.md
 `[<ISO-timestamp>] DEBRIEF-QUICK -- tasks updated, quick journal, next action refreshed`

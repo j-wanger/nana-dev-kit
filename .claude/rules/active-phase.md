@@ -1,28 +1,17 @@
 # Active Phase Context
 
 Phase: 61 - Validate Memory & Knowledge Integration
-Status: Active (2/7 tasks). EXPERIMENT-FIRST — validate integration directions by A/B, defer build to Phase 62.
-  T1 done (signal gate + pre-reg). T2 done → **wiki-search arm D1 CUT** (measured −0.67 composite, variance-dominated; best-case firewall retrieval showed no lift + mild reasoning harm = Phase-59-redux confirmed by measurement). Meta-finding: the always-loaded working-knowledge.md IS the effective retrieval layer (baseline strong because of it).
-  REMAINING: MCP-memory read-path A/B (D2); 2-tier/3-tier (D3, informed — lean curate-into-hot-cache); T6 step-renumber (deterministic, wide ref-refactor); T7 gate. RESUME: eval/memory-integration/results.md has pre-reg + T1/T2. Recommend FRESH session for the rest (marathon session; step-renumber better done fresh).
-Objective: Decide by A/B evidence which memory/knowledge-retrieval integrations earn a place in the harness flow — wire the real retrieval engines (knowledge-wiki knowledge.db FTS5/vector; MCP memory_search) into planning vs the always-loaded-markdown status quo. Plus a deterministic step-renumber (whole numbers), walled off from the A/B.
+Status: COMPLETE (7/7 tasks; delivery accepted 2026-05-29, committed). Next session: /dev-plan Phase 62.
+Objective: Decide by pre-registered A/B which memory/knowledge-retrieval integrations earn a place in the harness flow. Verdict: ALL 5 runtime-retrieval directions CUT (D1 wiki-search Δ=−0.67, D2 MCP memory read-path Δ=0.00, D3 3rd-tier, D4 absorb-prep, D5 firewall). Load-bearing positive: the always-loaded markdown hot cache IS the effective retrieval layer (it made every baseline strong → runtime retrieval redundant). D3 → 2-tier curate-into-hot-cache. T6 deterministic step-renumber landed (dev-plan 1..18, dev-debrief 1..26, spec 1..9).
 
-Scope: eval/memory-integration/; templates/.claude/skills/{dev-plan,dev-debrief,spec}/SKILL.md (step-renumber ONLY); tests/
+Scope (done): eval/memory-integration/results.md; templates/.claude/skills/{dev-plan,dev-debrief,spec}/SKILL.md + companions (step-renumber only); tests/test_step_numbering.sh; Makefile; README.
 
-5 directions (factored): WHAT (wiki-search D1 / MCP memory D2 / baseline) × HOW (raw vs retrieval-subagent firewall D5) × PREP (raw knowledge.db vs absorbed D4); 2-tier/3-tier (D3) derived from D2.
+Exit criteria: ALL MET — results.md (pre-reg first + signal gate + Stage-0 delta + firewall/poisoning/cost + per-direction keep/cut keyed to numbers + Phase-62 build list); step-renumber done w/ refs resolved + continuity test (6/6); make test 12 scripts green; make eval 54/54 (100%).
 
-Key constraints:
-  - Phase-59-redux risk: candidate wikis are RAW COMMODITY SCRAPES (where retrieval was net-negative). Signal gate FIRST; topics must be weak-parametric AND wiki-covered or declare redux + stop the retrieval arm. Don't run an A/B that can't show lift.
-  - Reuse Phase 58-59 method: pre-registration-first, clean-context A/B, blind judge, ≥3 runs + variance gate, burden-of-proof-on-feature, cost ledger.
-  - Measure context poisoning (non-target regression) — the firewall's reason to exist.
-  - EXPERIMENT-ONLY: decide, don't build the integrations (that's Phase 62). Only code = experiment harness + the independent step-renumber.
-  - Step-renumber is deterministic (no A/B); update EVERY cross-ref kit-wide + numbering-continuity test.
+Next: accept delivery gate → commit + push → mark phase complete. Phase-62 candidate (only affirmative-evidence direction): hot-cache curation quality (distillation / 100-entry-cap eviction / dedup).
 
-Tasks: T1 signal-gate+pre-reg → T2 Stage-0 falsification (CHECKPOINT) → T3 Stage-1 source×mechanism (cond.) → T4 Stage-2 conclusions (cond.) → T5 aggregate+decide → T6 step-renumber (independent) → T7 regression gate.
-
-Exit criteria: results.md w/ pre-reg first; signal gate + weak-parametric topics (or redux stop); Stage-0 delta; firewall + poisoning + cost recorded; per-direction keep/cut + P62 build list; step-renumber done w/ refs resolved + continuity test; make test green + eval 100%.
-
-Abort: if a stage can't meet its pre-registered criterion after 3 attempts, mark [blocked:], report, ask. Execution may use Workflow (user opt-in).
+Open (deferred, not present features): D2 re-test trigger if the MCP store grows past the 100-entry hot-cache cap with distinct entries; weak-parametric + properly-absorbed + covered sweet spot remains unmeasured.
 
 Gates:
-- [x] Direction confirmed by user (approach approved 2026-05-29 "yes" — experiment-first, 5 directions incl. user-added subagent firewall, falsification-first staging)
-- [ ] Delivery accepted (post-implementation report)
+- [x] Direction confirmed (approved 2026-05-29 — experiment-first, 5 directions, falsification-first staging)
+- [x] Delivery accepted (post-implementation report — 2026-05-29)

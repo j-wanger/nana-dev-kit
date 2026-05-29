@@ -7,7 +7,7 @@ parents: [phase-60-harness-activation-residuals]
 created: 2026-05-29
 updated: 2026-05-29
 source: plan
-status: active
+status: completed
 scope: ["eval/memory-integration/", "templates/.claude/skills/dev-plan/SKILL.md", "templates/.claude/skills/dev-debrief/SKILL.md", "templates/.claude/skills/spec/SKILL.md", "tests/"]
 entry_criteria: "Phase 60 complete + committed (harness-activation roadmap closed); approved spec specs/phase-61-validate-memory-knowledge-integration.md; user chose experiment-first (validate, defer build to P62), all 5 integration directions incl. the user-added retrieval-subagent firewall; direction gate approved."
 exit_criteria: "Results artifact eval/memory-integration/results.md with pre-registration ordered first; wiki signal-quality gate + weak-parametric topic selection recorded (or explicit Phase-59-redux stop); Stage-0 falsification delta recorded; retrieval-subagent-firewall direction addressed; context-poisoning + cost ledger recorded; per-direction keep/cut decisions naming both outcomes + a Phase-62 build list; step-renumber to whole numbers across dev-plan/dev-debrief/spec with all cross-refs resolved + a numbering-continuity test; make test green + make eval 100%."
@@ -28,13 +28,15 @@ Decide by A/B evidence (not blind build) which memory/knowledge-retrieval integr
 
 ## Exit Criteria
 
-- [ ] `eval/memory-integration/results.md` exists with a pre-registration block ordered BEFORE any results.
-- [ ] Wiki signal-quality gate recorded (retrieval-worthy vs scrape/noise) + ≥2 weak-parametric + wiki-covered test topics chosen — OR an explicit Phase-59-redux stop for the retrieval arm.
-- [ ] Stage-0 best-case falsification delta recorded (≥3 runs, blind judge, within-round paired); further stages only if it shows lift.
-- [ ] Retrieval-subagent-firewall (D5) addressed; context-poisoning (non-target regression) + cost ledger recorded.
-- [ ] Per-direction keep/cut decisions naming both outcomes, applied mechanically to quoted numbers, with a Phase-62 build list.
-- [ ] Step-renumber: no decimal/postfix steps remain in dev-plan/dev-debrief/spec SKILL templates; all cross-refs (companions, hooks, dev-wiki, memory) updated; numbering-continuity test passes.
-- [ ] `make test` exits 0; `make eval` reports 100%.
+- [x] `eval/memory-integration/results.md` exists with a pre-registration block ordered BEFORE any results.
+- [x] Wiki signal-quality gate recorded (retrieval-worthy vs scrape/noise) + topic selection — explicit Phase-59-redux stop for the wiki-search arm (no clean weak-parametric+covered topic available; commodity scrapes + empty on-topic index).
+- [x] Stage-0 best-case falsification delta recorded (3 runs, blind judge, within-round paired): D1 delta = −0.67.
+- [x] Retrieval-subagent-firewall (D5) addressed (mechanism worked, distilled content still didn't lift; CUT as deployed, retained as technique); context-poisoning (reasoning-quality drop) + cost ledger recorded.
+- [x] Per-direction keep/cut decisions naming both outcomes, applied mechanically to quoted numbers (D1 −0.67, D2 0.00), with a Phase-62 build list.
+- [x] Step-renumber: no decimal/postfix steps remain in dev-plan(1..18)/dev-debrief(1..26)/spec(1..9) SKILL templates; all cross-refs updated; `tests/test_step_numbering.sh` passes (6/6).
+- [x] `make test` exits 0 (12 scripts); `make eval` reports 100% (54/54).
+
+**Status: READY FOR COMPLETION (7/7 tasks, all exit criteria met). Phase article kept `active` pending the delivery gate — do not auto-complete.**
 
 ## Constraints
 

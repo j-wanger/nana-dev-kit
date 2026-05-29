@@ -1,11 +1,11 @@
 ---
 parent: dev-debrief
-referenced_at: "Step 8.5"
+referenced_at: "Step 14"
 ---
 
 # Project CLAUDE.md Refresh Check
 
-Companion for dev-debrief Step 8.5. Checks whether the project-level `./CLAUDE.md` needs refreshing and performs the refresh if triggered. See `~/.claude/skills/dev-wiki/claude-md-lifecycle.md` for the full convention.
+Companion for dev-debrief Step 14. Checks whether the project-level `./CLAUDE.md` needs refreshing and performs the refresh if triggered. See `~/.claude/skills/dev-wiki/claude-md-lifecycle.md` for the full convention.
 
 ## Scope
 

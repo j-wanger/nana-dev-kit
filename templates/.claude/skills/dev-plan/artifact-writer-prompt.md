@@ -1,6 +1,6 @@
 ---
 parent: dev-plan
-referenced_at: "Step 7"
+referenced_at: "Step 14"
 ---
 
 # Dev-Plan Artifact Writer
@@ -31,15 +31,15 @@ Variables: `$WIKI` = `$ROOT/.dev-wiki`.
 
 Follow this order (all writes are atomic — complete all before returning).
 
-### 1. Finalize Decision Articles (Step 8a) *(Ceremony: lite → skip)*
+### 1. Finalize Decision Articles (Step 16a) *(Ceremony: lite → skip)*
 
 For each decision: read `~/.claude/skills/dev-wiki/decision-template.md` for template, `~/.claude/skills/dev-wiki/slugification.md` for slugification. Set `confidence: medium` or `high`, `source: plan`. Create/update at `$WIKI/articles/decisions/<slug>.md`.
 
-### 2. Write Tasks to tasks.md (Step 8b)
+### 2. Write Tasks to tasks.md (Step 16b)
 
 Read `~/.claude/skills/dev-plan/task-schema.md` for schema, `~/.claude/skills/dev-wiki/size-budgets.md` for budgets. Write tasks under the target phase heading. *(Lite: simplified — description+scope+success only)*. Order by dependency. At most 1 L task.
 
-### 3. Update _CURRENT_STATE.md (Step 8c)
+### 3. Update _CURRENT_STATE.md (Step 16c)
 
 **Section ownership** — rewrite ONLY:
 - `## Recommended Next Action`
@@ -50,19 +50,19 @@ Read `~/.claude/skills/dev-plan/task-schema.md` for schema, `~/.claude/skills/de
 
 Preserve all other sections VERBATIM. Read `~/.claude/skills/dev-wiki/state-template.md` for template.
 
-### 4. Update _ARCHITECTURE.md (Step 8d)
+### 4. Update _ARCHITECTURE.md (Step 16d)
 
 Only if the approach changes project structure. If no structural changes, skip.
 
-### 5. Update Phase Article (Step 8e)
+### 5. Update Phase Article (Step 16e)
 
 Set `status: active`, `updated: $DATE`. If creating new, read `~/.claude/skills/dev-wiki/phase-template.md`.
 
-### 6. Write active-phase.md (Step 8f)
+### 6. Write active-phase.md (Step 16f)
 
 Ensure `$ROOT/.claude/rules/` exists. Write `$ROOT/.claude/rules/active-phase.md`: Phase, Objective, Scope (file globs), Key constraints, Exit criteria, Abort rule. 10-15 lines, 20 line hard cap.
 
-### 7. Write active-knowledge.md (Step 8f-bis) *(Ceremony: lite → skip)*
+### 7. Write active-knowledge.md (Step 16f-bis) *(Ceremony: lite → skip)*
 
 Read `~/.claude/skills/dev-wiki/active-knowledge-spec.md` for template and evaluation criteria.
 
@@ -70,11 +70,11 @@ Process: Extract 2-5 key propositions per wiki source and decision. Each must pa
 
 If no wiki knowledge and no new decisions, skip. Delete prior-phase file if stale.
 
-### 8. Identify Cross-Phase Facts (Step 8f-ter)
+### 8. Identify Cross-Phase Facts (Step 16f-ter)
 
 Evaluate wiki facts NOT included in active-knowledge (failed phase-dependent but passed multi-turn + non-obvious). Note count in return — orchestrator handles the user prompt.
 
-### 9. Log and Index (Steps 8h-8i)
+### 9. Log and Index (Steps 16h-16i)
 
 Append to `$WIKI/log.md`: `[$ISO_TIMESTAMP] PLAN -- Phase N planned, X tasks, Y decisions`
 

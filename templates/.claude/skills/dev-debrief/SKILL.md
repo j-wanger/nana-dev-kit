@@ -26,7 +26,7 @@ The orchestrator (you) keeps conversation analysis and interactive steps. All fi
 3. **Step 4: Conversation analysis** — extract substance from the full conversation (decisions, tasks, changes, escape hatches, health delta, soft observations). This REQUIRES conversation context and cannot be delegated.
 4. **Review** — when executor returns, verify the summary makes sense
 5. **Present** — report results conversationally. "Phase N is debriefed, captured X decisions, Y tasks done, next up is Z." Do NOT dump the executor's raw summary or formatted checklists.
-6. **Step 6b: Capture check** — if executor reports soft_observations > 0, ask user about wiki-capture (interactive)
+6. **Step 11: Capture check** — if executor reports soft_observations > 0, ask user about wiki-capture (interactive)
 
 ### How to dispatch
 
@@ -58,7 +58,7 @@ Agent({
 
 1. Parse the structured return (decisions_captured, journal, tasks, phase_status, etc.)
 2. If `phase_status` includes READY FOR COMPLETION: read `~/.claude/skills/dev-debrief/delivery-flow.md` and follow the delivery report + auto-commit protocol (Steps D1-D3). This is the **delivery gate** — the second boundary checkpoint.
-3. If `soft_observations > 0`, run capture check (Step 6b)
+3. If `soft_observations > 0`, run capture check (Step 11)
 4. If `retro: triggered`, surface retro findings
 5. **Phase cooldown check:** Read `$HOME/.claude/.session-start-ts` (fallback: 4 hours ago). Count git commits since that timestamp containing "Phase" in the message (`git log --since=@<ts> --oneline | grep -ci 'Phase'`). If ≥2 phases completed in this session, emit advisory: `"⚠ [nana:cooldown] N phases completed this session. For best results, start a new Claude Code session for Phase N+1."` Advisory only — never blocks.
 6. Present a conversational summary — outcomes, not transcript
@@ -168,31 +168,31 @@ Analyze the **full conversation in your context window** to extract:
 8. **Health delta** -- if `## Development Toolchain` exists in `_ARCHITECTURE.md`, compare session-end state against baseline: test count changes (new tests added/removed), type errors introduced/resolved, lint violations, tools added/removed. Include delta in journal entry under `## Health Delta` if any changes occurred.
 9. **Soft observations / Phase N+1 candidates (required)** -- populate the `## Soft Observations / Phase N+1 Candidates` section in every journal entry. Source: bullet list of (observation, suggested next-phase framing, evidence link). If no observations surfaced, write "None identified." The section header must always appear — this is the project's immune system for catching future issues early.
 
-### Step 4.5: Review Gate (Conditional)
+### Step 5: Review Gate (Conditional)
 
-Read `~/.claude/skills/dev-debrief/review-gate.md` for the full size-gated review procedure. Replaces the former standalone `/dev-review` skill. Size gate: 4+ tasks OR ceremony: standard → dispatch unified reviewer; otherwise skip (self-check was the quality gate). Include findings in journal entry (Step 6) under `### Review Gate`.
+Read `~/.claude/skills/dev-debrief/review-gate.md` for the full size-gated review procedure. Replaces the former standalone `/dev-review` skill. Size gate: 4+ tasks OR ceremony: standard → dispatch unified reviewer; otherwise skip (self-check was the quality gate). Include findings in journal entry (Step 9) under `### Review Gate`.
 
-### Step 4.7: Memory Harvest *(Lite: skip)*
+### Step 6: Memory Harvest *(Lite: skip)*
 
-Read `~/.claude/skills/dev-debrief/memory-harvest.md` for the extraction procedure. Routes conversation-level institutional knowledge (corrections, preferences, failure lessons, non-obvious constraints) to `memory_store` MCP calls. Runs after conversation analysis (Step 4) so it can use the extracted substance as input. Do NOT duplicate phase decisions — those go to wiki articles in Step 5.
+Read `~/.claude/skills/dev-debrief/memory-harvest.md` for the extraction procedure. Routes conversation-level institutional knowledge (corrections, preferences, failure lessons, non-obvious constraints) to `memory_store` MCP calls. Runs after conversation analysis (Step 4) so it can use the extracted substance as input. Do NOT duplicate phase decisions — those go to wiki articles in Step 8.
 
-### Step 4.8: Heuristic Capture *(Lite: skip)*
+### Step 7: Heuristic Capture *(Lite: skip)*
 
 Read `~/.claude/skills/dev-debrief/heuristic-capture.md` for the extraction procedure. Scans phase decisions for transferable reasoning patterns, applies transferability gate, dedup against existing heuristics, and proposes new heuristic articles for user confirmation. Do NOT auto-commit — user must approve each proposed heuristic.
 
-### Step 5: Extract Decisions *(Lite: skip)*
+### Step 8: Extract Decisions *(Lite: skip)*
 
 For each candidate decision from Step 4, read `~/.claude/skills/dev-wiki/decision-template.md` for the full decision extraction criteria (inclusion, exclusion, signal detection, confidence levels, noise prevention).
 
 For each qualifying decision, create a file at `$WIKI/articles/decisions/<slug>.md`. Read `~/.claude/skills/dev-wiki/slugification.md` for the slugification algorithm and `~/.claude/skills/dev-wiki/decision-template.md` for the article template.
 
-### Step 6: Create Journal Entry *(Lite: simplified — key facts only)*
+### Step 9: Create Journal Entry *(Lite: simplified — key facts only)*
 
 Create ONE journal entry at `$WIKI/articles/journal/<today>-<slug>.md`. Read `~/.claude/skills/dev-wiki/journal-templates.md` for the rich journal template and `~/.claude/skills/dev-wiki/slugification.md` for slugification.
 
 If a journal file for today with the same slug exists, append a numeric suffix.
 
-### Step 6a: Activation Quality Logging
+### Step 10: Activation Quality Logging
 
 If `$ROOT/.claude/rules/active-knowledge.md` exists:
 
@@ -200,7 +200,7 @@ If `$ROOT/.claude/rules/active-knowledge.md` exists:
 2. For each entry, extract its `from:` slug (e.g., `[[wiki:some-slug]]` → `some-slug`).
 3. Check if the slug was referenced in this session's conversation context (approximate literal match — search for the slug string in conversation artifacts, commit messages, or tool outputs from this session).
 4. Compute approximate hit rate: entries referenced / total entries.
-5. Append to the journal entry (Step 6) under `### Activation Quality`:
+5. Append to the journal entry (Step 9) under `### Activation Quality`:
    ```
    Active knowledge: N entries, M referenced (~X% approximate hit rate, literal match).
    ```
@@ -208,12 +208,12 @@ If `$ROOT/.claude/rules/active-knowledge.md` exists:
 
 If active-knowledge.md does not exist, skip this step.
 
-### Step 6b: Capture Check (wiki-capture surfacing)
+### Step 11: Capture Check (wiki-capture surfacing)
 
-If the journal entry (Step 6) has a non-empty `## Soft Observations` section, count the bullet entries (`-` lines).
+If the journal entry (Step 9) has a non-empty `## Soft Observations` section, count the bullet entries (`-` lines).
 Emit: `"N soft observations found — any worth capturing to the knowledge wiki? Run /wiki-capture for each reusable insight. (y/n)"`. Advisory — the user may have already captured insights in-session. If no Soft Observations section or section is empty, skip silently.
 
-### Step 7: Update tasks.md
+### Step 12: Update tasks.md
 
 Use the Read tool on `$WIKI/tasks.md`. Apply changes:
 
@@ -224,25 +224,25 @@ Use the Read tool on `$WIKI/tasks.md`. Apply changes:
 
 Read `~/.claude/skills/dev-wiki/size-budgets.md` for size budgets.
 
-### Step 8: Rewrite _CURRENT_STATE.md
+### Step 13: Rewrite _CURRENT_STATE.md
 
 Rewrite `$WIKI/_CURRENT_STATE.md` respecting section ownership. Rewrite owned sections (Recommended Next Action, Session Journal, Key Artifacts, Cross-References) from scratch. Preserve sections owned by other skills (Active Phase, Active Phase Contract, Recent Decisions, Blockers and Open Questions) verbatim. **Lite:** Rewrite only Recommended Next Action and Session Journal; preserve Key Artifacts and Cross-References verbatim. Read `~/.claude/skills/dev-wiki/state-template.md` for the 7-section template and `~/.claude/skills/dev-wiki/size-budgets.md` for size budgets.
 
-### Step 8.5: Project CLAUDE.md Refresh Check
+### Step 14: Project CLAUDE.md Refresh Check
 
 Read `~/.claude/skills/dev-debrief/claude-md-refresh.md` for the full refresh procedure. Skip if no project `./CLAUDE.md` exists.
 
-### Step 9: Update _ARCHITECTURE.md
+### Step 15: Update _ARCHITECTURE.md
 
 Only update if structural changes occurred this session OR if the `## Development Toolchain` section needs updating (tools added/removed, config paths changed). When updating, rewrite the full file. Read `~/.claude/skills/dev-wiki/architecture-template.md` for the template and `~/.claude/skills/dev-wiki/size-budgets.md` for size budgets.
 
 To scan the codebase structure, use the Glob tool with patterns like `$ROOT/src/**/*` or `$ROOT/**/*.py` (adjust for the project's language). Do NOT use `find` commands.
 
-### Step 9a: Architecture Staleness Detection
+### Step 16: Architecture Staleness Detection
 
 Read `~/.claude/skills/dev-debrief/architecture-staleness-check.md` for the full procedure (catches skill files at `~/.claude/skills/` that are outside the stale-queue pipeline; runs in both full and quick debrief modes).
 
-### Step 10: Update Phase Articles *(Lite: simplified — frontmatter status only)*
+### Step 17: Update Phase Articles *(Lite: simplified — frontmatter status only)*
 
 Use the Glob tool to list phase articles in `$WIKI/articles/phases/`. For each:
 
@@ -252,31 +252,31 @@ Use the Glob tool to list phase articles in `$WIKI/articles/phases/`. For each:
 
 Phase transitions `active` -> `completed`: ALWAYS ask user, never auto-transition.
 
-### Step 11: Create Status Snapshot
+### Step 18: Create Status Snapshot
 
-Read `~/.claude/skills/dev-debrief/debrief-finalization.md` Step 11 instructions.
+Read `~/.claude/skills/dev-debrief/debrief-finalization.md` Step 18 instructions.
 
-### Step 12: Update .claude/rules/active-phase.md
+### Step 19: Update .claude/rules/active-phase.md
 
 Always rewrite `$ROOT/.claude/rules/active-phase.md` in full debrief mode. Format: Phase, Objective, Scope, Key constraints, Exit criteria, Abort rule. Keep to 10-15 lines, 20 line hard cap per `~/.claude/skills/dev-wiki/size-budgets.md`.
 
-### Step 12b: Validate/Transition active-knowledge.md
+### Step 20: Validate/Transition active-knowledge.md
 
 Read `~/.claude/skills/dev-debrief/active-knowledge-transition.md` for the carry-forward logic. Two paths: phase-changed (carry forward entries to working-knowledge, delete active-knowledge.md) and same-phase (no action). Skip if no knowledge wiki and no active-knowledge.md.
 
-### Step 12c: Retro Check (Conditional)
+### Step 21: Retro Check (Conditional)
 
 Read `~/.claude/skills/dev-debrief/retro-check.md` for the lightweight retrospective procedure. Replaces the former standalone `/dev-retro` skill. Triggers when completed phase count % 5 == 0. Analyzes dims 1-3 only (blockers, reversals, corrections). Include findings in journal entry.
 
-### Step 12d: Gate Compliance Audit
+### Step 22: Gate Compliance Audit
 
 Parse the completed phase's gate comment in `tasks.md` (format: `<!-- gate-log:phase-N direction=approved delivery=pending|accepted -->`). Under the 2-gate ceremony model, verify: `direction=approved` is present (required for all phases), `delivery=accepted` is present for completed phases. Flag missing direction gate. Include findings in journal entry under `### Gate Compliance`. If no gate comment exists for the phase, emit: `"Gate comment missing for Phase N — audit skipped."` (non-blocking warning).
 
-### Steps 13-15: Index Rebuild, Log, Breadcrumb Cleanup
+### Steps 23-25: Index Rebuild, Log, Breadcrumb Cleanup
 
-Read `~/.claude/skills/dev-debrief/debrief-finalization.md` Steps 13 *(Lite: skip Step 13)*, 14, and 15 instructions.
+Read `~/.claude/skills/dev-debrief/debrief-finalization.md` Steps 23 *(Lite: skip Step 23)*, 24, and 25 instructions.
 
-### Step 16: Report to User
+### Step 26: Report to User
 
 ```
 Session debriefed (full):

@@ -1,6 +1,6 @@
 ---
 parent: dev-plan
-referenced_at: Step 6.0.5
+referenced_at: Step 11
 ---
 
 # Self-Dialogue — Devil's Advocate Subagent
@@ -9,7 +9,7 @@ You are a devil's advocate arguing against a proposed approach. Your goal: gener
 
 ## You Receive
 
-- **Proposed approach:** The approach text from Step 6
+- **Proposed approach:** The approach text from Step 10
 - **IRON RULES:** Condensed IRON-001 through IRON-005 (Always/Never/Anti-patterns)
 - **Phase objective and exit criteria:** What the phase must accomplish
 

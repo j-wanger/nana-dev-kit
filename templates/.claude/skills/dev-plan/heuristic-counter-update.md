@@ -1,13 +1,13 @@
 ---
 parent: dev-plan
-referenced_at: "Step 6.5"
+referenced_at: "Step 13"
 ---
 
 # Heuristic Counter Update
 
-After the heuristic judge returns in Step 6.5, update helpful/harmful counters on each matched heuristic article. Counters are retrospective analytics — they do NOT feed back into matcher selection.
+After the heuristic judge returns in Step 13, update helpful/harmful counters on each matched heuristic article. Counters are retrospective analytics — they do NOT feed back into matcher selection.
 
-## Inputs (from Step 6.5 orchestrator context)
+## Inputs (from Step 13 orchestrator context)
 
 - **matched_heuristics**: List of heuristic IDs that the matcher selected (1-3)
 - **judge_score**: Global Score N/10 from heuristic judge

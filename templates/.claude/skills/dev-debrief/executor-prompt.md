@@ -1,6 +1,6 @@
 ---
 parent: dev-debrief
-referenced_at: "Step 6"
+referenced_at: "Step 9"
 ---
 
 # Dev-Debrief Executor
@@ -58,7 +58,7 @@ For each decision in substance payload: read `~/.claude/skills/dev-wiki/decision
 
 Create ONE entry at `$WIKI/articles/journal/$DATE-<slug>.md`. Read `~/.claude/skills/dev-wiki/journal-templates.md` for rich template. If file exists with same slug, append numeric suffix. Include health_delta and soft_observations from substance. Add `duration: <estimate>` to frontmatter (post-compaction estimate — may undercount for long sessions). If duration_estimate not provided, use "unknown".
 
-**Activation quality (Step 6a):** If `$ROOT/.claude/rules/active-knowledge.md` exists, count entries, check slug references against substance, compute hit rate, append under `### Activation Quality`.
+**Activation quality (Step 10):** If `$ROOT/.claude/rules/active-knowledge.md` exists, count entries, check slug references against substance, compute hit rate, append under `### Activation Quality`.
 
 ### 4. Update tasks.md
 
@@ -94,7 +94,7 @@ Glob `$WIKI/articles/phases/`. Update status per substance. *(Lite: frontmatter 
 
 ### 10. Status Snapshot
 
-Read `~/.claude/skills/dev-debrief/debrief-finalization.md` Step 11.
+Read `~/.claude/skills/dev-debrief/debrief-finalization.md` Step 18.
 
 ### 11. Write active-phase.md
 
@@ -110,7 +110,7 @@ Read `~/.claude/skills/dev-debrief/retro-check.md`. Triggers when completed phas
 
 ### 14. Finalization
 
-Read `~/.claude/skills/dev-debrief/debrief-finalization.md` for Steps 13 *(Lite: skip)*, 14, 15.
+Read `~/.claude/skills/dev-debrief/debrief-finalization.md` for Steps 23 *(Lite: skip)*, 24, 25.
 
 ---
 

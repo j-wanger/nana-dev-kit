@@ -1,6 +1,6 @@
 ---
 parent: dev-plan
-referenced_at: "Step 1"
+referenced_at: "Step 3"
 ---
 
 # Dev-Plan State Loader
@@ -24,7 +24,7 @@ Variables: `$WIKI` = `$ROOT/.dev-wiki`.
 
 ## Procedure
 
-### 1. Load Wiki State (SKILL.md Step 1)
+### 1. Load Wiki State (SKILL.md Step 3)
 
 Read silently (do NOT output file contents):
 - `$WIKI/_CURRENT_STATE.md`
@@ -37,7 +37,7 @@ Glob `$WIKI/articles/decisions/` — read 5 most recent (by `updated:` date).
 
 Budget: 10 files max.
 
-### 2. Load Cross-Wiki Knowledge (SKILL.md Step 2)
+### 2. Load Cross-Wiki Knowledge (SKILL.md Step 4)
 
 Read `~/.claude/wikis.json` (skip if missing). Collect registered wikis. Always include `$ROOT/wiki/` if it exists.
 
@@ -51,9 +51,9 @@ If no articles score >0: note "0 relevant articles found" and continue.
 
 Read `~/.claude/skills/dev-plan/iterative-retrieval-spec.md`. Extract concepts, iterate up to 3 rounds until ≥70% coverage or no new articles. Note unfillable gaps as design questions.
 
-Budget: 14 articles max total (including Step 2).
+Budget: 14 articles max total (including Step 4).
 
-### 3. Explore Phase Scope (SKILL.md Step 3)
+### 3. Explore Phase Scope (SKILL.md Step 6)
 
 Extract `scope` field (file globs) from phase article. Glob each pattern.
 
@@ -67,7 +67,7 @@ Budget: ~5000 tokens of exploration.
 
 Read `## Development Toolchain` from `$WIKI/_ARCHITECTURE.md`. Check test framework exists if TDD planned. Note warnings. Budget: 3 Bash calls max.
 
-### 4. Identify Design Questions (SKILL.md Step 4)
+### 4. Identify Design Questions (SKILL.md Step 8)
 
 Based on state + knowledge + scope, identify genuine design questions. For each: check if a prior decision already answers it, or if wiki knowledge provides guidance. Only surface truly open questions.
 
