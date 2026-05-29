@@ -16,8 +16,8 @@ log_event() {
   tail -n 500 "$LOG" > "$LOG.tmp" && mv "$LOG.tmp" "$LOG"
 }
 
-# --- Opt-in check: enforcement disabled without marker ---
-if [ ! -f "$HOME/.claude/enforce" ]; then
+# --- Opt-in check: disabled unless a project-local OR global marker is present ---
+if [ ! -f ".claude/enforce" ] && [ ! -f "$HOME/.claude/enforce" ]; then
   exit 0
 fi
 

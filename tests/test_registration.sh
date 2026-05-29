@@ -13,10 +13,8 @@ source "$SCRIPT_DIR/tests/helpers.sh"
 TESTS_RUN=0
 TESTS_PASSED=0
 
-# Collect all registered hooks from modules.json
-GLOBAL_HOOKS=$(jq -r '.modules[].hooks[]?.script' "$MODULES" 2>/dev/null | sort)
-LOCAL_HOOKS=$(jq -r '.project_local.hooks[].script' "$MODULES" | sort)
-ALL_REGISTERED=$(printf '%s\n%s' "$GLOBAL_HOOKS" "$LOCAL_HOOKS" | sort -u)
+# Collect all registered hooks from the canonical scope-tagged list
+ALL_REGISTERED=$(jq -r '.hooks[].script' "$MODULES" | sort -u)
 
 # Direction A: every hook file on disk has a modules.json entry
 echo "=== Direction A: disk → modules.json ==="
@@ -35,7 +33,7 @@ done
 # Direction B: every modules.json hook entry exists on disk
 echo ""
 echo "=== Direction B: modules.json → disk ==="
-for h in $GLOBAL_HOOKS $LOCAL_HOOKS; do
+for h in $ALL_REGISTERED; do
   TESTS_RUN=$((TESTS_RUN + 1))
   if [ -f "$HOOKS_DIR/$h" ]; then
     echo "  PASS: $h exists on disk"
@@ -44,6 +42,19 @@ for h in $GLOBAL_HOOKS $LOCAL_HOOKS; do
     echo "  FAIL: $h in modules.json but NOT on disk"
   fi
 done
+
+# Direction D: every canonical hook has a valid scope (project|global)
+echo ""
+echo "=== Direction D: hook scope validity ==="
+TOTAL_HOOKS=$(jq '.hooks | length' "$MODULES")
+TAGGED_HOOKS=$(jq '[.hooks[] | select(.scope == "project" or .scope == "global")] | length' "$MODULES")
+TESTS_RUN=$((TESTS_RUN + 1))
+if [ "$TOTAL_HOOKS" -eq "$TAGGED_HOOKS" ] && [ "$TOTAL_HOOKS" -gt 0 ]; then
+  echo "  PASS: all $TOTAL_HOOKS hooks tagged project|global"
+  TESTS_PASSED=$((TESTS_PASSED + 1))
+else
+  echo "  FAIL: $TAGGED_HOOKS/$TOTAL_HOOKS hooks have a valid scope"
+fi
 
 # Direction C: extra_dirs entries exist
 echo ""

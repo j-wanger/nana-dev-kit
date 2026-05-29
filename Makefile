@@ -3,10 +3,14 @@
 
 NANA_KIT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-.PHONY: sync-rules test eval report workflow dashboard
+.PHONY: sync-rules test eval report workflow dashboard template
 
 sync-rules:
 	@bash "$(NANA_KIT_DIR)scripts/sync-rules.sh" . .
+
+template:
+	@python3 "$(NANA_KIT_DIR)scripts/register-settings.py" hooks "$(NANA_KIT_DIR)templates/.claude/settings.json" "$(NANA_KIT_DIR)modules.json" --scope project-local --hooks-dir .claude/hooks --regenerate
+	@echo "Regenerated templates/.claude/settings.json from modules.json"
 
 test:
 	@echo "Running tests..."
@@ -19,6 +23,7 @@ test:
 	@bash "$(NANA_KIT_DIR)tests/test_companions.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_heuristic_evolution.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_registration.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_settings_template.sh"
 	@echo ""
 	@echo "All tests passed."
 

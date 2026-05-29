@@ -12,6 +12,42 @@
     ],
     "PreToolUse": [
       {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/enforce-spec.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/enforce-memory.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/dev-wiki-scope-check.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/scan-secrets.sh"
+          }
+        ]
+      },
+      {
         "matcher": "Bash",
         "hooks": [
           {
@@ -28,14 +64,33 @@
           {
             "type": "command",
             "command": ".claude/hooks/auto-ruff-format.sh"
-          },
-          {
-            "type": "command",
-            "command": ".claude/hooks/scan-secrets.sh"
-          },
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
           {
             "type": "command",
             "command": ".claude/hooks/audit-log.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/stale-queue.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/detect-loop.sh"
           }
         ]
       },
@@ -45,6 +100,40 @@
           {
             "type": "command",
             "command": ".claude/hooks/post-commit.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/enforce-loop.sh"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/session-stop.sh"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/check-tests-were-run.sh"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": ".claude/hooks/py-review-stop-prompt.md"
           }
         ]
       }
@@ -59,16 +148,12 @@
         ]
       }
     ],
-    "Stop": [
+    "PostCompact": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/check-tests-were-run.sh"
-          },
-          {
-            "type": "prompt",
-            "prompt": ".claude/hooks/py-review-stop-prompt.md"
+            "command": ".claude/hooks/post-compact.sh"
           }
         ]
       }

@@ -1,0 +1,6 @@
+# Nana enforcement opt-in marker.
+# The presence of this file (or ~/.claude/enforce) activates the per-project
+# enforcement hooks: enforce-spec (no implementation writes without an approved
+# spec) and enforce-loop (lifecycle completeness at Stop). Delete this file to
+# opt out of enforcement for this project. Content is ignored — only existence
+# matters. enforce-memory uses a separate marker (.claude/enforce-memory).

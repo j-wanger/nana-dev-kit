@@ -59,6 +59,7 @@
 - [[phase-54-maintenance-sweep|Phase 54: Maintenance Sweep]] -- completed
 - [[phase-55-harness-activation-overhaul|Phase 55: Harness Activation Overhaul]] -- completed
 - [[phase-56-cognitive-activation-memory-design|Phase 56: Cognitive Activation & Memory Design]] -- completed
+- [[phase-57-hook-consolidation-and-enforcement-activation|Phase 57: Hook Consolidation and Enforcement Activation]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -202,6 +203,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-28-phase-57-hook-consolidation-enforcement-activation-complete|Phase 57 complete (hook consolidation & enforcement activation — Fix 1)]] -- 2026-05-28
 - [[2026-05-28-phase-56-cognitive-activation-memory-design-complete|Phase 56 complete (cognitive activation & memory design — 5-layer classification, actionable cognitive readiness, domain seed)]] -- 2026-05-28
 - [[2026-05-28-phase-55-harness-activation-overhaul-complete|Phase 55 complete (harness activation overhaul — cascade fix, spec reform, cognitive readiness)]] -- 2026-05-28
 - [[2026-05-28-phase-54-maintenance-sweep-complete|Phase 54 complete (maintenance sweep — hook bug fixes, stale knowledge removal)]] -- 2026-05-28
@@ -287,6 +289,8 @@
 
 ## Recent
 
+- 2026-05-28: Phase 57 implementation complete (delivery pending) -- 5/5 tasks, 1 decision (single-source-scope-tagged-hook-registration), 3 hook sources → 1 scope-tagged modules.json array, generated template + drift test, project-reachable enforce marker, enforce-spec fires (exit 2) in fresh scaffold, py-init/ts-init marker gap caught + guarded, 10/10 scripts green (CI-equiv)
+- 2026-05-28: Phase 57 planned -- 5 tasks (5M), 1 decision, hook consolidation & enforcement activation (Fix 1 of harness-activation roadmap)
 - 2026-05-28: Phase 56 completed -- 6/6 tasks, 1 decision (memory-architecture-classification, upgraded low->high), 5-layer classification, actionable cognitive readiness, dev-plan wiki strengthened, 4 domain articles seeded, 54/54 eval
 - 2026-05-28: Phase 56 planned -- 6 tasks, 1 decision (memory-architecture-classification), cognitive activation & memory design
 - 2026-05-28: Phase 55 completed -- 6/6 tasks, 3 decisions (cascade-failure-diagnosis, spec-reform-reasoning-over-compliance, bidirectional-registration-invariant), cascade fix, spec reform, cognitive readiness, +40 registration test assertions, 52/52 eval, retro clean

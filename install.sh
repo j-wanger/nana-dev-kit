@@ -69,7 +69,7 @@ if $PROJECT_LOCAL; then
   HOOKS_SRC="$SCRIPT_DIR/templates/.claude/hooks"
   PROJ_HOOKS_DIR=".claude/hooks"
   PROJ_SETTINGS=".claude/settings.local.json"
-  PROJECT_HOOKS=$(jq -r '.project_local.hooks[].script' "$MODULES_JSON")
+  PROJECT_HOOKS=$(jq -r '.hooks[] | select(.scope == "project") | .script' "$MODULES_JSON")
   EXTRA_DIRS=$(jq -r '.project_local.extra_dirs[]' "$MODULES_JSON" 2>/dev/null || true)
   for h in $PROJECT_HOOKS; do
     [ -f "$HOOKS_SRC/$h" ] || { echo "Error: source missing: $HOOKS_SRC/$h" >&2; exit 1; }
@@ -79,6 +79,7 @@ if $PROJECT_LOCAL; then
     echo "[dry-run] install hooks to $PROJ_HOOKS_DIR/: $PROJECT_HOOKS"
     [ -n "$EXTRA_DIRS" ] && echo "[dry-run] install extra dirs: $EXTRA_DIRS"
     echo "[dry-run] register hooks in $PROJ_SETTINGS (nested schema)"
+    echo "[dry-run] create project enforce marker: .claude/enforce"
   else
     mkdir -p "$PROJ_HOOKS_DIR"
     for h in $PROJECT_HOOKS; do
@@ -93,9 +94,11 @@ if $PROJECT_LOCAL; then
     done
     python3 "$REGISTER_SCRIPT" hooks "$PROJ_SETTINGS" "$MODULES_JSON" \
       --scope project-local --hooks-dir "$PROJ_HOOKS_DIR"
+    touch .claude/enforce
     echo ""
     echo "Project-local hooks installed in $PROJ_HOOKS_DIR/"
-    jq -r '.project_local.hooks[] | "  - \(.script) — \(.event):\(.matcher) "' "$MODULES_JSON" | sed 's/:  *$//'
+    echo "Enforcement marker created: .claude/enforce"
+    jq -r '.hooks[] | select(.scope == "project") | "  - \(.script) — \(.event):\(.matcher) "' "$MODULES_JSON" | sed 's/:  *$//'
   fi
   exit 0
 fi
@@ -264,7 +267,7 @@ if [ "$INSTALL_DEVWIKI" = true ]; then
   for skill in $(module_skills dev-wiki); do install_skill_dir "$skill"; done
 
   HOOKS_SRC="$SCRIPT_DIR/templates/.claude/hooks"
-  HOOK_SCRIPTS=$(jq -r '.modules[] | select(.name == "dev-wiki") | .hooks[].script' "$MODULES_JSON" | sort -u)
+  HOOK_SCRIPTS=$(jq -r '.hooks[] | select(.scope == "global") | .script' "$MODULES_JSON" | sort -u)
   MARKERS=$(jq -r '.modules[] | select(.name == "dev-wiki") | .markers[]' "$MODULES_JSON")
 
   if $DRY_RUN; then
@@ -280,7 +283,7 @@ if [ "$INSTALL_DEVWIKI" = true ]; then
       chmod +x ~/.claude/hooks/"$h"
     done
 
-    GHOSTS=$(jq -r '.modules[] | select(.name == "dev-wiki") | .ghost_cleanup[]' "$MODULES_JSON" 2>/dev/null || true)
+    GHOSTS=$(jq -r '.ghost_cleanup[]' "$MODULES_JSON" 2>/dev/null || true)
     for g in $GHOSTS; do rm -f ~/.claude/hooks/"$g".sh; done
     for m in $MARKERS; do touch "$(eval echo "$m")"; done
 
@@ -305,7 +308,7 @@ if ! $DRY_RUN; then
   [ "$INSTALL_PYTHON" = true ] && echo "  ~/.claude/skills/py-init/           — /py-init Python scaffolding"
   [ "$INSTALL_TYPESCRIPT" = true ] && echo "  ~/.claude/skills/ts-init/           — /ts-init TypeScript scaffolding"
   [ "$INSTALL_DEVWIKI" = true ] && echo "  ~/.claude/skills/dev-*/             — dev-wiki lifecycle (6 skills)"
-  [ "$INSTALL_DEVWIKI" = true ] && echo "  ~/.claude/hooks/                    — lifecycle hooks (enforce, detect-loop, post-commit, pre-compact)"
+  [ "$INSTALL_DEVWIKI" = true ] && echo "  ~/.claude/hooks/                    — global session hooks (lifecycle + enforcement hooks install per-project via /py-init or --project-local)"
   [ "$INSTALL_KNOWLEDGE" = true ] && echo "  ~/.claude/skills/wiki-*/            — knowledge-wiki pipeline (11 skills)"
   echo ""
   echo "Getting started (open a project, then run one of these):"

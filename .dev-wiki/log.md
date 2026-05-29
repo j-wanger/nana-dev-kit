@@ -1,5 +1,7 @@
 # Dev Wiki Log
 
+[2026-05-28T22:30:00Z] DEBRIEF -- Phase 57: 1 decision (single-source-scope-tagged-hook-registration), 1 journal, 5 tasks completed, state refreshed, 4 memory entries harvested, 10/10 scripts green (CI-equiv). Delivery report pending acceptance.
+[2026-05-28T21:30:00Z] PLAN -- Phase 57 planned, 5 tasks (5M), 1 decision. Hook consolidation: 3 sources → 1 scope-tagged modules.json array, generated template + drift test, project-reachable enforce marker.
 [2026-05-28T18:00:00] DEBRIEF -- 1 decision (memory-architecture-classification upgraded), 1 journal, tasks verified (6/6), state refreshed, Phase 56 completed, 1 working-knowledge entry added, 54/54 eval, memory harvest: nothing to extract
 [2026-05-28T12:00:00] PLAN -- Phase 55 planned, 6 tasks (3S+3M), 2 decisions (cascade-failure-diagnosis, spec-reform-reasoning-over-compliance). Harness activation overhaul: nana-init fix, registration completeness test, spec reform (prescriptive→reasoning), cognitive readiness diagnostic, empty-wiki guidance.
 [2026-05-27T23:45:00] PLAN -- Phase 53 planned, 6 tasks (2S+3M+1S), 1 decision (verification-first-iron004). Open questions: MCP memory diagnosis, IRON-004 matcher verification + analysis, HEU-011 capacity-multiplier draft + eval, tests + dashboard, findings consolidation.

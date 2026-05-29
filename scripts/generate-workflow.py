@@ -238,7 +238,7 @@ def generate_html():
 <li>Validates source files exist. Parses module flags (default: <code>--all</code>)</li>
 <li><strong>Core module:</strong> copies 3 identity rules (nana-soul.md, nana-personal.md, file-lifecycle.md) + kit path marker + memory_server/</li>
 <li><strong>Python module:</strong> copies py-init + spec skills (skip with <code>--no-python</code>)</li>
-<li><strong>Dev-wiki module:</strong> copies 6 dev-lifecycle skill dirs + 5 global enforcement hooks to <code>~/.claude/hooks/</code></li>
+<li><strong>Dev-wiki module:</strong> copies 6 dev-lifecycle skill dirs; enforcement/lifecycle hooks are project-scoped and install per-project (via <code>/py-init</code> or <code>--project-local</code>), not globally</li>
 <li><strong>Knowledge-wiki module:</strong> copies 11 wiki skill dirs</li>
 <li>Creates isolated venv at <code>~/.claude/memory_server/.venv/</code>, installs deps</li>
 <li>Registers MCP server + hook events in <code>~/.claude/settings.json</code> via idempotent JSON merge</li>

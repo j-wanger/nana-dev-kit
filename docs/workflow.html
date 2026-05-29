@@ -55,7 +55,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <body>
 
 <h1>Nana Dev Kit &mdash; Workflow Breakdown</h1>
-<p class="subtitle">7-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-05-26 17:47</p>
+<p class="subtitle">7-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-05-28 20:29</p>
 
 <div class="toc">
 <h3>Contents</h3>
@@ -80,7 +80,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <li>Validates source files exist. Parses module flags (default: <code>--all</code>)</li>
 <li><strong>Core module:</strong> copies 3 identity rules (nana-soul.md, nana-personal.md, file-lifecycle.md) + kit path marker + memory_server/</li>
 <li><strong>Python module:</strong> copies py-init + spec skills (skip with <code>--no-python</code>)</li>
-<li><strong>Dev-wiki module:</strong> copies 6 dev-lifecycle skill dirs + 5 global enforcement hooks to <code>~/.claude/hooks/</code></li>
+<li><strong>Dev-wiki module:</strong> copies 6 dev-lifecycle skill dirs; enforcement/lifecycle hooks are project-scoped and install per-project (via <code>/py-init</code> or <code>--project-local</code>), not globally</li>
 <li><strong>Knowledge-wiki module:</strong> copies 11 wiki skill dirs</li>
 <li>Creates isolated venv at <code>~/.claude/memory_server/.venv/</code>, installs deps</li>
 <li>Registers MCP server + hook events in <code>~/.claude/settings.json</code> via idempotent JSON merge</li>
@@ -401,7 +401,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/rules/nana-soul.md</code></td><td>59</td><td>Development personality and technical posture</td></tr>
 <tr><td><code>.claude/rules/py-session-state.md</code></td><td>21</td><td>Compaction-safe session state template</td></tr>
 </table>
-<h3>Layer 3: Hooks <span class="badge badge-blue">21 files</span></h3>
+<h3>Layer 3: Hooks <span class="badge badge-blue">22 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
 <tr><td><code>.claude/hooks/audit-log.sh</code></td><td>23</td><td>PostToolUse: JSONL audit trail of all writes</td></tr>
@@ -419,25 +419,27 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/hooks/pre-compact.sh</code></td><td>50</td><td>PreCompact: injects dev-wiki state before context compaction</td></tr>
 <tr><td><code>.claude/hooks/py-review-stop-prompt.md</code></td><td>10</td><td>Stop: 6-point code review checklist prompt</td></tr>
 <tr><td><code>.claude/hooks/scan-secrets.sh</code></td><td>26</td><td>PostToolUse: scans for hardcoded secrets</td></tr>
+<tr><td><code>.claude/hooks/session-start.d/cognitive-readiness.sh</code></td><td>118</td><td></td></tr>
 <tr><td><code>.claude/hooks/session-start.d/memory-nudge.sh</code></td><td>35</td><td></td></tr>
 <tr><td><code>.claude/hooks/session-start.d/wk-prune.sh</code></td><td>54</td><td></td></tr>
-<tr><td><code>.claude/hooks/session-start.sh</code></td><td>129</td><td>SessionStart: loads context, crash recovery, enforcement, [nana:kit]</td></tr>
+<tr><td><code>.claude/hooks/session-start.sh</code></td><td>70</td><td>SessionStart: loads context, crash recovery, enforcement, [nana:kit]</td></tr>
 <tr><td><code>.claude/hooks/session-stop.sh</code></td><td>28</td><td></td></tr>
 <tr><td><code>.claude/hooks/stale-queue.sh</code></td><td>53</td><td></td></tr>
 <tr><td><code>.claude/settings.json</code></td><td>77</td><td>Hook wiring: maps lifecycle events to scripts</td></tr>
 </table>
-<h3>Layer 3: Skills <span class="badge badge-blue">125 files</span></h3>
+<h3>Layer 3: Skills <span class="badge badge-blue">131 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
 <tr><td><code>.claude/skills/MANIFEST</code></td><td>154</td><td></td></tr>
 <tr><td><code>.claude/skills/dev-check/SKILL.md</code></td><td>150</td><td>"Validate dev wiki integrity and fix drift. Run when state feels stale, after long breaks, or when drift warnings appear. Do NOT use for knowledge wiki health (use wiki-lint) or for session startup (use AGENTS.md)."</td></tr>
-<tr><td><code>.claude/skills/dev-debrief/SKILL.md</code></td><td>311</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (use dev-context) or to fix wiki structural issues (use dev-check)."</td></tr>
+<tr><td><code>.claude/skills/dev-debrief/SKILL.md</code></td><td>315</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (use dev-context) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/active-knowledge-transition.md</code></td><td>24</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (use dev-context) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/architecture-staleness-check.md</code></td><td>24</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (use dev-context) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/claude-md-refresh.md</code></td><td>38</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (use dev-context) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/debrief-finalization.md</code></td><td>34</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (use dev-context) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/delivery-flow.md</code></td><td>48</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (use dev-context) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/executor-prompt.md</code></td><td>141</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (use dev-context) or to fix wiki structural issues (use dev-check)."</td></tr>
+<tr><td><code>.claude/skills/dev-debrief/heuristic-capture.md</code></td><td>60</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (use dev-context) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/memory-harvest.md</code></td><td>68</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (use dev-context) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/quick-debrief-flow.md</code></td><td>31</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (use dev-context) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/retro-check.md</code></td><td>46</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (use dev-context) or to fix wiki structural issues (use dev-check)."</td></tr>
@@ -447,10 +449,14 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/skills/dev-init/init-scaffolding.md</code></td><td>54</td><td>"Use when a project has no .dev-wiki/ yet. Bootstraps phases, architecture, state, and tasks. Do NOT use for knowledge wikis (use wiki-init) or if .dev-wiki/ already exists."</td></tr>
 <tr><td><code>.claude/skills/dev-init/scaffold-claude-md.md</code></td><td>54</td><td>"Use when a project has no .dev-wiki/ yet. Bootstraps phases, architecture, state, and tasks. Do NOT use for knowledge wikis (use wiki-init) or if .dev-wiki/ already exists."</td></tr>
 <tr><td><code>.claude/skills/dev-init/project-CLAUDE.md</code></td><td>42</td><td>"Use when a project has no .dev-wiki/ yet. Bootstraps phases, architecture, state, and tasks. Do NOT use for knowledge wikis (use wiki-init) or if .dev-wiki/ already exists."</td></tr>
-<tr><td><code>.claude/skills/dev-plan/SKILL.md</code></td><td>309</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
+<tr><td><code>.claude/skills/dev-plan/SKILL.md</code></td><td>321</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/approach-reviewer-prompt.md</code></td><td>68</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/artifact-writer-prompt.md</code></td><td>108</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/compaction-anchors-spec.md</code></td><td>76</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
+<tr><td><code>.claude/skills/dev-plan/heuristic-counter-update.md</code></td><td>43</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
+<tr><td><code>.claude/skills/dev-plan/heuristic-judge-prompt.md</code></td><td>57</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
+<tr><td><code>.claude/skills/dev-plan/heuristic-lifecycle.md</code></td><td>36</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
+<tr><td><code>.claude/skills/dev-plan/heuristic-matcher.md</code></td><td>60</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/implementation-guide.md</code></td><td>93</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/iterative-retrieval-spec.md</code></td><td>41</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/memory-bridge.md</code></td><td>72</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
@@ -459,6 +465,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/skills/dev-plan/research-pause-spec.md</code></td><td>57</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/scope-exploration-spec.md</code></td><td>30</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/self-check-checklist.md</code></td><td>89</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
+<tr><td><code>.claude/skills/dev-plan/self-dialogue-prompt.md</code></td><td>44</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/spec-auto-invoke.md</code></td><td>53</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/state-loader-prompt.md</code></td><td>119</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/task-schema.md</code></td><td>91</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
@@ -497,18 +504,18 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/skills/knowledge-wiki/search-spec.md</code></td><td>175</td><td>"Route wiki operations and enforce wiki workflow discipline. Use when the user mentions 'wiki', 'knowledge base', or wants to manage project knowledge. Also activated by SessionStart hook when a registered wiki applies to the current directory. Do NOT invoke directly when the user names a specific wiki command — invoke that command instead (wiki-query, wiki-add, etc.)."</td></tr>
 <tr><td><code>.claude/skills/knowledge-wiki/session-context.md</code></td><td>40</td><td>"Route wiki operations and enforce wiki workflow discipline. Use when the user mentions 'wiki', 'knowledge base', or wants to manage project knowledge. Also activated by SessionStart hook when a registered wiki applies to the current directory. Do NOT invoke directly when the user names a specific wiki command — invoke that command instead (wiki-query, wiki-add, etc.)."</td></tr>
 <tr><td><code>.claude/skills/memory-consolidate/SKILL.md</code></td><td>45</td><td>"Consolidate duplicate/overlapping memory entries using Claude. Use when memory_search returns redundant results, after many phases, or for periodic memory maintenance."</td></tr>
-<tr><td><code>.claude/skills/nana-init/SKILL.md</code></td><td>86</td><td>Bootstrap the full Nana experience — language scaffold, dev-wiki lifecycle, optional knowledge wiki. Use when starting a new project or completing activation on an existing one.</td></tr>
+<tr><td><code>.claude/skills/nana-init/SKILL.md</code></td><td>91</td><td>Bootstrap the full Nana experience — language scaffold, dev-wiki lifecycle, optional knowledge wiki. Use when starting a new project or completing activation on an existing one.</td></tr>
 <tr><td><code>.claude/skills/nana/SKILL.md</code></td><td>37</td><td>"Show installed nana-dev-kit skills grouped by module. Use when the user asks what skills are available, what the kit can do, or wants a quick reference."</td></tr>
-<tr><td><code>.claude/skills/py-init/SKILL.md</code></td><td>168</td><td>Scaffold the Nana 5-layer Python dev harness. New projects get full scaffold; existing projects go through scan-approve-transform-validate. Use when the user says "init", "scaffold", or "set up a project".</td></tr>
+<tr><td><code>.claude/skills/py-init/SKILL.md</code></td><td>169</td><td>Scaffold the Nana 5-layer Python dev harness. New projects get full scaffold; existing projects go through scan-approve-transform-validate. Use when the user says "init", "scaffold", or "set up a project".</td></tr>
 <tr><td><code>.claude/skills/py-init/scanner.md</code></td><td>107</td><td>Scaffold the Nana 5-layer Python dev harness. New projects get full scaffold; existing projects go through scan-approve-transform-validate. Use when the user says "init", "scaffold", or "set up a project".</td></tr>
 <tr><td><code>.claude/skills/py-init/transform.md</code></td><td>103</td><td>Scaffold the Nana 5-layer Python dev harness. New projects get full scaffold; existing projects go through scan-approve-transform-validate. Use when the user says "init", "scaffold", or "set up a project".</td></tr>
 <tr><td><code>.claude/skills/py-lint/SKILL.md</code></td><td>37</td><td>Run linting, formatting, and type checking. Use after writing or modifying Python code, before committing, or when the user asks to lint.</td></tr>
 <tr><td><code>.claude/skills/py-review/SKILL.md</code></td><td>58</td><td>Review code changes against the 8-point AI PR checklist. Use before committing, before creating a PR, or when the user asks for a review. Also runs automatically as a Stop prompt hook.</td></tr>
 <tr><td><code>.claude/skills/py-test/SKILL.md</code></td><td>41</td><td>Run the full test suite with coverage and report failures concisely. Use whenever the user asks to run tests, after writing code, or when verifying a change.</td></tr>
-<tr><td><code>.claude/skills/spec/SKILL.md</code></td><td>138</td><td>Write a structured spec/contract before execution. Use when starting non-trivial work, when the user says "write a spec", "plan this task", or "contract for this". Produces a 9-section contract with two-tier review gate.</td></tr>
+<tr><td><code>.claude/skills/spec/SKILL.md</code></td><td>145</td><td>Write a structured spec/contract before execution. Use when starting non-trivial work, when the user says "write a spec", "plan this task", or "contract for this". Produces a 9-section contract with two-tier review gate.</td></tr>
 <tr><td><code>.claude/skills/spec/adversarial-constraints-prompt.md</code></td><td>46</td><td>Write a structured spec/contract before execution. Use when starting non-trivial work, when the user says "write a spec", "plan this task", or "contract for this". Produces a 9-section contract with two-tier review gate.</td></tr>
-<tr><td><code>.claude/skills/spec/spec-reviewer-prompt.md</code></td><td>82</td><td>Write a structured spec/contract before execution. Use when starting non-trivial work, when the user says "write a spec", "plan this task", or "contract for this". Produces a 9-section contract with two-tier review gate.</td></tr>
-<tr><td><code>.claude/skills/ts-init/SKILL.md</code></td><td>198</td><td>Scaffold the Nana 5-layer TypeScript dev harness. New projects get full scaffold; existing projects go through scan-approve-transform-validate. Use when the user says "init", "scaffold", or "set up a project" in a TypeScript context.</td></tr>
+<tr><td><code>.claude/skills/spec/spec-reviewer-prompt.md</code></td><td>92</td><td>Write a structured spec/contract before execution. Use when starting non-trivial work, when the user says "write a spec", "plan this task", or "contract for this". Produces a 9-section contract with two-tier review gate.</td></tr>
+<tr><td><code>.claude/skills/ts-init/SKILL.md</code></td><td>199</td><td>Scaffold the Nana 5-layer TypeScript dev harness. New projects get full scaffold; existing projects go through scan-approve-transform-validate. Use when the user says "init", "scaffold", or "set up a project" in a TypeScript context.</td></tr>
 <tr><td><code>.claude/skills/ts-init/scanner.md</code></td><td>115</td><td>Scaffold the Nana 5-layer TypeScript dev harness. New projects get full scaffold; existing projects go through scan-approve-transform-validate. Use when the user says "init", "scaffold", or "set up a project" in a TypeScript context.</td></tr>
 <tr><td><code>.claude/skills/ts-init/transform.md</code></td><td>114</td><td>Scaffold the Nana 5-layer TypeScript dev harness. New projects get full scaffold; existing projects go through scan-approve-transform-validate. Use when the user says "init", "scaffold", or "set up a project" in a TypeScript context.</td></tr>
 <tr><td><code>.claude/skills/wiki-absorb/SKILL.md</code></td><td>142</td><td>"Use when the wiki inbox has 3+ unprocessed entries or before running query/lint/reorg. Converts raw captures into polished cross-linked articles. Do NOT use for capturing new insights (use wiki-add) or when the inbox is empty."</td></tr>
@@ -626,13 +633,16 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <table>
 <tr><td><code>test_companions.sh</code></td><td>0 assertions, 97 lines</td></tr>
 <tr><td><code>test_enforce.sh</code></td><td>9 assertions, 137 lines</td></tr>
-<tr><td><code>test_harden.sh</code></td><td>0 assertions, 138 lines</td></tr>
-<tr><td><code>test_install.sh</code></td><td>60 assertions, 736 lines</td></tr>
+<tr><td><code>test_harden.sh</code></td><td>0 assertions, 159 lines</td></tr>
+<tr><td><code>test_heuristic_evolution.sh</code></td><td>22 assertions, 117 lines</td></tr>
+<tr><td><code>test_install.sh</code></td><td>60 assertions, 701 lines</td></tr>
 <tr><td><code>test_memory.sh</code></td><td>11 assertions, 266 lines</td></tr>
+<tr><td><code>test_registration.sh</code></td><td>0 assertions, 86 lines</td></tr>
+<tr><td><code>test_settings_template.sh</code></td><td>0 assertions, 107 lines</td></tr>
 <tr><td><code>test_sync_rules.sh</code></td><td>15 assertions, 100 lines</td></tr>
-<tr><td><code>test_templates.sh</code></td><td>89 assertions, 741 lines</td></tr>
+<tr><td><code>test_templates.sh</code></td><td>89 assertions, 956 lines</td></tr>
 </table>
-<p style="margin-top:0.5rem;font-size:0.85rem">Total: <strong>184 assertions</strong> across 7 test scripts. Run with <code>make test</code>.</p>
+<p style="margin-top:0.5rem;font-size:0.85rem">Total: <strong>206 assertions</strong> across 10 test scripts. Run with <code>make test</code>.</p>
 <p style="font-size:0.85rem">Edge cases covered: missing source files, unwritable directories, MCP registration (no file / partial / complete), venv fallback, idempotency (diff between runs).</p>
 </div>
 
@@ -834,7 +844,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 </pre>
 
 <footer>
-  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-05-26 17:47<br>
+  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-05-28 20:29<br>
   <code>scripts/generate-workflow.py</code> &mdash; run <code>make workflow</code> to regenerate
 </footer>
 

@@ -1,11 +1,35 @@
 # Active Phase Context
 
-Phase: 56 - Cognitive Activation & Memory Design
-Status: COMPLETED (6/6 tasks done)
-Objective: Classify 5 memory layers (mandatory/automatic/voluntary), upgrade cognitive readiness to actionable recommendations, strengthen dev-plan empty-wiki handling, seed domain articles, add eval scenarios.
-Scope: templates/.claude/hooks/session-start.d/cognitive-readiness.sh, templates/.claude/skills/dev-plan/SKILL.md, templates/.claude/skills/nana-init/SKILL.md, .dev-wiki/articles/decisions/, eval/corpus/, wiki/, tests/
-Result: All exit criteria met. Memory architecture classified (high confidence), cognitive readiness actionable, dev-plan wiki_article_count variable, nana-init wiki-bootstrap nudge, 4 domain articles seeded, 54/54 eval (100%).
-Exit: All tasks complete, 1 decision captured (confidence upgraded low->high), make test + make eval pass.
+Phase: 57 - Hook Consolidation and Enforcement Activation
+Status: COMPLETED (5/5 tasks, delivery accepted, committed)
+Objective: Reconcile the three disagreeing hook-registration sources into one scope-tagged source of truth in modules.json, generate the per-project template from it, make the enforce opt-in marker project-reachable, and verify enforce-spec actually fires (exit 2) in a fresh scaffold. Fix 1 of the Phase 57+ harness-activation roadmap.
+
+Scope:
+- modules.json
+- scripts/register-settings.py
+- templates/.claude/settings.json (generated artifact)
+- templates/.claude/hooks/enforce-spec.sh, enforce-memory.sh, enforce-loop.sh
+- templates/.claude/enforce (shipped marker)
+- install.sh
+- Makefile
+- tests/
+
+Key constraints:
+- Backward compatible: existing global ~/.claude registrations + marker keep working (marker logic is project OR global, additive). No destructive global migration (upsert-only).
+- Single source of truth: one canonical hooks list in modules.json; template is generated, never hand-edited; drift test in make test.
+- Fail-open preserved: marker change must not make any fail-open hook block where it previously passed (no .dev-wiki, no marker, no jq → still exit 0).
+- Verify firing, not presence: done = scaffold-from-template makes enforce-spec exit 2 under firing conditions, in an empty HOME.
+- Out of scope: flipping the KIT itself to self-enforcement (self-lockout risk); Fixes 2-5.
+
+Exit criteria:
+- modules.json has one scope-tagged hooks array (every entry project|global)
+- generated template registers enforce-spec/loop/memory
+- `make template && git diff --quiet -- templates/.claude/settings.json` (deterministic, in sync)
+- enforce-spec honors project marker + marker shipped in template
+- tests/test_settings_template.sh firing test passes (enforce-spec exit 2 in scaffold)
+- make test green
+
+Abort: if Claude Code double-fires registered hooks harmfully (not merely cosmetically), STOP and reconsider scope project-only + kit migration. If the firing test only passes with the global marker present, the marker fix is incomplete — fix before declaring done.
 
 Gates:
 - [x] Direction confirmed by user (approach approved)

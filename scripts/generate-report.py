@@ -145,7 +145,7 @@ LAYERS = [
 ]
 
 WORKFLOWS = [
-    ("Install", "git clone → install.sh", "Modular installer (--all/--core-only/--no-python/--dry-run/--status). Copies 24 skills across 4 modules, 3 identity rules, 5 global enforcement hooks, memory server. Creates venv, registers MCP server."),
+    ("Install", "git clone → install.sh", "Modular installer (--all/--core-only/--no-python/--dry-run/--status). Copies 24 skills across 4 modules, 3 identity rules, global session hooks (enforcement/lifecycle hooks are project-scoped, installed per-project), memory server. Creates venv, registers MCP server."),
     ("Scaffold", "/py-init in a project", "New: full 7-layer scaffold. Existing: 10-dimension feasibility scan → approval gate → transform → validation."),
     ("Develop", "Daily coding with Claude Code", "Session-start loads dev-wiki state, checks enforcement, detects crash recovery, clears stale sidecars. Hooks auto-format, block dangerous ops, audit, detect loops."),
     ("Lifecycle", "/dev-init → /spec → /dev-plan → implement → /dev-debrief", "Phase-based planning with spec review gate, TDD tasks, session capture. Decisions, journal, and memory harvest tracked in .dev-wiki/."),

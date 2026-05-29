@@ -40,12 +40,12 @@
 <body>
 
 <h1>Nana Dev Kit</h1>
-<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-05-26 17:47</p>
+<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-05-28 20:29</p>
 
 <div class="stats">
-  <div class="stat"><div class="num">394</div><div class="label">Files</div></div>
-  <div class="stat"><div class="num">29,088</div><div class="label">Lines of Code</div></div>
-  <div class="stat"><div class="num">291</div><div class="label">Automated Tests</div></div>
+  <div class="stat"><div class="num">527</div><div class="label">Files</div></div>
+  <div class="stat"><div class="num">43,215</div><div class="label">Lines of Code</div></div>
+  <div class="stat"><div class="num">324</div><div class="label">Automated Tests</div></div>
   <div class="stat"><div class="num">7</div><div class="label">Harness Layers</div></div>
   <div class="stat"><div class="num">v0.5.0</div><div class="label">Latest Tag</div></div>
 </div>
@@ -66,7 +66,7 @@
 <h2>Workflows</h2>
 <div class="workflow">
   <strong>Install</strong> <span class="trigger">&mdash; git clone → install.sh</span>
-  <p>Modular installer (--all/--core-only/--no-python/--dry-run/--status). Copies 24 skills across 4 modules, 3 identity rules, 5 global enforcement hooks, memory server. Creates venv, registers MCP server.</p>
+  <p>Modular installer (--all/--core-only/--no-python/--dry-run/--status). Copies 24 skills across 4 modules, 3 identity rules, global session hooks (enforcement/lifecycle hooks are project-scoped, installed per-project), memory server. Creates venv, registers MCP server.</p>
 </div>
 <div class="workflow">
   <strong>Scaffold</strong> <span class="trigger">&mdash; /py-init in a project</span>
@@ -134,29 +134,32 @@
 
 <h2>File Inventory</h2>
 <div class="category">
-  <h3>Core Scripts <span class="badge badge-green">8 files, 2,362 lines</span></h3>
+  <h3>Core Scripts <span class="badge badge-green">9 files, 2,473 lines</span></h3>
   <ul class="file-list">
-    <li><span>Makefile</span><span class='lines'>30</span></li>
-    <li><span>install.sh</span><span class='lines'>320</span></li>
+    <li><span>Makefile</span><span class='lines'>40</span></li>
+    <li><span>install.sh</span><span class='lines'>323</span></li>
     <li><span>scripts/eval-runner.sh</span><span class='lines'>333</span></li>
     <li><span>scripts/generate-delivery-report.py</span><span class='lines'>276</span></li>
     <li><span>scripts/generate-report.py</span><span class='lines'>328</span></li>
     <li><span>scripts/generate-workflow.py</span><span class='lines'>860</span></li>
-    <li><span>scripts/register-settings.py</span><span class='lines'>144</span></li>
+    <li><span>scripts/heuristic-dashboard.py</span><span class='lines'>93</span></li>
+    <li><span>scripts/register-settings.py</span><span class='lines'>149</span></li>
     <li><span>scripts/sync-rules.sh</span><span class='lines'>71</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Test Suite <span class="badge badge-green">8 files, 2,289 lines</span></h3>
+  <h3>Test Suite <span class="badge badge-green">10 files, 2,693 lines</span></h3>
   <ul class="file-list">
     <li><span>tests/helpers.sh</span><span class='lines'>74</span></li>
     <li><span>tests/test_companions.sh</span><span class='lines'>97</span></li>
     <li><span>tests/test_enforce.sh</span><span class='lines'>137</span></li>
-    <li><span>tests/test_harden.sh</span><span class='lines'>138</span></li>
-    <li><span>tests/test_install.sh</span><span class='lines'>736</span></li>
+    <li><span>tests/test_harden.sh</span><span class='lines'>159</span></li>
+    <li><span>tests/test_heuristic_evolution.sh</span><span class='lines'>117</span></li>
+    <li><span>tests/test_install.sh</span><span class='lines'>701</span></li>
     <li><span>tests/test_memory.sh</span><span class='lines'>266</span></li>
+    <li><span>tests/test_registration.sh</span><span class='lines'>86</span></li>
     <li><span>tests/test_sync_rules.sh</span><span class='lines'>100</span></li>
-    <li><span>tests/test_templates.sh</span><span class='lines'>741</span></li>
+    <li><span>tests/test_templates.sh</span><span class='lines'>956</span></li>
   </ul>
 </div>
 <div class="category">
@@ -196,7 +199,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 3: Hooks <span class="badge badge-green">21 files, 1,029 lines</span></h3>
+  <h3>Templates — Layer 3: Hooks <span class="badge badge-green">22 files, 1,088 lines</span></h3>
   <ul class="file-list">
     <li><span>templates/.claude/hooks/audit-log.sh</span><span class='lines'>23</span></li>
     <li><span>templates/.claude/hooks/auto-ruff-format.sh</span><span class='lines'>17</span></li>
@@ -213,26 +216,28 @@
     <li><span>templates/.claude/hooks/pre-compact.sh</span><span class='lines'>50</span></li>
     <li><span>templates/.claude/hooks/py-review-stop-prompt.md</span><span class='lines'>10</span></li>
     <li><span>templates/.claude/hooks/scan-secrets.sh</span><span class='lines'>26</span></li>
+    <li><span>templates/.claude/hooks/session-start.d/cognitive-readiness.sh</span><span class='lines'>118</span></li>
     <li><span>templates/.claude/hooks/session-start.d/memory-nudge.sh</span><span class='lines'>35</span></li>
     <li><span>templates/.claude/hooks/session-start.d/wk-prune.sh</span><span class='lines'>54</span></li>
-    <li><span>templates/.claude/hooks/session-start.sh</span><span class='lines'>129</span></li>
+    <li><span>templates/.claude/hooks/session-start.sh</span><span class='lines'>70</span></li>
     <li><span>templates/.claude/hooks/session-stop.sh</span><span class='lines'>28</span></li>
     <li><span>templates/.claude/hooks/stale-queue.sh</span><span class='lines'>53</span></li>
     <li><span>templates/.claude/settings.json</span><span class='lines'>77</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 3: Skills <span class="badge badge-green">126 files, 12,011 lines</span></h3>
+  <h3>Templates — Layer 3: Skills <span class="badge badge-green">132 files, 12,351 lines</span></h3>
   <ul class="file-list">
     <li><span>templates/.claude/skills/MANIFEST</span><span class='lines'>154</span></li>
     <li><span>templates/.claude/skills/dev-check/SKILL.md</span><span class='lines'>150</span></li>
-    <li><span>templates/.claude/skills/dev-debrief/SKILL.md</span><span class='lines'>311</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/SKILL.md</span><span class='lines'>315</span></li>
     <li><span>templates/.claude/skills/dev-debrief/active-knowledge-transition.md</span><span class='lines'>24</span></li>
     <li><span>templates/.claude/skills/dev-debrief/architecture-staleness-check.md</span><span class='lines'>24</span></li>
     <li><span>templates/.claude/skills/dev-debrief/claude-md-refresh.md</span><span class='lines'>38</span></li>
     <li><span>templates/.claude/skills/dev-debrief/debrief-finalization.md</span><span class='lines'>34</span></li>
     <li><span>templates/.claude/skills/dev-debrief/delivery-flow.md</span><span class='lines'>48</span></li>
     <li><span>templates/.claude/skills/dev-debrief/executor-prompt.md</span><span class='lines'>141</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/heuristic-capture.md</span><span class='lines'>60</span></li>
     <li><span>templates/.claude/skills/dev-debrief/memory-harvest.md</span><span class='lines'>68</span></li>
     <li><span>templates/.claude/skills/dev-debrief/quick-debrief-flow.md</span><span class='lines'>31</span></li>
     <li><span>templates/.claude/skills/dev-debrief/retro-check.md</span><span class='lines'>46</span></li>
@@ -243,10 +248,14 @@
     <li><span>templates/.claude/skills/dev-init/scaffold-claude-md.md</span><span class='lines'>54</span></li>
     <li><span>templates/.claude/skills/dev-init/templates/AGENTS.md</span><span class='lines'>55</span></li>
     <li><span>templates/.claude/skills/dev-init/templates/project-CLAUDE.md</span><span class='lines'>42</span></li>
-    <li><span>templates/.claude/skills/dev-plan/SKILL.md</span><span class='lines'>309</span></li>
+    <li><span>templates/.claude/skills/dev-plan/SKILL.md</span><span class='lines'>321</span></li>
     <li><span>templates/.claude/skills/dev-plan/approach-reviewer-prompt.md</span><span class='lines'>68</span></li>
     <li><span>templates/.claude/skills/dev-plan/artifact-writer-prompt.md</span><span class='lines'>108</span></li>
     <li><span>templates/.claude/skills/dev-plan/compaction-anchors-spec.md</span><span class='lines'>76</span></li>
+    <li><span>templates/.claude/skills/dev-plan/heuristic-counter-update.md</span><span class='lines'>43</span></li>
+    <li><span>templates/.claude/skills/dev-plan/heuristic-judge-prompt.md</span><span class='lines'>57</span></li>
+    <li><span>templates/.claude/skills/dev-plan/heuristic-lifecycle.md</span><span class='lines'>36</span></li>
+    <li><span>templates/.claude/skills/dev-plan/heuristic-matcher.md</span><span class='lines'>60</span></li>
     <li><span>templates/.claude/skills/dev-plan/implementation-guide.md</span><span class='lines'>93</span></li>
     <li><span>templates/.claude/skills/dev-plan/iterative-retrieval-spec.md</span><span class='lines'>41</span></li>
     <li><span>templates/.claude/skills/dev-plan/memory-bridge.md</span><span class='lines'>72</span></li>
@@ -255,6 +264,7 @@
     <li><span>templates/.claude/skills/dev-plan/research-pause-spec.md</span><span class='lines'>57</span></li>
     <li><span>templates/.claude/skills/dev-plan/scope-exploration-spec.md</span><span class='lines'>30</span></li>
     <li><span>templates/.claude/skills/dev-plan/self-check-checklist.md</span><span class='lines'>89</span></li>
+    <li><span>templates/.claude/skills/dev-plan/self-dialogue-prompt.md</span><span class='lines'>44</span></li>
     <li><span>templates/.claude/skills/dev-plan/spec-auto-invoke.md</span><span class='lines'>53</span></li>
     <li><span>templates/.claude/skills/dev-plan/state-loader-prompt.md</span><span class='lines'>119</span></li>
     <li><span>templates/.claude/skills/dev-plan/task-schema.md</span><span class='lines'>91</span></li>
@@ -293,18 +303,18 @@
     <li><span>templates/.claude/skills/knowledge-wiki/search-spec.md</span><span class='lines'>175</span></li>
     <li><span>templates/.claude/skills/knowledge-wiki/session-context.md</span><span class='lines'>40</span></li>
     <li><span>templates/.claude/skills/memory-consolidate/SKILL.md</span><span class='lines'>45</span></li>
-    <li><span>templates/.claude/skills/nana-init/SKILL.md</span><span class='lines'>86</span></li>
+    <li><span>templates/.claude/skills/nana-init/SKILL.md</span><span class='lines'>91</span></li>
     <li><span>templates/.claude/skills/nana/SKILL.md</span><span class='lines'>37</span></li>
-    <li><span>templates/.claude/skills/py-init/SKILL.md</span><span class='lines'>168</span></li>
+    <li><span>templates/.claude/skills/py-init/SKILL.md</span><span class='lines'>169</span></li>
     <li><span>templates/.claude/skills/py-init/scanner.md</span><span class='lines'>107</span></li>
     <li><span>templates/.claude/skills/py-init/transform.md</span><span class='lines'>103</span></li>
     <li><span>templates/.claude/skills/py-lint/SKILL.md</span><span class='lines'>37</span></li>
     <li><span>templates/.claude/skills/py-review/SKILL.md</span><span class='lines'>58</span></li>
     <li><span>templates/.claude/skills/py-test/SKILL.md</span><span class='lines'>41</span></li>
-    <li><span>templates/.claude/skills/spec/SKILL.md</span><span class='lines'>138</span></li>
+    <li><span>templates/.claude/skills/spec/SKILL.md</span><span class='lines'>145</span></li>
     <li><span>templates/.claude/skills/spec/adversarial-constraints-prompt.md</span><span class='lines'>46</span></li>
-    <li><span>templates/.claude/skills/spec/spec-reviewer-prompt.md</span><span class='lines'>82</span></li>
-    <li><span>templates/.claude/skills/ts-init/SKILL.md</span><span class='lines'>198</span></li>
+    <li><span>templates/.claude/skills/spec/spec-reviewer-prompt.md</span><span class='lines'>92</span></li>
+    <li><span>templates/.claude/skills/ts-init/SKILL.md</span><span class='lines'>199</span></li>
     <li><span>templates/.claude/skills/ts-init/scanner.md</span><span class='lines'>115</span></li>
     <li><span>templates/.claude/skills/ts-init/transform.md</span><span class='lines'>114</span></li>
     <li><span>templates/.claude/skills/wiki-absorb/SKILL.md</span><span class='lines'>142</span></li>
@@ -390,7 +400,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Eval Harness <span class="badge badge-green">155 files, 2,611 lines</span></h3>
+  <h3>Eval Harness <span class="badge badge-green">229 files, 12,206 lines</span></h3>
   <ul class="file-list">
     <li><span>eval/README.md</span><span class='lines'>86</span></li>
     <li><span>eval/comparison/CONDITION-C-INSTRUCTIONS.md</span><span class='lines'>35</span></li>
@@ -417,6 +427,13 @@
     <li><span>eval/comparison/tasks/bug-fix.md</span><span class='lines'>24</span></li>
     <li><span>eval/comparison/tasks/feature-build.md</span><span class='lines'>37</span></li>
     <li><span>eval/comparison/tasks/swe-bench-django-16263.md</span><span class='lines'>59</span></li>
+    <li><span>eval/corpus/context-cognitive-readiness-empty/current-state.md</span><span class='lines'>6</span></li>
+    <li><span>eval/corpus/context-cognitive-readiness-empty/scenario.json</span><span class='lines'>15</span></li>
+    <li><span>eval/corpus/context-cognitive-readiness-empty/wiki-schema.md</span><span class='lines'>10</span></li>
+    <li><span>eval/corpus/context-cognitive-readiness-populated/current-state.md</span><span class='lines'>6</span></li>
+    <li><span>eval/corpus/context-cognitive-readiness-populated/enforce-marker</span><span class='lines'>0</span></li>
+    <li><span>eval/corpus/context-cognitive-readiness-populated/scenario.json</span><span class='lines'>17</span></li>
+    <li><span>eval/corpus/context-cognitive-readiness-populated/wiki-article.md</span><span class='lines'>13</span></li>
     <li><span>eval/corpus/context-file-lifecycle-sections/file-lifecycle.md</span><span class='lines'>32</span></li>
     <li><span>eval/corpus/context-file-lifecycle-sections/scenario.json</span><span class='lines'>17</span></li>
     <li><span>eval/corpus/context-rules-installed/file-lifecycle.md</span><span class='lines'>32</span></li>
@@ -527,8 +544,12 @@
     <li><span>eval/corpus/lifecycle-spec-enforcement-flow/keep</span><span class='lines'>0</span></li>
     <li><span>eval/corpus/lifecycle-spec-enforcement-flow/scenario.json</span><span class='lines'>36</span></li>
     <li><span>eval/corpus/lifecycle-spec-enforcement-flow/spec.md</span><span class='lines'>5</span></li>
+    <li><span>eval/corpus/skill-counter-update-companion/heuristic-counter-update.md</span><span class='lines'>43</span></li>
+    <li><span>eval/corpus/skill-counter-update-companion/scenario.json</span><span class='lines'>18</span></li>
     <li><span>eval/corpus/skill-decision-valid/artifact.md</span><span class='lines'>28</span></li>
     <li><span>eval/corpus/skill-decision-valid/scenario.json</span><span class='lines'>10</span></li>
+    <li><span>eval/corpus/skill-evolution-lifecycle-companion/heuristic-lifecycle.md</span><span class='lines'>36</span></li>
+    <li><span>eval/corpus/skill-evolution-lifecycle-companion/scenario.json</span><span class='lines'>17</span></li>
     <li><span>eval/corpus/skill-phase-invalid/artifact.md</span><span class='lines'>7</span></li>
     <li><span>eval/corpus/skill-phase-invalid/scenario.json</span><span class='lines'>10</span></li>
     <li><span>eval/corpus/skill-phase-valid/artifact.md</span><span class='lines'>26</span></li>
@@ -539,6 +560,69 @@
     <li><span>eval/corpus/skill-spec-invalid/scenario.json</span><span class='lines'>10</span></li>
     <li><span>eval/corpus/skill-spec-valid/artifact.md</span><span class='lines'>53</span></li>
     <li><span>eval/corpus/skill-spec-valid/scenario.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/README.md</span><span class='lines'>143</span></li>
+    <li><span>eval/reasoning/baseline/results-25.json</span><span class='lines'>990</span></li>
+    <li><span>eval/reasoning/baseline/results-v2.json</span><span class='lines'>87</span></li>
+    <li><span>eval/reasoning/baseline/results.json</span><span class='lines'>795</span></li>
+    <li><span>eval/reasoning/conditional-injection.md</span><span class='lines'>35</span></li>
+    <li><span>eval/reasoning/corpus/001-database-choice.json</span><span class='lines'>9</span></li>
+    <li><span>eval/reasoning/corpus/002-hook-error-strategy.json</span><span class='lines'>9</span></li>
+    <li><span>eval/reasoning/corpus/003-structural-vs-functional-tests.json</span><span class='lines'>9</span></li>
+    <li><span>eval/reasoning/corpus/004-vendored-dep-extension.json</span><span class='lines'>9</span></li>
+    <li><span>eval/reasoning/corpus/005-ceremony-reduction.json</span><span class='lines'>9</span></li>
+    <li><span>eval/reasoning/corpus/006-cross-domain-port.json</span><span class='lines'>9</span></li>
+    <li><span>eval/reasoning/corpus/007-optional-subsystem-failure.json</span><span class='lines'>9</span></li>
+    <li><span>eval/reasoning/corpus/008-false-positive-detection.json</span><span class='lines'>9</span></li>
+    <li><span>eval/reasoning/corpus/009-latency-budget-language.json</span><span class='lines'>9</span></li>
+    <li><span>eval/reasoning/corpus/010-dedup-at-scale.json</span><span class='lines'>9</span></li>
+    <li><span>eval/reasoning/corpus/011-monorepo-migration-timing.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/corpus/012-api-backward-compat.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/corpus/013-ci-slow-flaky.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/corpus/014-library-dep-pinning.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/corpus/015-rewrite-vs-refactor-auth.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/corpus/016-build-vs-buy-observability.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/corpus/017-schema-migration-strategy.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/corpus/018-feature-flag-debt.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/corpus/019-consistency-vs-availability.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/corpus/020-tech-debt-triage.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/corpus/021-microservice-extraction-timing.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/corpus/022-incident-response-vs-prevention.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/corpus/023-team-topology-bottleneck.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/corpus/024-vendor-lock-in-vs-velocity.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/corpus/025-test-coverage-mandate.json</span><span class='lines'>10</span></li>
+    <li><span>eval/reasoning/cross-model/results.json</span><span class='lines'>565</span></li>
+    <li><span>eval/reasoning/iron-rules-crossref.md</span><span class='lines'>44</span></li>
+    <li><span>eval/reasoning/iron-rules-injection-v2.md</span><span class='lines'>41</span></li>
+    <li><span>eval/reasoning/judges/cross-model-judge.md</span><span class='lines'>42</span></li>
+    <li><span>eval/reasoning/judges/reasoning-judge-v2.md</span><span class='lines'>60</span></li>
+    <li><span>eval/reasoning/judges/reasoning-judge.md</span><span class='lines'>54</span></li>
+    <li><span>eval/reasoning/length-sensitivity/filler-text.md</span><span class='lines'>41</span></li>
+    <li><span>eval/reasoning/length-sensitivity/results.json</span><span class='lines'>795</span></li>
+    <li><span>eval/reasoning/run-eval.py</span><span class='lines'>626</span></li>
+    <li><span>eval/reasoning/scenario-type-taxonomy.md</span><span class='lines'>58</span></li>
+    <li><span>eval/reasoning/selective/ground-truth.json</span><span class='lines'>102</span></li>
+    <li><span>eval/reasoning/selective/results.json</span><span class='lines'>51</span></li>
+    <li><span>eval/reasoning/self-dialogue-injection.md</span><span class='lines'>32</span></li>
+    <li><span>eval/reasoning/trace-schema.json</span><span class='lines'>69</span></li>
+    <li><span>eval/reasoning/traces/attribution-matrix.json</span><span class='lines'>477</span></li>
+    <li><span>eval/reasoning/traces/baseline-no-heuristics.json</span><span class='lines'>148</span></li>
+    <li><span>eval/reasoning/traces/conditional-analysis.md</span><span class='lines'>72</span></li>
+    <li><span>eval/reasoning/traces/full-set.json</span><span class='lines'>148</span></li>
+    <li><span>eval/reasoning/traces/leave-one-out-IRON-001.json</span><span class='lines'>99</span></li>
+    <li><span>eval/reasoning/traces/leave-one-out-IRON-002.json</span><span class='lines'>99</span></li>
+    <li><span>eval/reasoning/traces/leave-one-out-IRON-003.json</span><span class='lines'>99</span></li>
+    <li><span>eval/reasoning/traces/leave-one-out-IRON-004.json</span><span class='lines'>99</span></li>
+    <li><span>eval/reasoning/traces/leave-one-out-IRON-005.json</span><span class='lines'>99</span></li>
+    <li><span>eval/reasoning/traces/phase-50-analysis.md</span><span class='lines'>113</span></li>
+    <li><span>eval/reasoning/traces/phase-51-analysis.md</span><span class='lines'>63</span></li>
+    <li><span>eval/reasoning/traces/selection-criteria.md</span><span class='lines'>90</span></li>
+    <li><span>eval/reasoning/with-anti-patterns/checkpoint-a.json</span><span class='lines'>88</span></li>
+    <li><span>eval/reasoning/with-anti-patterns/results.json</span><span class='lines'>88</span></li>
+    <li><span>eval/reasoning/with-conditional/results.json</span><span class='lines'>797</span></li>
+    <li><span>eval/reasoning/with-iron-rules/results-25.json</span><span class='lines'>990</span></li>
+    <li><span>eval/reasoning/with-iron-rules/results.json</span><span class='lines'>795</span></li>
+    <li><span>eval/reasoning/with-self-dialogue-inline/results.json</span><span class='lines'>88</span></li>
+    <li><span>eval/reasoning/with-self-dialogue-subagent/results.json</span><span class='lines'>92</span></li>
     <li><span>eval/schemas/post-tool-use.json</span><span class='lines'>35</span></li>
     <li><span>eval/schemas/pre-tool-use.json</span><span class='lines'>26</span></li>
     <li><span>eval/schemas/session-start.json</span><span class='lines'>7</span></li>
@@ -550,7 +634,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Specs <span class="badge badge-green">34 files, 3,083 lines</span></h3>
+  <h3>Specs <span class="badge badge-green">46 files, 4,127 lines</span></h3>
   <ul class="file-list">
     <li><span>specs/phase-08-spec-skill.md</span><span class='lines'>113</span></li>
     <li><span>specs/phase-09-file-lifecycle-reference.md</span><span class='lines'>83</span></li>
@@ -585,21 +669,70 @@
     <li><span>specs/phase-41-harness-hardening-process-safeguards.md</span><span class='lines'>82</span></li>
     <li><span>specs/phase-42-harness-effectiveness-validation.md</span><span class='lines'>82</span></li>
     <li><span>specs/phase-43-unified-init-activation-gap.md</span><span class='lines'>78</span></li>
+    <li><span>specs/phase-44-heuristic-learning-foundation.md</span><span class='lines'>59</span></li>
+    <li><span>specs/phase-45-eval-calibration-iron-rules.md</span><span class='lines'>87</span></li>
+    <li><span>specs/phase-46-anti-pattern-tables-heuristic-capture.md</span><span class='lines'>93</span></li>
+    <li><span>specs/phase-47-self-dialogue-in-dev-plan.md</span><span class='lines'>112</span></li>
+    <li><span>specs/phase-48-trace-collection-pattern-analysis.md</span><span class='lines'>114</span></li>
+    <li><span>specs/phase-49-conditional-heuristic-injection.md</span><span class='lines'>78</span></li>
+    <li><span>specs/phase-50-eval-advancement.md</span><span class='lines'>84</span></li>
+    <li><span>specs/phase-51-prompt-type-hooks.md</span><span class='lines'>89</span></li>
+    <li><span>specs/phase-52-heuristic-evolution.md</span><span class='lines'>95</span></li>
+    <li><span>specs/phase-53-open-questions.md</span><span class='lines'>89</span></li>
+    <li><span>specs/phase-54-maintenance-sweep.md</span><span class='lines'>58</span></li>
+    <li><span>specs/phase-56-cognitive-activation-memory-design.md</span><span class='lines'>86</span></li>
     <li><span>specs/ts-init-design.md</span><span class='lines'>252</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Other <span class="badge badge-green">9 files, 2,218 lines</span></h3>
+  <h3>Other <span class="badge badge-green">46 files, 4,792 lines</span></h3>
   <ul class="file-list">
-    <li><span>.claude/rules/active-phase.md</span><span class='lines'>10</span></li>
-    <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>216</span></li>
+    <li><span>.claude/rules/active-phase.md</span><span class='lines'>36</span></li>
+    <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>209</span></li>
+    <li><span>.memory/memory.db</span><span class='lines'>0</span></li>
+    <li><span>.memory/memory.db-shm</span><span class='lines'>0</span></li>
+    <li><span>.memory/memory.db-wal</span><span class='lines'>0</span></li>
     <li><span>benchmark/README.md</span><span class='lines'>108</span></li>
     <li><span>benchmark/longmemeval.py</span><span class='lines'>302</span></li>
-    <li><span>docs/delivery-report.html</span><span class='lines'>97</span></li>
-    <li><span>docs/report.html</span><span class='lines'>557</span></li>
-    <li><span>docs/workflow.html</span><span class='lines'>826</span></li>
-    <li><span>modules.json</span><span class='lines'>79</span></li>
+    <li><span>docs/delivery-report.html</span><span class='lines'>122</span></li>
+    <li><span>docs/memory-knowledge-architecture.md</span><span class='lines'>611</span></li>
+    <li><span>docs/nanaclaw-architecture.md</span><span class='lines'>722</span></li>
+    <li><span>docs/report.html</span><span class='lines'>637</span></li>
+    <li><span>docs/workflow.html</span><span class='lines'>842</span></li>
+    <li><span>modules.json</span><span class='lines'>74</span></li>
     <li><span>patches/nanaclaw-sanitize-fts.patch</span><span class='lines'>23</span></li>
+    <li><span>wiki/articles/action-plans/.gitkeep</span><span class='lines'>0</span></li>
+    <li><span>wiki/articles/concepts/.gitkeep</span><span class='lines'>0</span></li>
+    <li><span>wiki/articles/decisions/.gitkeep</span><span class='lines'>0</span></li>
+    <li><span>wiki/articles/patterns/.gitkeep</span><span class='lines'>0</span></li>
+    <li><span>wiki/articles/patterns/cascade-failure-silent-disablement.md</span><span class='lines'>37</span></li>
+    <li><span>wiki/articles/patterns/context-injection-budget.md</span><span class='lines'>45</span></li>
+    <li><span>wiki/articles/patterns/mandatory-automatic-voluntary.md</span><span class='lines'>36</span></li>
+    <li><span>wiki/articles/patterns/open-ended-over-prescriptive.md</span><span class='lines'>37</span></li>
+    <li><span>wiki/heuristics/.gitkeep</span><span class='lines'>0</span></li>
+    <li><span>wiki/heuristics/HEU-001-embedded-databases-single-user.md</span><span class='lines'>43</span></li>
+    <li><span>wiki/heuristics/HEU-002-fail-loud-optional-subsystems.md</span><span class='lines'>44</span></li>
+    <li><span>wiki/heuristics/HEU-003-context-dependent-error-handling.md</span><span class='lines'>45</span></li>
+    <li><span>wiki/heuristics/HEU-004-functional-smoke-tests.md</span><span class='lines'>44</span></li>
+    <li><span>wiki/heuristics/HEU-005-prefilter-before-business-logic.md</span><span class='lines'>45</span></li>
+    <li><span>wiki/heuristics/HEU-006-two-tier-review.md</span><span class='lines'>46</span></li>
+    <li><span>wiki/heuristics/HEU-007-dual-condition-false-positives.md</span><span class='lines'>47</span></li>
+    <li><span>wiki/heuristics/HEU-008-pure-implementations-latency-critical.md</span><span class='lines'>44</span></li>
+    <li><span>wiki/heuristics/HEU-009-design-spec-cross-domain.md</span><span class='lines'>46</span></li>
+    <li><span>wiki/heuristics/HEU-010-extend-via-extension-points.md</span><span class='lines'>47</span></li>
+    <li><span>wiki/heuristics/HEU-011-capacity-multiplier.md</span><span class='lines'>42</span></li>
+    <li><span>wiki/heuristics/IRON-001-measure-before-optimizing.md</span><span class='lines'>42</span></li>
+    <li><span>wiki/heuristics/IRON-002-check-existing-before-building.md</span><span class='lines'>42</span></li>
+    <li><span>wiki/heuristics/IRON-003-validate-at-boundaries.md</span><span class='lines'>42</span></li>
+    <li><span>wiki/heuristics/IRON-004-simpler-system-wins.md</span><span class='lines'>43</span></li>
+    <li><span>wiki/heuristics/IRON-005-make-failure-visible.md</span><span class='lines'>42</span></li>
+    <li><span>wiki/heuristics/SCHEMA.md</span><span class='lines'>142</span></li>
+    <li><span>wiki/inbox/.gitkeep</span><span class='lines'>0</span></li>
+    <li><span>wiki/inbox/.processed/.gitkeep</span><span class='lines'>0</span></li>
+    <li><span>wiki/inbox/background-agent-polling-antipattern.md</span><span class='lines'>32</span></li>
+    <li><span>wiki/index.md</span><span class='lines'>29</span></li>
+    <li><span>wiki/log.md</span><span class='lines'>3</span></li>
+    <li><span>wiki/schema.md</span><span class='lines'>41</span></li>
   </ul>
 </div>
 <h2>Test Coverage</h2>
@@ -623,11 +756,11 @@
 </table>
 
 <h2>Recent Git History</h2>
-<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">a91fddf Phase 43: Unified Init & Activation Gap — rename /init to /nana-init, expand to full bootstrap orchestrator
-181f74f Phase 42: Harness Effectiveness Validation — SWE-bench comparison, 3-condition A/B/C with token tracking
-9153408 Phase 41: Harness Hardening & Process Safeguards — jq guard, companion metadata, cooldown advisory, debrief enhancements
-7310391 Phase 40: install.sh Extraction & Anti-Pattern Hardening — modules.json, register-settings.py, functional smoke invariant
-92f26b7 Phase 39: Resilience & Health Probes — jq migration, 3-state health probe, PostToolUse normalization, /init router</pre>
+<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">5915007 Phase 54-56: Maintenance sweep, harness activation overhaul, cognitive activation & memory design
+5af8e3d Phase 53 debrief: 3 investigations, journal, active-knowledge carried forward to working-knowledge
+9dcf653 Phase 53: Open Questions — IRON-004 scoping, HEU-011 capacity-multiplier, MCP memory diagnosis
+d42f2d5 Phase 52: Heuristic Evolution — counter scoring, deprecation lifecycle, dashboard
+ad5b20b Phase 51: Prompt-Type Hooks — heuristic-informed runtime judging, ground-truth mapping, --selective eval mode</pre>
 
 <footer>
   Generated by <code>scripts/generate-report.py</code> &mdash; run <code>make report</code> to regenerate

@@ -104,6 +104,7 @@ Read `transform.md` (in this skill directory) and follow its procedure. Uses `so
    # Layer 3: Hooks
    mkdir -p .claude/hooks
    cp "$KIT/templates/.claude/settings.json" .claude/settings.json
+   cp "$KIT/templates/.claude/enforce" .claude/enforce   # opt-in marker → scaffold self-enforces
    cp "$KIT/templates/.claude/hooks/"*.sh .claude/hooks/
    cp "$KIT/templates/.claude/hooks/"*.md .claude/hooks/
    chmod +x .claude/hooks/*.sh

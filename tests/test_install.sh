@@ -284,67 +284,30 @@ assert_file_exists "$THOME_ALL/.claude/skills/ts-init/scanner.md"
 test_start "full install copies ts-init transform companion"
 assert_file_exists "$THOME_ALL/.claude/skills/ts-init/transform.md"
 
-test_start "full install creates enforce-spec hook"
-assert_file_exists "$THOME_ALL/.claude/hooks/enforce-spec.sh"
+# Global install installs ONLY global-scoped hooks (context-size-check) + opt-in markers.
+# Enforcement/lifecycle hooks are scope=project — verified in the --project-local block below.
+test_start "full install creates global session hook (context-size-check)"
+assert_file_exists "$THOME_ALL/.claude/hooks/context-size-check.sh"
 
-test_start "full install creates enforce-loop hook"
-assert_file_exists "$THOME_ALL/.claude/hooks/enforce-loop.sh"
+test_start "full install registers context-size-check globally"
+if grep -q 'context-size-check.sh' "$THOME_ALL/.claude/settings.json" 2>/dev/null && grep -q 'UserPromptSubmit' "$THOME_ALL/.claude/settings.json" 2>/dev/null; then
+  test_pass
+else
+  test_fail "context-size-check not registered globally"
+fi
 
 test_start "full install creates enforce marker"
 assert_file_exists "$THOME_ALL/.claude/enforce"
 
-test_start "full install registers hooks in settings.json"
-if grep -q 'enforce-spec.sh' "$THOME_ALL/.claude/settings.json" 2>/dev/null && grep -q 'enforce-loop.sh' "$THOME_ALL/.claude/settings.json" 2>/dev/null; then
-  test_pass
-else
-  test_fail "hooks not registered in settings.json"
-fi
-
-test_start "full install creates pre-compact hook"
-assert_file_exists "$THOME_ALL/.claude/hooks/pre-compact.sh"
-
-test_start "full install registers PreCompact in settings.json"
-if grep -q 'pre-compact.sh' "$THOME_ALL/.claude/settings.json" 2>/dev/null && grep -q 'PreCompact' "$THOME_ALL/.claude/settings.json" 2>/dev/null; then
-  test_pass
-else
-  test_fail "PreCompact not registered in settings.json"
-fi
-
-test_start "full install creates post-commit hook"
-assert_file_exists "$THOME_ALL/.claude/hooks/post-commit.sh"
-
-test_start "full install registers post-commit in settings.json"
-if grep -q 'post-commit.sh' "$THOME_ALL/.claude/settings.json" 2>/dev/null; then
-  test_pass
-else
-  test_fail "post-commit not registered in settings.json"
-fi
-
-test_start "full install creates enforce-memory hook"
-assert_file_exists "$THOME_ALL/.claude/hooks/enforce-memory.sh"
-
 test_start "full install creates enforce-memory marker"
 assert_file_exists "$THOME_ALL/.claude/enforce-memory"
 
-test_start "full install registers enforce-memory in settings.json"
-if grep -q 'enforce-memory.sh' "$THOME_ALL/.claude/settings.json" 2>/dev/null; then
+test_start "full install does NOT install project-scoped enforcement hooks globally"
+if [ ! -f "$THOME_ALL/.claude/hooks/enforce-spec.sh" ] && ! grep -q 'enforce-spec.sh' "$THOME_ALL/.claude/settings.json" 2>/dev/null; then
   test_pass
 else
-  test_fail "enforce-memory not registered in settings.json"
+  test_fail "enforce-spec leaked into global install (should be project-scoped)"
 fi
-
-# --- Phase 36 backports: 5 new global hooks ---
-for backport in context-size-check dev-wiki-scope-check post-compact session-stop stale-queue; do
-  test_start "full install creates $backport hook"
-  assert_file_exists "$THOME_ALL/.claude/hooks/${backport}.sh"
-
-  test_start "full install registers $backport in settings.json"
-  if grep -q "${backport}.sh" "$THOME_ALL/.claude/settings.json" 2>/dev/null; then
-    test_pass
-  else
-    test_fail "$backport not registered in settings.json"
-  fi
-done
 
 test_start "all settings.json hook entries use nested schema (matcher + hooks array)"
 SCHEMA_OK=$(python3 -c "
@@ -373,7 +336,7 @@ test_start "install migrates flat-shape settings.json entries to nested"
 THOME_MIGRATE=$(mktemp -d)
 mkdir -p "$THOME_MIGRATE/.claude/hooks"
 cat > "$THOME_MIGRATE/.claude/settings.json" <<'EOF'
-{"hooks":{"PreToolUse":[{"matcher":"Write|Edit","command":"/legacy/enforce-spec.sh"}],"Stop":[{"command":"/legacy/enforce-loop.sh"}]}}
+{"hooks":{"UserPromptSubmit":[{"command":"/legacy/context-size-check.sh"}]}}
 EOF
 HOME="$THOME_MIGRATE" bash "$PROJECT_ROOT/install.sh" >/dev/null 2>&1
 MIGRATE_OK=$(python3 -c "
@@ -401,6 +364,19 @@ assert_file_exists "$TPROJ/.claude/hooks/block-dangerous-bash.sh"
 assert_file_exists "$TPROJ/.claude/hooks/check-tests-were-run.sh"
 assert_file_exists "$TPROJ/.claude/hooks/scan-secrets.sh"
 assert_file_exists "$TPROJ/.claude/hooks/session-start.sh"
+# Enforcement/lifecycle hooks are project-scoped — they install here, not globally.
+assert_file_exists "$TPROJ/.claude/hooks/enforce-spec.sh"
+assert_file_exists "$TPROJ/.claude/hooks/enforce-loop.sh"
+assert_file_exists "$TPROJ/.claude/hooks/enforce-memory.sh"
+assert_file_exists "$TPROJ/.claude/hooks/pre-compact.sh"
+assert_file_exists "$TPROJ/.claude/hooks/post-commit.sh"
+
+test_start "--project-local registers enforcement hooks in settings.local.json"
+if grep -q 'enforce-spec.sh' "$TPROJ/.claude/settings.local.json" 2>/dev/null && grep -q 'enforce-loop.sh' "$TPROJ/.claude/settings.local.json" 2>/dev/null; then
+  test_pass
+else
+  test_fail "enforcement hooks not registered in settings.local.json"
+fi
 
 test_start "--project-local writes settings.local.json with nested schema"
 if [ -f "$TPROJ/.claude/settings.local.json" ]; then
@@ -541,7 +517,7 @@ assert_file_exists "$THOME_FN/.claude/skills/py-test/SKILL.md"
 test_start "enforce-spec.sh allows when enforce marker removed"
 rm -f "$THOME_FN/.claude/enforce"
 SPEC_EXIT=0
-echo '{"tool_name":"Write","input":{"file_path":"src/main.py"}}' | (cd "$THOME_FN" && bash "$THOME_FN/.claude/hooks/enforce-spec.sh") >/dev/null 2>&1 || SPEC_EXIT=$?
+echo '{"tool_name":"Write","input":{"file_path":"src/main.py"}}' | (cd "$THOME_FN" && bash "$PROJECT_ROOT/templates/.claude/hooks/enforce-spec.sh") >/dev/null 2>&1 || SPEC_EXIT=$?
 touch "$THOME_FN/.claude/enforce"
 if [ "$SPEC_EXIT" -eq 0 ]; then
   test_pass
@@ -551,8 +527,8 @@ fi
 
 # Hook functional test: dev-wiki-scope-check.sh parses .input.file_path (not .tool_input)
 test_start "scope-check.sh parses .input.file_path from PreToolUse JSON"
-SCOPE_OUT=$(echo '{"tool_name":"Write","input":{"file_path":"src/main.py"}}' | bash "$THOME_FN/.claude/hooks/dev-wiki-scope-check.sh" 2>&1 || true)
-if echo '{"tool_name":"Write","input":{"file_path":"src/test.py"}}' | bash "$THOME_FN/.claude/hooks/dev-wiki-scope-check.sh" >/dev/null 2>&1; then
+SCOPE_OUT=$(echo '{"tool_name":"Write","input":{"file_path":"src/main.py"}}' | bash "$PROJECT_ROOT/templates/.claude/hooks/dev-wiki-scope-check.sh" 2>&1 || true)
+if echo '{"tool_name":"Write","input":{"file_path":"src/test.py"}}' | bash "$PROJECT_ROOT/templates/.claude/hooks/dev-wiki-scope-check.sh" >/dev/null 2>&1; then
   test_pass
 else
   test_fail "scope-check.sh failed to parse .input.file_path"
@@ -560,18 +536,18 @@ fi
 
 # Hook functional test: scope-check does NOT parse old .tool_input path
 test_start "scope-check.sh ignores .tool_input (old broken field)"
-if ! grep -q 'tool_input' "$THOME_FN/.claude/hooks/dev-wiki-scope-check.sh"; then
+if ! grep -q 'tool_input' "$PROJECT_ROOT/templates/.claude/hooks/dev-wiki-scope-check.sh"; then
   test_pass
 else
   test_fail "scope-check.sh still references .tool_input"
 fi
 
-# MultiEdit in matchers: global hooks registered with MultiEdit
-test_start "global hooks registered with MultiEdit matcher"
-if grep -q 'Write|Edit|MultiEdit' "$THOME_FN/.claude/settings.json"; then
+# MultiEdit in matchers: generated template preserves the Write|Edit|MultiEdit matcher
+test_start "generated template registers hooks with MultiEdit matcher"
+if grep -q 'Write|Edit|MultiEdit' "$PROJECT_ROOT/templates/.claude/settings.json"; then
   test_pass
 else
-  test_fail "MultiEdit not in global settings.json matchers"
+  test_fail "MultiEdit not in template matchers"
 fi
 
 # Companion file verification: key skills have required companions
@@ -624,7 +600,7 @@ fi
 test_start "register-settings.py: hook upsert creates correct JSON"
 T_REG=$(mktemp -d)
 echo '{}' > "$T_REG/settings.json"
-python3 "$PROJECT_ROOT/scripts/register-settings.py" hooks "$T_REG/settings.json" "$PROJECT_ROOT/modules.json" --scope global
+python3 "$PROJECT_ROOT/scripts/register-settings.py" hooks "$T_REG/settings.json" "$PROJECT_ROOT/modules.json" --scope project-local
 if python3 -c "
 import json
 d = json.load(open('$T_REG/settings.json'))
@@ -633,7 +609,7 @@ assert 'PreToolUse' in hooks, 'missing PreToolUse'
 assert 'PostToolUse' in hooks, 'missing PostToolUse'
 assert 'Stop' in hooks, 'missing Stop'
 total = sum(len(v) for v in hooks.values())
-assert total == 11, f'expected 11 hook entries, got {total}'
+assert total == 17, f'expected 17 hook entries, got {total}'
 print('OK')
 " 2>/dev/null | grep -q OK; then
   test_pass
@@ -642,12 +618,12 @@ else
 fi
 
 test_start "register-settings.py: upsert is idempotent"
-python3 "$PROJECT_ROOT/scripts/register-settings.py" hooks "$T_REG/settings.json" "$PROJECT_ROOT/modules.json" --scope global
+python3 "$PROJECT_ROOT/scripts/register-settings.py" hooks "$T_REG/settings.json" "$PROJECT_ROOT/modules.json" --scope project-local
 TOTAL_AFTER=$(python3 -c "import json; d=json.load(open('$T_REG/settings.json')); print(sum(len(v) for v in d['hooks'].values()))")
-if [ "$TOTAL_AFTER" = "11" ]; then
+if [ "$TOTAL_AFTER" = "17" ]; then
   test_pass
 else
-  test_fail "upsert not idempotent: expected 11, got $TOTAL_AFTER"
+  test_fail "upsert not idempotent: expected 17, got $TOTAL_AFTER"
 fi
 
 test_start "register-settings.py: ghost cleanup removes entries"
@@ -709,7 +685,9 @@ fi
 
 test_start "modules.json: all hook scripts exist on filesystem"
 MISSING_HOOKS=""
-for h in $(jq -r '.modules[].hooks[].script' "$PROJECT_ROOT/modules.json"); do
+HOOK_LIST=$(jq -r '.hooks[].script' "$PROJECT_ROOT/modules.json")
+[ -n "$HOOK_LIST" ] || MISSING_HOOKS=" (canonical .hooks[] empty — schema regression)"
+for h in $HOOK_LIST; do
   if [ ! -f "$PROJECT_ROOT/templates/.claude/hooks/$h" ]; then
     MISSING_HOOKS="$MISSING_HOOKS $h"
   fi
@@ -718,19 +696,6 @@ if [ -z "$MISSING_HOOKS" ]; then
   test_pass
 else
   test_fail "missing hook scripts:$MISSING_HOOKS"
-fi
-
-test_start "modules.json: project-local hook scripts exist"
-MISSING_PL=""
-for h in $(jq -r '.project_local.hooks[].script' "$PROJECT_ROOT/modules.json"); do
-  if [ ! -f "$PROJECT_ROOT/templates/.claude/hooks/$h" ]; then
-    MISSING_PL="$MISSING_PL $h"
-  fi
-done
-if [ -z "$MISSING_PL" ]; then
-  test_pass
-else
-  test_fail "missing project-local hooks:$MISSING_PL"
 fi
 
 test_summary "test_install"
