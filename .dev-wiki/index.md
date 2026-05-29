@@ -60,6 +60,7 @@
 - [[phase-55-harness-activation-overhaul|Phase 55: Harness Activation Overhaul]] -- completed
 - [[phase-56-cognitive-activation-memory-design|Phase 56: Cognitive Activation & Memory Design]] -- completed
 - [[phase-57-hook-consolidation-and-enforcement-activation|Phase 57: Hook Consolidation and Enforcement Activation]] -- completed
+- [[phase-58-active-domain-research-in-dev-plan|Phase 58: Active Domain Research in dev-plan]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -78,6 +79,8 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[domain-research-dev-plan-step-2-7|Domain research in dev-plan via gap-gated Step 2.7 (mechanism c)]] -- medium confidence, accepted
+- [[measure-residual-research-delta|Measure residual research delta, not the headline +1.75]] -- high confidence, accepted
 - [[eval-binary-scoring-only|Binary scoring only for eval harness]] -- medium confidence, accepted
 - [[eval-jq-hard-dependency|jq as hard dependency for eval runner]] -- medium confidence, accepted
 - [[eval-top-level-directory|eval/ as top-level directory]] -- medium confidence, accepted
@@ -203,6 +206,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-28-phase-58-active-domain-research-complete|Phase 58 complete (active domain research in dev-plan — Fix 2)]] -- 2026-05-28
 - [[2026-05-28-phase-57-hook-consolidation-enforcement-activation-complete|Phase 57 complete (hook consolidation & enforcement activation — Fix 1)]] -- 2026-05-28
 - [[2026-05-28-phase-56-cognitive-activation-memory-design-complete|Phase 56 complete (cognitive activation & memory design — 5-layer classification, actionable cognitive readiness, domain seed)]] -- 2026-05-28
 - [[2026-05-28-phase-55-harness-activation-overhaul-complete|Phase 55 complete (harness activation overhaul — cascade fix, spec reform, cognitive readiness)]] -- 2026-05-28
@@ -289,6 +293,8 @@
 
 ## Recent
 
+- 2026-05-28: Phase 58 implementation complete (delivery pending) -- 4/4 tasks, 2 decisions (domain-research-dev-plan-step-2-7, measure-residual-research-delta), gap-gated Step 2.7 companion (per-DRQ wiki-query gate, numeric caps, injection-safety, ~1200-char distill, provenance + contradiction-check persist, fail-open) wired via pointer (SKILL.md 326/350), residual delta +0.5 composite n=1 (reasoning 3→4) non-theatrical, kept at Checkpoint 2, 9/9 non-memory suites green, 54/54 eval
+- 2026-05-28: Phase 58 planned -- 4 tasks (1M 2S 1L), 2 decisions (domain-research-dev-plan-step-2-7, measure-residual-research-delta), active domain research in dev-plan (Fix 2): gap-gated Step 2.7 + residual-delta measurement vs Phase-55 baseline
 - 2026-05-28: Phase 57 implementation complete (delivery pending) -- 5/5 tasks, 1 decision (single-source-scope-tagged-hook-registration), 3 hook sources → 1 scope-tagged modules.json array, generated template + drift test, project-reachable enforce marker, enforce-spec fires (exit 2) in fresh scaffold, py-init/ts-init marker gap caught + guarded, 10/10 scripts green (CI-equiv)
 - 2026-05-28: Phase 57 planned -- 5 tasks (5M), 1 decision, hook consolidation & enforcement activation (Fix 1 of harness-activation roadmap)
 - 2026-05-28: Phase 56 completed -- 6/6 tasks, 1 decision (memory-architecture-classification, upgraded low->high), 5-layer classification, actionable cognitive readiness, dev-plan wiki strengthened, 4 domain articles seeded, 54/54 eval

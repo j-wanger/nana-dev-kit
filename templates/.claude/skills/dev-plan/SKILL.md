@@ -159,6 +159,10 @@ If no `~/.claude/wikis.json` and no `$ROOT/wiki/`, skip. **Budget:** 5 articles 
 
 Read `~/.claude/skills/dev-plan/iterative-retrieval-spec.md` for the full loop protocol. Extract concepts (frozen set), then iterate up to 3 rounds until coverage ≥ 70% or no new articles. Pass unfillable gaps to Step 4 as design questions. If Step 2 was skipped (no wikis), skip this step.
 
+### Step 2.7: Domain Research (Gap-Gated) *(Lite: skip)*
+
+Read `~/.claude/skills/dev-plan/domain-research-spec.md`. For the target phase spec's `### Domain Research Questions`, gate each against the wiki (per-question, not Step 2.5's concept score); on uncovered questions do bounded external research, inject the ≤1200-char distilled findings into the Step 6 approach (cited at the decisions they inform), and route durable, provenance-tagged facts to `wiki/inbox/`. Fail-open: no spec questions, no web, or no writable wiki → emit the bracketed marker and proceed. Skip if Step 2.5 was skipped.
+
 ### Step 3: Explore Phase Scope (Bounded)
 
 Read `~/.claude/skills/dev-plan/scope-exploration-spec.md` for the full scope exploration protocol. Inputs: phase article `scope` field, `$WIKI/articles/files/*.md`, `$WIKI/articles/modules/*.md`. Budget: ~5000 tokens.
@@ -196,6 +200,7 @@ Based on user's answers (or prior constraints), propose the approach for THIS PH
 - **1-2 options with trade-offs.** Lead with your recommendation.
 - **Reference knowledge wiki patterns** where applicable (`[[wiki:slug|Display]]` links).
 - **Reference prior decisions** that constrain this phase.
+- **Cite Step 2.7 research findings** (if any) at the specific decisions they inform — e.g. "chose X over Y per [F2]". A finding that informs no decision is not injected (avoids research theater).
 - **YAGNI ruthlessly.** If not in exit criteria, it does not belong.
 - **Cover spec fields:** When proposing, ensure the approach addresses constraints (safety rails preventing known failure modes), checkpoints (when to pause and report), and assumptions (what must be true — stop if violated). These complement the existing objective/scope/exit-criteria fields.
 

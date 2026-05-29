@@ -114,3 +114,5 @@
 [2026-05-28T04:30:00Z] DEBRIEF -- 0 decisions, 1 journal, tasks verified (4 completed), state refreshed, Phase 54 completed
 [2026-05-28T05:00:00Z] DEBRIEF -- 3 decisions (1 new bidirectional-registration-invariant, 2 existing), 1 journal, tasks verified (6 completed), state refreshed, Phase 55 completed, retro check (Phases 51-55) clean
 [2026-05-28T21:00:00] PLAN -- Phase 56 planned, 6 tasks, 1 decision (memory architecture classification)
+[2026-05-28T21:12:16Z] PLAN -- Phase 58 planned, 4 tasks (1M 2S 1L), 2 decisions (domain-research-dev-plan-step-2-7, measure-residual-research-delta). Active domain research in dev-plan (Fix 2): gap-gated Step 2.7 + residual-delta measurement vs Phase-55 baseline.
+[2026-05-29T01:42:40Z] DEBRIEF -- 2 decisions (confirmed pre-existing), 1 journal, tasks updated (Phase 58 4/4 + gate log), state refreshed, active-knowledge carried forward to working-knowledge (2 facts, pruned to 100)

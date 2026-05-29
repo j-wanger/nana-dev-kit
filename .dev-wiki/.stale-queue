@@ -88,3 +88,8 @@ eval/corpus/lifecycle-full-phase-cycle/scenario.json
 eval/corpus/lifecycle-session-enforcement-status/scenario.json
 eval/corpus/context-cognitive-readiness-populated/scenario.json
 eval/corpus/context-cognitive-readiness-empty/scenario.json
+tests/test_settings_template.sh
+templates/.claude/hooks/enforce-memory.sh
+templates/.claude/enforce
+scripts/generate-workflow.py
+scripts/generate-report.py

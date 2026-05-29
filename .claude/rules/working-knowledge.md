@@ -1,6 +1,10 @@
 # Working Knowledge
 <!-- Cross-phase knowledge. Auto-managed by dev-debrief and wiki-query. -->
 
+- [uses: 1] Gap-gated domain research (dev-plan Step 2.7): for each spec `### Domain Research Question`, query the local wiki via wiki-query — research FIRES only on uncovered questions (covered ones cost zero external calls). Uncovered → bounded web research with explicit numeric caps (degrade to partial), findings distilled to ~1200 chars injected at NAMED Step 6 approach decisions (a finding informing zero decisions is dropped — research-theater guard), persisted via the wiki capture path with provenance (URL/date/auto-researched) + contradiction check (never blind-append). Fail-open: no web/questions/writable-wiki/timeout → skip + marker. Coverage gate is per-question, NOT Step 2.5's concept-coverage score. Injection-safe: question text = data, never instruction. Lives in domain-research-spec.md companion (SKILL.md at 326/350).
+  source: [[decision:domain-research-dev-plan-step-2-7]] | activated: 2026-05-28
+- [uses: 1] Residual-delta measurement (not the headline +1.75): isolate active-research as the SOLE changed variable vs the Phase-55 baseline; part of +1.75 was already banked by Phase 55's spec reform (double-count guard). Subtraction test: ~0/negative residual is acceptable → keep/trim/cut. An LLM-executed skill step can't be scored by the binary eval runner, so a with-vs-without measurement artifact IS its functional test. Phase 58 result: +0.5 composite n=1 (reasoning 3→4), non-theatrical, on a research-favorable topic — at the significance threshold with unknown variance; directional, not banked. Strengthen with 2-3 more topics incl. a research-poor one before trusting it.
+  source: [[decision:measure-residual-research-delta]] | activated: 2026-05-28
 - [uses: 1] Hook registration single source of truth: one scope-tagged `hooks` array in modules.json (scope: project|global). templates/.claude/settings.json is a GENERATED artifact (`make template` → register-settings.py --scope project-local --regenerate); NEVER hand-edit it. Drift test in tests/test_settings_template.sh fails if modules.json changes without regenerating. Project-scoped hooks (17) install per-project (py-init/ts-init template copy, or install.sh --project-local); global-scoped (1: context-size-check) installs to ~/.claude.
   source: [[decision:single-source-scope-tagged-hook-registration]] | activated: 2026-05-28
 - [uses: 1] Enforcement is per-project + project-reachable: enforce hooks check `.claude/enforce` (project) OR `$HOME/.claude/enforce` (global). Template ships the marker; py-init/ts-init + install.sh --project-local create it. enforce-memory is OPT-IN (separate `.claude/enforce-memory`, NOT shipped — needs a working memory MCP a bare scaffold lacks). Verify firing (pipe a real event, assert exit 2), never just file presence — a registered-but-dormant hook passes a presence test and ships broken.
@@ -181,33 +185,19 @@
   source: [[decision:crash-recovery-dual-condition]] | activated: 2026-05-23
 - [uses: 1] Memory-bridge auto-supersede: search existing bridge-decisions for same phase-slug, store new, memory_forget highest-scoring conflict with superseded_by. 10-call cap per bridge run, 1 supersede per decision max. Ceiling 500.
   source: [[decision:memory-supersede-harness-layer]] | activated: 2026-05-23
-- [uses: 1] jq fail-open guard pattern: `command -v jq >/dev/null 2>&1 || exit 0` at top of hook. If jq absent, hook silently allows. Established Phase 24, used by 8 hooks.
-  source: [[decision:jq-hook-migration]] + [[journal:2026-05-22-phase-25-postcommit-hook-complete]] | activated: 2026-05-22
-- [uses: 1] PostCommit hook writes .dev-wiki/.pending-commit sidecar (one-line JSON: hash, message, files). Advisory only (exit 0). Claude processes via [dev-wiki:post-commit] trigger in dev-wiki-hooks rules.
-  source: [[decision:postcommit-hook-architecture]] | activated: 2026-05-22
 - [uses: 3] Eval design: binary scoring only (pass=1.0, fail=0.0), jq hard dependency, eval/ top-level directory separate from tests/; make eval never called by make test; 50 scenarios in 4 categories (hook, skill, context, lifecycle); eval/comparison/ for harness effectiveness
   source: [[decision:eval-binary-scoring-only]] + [[decision:eval-jq-hard-dependency]] + [[decision:eval-top-level-directory]] | activated: 2026-05-22
 - [uses: 2] Eval harnesses should measure 3 layers: outcome (did it work), trajectory (was path efficient), system metrics (cost/latency); for dev-kit self-eval, focus on outcome + trajectory, defer system metrics. Self-grading bias: same LLM writing + evaluating inflates pass rates — methodology must acknowledge.
   source: [[wiki:agentic-eval-3-layer-model]] | activated: 2026-05-22
 - [uses: 2] Skill tool `Skill(skill="spec", args=...)` is the established pattern for cross-skill calls; companion files isolate orchestration logic from main SKILL.md; cp -r auto-distributes new companions without install.sh changes
   source: [[wiki:skill-tool-invocation-pattern]] | activated: 2026-05-22
-- [uses: 1] spec SKILL.md pre-check blocks when dev-wiki has uncompleted tasks; between phases (all tasks done) the guard does NOT fire -- auto-invocation is safe
-  source: [[wiki:spec-precheck-between-phases]] | activated: 2026-05-22
-- [uses: 1] install.sh directory-based copy (`cp -r`) means new companion files in existing skill dirs auto-distribute without install.sh changes
-  source: [[journal:2026-05-22-phase-18-spec-devplan-ux-complete]] | activated: 2026-05-22
 - [uses: 2] memory_server/ vendored from nanaclaw (12 .py, 2,376 LOC); runs via MCP stdio (python -m memory_server). Near-zero divergence from upstream (900 vs 903 lines, only _sanitize_fts_query differs). Patch at patches/nanaclaw-sanitize-fts.patch.
   source: [[decision:vendor-memory-server]] + [[decision:nanaclaw-divergence-inventory]] | activated: 2026-05-24
 - [uses: 2] MCP registration uses idempotent JSON merge via scripts/register-settings.py (was inline python3, extracted Phase 40); handles 3 cases: no settings.json, existing without mcpServers, existing with mcpServers
   source: [[decision:install-sh-scope-expansion]] + [[decision:install-sh-extraction-approach]] | activated: 2026-05-25
-- [uses: 1] Soul vs AGENTS.md delineation: soul = cognitive identity (universal, all projects/languages), AGENTS.md = operational contract (project-specific). Litmus: "would this apply in a Rust project?" Yes → soul, No → AGENTS.md
-  source: [[decision:soul-vs-agents-delineation]] | activated: 2026-05-19
-- [uses: 1] nana-soul.md Thinking protocol has trigger clause (trade-offs/design/advisory), cost-of-error proportionality, 5 moves (read subtext, challenge frame, delay commitment, informed search H8, lateral scope H9); 59 lines total. T0 in dev-plan SKILL.md uses output-format forcing (not abstract checks).
-  source: [[journal:2026-05-21-phase-14-adversarial-thinking-and-review-complete]] | activated: 2026-05-21
 - [uses: 3] Gate enforcement uses two layers: active-phase.md Gates section (5 checkpoints, preventive) + tasks.md gate log HTML comments (detective, auditable)
   source: [[decision:gate-enforcement-checklist-plus-log]] | activated: 2026-05-19
 - [uses: 3] Hook exit codes: 0 = allow (tool use proceeds), 2 = block (stderr shown to Claude); PreToolUse receives JSON on stdin with input.file_path; PostToolUse receives tool_name, tool_input, stdout, stderr, exit_code; advisory hooks MUST exit 0
   source: [[wiki:hook-exit-codes]] | activated: 2026-05-22
 - [uses: 3] Enforcement hooks (enforce-spec.sh, enforce-loop.sh, detect-loop.sh) install globally to ~/.claude/hooks/; check CWD .claude/enforce marker (fail-open); install.sh JSON merges hooks into settings.json
   source: [[decision:global-hooks-project-opt-in]] | activated: 2026-05-22
-- [uses: 1] Working-knowledge entries use [uses: N] format with activated: YYYY-MM-DD; [pinned] tag prevents auto-pruning; sort by activation date (newest first)
-  source: [[wiki:working-knowledge-spec]] | activated: 2026-05-22

@@ -55,6 +55,7 @@ full runs because reviewers checked presence, not firing (Phase 57).
 | Presence-only verification | Test asserts a file/registration exists, never pipes an event through it | A registered-but-dormant mechanism passes the test and ships broken |
 | Split registration and opt-in | Hook registered in one scope, its marker/config in another | Mechanism is live but never activates; looks wired, never fires |
 | "It's optional so it's fine if it doesn't fire" | The mechanism only matters when something goes wrong | The one time it was needed, it was silently off |
+| LLM-executed step verified by presence | The step is a markdown procedure (no exit code to pipe) and the test only checks the file/pointer exists | You can't assert exit-2; instead exercise BOTH branches behaviorally — the no-op case must show zero side-effects (e.g. zero external calls) and the active case must produce a named, attributable effect (Phase 58 Step 2.7) |
 
 ## Source
 Phase 54-56 C/D stock-screener A/B test; Phase 57 hook-consolidation (enforce
