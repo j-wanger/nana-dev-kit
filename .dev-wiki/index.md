@@ -63,6 +63,7 @@
 - [[phase-58-active-domain-research-in-dev-plan|Phase 58: Active Domain Research in dev-plan]] -- completed
 - [[phase-59-validate-research-delta|Phase 59: Validate Active-Research Residual Delta]] -- completed
 - [[phase-60-harness-activation-residuals|Phase 60: Harness Activation Residuals]] -- completed
+- [[phase-61-validate-memory-knowledge-integration|Phase 61: Validate Memory & Knowledge Integration]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -81,6 +82,7 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[memory-knowledge-integration-diagnosis|Memory & knowledge subsystems own retrieval engines the flow never uses (Phase 61)]] -- medium confidence, accepted
 - [[deterministic-success-over-eval-ceremony|Deterministic success criteria over eval ceremony for mechanical changes (Phase 60)]] -- high confidence, accepted
 - [[cut-active-research-step-2-7|CUT active web-research injection from dev-plan Step 2.7 (Phase 59)]] -- high confidence, accepted
 - [[pre-registered-keep-trim-cut-measurement|Pre-registered teeth-having keep/trim/cut measurement (Phase 59)]] -- high confidence, accepted

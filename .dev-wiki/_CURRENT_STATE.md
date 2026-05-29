@@ -1,32 +1,33 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-29 by /dev-debrief (Phase 60 complete — Fix 3 + Fix 5; delivery accepted + committed; harness-activation roadmap CLOSED)
+> Last updated: 2026-05-29 by /dev-plan (Phase 61 planned — experiment-first memory/knowledge integration A/B; direction approved)
 
 ## Recommended Next Action
 
-Phase 60 delivered: the two remaining harness-activation residuals, both DETERMINISTIC (no judge-eval). **Fix 3** — `templates/AGENTS.md` 86→82 lines (deduped the lint/type/test triplet, Hard Rules moved to lead, line-cap codified as a `test_templates.sh` assertion). **Fix 5** — `cognitive-readiness.sh` nudges `run /nana-init` when `.dev-wiki/` is missing (and short-circuits the moot per-component noise — a net reduction), verified by a bidirectional firing test. 3/3 tasks, exit criteria MET, self-check clean, review gate 9/10 accept, `make test` 11 scripts green, `make eval` 54/54. **The Phase 57+ harness-activation roadmap (Fixes 1–5) is now CLOSED.** Next: `/dev-plan` for Phase 61 — the two remaining substantive roadmap items are **vector-search-default-on** (does 91%→~95% recall justify the sqlite-vec dep that broke make test in P56–58?) and **gap 4.1 language-agnostic core** (factor py-* out; AGENTS.md is hard-Python). Plus a possible research phase on the unverified always-loaded-budget claim (AGENTS.md:84).
+Phase 61 (experiment-first memory/knowledge integration A/B) is **BANKED mid-phase at 2/7 for fresh-session resume.** Done this session: T1 (wiki signal-quality gate + locked pre-registration) and T2 (Stage-0 falsification). **T2 VERDICT: wiki-search arm (D1) CUT** — best-case firewall-distilled retrieval on a wiki-covered topic measured **delta=−0.67 composite** (decision 0.0, reasoning −0.67), variance-dominated, mild reasoning harm = Phase-59-redux confirmed BY MEASUREMENT. **Load-bearing meta-finding:** the always-loaded `working-knowledge.md` IS the effective retrieval layer (baseline answers cited the project's memory specifics — RRF +27.6%, cosine 0.90 — unprompted), which is WHY external retrieval shows no lift. Honest caveat: weak-parametric+covered sweet spot untested (wikis are commodity scrapes; proprietary synthesis never absorbed). **RESUME (fresh session) — remaining tasks:** T3 MCP-memory read-path A/B (D2, independent of the wiki cut); T4 2-tier/3-tier (D3, now leaning curate-into-hot-cache over a 3rd write-store); T5 aggregate+decide+P62 build list; **T6 step-renumber to whole numbers** (deterministic, wide ref-refactor — best done fresh); T7 regression gate. Full state in `eval/memory-integration/results.md` (pre-reg + T1/T2) + `.claude/rules/active-phase.md`.
 
 ## Active Phase
 
-**[[phase-60-harness-activation-residuals|Phase 60: Harness Activation Residuals]]** (status: completed)
+**[[phase-61-validate-memory-knowledge-integration|Phase 61: Validate Memory & Knowledge Integration]]** (status: active)
 
-Entry criteria: MET (Phase 59 complete + committed (CUT); approved spec specs/phase-60-harness-activation-residuals.md, reviewer 9/10; user combined Fix 3 + Fix 5 and waived the direction gate — closes the Phase 57+ harness-activation roadmap)
-Exit criteria: ALL MET — templates/AGENTS.md 82 lines (<86) with ruff + pytest lines each 1×, Hard Rules before Conventions, line-cap assertion (≤84) added, placeholders + 'Pre-commit sequence' preserved; cognitive-readiness.sh nudges /nana-init when .dev-wiki/ absent + silent when present (bidirectional firing test wired into make test); make test green + make eval 54/54 (100%)
+Entry criteria: MET (Phase 60 complete + committed; approved spec specs/phase-61-validate-memory-knowledge-integration.md, reviewer 8/10→revise w/ both MAJOR findings fixed; user chose experiment-first + all 5 directions incl. the retrieval-subagent firewall; direction gate approved "yes")
+Exit criteria: results.md w/ pre-registration ordered first; wiki signal-quality gate + ≥2 weak-parametric+covered topics (or explicit Phase-59-redux stop); Stage-0 falsification delta; firewall direction + context-poisoning + cost ledger recorded; per-direction keep/cut keyed to numbers + a Phase-62 build list; step-renumber to whole numbers across the 3 SKILL templates w/ all cross-refs resolved + a numbering-continuity test; make test green + make eval 100%
 
-Progress: 100% (3/3 tasks). COMPLETED — delivery accepted, committed.
+Progress: 2/7 tasks (T1 signal-gate+pre-reg ✓; T2 Stage-0 ✓ → wiki-search D1 CUT). BANKED mid-phase for fresh-session resume. Delivery gate NOT reached.
 
 ## Active Phase Contract
 
-Phase: 60 - Harness Activation Residuals
-Tasks: 3 (T1 Fix 5 nudge → T2 Fix 3 AGENTS.md trim → T3 integration regression gate)
-Transition: done (Phase 61 next)
-Abort: (resolved — phase complete; both fixes met deterministic success criteria, delivered + committed)
+Phase: 61 - Validate Memory & Knowledge Integration
+Tasks: 7 (T1 signal-gate+pre-reg → T2 Stage-0 falsification CHECKPOINT → T3 Stage-1 source×mechanism [cond] → T4 Stage-2 conclusions [cond] → T5 aggregate+decide → T6 step-renumber [independent] → T7 regression gate)
+Transition: continue (begin T1; A/B execution may use Workflow on user opt-in)
+Abort: if a stage can't meet its pre-registered criterion after 3 attempts → mark [blocked:], report, ask. Phase-59-redux is a valid early-stop (declare + proceed with architecture + step-renumber).
 
 ## Recent Decisions
 
 | Decision | Confidence | Date |
 |----------|------------|------|
-| [[deterministic-success-over-eval-ceremony]] For a deterministic/mechanical harness change (dedup, reorder, conditional advisory line), the rigorous validator is structural assertions + bidirectional firing tests — NOT a judge A/B eval. A judge adds variance to launder, not signal, where output is byte-identical for identical inputs. Subtraction test applies to validation ceremony too. | high | 2026-05-29 |
+| [[memory-knowledge-integration-diagnosis]] Both knowledge subsystems own a real retrieval engine the harness flow doesn't use (wiki knowledge.db FTS5/vector; MCP memory_search) — wiki Step 2 does naive frontmatter scoring (misses raw-scrape wikis), MCP memory is write-mostly. "Integrate" = wire the engines in, but A/B-gated because the wikis are commodity scrapes (Phase-59 net-negative profile). | medium | 2026-05-29 |
+| [[deterministic-success-over-eval-ceremony]] For a deterministic/mechanical harness change (dedup, reorder, conditional advisory line), the rigorous validator is structural assertions + firing tests — NOT a judge A/B eval. Subtraction test applies to validation ceremony too. (Phase 61: why the step-renumber is walled off from the A/B.) | high | 2026-05-29 |
 | [[cut-active-research-step-2-7]] CUT active web-research injection from dev-plan Step 2.7 — measured net-negative (poor −1.0 real harm, rich 0.0/−0.4 variance-dominated, not one n≥3 topic positive); reverses Phase 58 Fix 2; "retrieval over parametric knowledge" doesn't pay where parametric knowledge is already strong | high | 2026-05-28 |
 | [[pre-registered-keep-trim-cut-measurement]] Pre-registered, machine-gated measurement; burden of proof on the feature; poor-topic VETO; variance + cost gates; injected_findings_count junk-vs-empty discriminator | high | 2026-05-28 |
 | [[measurement-fan-out-as-workflow]] Run the ~21–28-run A/B/judge fan-out via the Workflow tool; poor topic first behind a checkpoint; findings gathered once/topic, reused across B-runs | high | 2026-05-28 |
