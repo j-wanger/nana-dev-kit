@@ -1,10 +1,10 @@
 # Current State: nana-dev-kit
 
-> Last updated: 2026-05-28 by /dev-debrief (Phase 58 complete, delivery accepted)
+> Last updated: 2026-05-28 by /dev-debrief (maintenance: memory venv fix, make test green)
 
 ## Recommended Next Action
 
-Phase 58 (Fix 2 — Active Domain Research in dev-plan) implementation COMPLETE: 4/4 tasks done, all exit criteria pass. Gap-gated Step 2.7 companion shipped (per-DRQ wiki-query gate, numeric caps, injection-safety, ~1200-char distill, provenance + contradiction-check persistence, fail-open); wired via Read-pointer (SKILL.md 326/350). Residual-delta measurement: +0.5 composite at n=1 (reasoning 3→4) on a research-favorable topic, non-theatrical, kept at Checkpoint 2 (`eval/research-measurement/results.md`). COMPLETED — delivery accepted, committed + pushed. Next: /dev-plan for Phase 59. Candidates: (a) strengthen the n=1 residual-delta with 2-3 more topics incl. a research-poor one; (b) Fix 3 (AGENTS.md reshape); (c) Fix 5 residual (kit-uninitialized session-start nudge); (d) repair the memory venv (sqlite-vec) so `make test` runs end-to-end.
+Maintenance done: `make test` is GREEN end-to-end (was halting at `test_memory.sh`). Root cause was twofold — optional `sqlite-vec` absent from the venv AND `test_memory.sh` hard-failing instead of skipping on a missing optional dep; fixed both (installed `sqlite-vec==0.1.9` locally + guarded the vec tests to skip cleanly, FTS5-only). Verified both branches (11/11 vec-present, 7/7 vec-absent, exit 0). Committed + pushed as `74da87a`. No active phase. Next: /dev-plan for Phase 59. Candidates: (a) strengthen the n=1 residual-delta with 2-3 more topics incl. a research-poor one; (b) Fix 3 (AGENTS.md reshape); (c) Fix 5 residual (kit-uninitialized session-start nudge); (d) vector-search-default-on design call (decide whether `sqlite-vec`/`fastembed` should be default-on in install.sh or stay opt-in).
 
 ## Active Phase
 
@@ -47,18 +47,20 @@ Abort: if research never changes the approach (residual delta ~0/negative), STOP
 | `scripts/register-settings.py` | Scope-aware hook filtering + `--regenerate` (deterministic template generation) | 2026-05-28 |
 | `templates/.claude/settings.json` | GENERATED per-project template (`make template`); drift-tested | 2026-05-28 |
 | `templates/.claude/enforce` | Shipped enforce opt-in marker — scaffolds self-enforce | 2026-05-28 |
+| `tests/test_memory.sh` | Vec-requiring tests now probe sqlite-vec once + SKIP cleanly (FTS5-only) when absent — `make test` can no longer halt on a missing optional dep | 2026-05-28 |
 
 ## Session Journal (last 5)
 
+- [2026-05-28] [[2026-05-28-memory-venv-fix-make-test-green|Maintenance: memory venv fix — make test green end-to-end]] -- post-Phase-58 follow-on (commit `74da87a`). `make test` was halting at `test_memory.sh`; root cause twofold (optional `sqlite-vec` absent from venv + test hard-failing instead of skipping). Fixed both: installed `sqlite-vec==0.1.9` locally + guarded vec tests to skip cleanly (FTS5-only). Verified 11/11 vec-present, 7/7 vec-absent (exit 0). Durable lesson: optional-dep tests must skip, not assume-and-halt. Review gate skipped (0 phase tasks, single proven change)
 - [2026-05-28] [[2026-05-28-phase-58-active-domain-research-complete|Phase 58 complete (active domain research in dev-plan — Fix 2)]] -- gap-gated Step 2.7 companion (per-DRQ wiki-query gate, numeric caps, injection-safety, ~1200-char distill, provenance + contradiction-check persist, fail-open) wired via pointer (SKILL.md 326/350); residual-delta measurement +0.5 composite n=1 (reasoning 3→4) on research-favorable topic, non-theatrical, kept at Checkpoint 2; 9/9 non-memory suites green, 54/54 eval; delivery accepted, committed
 - [2026-05-28] [[2026-05-28-phase-57-hook-consolidation-enforcement-activation-complete|Phase 57 complete (hook consolidation & enforcement activation — Fix 1)]] -- 3 disagreeing hook sources → 1 scope-tagged modules.json array (17 project + 1 global), template generated + drift-tested, enforce marker project-reachable, enforce-spec FIRES (exit 2) in fresh scaffold; py-init/ts-init marker gap caught by self-check + guarded; 23 block events confirm live enforcement; 10/10 scripts green (CI-equiv)
 - [2026-05-28] [[2026-05-28-phase-56-cognitive-activation-memory-design-complete|Phase 56 complete (cognitive activation & memory design — 5-layer classification, actionable cognitive readiness, domain seed)]] -- memory architecture classified (mandatory/automatic/voluntary), cognitive readiness actionable, dev-plan wiki strengthened, 4 domain articles seeded, 54/54 eval
 - [2026-05-28] [[2026-05-28-phase-55-harness-activation-overhaul-complete|Phase 55 complete (harness activation overhaul — cascade fix, spec reform, cognitive readiness)]] -- cascade failure fixed (nana-init -> enforce -> all disabled), spec reformed (prescriptive -> reasoning), +40 registration test assertions, cognitive readiness diagnostic, 52/52 eval
-- [2026-05-28] [[2026-05-28-phase-54-maintenance-sweep-complete|Phase 54 complete (maintenance sweep — hook bug fixes, stale knowledge removal)]] -- 3 hook bugs fixed (memory-nudge column, session-start DB paths), stale working-knowledge removed, +2 test assertions, 52/52 eval
 
 ## Cross-References
 
 - Phases 1-58: 58 completed (Phase 58 delivery accepted) (see index.md)
+- Maintenance (post-Phase-58, commit `74da87a`): memory venv fix — `make test` green end-to-end; [[guard-optional-dep-tests]] (optional-dep tests skip, never assume-and-halt). Closes the recurring Phases 56-58 "make test halts" blocker.
 - Roadmap: Phase 57+ Harness Activation — Fix 1 (hook consolidation) + Fix 2 (domain research in dev-plan) DONE; Fixes 4/5 mostly closed by Phases 55/57; remaining: Fix 3 (AGENTS.md reshape) + Fix 5 residual (kit-uninitialized session-start nudge)
 - Spec: Phase 55 used USER OVERRIDE (experiment data replaced prescriptive spec)
 - Roadmap: [[roadmap-gap-analysis|Engineering Gap Analysis]] -- 1 OPEN gap remains (4.1 language-agnostic core)

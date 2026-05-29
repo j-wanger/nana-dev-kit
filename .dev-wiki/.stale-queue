@@ -93,3 +93,4 @@ templates/.claude/hooks/enforce-memory.sh
 templates/.claude/enforce
 scripts/generate-workflow.py
 scripts/generate-report.py
+tests/test_memory.sh
