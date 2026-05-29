@@ -68,6 +68,7 @@
 - [[phase-63-harness-assessment-eval-validity|Phase 63: Harness Assessment & Eval-Validity]] -- completed
 - [[phase-64-cut-heuristic-scoring-machinery-self-dialogue|Phase 64: Cut heuristic scoring machinery + self-dialogue]] -- completed
 - [[phase-65-enforcement-trace-instrumentation|Phase 65: Enforcement-Trace Instrumentation + Eval-Apparatus Disposition]] -- completed
+- [[phase-66-signal-richness-park-audit|Phase 66: Signal-Richness Falsification + Scorer Park + audit-log Disposition]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -86,6 +87,7 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[park-enforcement-scorer-signal-insufficient|Park the enforcement-firing scorer — signal-richness gate fails, two blockers are structural (Phase 66)]] -- high confidence, accepted
 - [[instrument-not-score-enforcement-firing-substrate|Build the enforcement-firing substrate, not a scorer — fixture-replay duplicates the corpus (Phase 65)]] -- high confidence, accepted
 - [[cut-heuristic-scoring-keep-articles|Cut the heuristic SCORING machinery, keep the 17 articles (Phase 64)]] -- high confidence, accepted
 - [[batch-self-dialogue-with-heuristic-renumber|Batch self-dialogue removal with the heuristic cut — one renumber pass (Phase 64)]] -- high confidence, accepted
@@ -236,6 +238,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-29-phase-66-signal-richness-park-audit-complete|Phase 66 complete — Signal-Richness Falsification + Scorer Park + audit-log Disposition]] -- 2026-05-29
 - [[2026-05-29-phase-65-enforcement-trace-instrumentation-complete|Phase 65 complete — Enforcement-Trace Instrumentation + Eval-Apparatus Disposition]] -- 2026-05-29
 - [[2026-05-29-phase-62-harden-hot-cache-curation-complete|Phase 62 complete — Harden Hot-Cache Curation (deterministic curator + invariant test)]] -- 2026-05-29
 - [[2026-05-29-phase-61-memory-knowledge-integration-ab-complete|Phase 61 complete — Memory & Knowledge Integration A/B (all 5 directions CUT) + step-renumber]] -- 2026-05-29
@@ -330,6 +333,8 @@
 
 ## Recent
 
+- 2026-05-29: Phase 66 completed (implementation; delivery pending) -- 4/4 tasks, 2 decisions (park-enforcement-scorer-signal-insufficient, audit-log-disposition), 1 journal. The scorer is UNBUILDABLE — signal-richness gate failed (11 new-format records, 1 hook, 0 blocks, all self-traffic; 2/4 blockers structural). Shipped the falsification as a runnable probe (scripts/signal-richness-probe.sh) + parked the scorer behind it; redirected to audit-log → KEEP + harden (jq --arg fixed a latent JSONL-injection). Reviewer 7/10 SHIP-WITH-FIXES → 2 bugs fixed + regression-tested. make test 13→15 / make eval 52/52 / DRIFT none. NO scorer code.
+- 2026-05-29: Phase 66 planned (Signal-Richness Falsification + Scorer Park + audit-log Disposition) -- 4 tasks (2M 2S), 1 decision (park-enforcement-scorer-signal-insufficient). The planned "build the scorer" was GATED on a signal-richness checkpoint that FAILED decisively: only 11 new-format (schema_version=1) records — all one hook (dev-wiki-scope-check), 0 block firings, all phase:"65" self-traffic; the block-looking signal is all pre-instrumentation legacy format. Unbuildable for 4 reasons, 2 structural (representativeness: kit's own log ≠ consuming-project work; schema-gap: record = decision not agent action). So: falsify + park + redirect (user-approved). T1 ship scripts/signal-richness-probe.sh (read-only deterministic re-checkable gate) + functional-smoke test → make test 14; T2 park the scorer behind that runnable trigger + 4-reason verdict; T3 audit-log subtraction-test disposition (functions + eval-covered but .nana/audit.jsonl has no code consumer — keep/cut on human-forensic value); T4 regression gate. NO scorer code. Spec nana:approved (Tier-1 7/10 → fixes incorporated; reviewer verified the falsification + caught a wrong exit-criterion grep). Direction confirmed; delivery pending.
 - 2026-05-29: Phase 64 planned (Cut heuristic scoring machinery + self-dialogue) -- 4 tasks (2S 1M 1L), 3 decisions (cut-heuristic-scoring-keep-articles, batch-self-dialogue-with-heuristic-renumber, eval-total-is-dynamic). Top item of the Phase-63 remediation roadmap: remove the never-fired heuristic SCORING machinery (matcher/judge/counter-update/lifecycle/dashboard + dev-plan Step 13 sub-items 6-7 + dev-debrief Step 7 heuristic-capture) and the net-neutral self-dialogue step (dev-plan Step 11), KEEPING the 17 wiki/heuristics/*.md articles (live fixtures + eval/reasoning corpus). Batched as ONE renumber pass (dev-plan 12-18→11-17, dev-debrief 8-26→7-25). Walk UPSTREAM (producer + consumer). test_step_numbering.sh checks HEADINGS only — sub-letters 16x→15x swept manually. Eval total dynamic → 52/52, zero literal edits. Spec nana:approved (spec-reviewer-verified). Direction confirmed; delivery pending.
 - 2026-05-29: Phase 62 complete (READY FOR COMPLETION, delivery gate pending) -- 4/4 tasks, 0 new decisions (4 plan-time decisions unchanged), 1 journal. Deterministic hot-cache curator landed: wk-prune.sh extended (cap-enforce + exact-proposition dedup keeping max uses + well-formedness whole-file bail + atomic validate-temp→rename; bash-3.2 wrapper + inline python3). New tests/test_working_knowledge_curation.sh (11 invariants) wired into make test (12→13 scripts green). Wrong slug-dedup key fixed across all 4 touchpoints + policy consolidated to one source of truth (working-knowledge-spec.md). Dogfood on live cache (at 100) = byte-identical no-op. make eval 54/54; test_step_numbering.sh intact. Phase-63 candidate: hot-cache eviction value-signal (usage counter empirically inert ⇒ cap-eviction is de-facto recency).
 - 2026-05-29: Phase 62 planned (Harden Hot-Cache Curation) -- 4 tasks (1L 1M 2S), 4 decisions (harden-hot-cache-curation-deterministic, dedup-key-proposition-not-slug, curator-fail-safe-atomic, extend-wk-prune-not-new-hook). Deterministic hot-cache curator (cap-enforce + content-keyed dedup + well-formedness bail + atomic write) extending wk-prune.sh; fix the wrong slug-dedup key + consolidate cap/dedup/eviction policy to one source of truth; new invariant test wired into make test (no judge-eval — the test IS the validation, sidesteps the Phase-59 unmeasurability trap). Spec nana:approved. Direction confirmed; delivery pending.

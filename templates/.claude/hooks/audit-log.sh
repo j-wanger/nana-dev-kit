@@ -13,11 +13,14 @@ TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // "unknown"' 2>/dev/null || echo 
 
 [ -z "$FILE_PATH" ] && exit 0
 
-mkdir -p .nana
+mkdir -p .nana 2>/dev/null || true
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 MODEL="${CLAUDE_MODEL:-unknown}"
 
-printf '{"ts":"%s","tool":"%s","file":"%s","model":"%s"}\n' \
-  "$TIMESTAMP" "$TOOL_NAME" "$FILE_PATH" "$MODEL" >> .nana/audit.jsonl
+# jq --arg (never string-interpolation): the file path IS recorded (that's the forensic point),
+# but escaped — a path containing " or a newline must not corrupt the JSONL. Write is fail-open
+# so an unwritable .nana never makes this PostToolUse hook exit non-zero.
+{ jq -nc --arg ts "$TIMESTAMP" --arg tool "$TOOL_NAME" --arg file "$FILE_PATH" --arg model "$MODEL" \
+    '{ts:$ts,tool:$tool,file:$file,model:$model}' >> .nana/audit.jsonl; } 2>/dev/null || true
 
 exit 0

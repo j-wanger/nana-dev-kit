@@ -102,3 +102,6 @@ templates/.claude/hooks/block-dangerous-bash.sh
 scripts/harness-audit.sh
 tests/test_firing_log.sh
 templates/.claude/hooks/check-tests-were-run.sh
+tests/test_signal_richness_probe.sh
+scripts/signal-richness-probe.sh
+tests/test_audit_log.sh

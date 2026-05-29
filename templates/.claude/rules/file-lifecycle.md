@@ -21,7 +21,7 @@
 
 ### Hooks update (automatic)
 - `CLAUDE.md` etc — sync-rules.sh on AGENTS.md commit (pre-commit hook)
-- `.nana/audit.jsonl` — audit-log.sh on every file write (PostToolUse hook)
+- `.nana/audit.jsonl` — audit-log.sh on every file write (PostToolUse hook; project-local opt-in, installed via /py-init, /ts-init, or install.sh --project-local). Human-facing forensic trail (which model edited which file when); no code reads it.
 
 ## Decision routing
 
