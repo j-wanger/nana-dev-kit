@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 58</title>
+<title>Delivery Report: Phase 59</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,74 +21,69 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 58 &mdash; Active Domain Research in dev-plan (Fix 2)</h1>
+<h1>Delivery Report: Phase 59 &mdash; Validate Active-Research Residual Delta</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">4/4</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">12</div><div class="label">Files Changed</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">FAIL</div><div class="label">Tests (0 passed)</div></div>
+  <div class="card"><div class="num">7/7</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">11</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (50 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">54/54</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+72</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-60</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">7</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">21:44</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+315</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-116</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">0</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">00:06</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>[M] Write the Step 2.7 domain-research companion — templates/.claude/skills/dev-plan/domain-research-spec.md with YAM...</td></tr>
-<tr><td>&#x2705;</td><td>[S] Wire Step 2.7 into dev-plan SKILL.md — insert a 2-line Read-pointer step titled "### Step 2.7: Domain Research (G...</td></tr>
-<tr><td>&#x2705;</td><td>[L] Build and run the residual-delta measurement — a with-vs-without comparison recorded in ONE artifact: a COVERED t...</td></tr>
-<tr><td>&#x2705;</td><td>[S] Integration verification — full suite green, anchored eval 100%, line cap honored, no non-target scenario regress...</td></tr>
+<tr><td>&#x2705;</td><td>[M] T1 Pre-flight + pre-registration — verify WebSearch/WebFetch are live and the Phase-58 judge/generation prompts a...</td></tr>
+<tr><td>&#x2705;</td><td>[M] T2 Verify + lock topics — for each topic confirm wiki-query returns no coverage (gate FIRES). For the POOR candid...</td></tr>
+<tr><td>&#x2705;</td><td>[M] T3 Measure POOR topic (load-bearing) via Workflow — research pass (record search/fetch counts + injected_findings...</td></tr>
+<tr><td>&#x2705;</td><td>[M] T4 Measure RICH topics (≥2) via Workflow — same per-topic protocol (research pass with counts → ≥3 A + ≥3 B → bli...</td></tr>
+<tr><td>&#x2705;</td><td>[S] T5 Aggregate + decide — write per-topic deltas (per-dimension + composite), mean, cross-topic spread, and the cos...</td></tr>
+<tr><td>&#x2705;</td><td>[S] T6 Minimal companion remediation (CONDITIONAL — only if T5 decision is trim/cut) — implement the minimal change t...</td></tr>
+<tr><td>&#x2705;</td><td>[S] T7 Regression gate — full suite green + anchored eval 100% (regression gates only; they do not score Step 2.7's v...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Measure residual research delta, not the headline +1.75</td><td>high</td></tr>
-<tr><td>Domain research in dev-plan via gap-gated Step 2.7 (mechanism c)</td><td>medium</td></tr>
-<tr><td>Single-Source Scope-Tagged Hook Registration</td><td>high</td></tr>
-<tr><td>Memory Architecture Classification</td><td>high</td></tr>
-<tr><td>Bidirectional Registration Invariant</td><td>high</td></tr>
-<tr><td>Spec Reform — Reasoning Over Compliance</td><td>medium</td></tr>
-<tr><td>Cascade Failure Diagnosis — nana-init Root Cause</td><td>high</td></tr>
-</table>
+<p>No new decisions this phase.</p>
 
 <h2>Files Changed</h2>
 <ul>
 <li><code>.claude/rules/active-phase.md</code></li>
 <li><code>.claude/rules/working-knowledge.md</code></li>
-<li><code>.dev-wiki/.stale-queue</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
 <li><code>.dev-wiki/enforcement.log</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
-<li><code>.memory/memory.db-shm</code></li>
 <li><code>.memory/memory.db-wal</code></li>
+<li><code>eval/research-measurement/results.md</code></li>
 <li><code>templates/.claude/skills/dev-plan/SKILL.md</code></li>
-<li><code>wiki/heuristics/HEU-012-mandatory-over-advisory.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/domain-research-spec.md</code></li>
 
 
 </ul>
 
 <h2>Test Results</h2>
-<p><span class="status" style="background:#c0392b">FAIL</span> 0 passed, 0 failed</p>
-<pre>  cosine_similarity: orthogonal vectors = 0.0        OK
-  cosine_similarity: known value 0.87                OK
-  word_overlap: &gt;0.90 overlap warns                  OK
-  word_overlap: &lt;0.90 overlap no warn                OK
-  cosine: &gt;0.90 similarity reinforces</pre>
+<p><span class="status" style="background:#2d7d2d">PASS</span> 50 passed, 0 failed</p>
+<pre>  PASS: ts-init copies the enforce marker
+
+Settings template integrity: all checks passed
+
+All tests passed.</pre>
 
 <h2>Eval Results</h2>
 <p><span class="status" style="background:#2d7d2d">54/54</span></p>
 <pre>Score: 54/54 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-05-28 21:44:39 by generate-delivery-report.py
+  Generated 2026-05-29 00:06:03 by generate-delivery-report.py
 </div>
 </body>
 </html>

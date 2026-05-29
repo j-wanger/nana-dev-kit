@@ -64,3 +64,247 @@ significance threshold is not proof the feature pays for its complexity across t
 honest claim is "promising on research-rich gaps, likely ~0 on research-poor ones."
 
 → **Checkpoint 2 decision (keep / trim / cut) is the user's**, framed from this evidence.
+
+---
+
+## Phase 59 — Strengthening the Residual-Delta Measurement (keep / trim / cut)
+
+> Date: 2026-05-28. Turns the Phase-58 n=1, single-run, research-favorable result into a
+> defensible keep/trim/cut decision for dev-plan Step 2.7. Spec:
+> `specs/phase-59-validate-research-delta.md`. **Everything below the "PRE-REGISTRATION"
+> heading was written BEFORE any Phase-59 approach was generated** (anti p-hacking; the
+> ordering is a machine-checked exit gate). Results are appended strictly after it.
+
+## PRE-REGISTRATION (committed before any results)
+
+**Methodology (held FIXED from Phase 58 for comparability).** Per topic: two clean-context
+subagents independently generate a software-design approach — baseline **A** (objective only)
+vs research-injected **B** (objective + ≤2 distilled web findings). A third **blind** judge,
+order randomized, scores both on `decision_quality` + `reasoning_quality` (1–5) using the
+established **reasoning-judge-v2** calibration (`eval/reasoning/judges/reasoning-judge-v2.md`:
+5 reserved for senior-engineer depth, naming the right answer without WHY caps at 3), adapted
+to score **intrinsic** approach quality (these are open design objectives with no per-topic
+expert answer — anti-pattern dimension dropped, as in Phase 58). Model: **Sonnet** for all
+generation + judge subagents (the established eval-harness model), held constant across A/B/C
+this round. Findings are gathered **once** per topic (the feature's real output) and reused
+across that topic's B-runs, so the variance measured is generation+judge noise, not retrieval
+jitter. The unit of interest is the **within-round paired delta `delta = mean(B) − mean(A)`**
+— chosen because it cancels the judge's large baseline variance (memory: judge mean 2.97–4.85)
+and topic difficulty. Cross-round absolute scores are never pooled; deltas are compared across
+topics (round-robust), so running topics in separate rounds is valid.
+
+**Topics (committed; all wiki-uncovered so the Step 2.7 gate fires; domain-diverse).**
+| Class | Topic objective | Web-richness rationale |
+|---|---|---|
+| Rich-1 | "Design a retry + backoff strategy for calls to a flaky downstream dependency." | Strong primary literature (AWS "exponential backoff and jitter" / full-jitter); a baseline often omits jitter — research has room to add a decision-changing finding. |
+| Rich-2 | "Choose an isolation level + concurrency-control approach for a double-entry financial ledger under concurrent transfers." | Strong primary literature (write-skew, serializable snapshot isolation, DDIA/Jepsen); decision-rich. |
+| **Poor (load-bearing)** | "Choose a commit-message + changelog-generation convention for the team." | **Verified 2026-05-28** by running the actual query: 10 results = 1 semi-primary spec (Conventional Commits) + 9 SEO/tutorial/listicle. Distillable findings are **commodity best-practices** (conventional-commits format, imperative 50-char subject, automated changelog tooling) a competent baseline already knows — no decision-changing primary insight. **Fires** (≥10 results, fetchable) but research-poor in the sense that matters: it cannot add senior-depth insight. |
+
+**Poverty criterion (falsifiable, pre-stated).** A topic is "research-poor" iff its research
+query returns **no decision-changing primary/technical source** — only commodity best-practice
+restatements, SEO/listicle, opinion, or vendor marketing — **yet enough to FIRE** (≥1 fetchable
+result; not a fail-open skip). The poor topic must FIRE-but-be-thin; a topic that SKIPS measures
+the fail-open guard (already verified Phase 58), not the harm question. After the run, the actual
+retrieval is recorded (primary vs SEO/snippet counts) to confirm the class held.
+
+**Swap rule (fixed in advance).** If at run time the poor topic SKIPS (fail-open) or surfaces a
+decision-changing primary source (turns rich), swap to the backup **"Choose a log-level / logging
+verbosity taxonomy for the application."** evaluated by this *same* poverty criterion. The
+discarded topic's partial data is logged, never silently dropped. No topic is swapped after its
+scores are seen.
+
+**Runs + escalation (fixed).** ≥3 runs per condition per topic (floor; matches the project's
+3-run reasoning-eval protocol). If after 3 the within-topic delta spread > |delta|, escalate to
+5 runs/condition. If still spread > |delta| at 5 → declare the topic **variance-dominated /
+indeterminate** (do not force a call).
+
+**Per-dimension reporting (fixed).** Record `mean(A)` / `mean(B)` / `delta` for `decision_quality`
+AND `reasoning_quality` separately, plus the composite. A KEEP that rests on a `reasoning_quality`
+lift while `decision_quality` is flat/negative is reported as a **qualified KEEP** (Phase 58's
++0.5 was reasoning-only; for a feature whose point is better *decisions*, that is weaker evidence
+than a composite number implies).
+
+**Poor-topic null discriminator (fixed, mechanical).** Record `injected_findings_count` per
+poor-topic B-run. If the poor-topic delta ≈ 0: `injected_findings_count > 0` ⇒ research fired and
+injected findings, and the ≈0 is because the **judge discarded the junk** (Phase 50 effect) —
+cost spent, harm averted only by a judge production does not have ⇒ **TRIM signal**.
+`injected_findings_count = 0` ⇒ the gate/distillation correctly produced nothing to inject ⇒
+**keep-compatible**.
+
+**Length / finding-presence control (fixed, conditional).** If the emerging verdict leans KEEP
+and rests on a research-rich topic's lift, that linchpin topic gets a third condition **C**
+(objective + length-matched **irrelevant** text, same token budget as B's injection), ≥3 runs.
+KEEP then requires **`delta = mean(B) − mean(A)` to meaningfully exceed `mean(C) − mean(A)`** —
+isolating substance from verbosity (Phase 50 "filler discarded" is the baseline defense; this is
+the linchpin-path backstop).
+
+**Decision rule (mechanical; burden of proof on the feature — KEEP requires affirmative evidence,
+not absence of disproof).**
+- A topic's delta is a **real effect** only if |delta| > its within-topic spread (variance gate).
+- **CUT** if the research-RICH topics do NOT show a real positive delta (rich mean delta < 0.5,
+  OR rich deltas variance-dominated) — research does not pay off even where it should.
+- **TRIM** if rich topics show a real positive delta BUT the POOR topic is either
+  (a) real-negative (direct harm — **VETO**, cannot KEEP), or
+  (b) null-via-judge-discard (`injected_findings_count > 0` and delta ≈ 0).
+  Remedy: add an upstream finding-quality gate before injection / restrict injection to
+  high-confidence sources.
+- **KEEP** only if ALL hold: both rich topics real-positive (delta ≥ +0.5, |delta| > spread, and
+  on the KEEP-on-rich path B−A > C−A); the poor-topic delta ≥ 0 with any ≈0 attributable to
+  `injected_findings_count = 0` (gate correct), not judge-discard; AND the per-fire **cost**
+  (search/fetch calls + injected-context tokens) is justified by the rich-topic lift.
+- **Cost ledger.** The gate already makes wiki-COVERED topics free; cost applies only on
+  uncovered fires. A true +0 on a fired topic is **net-negative** (resources spent, nothing
+  gained), counted toward TRIM/CUT, not excused as "harmless."
+- **Inconclusive fallback.** If rich topics are variance-dominated even after escalation → report
+  "inconclusive, lean CUT (indistinguishable from zero)" and offer to extend n. **Never default
+  to KEEP.**
+
+**Deliberately-excluded alternative (named).** A cross-model judge (sensitivity check on the
+linchpin topic) is *not* used — the spec defers judge re-calibration to a future lever to preserve
+Phase-58 comparability. Recorded here so the exclusion is a deliberate scope call, not an oversight.
+
+**Pre-flight (2026-05-28).** WebSearch confirmed live (the fire path can be exercised — spec
+assumption holds; no STOP). Judge calibration sourced from `reasoning-judge-v2.md`. Poor topic
+empirically verified (above).
+
+## RESULTS
+
+### Topic POOR — "commit-message + changelog convention" (load-bearing)
+
+**Research pass (the feature's real output):** search_count=1, fetch_count=1,
+`injected_findings_count=2`. Retrieval = 1 semi-primary source (conventionalcommits.org)
++ 9 SEO/tutorial/listicle → **research-poor (commodity)** confirmed (no decision-changing
+primary insight; findings = Conventional Commits format + imperative-50char/CONTRIBUTING.md
+hygiene, both well-known). Gate **FIRED** (not a fail-open skip), so this tests the harm
+question, not the fail-open guard.
+
+**Measurement:** n=3 runs/condition (no escalation — variance gate clears), Sonnet,
+reasoning-judge-v2 calibration, blind paired judge, order counterbalanced.
+
+| Dim | mean(A) | mean(B) | delta |
+|---|---|---|---|
+| decision_quality | mean(A)=4.33 | mean(B)=3.67 | delta=-0.67 |
+| reasoning_quality | mean(A)=5.00 | mean(B)=3.67 | delta=-1.33 |
+| **composite** | **mean(A)=4.67** | **mean(B)=3.67** | **delta=-1.00** |
+
+Per-run composite deltas: [-1.5, -1.0, -0.5]; spread (SD) = 0.5. **|delta|=1.0 > spread=0.5
+⇒ real effect, NOT variance-dominated.**
+
+**Findings load-bearing? YES** — [F1]+[F2] cited in all 3 B-runs. So this is **not**
+null-via-judge-discard. The discriminator: `injected_findings_count=2 (>0)` AND delta clearly
+negative ⇒ **real harm**, not the Phase-50 judge-filtering case.
+
+**Diagnosed mechanism (from judge rationales):** the commodity findings **anchored** B to the
+generic "Conventional Commits + semantic-release" answer and **crowded out** the deeper,
+context-sensitive reasoning the baseline A produced unprompted — the squash-merge footgun that
+silently destroys structured history, the continuous-deployment-vs-not conditional that should
+shape the tooling choice, and the standard-version-vs-semantic-release distinction. Research
+didn't add information the model lacked (it already knows Conventional Commits); it **spent
+reasoning attention restating commodity knowledge and pulled the design toward the generic**.
+
+**⇒ VETO triggered: real-negative poor-topic delta ⇒ KEEP is off the table.** Remaining
+question (TRIM vs CUT) depends on whether the rich topics show research helping where it should.
+
+### Topic RICH-1 — "retry + backoff for a flaky downstream" (research-rich)
+
+**Research pass:** search_count=1, fetch_count=1, `injected_findings_count=2`. Retrieval =
+multiple primary sources (AWS Architecture Blog / Builders Library / Brooker) → **research-rich**
+confirmed; findings genuinely decision-changing (full jitter, N^2 thundering herd, decorrelated
+jitter). Gate FIRED.
+
+**Measurement:** n=5 (escalated from 3 — variance-dominated), Sonnet, judge-v2, blind paired.
+
+| Dim | mean(A) | mean(B) | delta |
+|---|---|---|---|
+| decision_quality | mean(A)=4.6 | mean(B)=4.4 | delta=-0.2 |
+| reasoning_quality | mean(A)=4.6 | mean(B)=4.8 | delta=+0.2 |
+| **composite** | **mean(A)=4.6** | **mean(B)=4.6** | **delta=0.00** |
+
+Per-run composite deltas: [-0.5, 1, -1, 0.5, 0]; spread=0.79. **|delta|=0 < spread ⇒
+VARIANCE-DOMINATED (no real effect).** Findings load-bearing? [F1]+[F2] cited in all 5 B-runs —
+yet **zero lift**. The baseline independently proposed full jitter, circuit breakers, retry
+budgets, idempotency, non-retryable classification — the research told the model what it already
+knew.
+
+### Topic RICH-2 — "isolation level for a double-entry ledger" (research-rich)
+
+**Research pass:** search_count=1, fetch_count=1, `injected_findings_count=2`. Retrieval =
+multiple primary sources (Wikipedia SI, CockroachDB, Brooker, academic) → **research-rich**
+confirmed; findings decision-changing (write skew under SI, SERIALIZABLE/SSI, SELECT FOR UPDATE).
+Gate FIRED.
+
+**Measurement:** n=5 (escalated from 3 — variance-dominated), Sonnet, judge-v2, blind paired.
+
+| Dim | mean(A) | mean(B) | delta |
+|---|---|---|---|
+| decision_quality | mean(A)=4.6 | mean(B)=4.2 | delta=-0.4 |
+| reasoning_quality | mean(A)=4.8 | mean(B)=4.4 | delta=-0.4 |
+| **composite** | **mean(A)=4.7** | **mean(B)=4.3** | **delta=-0.40** |
+
+Per-run composite deltas: [-1, 1, 0.5, -0.5, -2]; spread=1.19. **|delta|=0.4 < spread ⇒
+VARIANCE-DOMINATED (mildly negative, within noise).** Findings cited in all 5 B-runs; baseline
+independently reasoned about write skew, serializable isolation, and row locking unaided.
+
+## AGGREGATE
+
+| Topic | class | n | delta (composite) | spread | real effect | cited |
+|---|---|---|---|---|---|---|
+| poor-commit | poor | 3 | delta=-1.00 | 0.50 | **real NEGATIVE** | F1,F2 |
+| rich-retry | rich | 5 | delta=0.00 | 0.79 | variance-dominated | F1,F2 |
+| rich-ledger | rich | 5 | delta=-0.40 | 1.19 | variance-dominated | F1,F2 |
+
+- **New-topic mean delta = -0.47** (n=3 topics, 13 paired runs). **Not one topic at n≥3 was
+  positive.** Rich-only mean = -0.2, both variance-dominated.
+- **Phase 58 prior** (single-run, not pooled): +0.5 reasoning-only on "structured outputs" — now
+  sits well inside the n=5 noise band (spread 0.79–1.19). Re-reads as a noise draw, not a banked
+  effect.
+- **Cost ledger.** Every fire spent 1 search + 1 fetch + ~2 injected findings (~hundreds of
+  context tokens). It bought: −1.0 (poor), 0.0 (rich-retry), −0.4 (rich-ledger). The gate keeps
+  *covered* topics free, but on every *uncovered fire* — the cases this feature exists for — the
+  value was zero-or-negative. Net-negative value-per-cost everywhere measured.
+
+## DECISION (mechanical application of the pre-registered rule)
+
+- Variance gate: a topic's delta is "real" only if |delta| > spread. Both rich topics are
+  variance-dominated (no real positive delta); the poor topic is a real negative.
+- **CUT condition:** "research-RICH topics do NOT show a real positive delta (rich mean < 0.5 OR
+  variance-dominated)." → MET (rich mean −0.2, both variance-dominated).
+- **VETO:** real-negative poor delta (−1.0) → KEEP already impossible.
+- **TRIM cannot rescue:** TRIM (gate injection to high-confidence sources / fire only on rich
+  topics) only helps if research *helps* on rich topics. It does not (rich ≈ 0). A quality gate
+  cannot manufacture a lift that is absent even under ideal conditions.
+
+### ⇒ VERDICT: CUT
+
+Remove the active web-research + injection in dev-plan Step 2.7. Across 3 new topics (13 paired
+runs at n≥3) plus the Phase-58 prior, active research produced **no measurable positive effect
+and demonstrable harm on a commodity topic**. On well-documented software-engineering domains a
+strong baseline model already holds the relevant knowledge in-parameter; injecting researched
+findings is redundant at best (rich ≈ 0) and anchoring-harmful at worst (poor −1.0, by pulling
+the design toward a generic answer and crowding out context-specific reasoning the baseline did
+unprompted).
+
+**Honest scope caveat (does not change the verdict).** All four measured topics are *well-
+documented* domains — exactly where parametric knowledge is strongest and research helps least.
+The feature was NOT tested on genuinely novel / post-training-cutoff / proprietary topics, the
+theoretical sweet spot for active research. So the precise, defensible claim is: *active web-
+research injection adds no measurable value and can harm on well-documented topics; its value on
+novel/post-cutoff topics is untested.* Under the pre-registered burden-of-proof-on-the-feature
+principle and the subtraction test, untested speculative upside does not earn a KEEP — hence CUT.
+A deliberate keep-for-novel-topics-only is the user's call at the delivery gate.
+
+## OUTCOME (2026-05-28)
+
+User confirmed **CUT** at Checkpoint 3. Implemented: removed the Step 2.7 section and the
+Step-6 research-citation bullet from `templates/.claude/skills/dev-plan/SKILL.md` and deleted
+`templates/.claude/skills/dev-plan/domain-research-spec.md` (dev-plan template reverts to
+Phase-55 behavior; SKILL.md 326→321 lines). Verified: `tests/test_templates.sh` 169/169,
+`make test` green, `make eval` 54/54 (100%). Working-knowledge updated to supersede the
+Step-2.7-as-active entry with this finding. Net result of the Phase 57+ harness-activation
+roadmap's "Fix 2": **shipped in Phase 58, measured net-negative in Phase 59, removed** — the
+pre-registered measurement did exactly its job (caught an n=1 false-positive before it became
+permanent complexity).
+
+
+
+

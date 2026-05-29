@@ -60,7 +60,8 @@
 - [[phase-55-harness-activation-overhaul|Phase 55: Harness Activation Overhaul]] -- completed
 - [[phase-56-cognitive-activation-memory-design|Phase 56: Cognitive Activation & Memory Design]] -- completed
 - [[phase-57-hook-consolidation-and-enforcement-activation|Phase 57: Hook Consolidation and Enforcement Activation]] -- completed
-- [[phase-58-active-domain-research-in-dev-plan|Phase 58: Active Domain Research in dev-plan]] -- active
+- [[phase-58-active-domain-research-in-dev-plan|Phase 58: Active Domain Research in dev-plan]] -- completed
+- [[phase-59-validate-research-delta|Phase 59: Validate Active-Research Residual Delta]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -79,6 +80,9 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[cut-active-research-step-2-7|CUT active web-research injection from dev-plan Step 2.7 (Phase 59)]] -- high confidence, accepted
+- [[pre-registered-keep-trim-cut-measurement|Pre-registered teeth-having keep/trim/cut measurement (Phase 59)]] -- high confidence, accepted
+- [[measurement-fan-out-as-workflow|Run measurement fan-out as a Workflow (Phase 59)]] -- high confidence, accepted
 - [[guard-optional-dep-tests|Guard optional-dependency tests instead of forcing the dep into install]] -- high confidence, accepted
 - [[domain-research-dev-plan-step-2-7|Domain research in dev-plan via gap-gated Step 2.7 (mechanism c)]] -- medium confidence, accepted
 - [[measure-residual-research-delta|Measure residual research delta, not the headline +1.75]] -- high confidence, accepted
