@@ -18,14 +18,28 @@ Each entry is exactly 2 lines:
 
 Optional: append `| last_decay: YYYY-MM-DD | tier: 3` for project-specific facts.
 
-Sorted by usage count descending. Ties broken by most recent `activated:` date.
+Order is insertion order — entries are NOT sorted (the whole file is loaded into context regardless of order).
 
-### Constraints
+### Curation (deterministic — single source of truth)
 
-- Max 100 entries, 210-line hard cap (~800 tokens)
-- Dedup before inserting: if same `source:` slug exists, increment `uses` instead
-- Pruning at cap: remove lowest-count entries (ties: oldest activated date) until at 100
-- No automatic decay — usage counts persist until manually pruned
+The session-start hook `wk-prune.sh` (`prune_working_knowledge`) is the one deterministic enforcement
+point for this file's invariants. It is fail-safe: it validates structure, builds the result in a temp
+file, and only then atomically renames over the original — aborting (file left byte-intact) on any
+problem. Producers (`/wiki-query`, `/dev-debrief`, `/dev-plan`) just APPEND new `[uses: 1]` entries;
+they do NOT hand-dedup, hand-sort, or hand-prune. Over-cap state is tolerated until the next
+session-start, when the curator brings the file back within bounds.
+
+- **Cap:** max 100 entries AND a 210-line hard cap (~800 tokens). Non-strict at the boundary — exactly
+  100 entries is a no-op. When over cap, evict lowest `uses` first, ties broken by oldest `activated:`
+  date. `[pinned]` entries are never evicted; if pins alone exceed the cap, the cap is exceeded and a
+  warning is emitted (pins win).
+- **Dedup keys on proposition text, NEVER the source slug.** Distinct facts legitimately share a source
+  phase (one phase commonly yields several entries), so slug-equality is not duplicate-equality. The
+  dedup key is the proposition text after stripping the `- [uses: N] ` prefix and any leading `[pinned]`
+  marker, then trimming whitespace. Exact-duplicate propositions are collapsed to one entry keeping the
+  higher `uses`; near-but-not-exact duplicates are left in place (no false-positive data loss).
+- **Stale prune:** `[uses: 1]` non-pinned entries older than 30 days are pruned (max 5 per run) to
+  `.dev-wiki/.stale-queue`. Usage counts otherwise persist — no automatic decay.
 
 ### When to Activate
 

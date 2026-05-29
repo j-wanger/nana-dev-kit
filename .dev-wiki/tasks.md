@@ -1,6 +1,6 @@
 # Tasks
 
-> Last updated: 2026-05-28 by /dev-debrief (Phase 59 ready for completion — CUT verdict; delivery gate pending)
+> Last updated: 2026-05-29 by /dev-debrief (Phase 62 ready for completion — deterministic hot-cache curator; delivery gate pending)
 
 <details>
 <summary>Phases 1-38 (all completed, 220+ tasks, collapsed)</summary>
@@ -732,3 +732,18 @@
 - [x] [S] T7 Regression gate — full suite green + anchored eval 100%; new test wired; no non-target regression. Depends: T5 (and T6). | TDD: RED run suite; GREEN fix any regression; REFACTOR confirm | scope: tests/, eval/, Makefile, templates/ | success: `make test && make eval 2>&1 | grep -qE 'Score: [0-9]+/[0-9]+ \(100%\)'` | size: S
 
 <!-- gate-log:phase-61 direction=approved delivery=accepted -->
+
+<!-- phase:phase-62-harden-hot-cache-curation -->
+<!-- gates: spec=approved approach=approved plan-review=pending tasks=approved -->
+<!-- gate-log:phase-62 direction=approved delivery=accepted -->
+## Phase 62: Harden Hot-Cache Curation
+
+- [x] [L] T1 Curator core — extend the existing session-start prune into the single deterministic curator. | TDD: RED write `tests/test_working_knowledge_curation.sh` with synthetic fixtures asserting: over-cap→cull to ≤100 oldest-first; `[pinned]` never evicted (incl. all-pinned-over-cap → pins win + warning); exact-dup→removed keeping max `uses`; distinct-facts-same-slug (phase-45-style: 6 entries one slug)→NOT collapsed; malformed (broken 2-line pairing)→whole-file no-op + warning; exactly-100→no-op; idempotent second run; existing >30d `[uses:1]` prune still works. GREEN extend `wk-prune.sh` with cap-enforce + exact-proposition dedup + well-formedness bail + atomic validate-then-rename write. REFACTOR confirm idempotency + pinned-immunity assertions hold. | scope: templates/.claude/hooks/session-start.d/wk-prune.sh, tests/test_working_knowledge_curation.sh | success: `bash tests/test_working_knowledge_curation.sh` | size: L
+
+- [x] [S] T2 Wire the new test into make test + verify no regression. Depends: T1. | TDD: RED `make test` does not run the new script; GREEN add `tests/test_working_knowledge_curation.sh` to the Makefile test target; REFACTOR confirm suite count ≥13. | scope: Makefile, tests/ | success: `make test 2>&1 | grep -q test_working_knowledge_curation.sh && make eval 2>&1 | grep -qE 'Score: [0-9]+/[0-9]+ \(100%\)'` | size: S
+
+- [x] [M] T3 Fix the wrong dedup key + consolidate policy to one source of truth. Edit `working-knowledge-spec.md` (drop slug-dedup → content/proposition-text dedup via curator; add the exact-match normalization definition; note session-start timing ⇒ over-cap tolerated until next start; drop the unenforced "sorted by uses desc" claim — this file is the single source of truth for the policy). Then make `active-knowledge-transition.md` (~line 14), dev-plan `SKILL.md` (Step 16f-ter), and `compaction-anchors-spec.md` (eviction-rule row) REFERENCE `working-knowledge-spec.md` instead of restating the algorithm. CONSTRAINT: do NOT renumber dev-plan steps (16f-ter sub-letter stays — protects `tests/test_step_numbering.sh`). Depends: T1. | TDD: RED `grep -rEn "increment .?uses.? instead" templates/` returns matches; GREEN edit the 4 touchpoints; REFACTOR confirm step-numbering + companion refs intact. | scope: templates/.claude/skills/dev-wiki/working-knowledge-spec.md, templates/.claude/skills/dev-debrief/active-knowledge-transition.md, templates/.claude/skills/dev-plan/SKILL.md, templates/.claude/skills/dev-plan/compaction-anchors-spec.md | success: `! grep -rEq "increment .?uses.? instead" templates/ && grep -q "proposition text" templates/.claude/skills/dev-wiki/working-knowledge-spec.md && bash tests/test_step_numbering.sh && bash tests/test_companions.sh` | size: M
+
+- [x] [S] T4 Dogfood no-op verification on the live cache. Run the curator on the real `.claude/rules/working-knowledge.md` (at exactly 100) and confirm 0 evictions, 0 dup-removals, all distinct `phase-45` entries intact. If it would evict or remove anything, STOP — the logic is wrong. Depends: T1, T2, T3. | TDD: RED no dogfood evidence; GREEN run curator (dry-run/copy) on the live file + diff; REFACTOR confirm byte-identical or zero-change. | scope: .claude/rules/working-knowledge.md | success: curator dry-run on the live cache reports 0 changes and a diff shows no knowledge lost (all distinct phase-45 entries present) | size: S
+
+<!-- gate-log:phase-62 direction=approved delivery=accepted -->

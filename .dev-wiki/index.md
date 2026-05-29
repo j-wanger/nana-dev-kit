@@ -63,7 +63,8 @@
 - [[phase-58-active-domain-research-in-dev-plan|Phase 58: Active Domain Research in dev-plan]] -- completed
 - [[phase-59-validate-research-delta|Phase 59: Validate Active-Research Residual Delta]] -- completed
 - [[phase-60-harness-activation-residuals|Phase 60: Harness Activation Residuals]] -- completed
-- [[phase-61-validate-memory-knowledge-integration|Phase 61: Validate Memory & Knowledge Integration]] -- active
+- [[phase-61-validate-memory-knowledge-integration|Phase 61: Validate Memory & Knowledge Integration]] -- completed
+- [[phase-62-harden-hot-cache-curation|Phase 62: Harden Hot-Cache Curation]] -- active (READY FOR COMPLETION, delivery gate pending)
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -82,6 +83,10 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[harden-hot-cache-curation-deterministic|Harden hot-cache curation deterministically, not a distillation judge-eval (Phase 62)]] -- high confidence, accepted
+- [[dedup-key-proposition-not-slug|Dedup key is proposition content, not source slug (Phase 62)]] -- high confidence, accepted
+- [[curator-fail-safe-atomic|Curator is fail-safe: atomic write + bail on malformed + pinned-immune (Phase 62)]] -- high confidence, accepted
+- [[extend-wk-prune-not-new-hook|Extend the existing prune hook, do not add one (Phase 62)]] -- high confidence, accepted
 - [[hot-cache-is-the-effective-retrieval-layer|The always-loaded markdown hot cache IS the effective retrieval layer (Phase 61 meta-finding)]] -- high confidence, accepted
 - [[cut-mcp-memory-read-path-d2|CUT the MCP memory_search read-path into planning — D2 (Phase 61)]] -- high confidence, accepted
 - [[two-tier-curate-into-hot-cache|2-tier architecture: curate-into-hot-cache, no 3rd runtime tier — D3 (Phase 61)]] -- high confidence, accepted
@@ -219,6 +224,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-29-phase-62-harden-hot-cache-curation-complete|Phase 62 complete — Harden Hot-Cache Curation (deterministic curator + invariant test)]] -- 2026-05-29
 - [[2026-05-29-phase-61-memory-knowledge-integration-ab-complete|Phase 61 complete — Memory & Knowledge Integration A/B (all 5 directions CUT) + step-renumber]] -- 2026-05-29
 - [[2026-05-29-phase-60-harness-activation-residuals-complete|Phase 60 complete — Harness Activation Residuals (AGENTS.md trim + kit-uninitialized nudge)]] -- 2026-05-29
 - [[2026-05-28-phase-59-validate-research-delta-cut|Phase 59 → VERDICT CUT (active research removed from dev-plan Step 2.7)]] -- 2026-05-28
@@ -311,6 +317,8 @@
 
 ## Recent
 
+- 2026-05-29: Phase 62 complete (READY FOR COMPLETION, delivery gate pending) -- 4/4 tasks, 0 new decisions (4 plan-time decisions unchanged), 1 journal. Deterministic hot-cache curator landed: wk-prune.sh extended (cap-enforce + exact-proposition dedup keeping max uses + well-formedness whole-file bail + atomic validate-temp→rename; bash-3.2 wrapper + inline python3). New tests/test_working_knowledge_curation.sh (11 invariants) wired into make test (12→13 scripts green). Wrong slug-dedup key fixed across all 4 touchpoints + policy consolidated to one source of truth (working-knowledge-spec.md). Dogfood on live cache (at 100) = byte-identical no-op. make eval 54/54; test_step_numbering.sh intact. Phase-63 candidate: hot-cache eviction value-signal (usage counter empirically inert ⇒ cap-eviction is de-facto recency).
+- 2026-05-29: Phase 62 planned (Harden Hot-Cache Curation) -- 4 tasks (1L 1M 2S), 4 decisions (harden-hot-cache-curation-deterministic, dedup-key-proposition-not-slug, curator-fail-safe-atomic, extend-wk-prune-not-new-hook). Deterministic hot-cache curator (cap-enforce + content-keyed dedup + well-formedness bail + atomic write) extending wk-prune.sh; fix the wrong slug-dedup key + consolidate cap/dedup/eviction policy to one source of truth; new invariant test wired into make test (no judge-eval — the test IS the validation, sidesteps the Phase-59 unmeasurability trap). Spec nana:approved. Direction confirmed; delivery pending.
 - 2026-05-29: Phase 61 complete (READY FOR COMPLETION, delivery gate pending) -- 7/7 tasks, 4 decisions (hot-cache-is-the-effective-retrieval-layer, cut-mcp-memory-read-path-d2, two-tier-curate-into-hot-cache, step-renumber-whole-number-invariant), 1 journal, status snapshot. Experiment-first A/B: ALL 5 runtime-retrieval directions CUT (D1 wiki-search Δ=−0.67, D2 MCP memory read-path Δ=0.00, D3 2-tier, D4 moot, D5 firewall). Meta-finding: the always-loaded markdown hot cache IS the effective retrieval layer. T6 deterministic step-renumber (dev-plan 1..18 / dev-debrief 1..26 / spec 1..9, ~200 ref edits, new test_step_numbering.sh). make test 12 scripts green, eval 54/54. Retro (Phases 51-60): no systemic issues. Phase-62 candidate: hot-cache curation quality.
 - 2026-05-29: Phase 60 completed -- 3/3 tasks, 1 decision (deterministic-success-over-eval-ceremony), AGENTS.md trim (86→82) + kit-uninitialized /nana-init nudge, harness-activation roadmap (Fixes 1-5) CLOSED, make test 11 scripts green, 54/54 eval, review gate 9/10
 - 2026-05-28: Phase 59 completed (VERDICT CUT) -- 4 tasks, 3 decisions (cut-active-research-step-2-7, pre-registered-keep-trim-cut-measurement, measurement-fan-out-as-workflow), active research removed from dev-plan Step 2.7, pre-registered measurement caught an n=1 false positive, 54/54 eval

@@ -72,5 +72,5 @@ This sequence fully restores working context. The agent then states: "Resuming t
 | Approach reviewer timeout | Proceed without critique. Warn: "Approach reviewer unavailable." |
 | Plan reviewer timeout | Accept draft tasks without review score. Warn: "Plan reviewer unavailable." |
 | active-knowledge >40 lines | Skip writing. Report: "Active knowledge exceeds 40-line cap. Skipping." |
-| working-knowledge >100 entries or >210 lines | Evict lowest-count entries (ties: oldest activated date) until within cap. |
+| working-knowledge >100 entries or >210 lines | Tolerated until next session-start; the deterministic curator enforces the cap (see `~/.claude/skills/dev-wiki/working-knowledge-spec.md`). Do not hand-prune. |
 | active-knowledge.md absent at recovery | Skip Step 8 in recovery protocol. Warn: "No active-knowledge.md — domain knowledge may be stale." |

@@ -26,6 +26,7 @@ test:
 	@bash "$(NANA_KIT_DIR)tests/test_settings_template.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_cognitive_readiness.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_step_numbering.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_working_knowledge_curation.sh"
 	@echo ""
 	@echo "All tests passed."
 

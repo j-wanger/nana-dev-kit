@@ -2,7 +2,7 @@
 name: dev-plan
 description: "Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."
 reads: [$WIKI/_CURRENT_STATE.md, $WIKI/_ARCHITECTURE.md, $WIKI/tasks.md, $WIKI/articles/phases/*, $WIKI/articles/decisions/*]
-writes: [$WIKI/_CURRENT_STATE.md(Active Phase, Contract, Decisions, Blockers), $WIKI/tasks.md, $WIKI/articles/phases/*, $WIKI/articles/decisions/*, $ROOT/.claude/rules/active-phase.md, $ROOT/.claude/rules/active-knowledge.md, $ROOT/.claude/rules/working-knowledge.md(seed cross-phase entries, decay, sort)]
+writes: [$WIKI/_CURRENT_STATE.md(Active Phase, Contract, Decisions, Blockers), $WIKI/tasks.md, $WIKI/articles/phases/*, $WIKI/articles/decisions/*, $ROOT/.claude/rules/active-phase.md, $ROOT/.claude/rules/active-knowledge.md, $ROOT/.claude/rules/working-knowledge.md(append cross-phase entries; curator enforces dedup/cap)]
 dispatches: [plan-reviewer, approach-reviewer, state-loader, artifact-writer]
 tier: complex-orchestration
 ---
@@ -291,7 +291,7 @@ Distill cross-wiki articles from Step 4 and phase decisions from Steps 9-14 into
 
 #### 16f-ter: Seed Working Knowledge (Cross-Phase Facts)
 
-After writing active-knowledge.md, evaluate retrieved facts from Step 4 that were NOT included in active-knowledge (failed phase-dependent filter but passed multi-turn + non-obvious). These are cross-phase facts useful beyond this phase. If any exist, offer: `"N cross-phase facts available for working knowledge. Activate? (y/n)"`. On confirmation: (1) read existing `.claude/rules/working-knowledge.md` if it exists, (2) dedup new entries against existing by source slug — if match, increment `uses` instead of inserting, (3) append genuinely new entries as `[uses: 1]` with `activated: <today>`, (4) sort all entries by usage count descending, (5) prune if >100 entries — remove lowest-count (ties: oldest activated date) until at 100. Skip if no cross-phase facts found.
+After writing active-knowledge.md, evaluate retrieved facts from Step 4 that were NOT included in active-knowledge (failed phase-dependent filter but passed multi-turn + non-obvious). These are cross-phase facts useful beyond this phase. If any exist, offer: `"N cross-phase facts available for working knowledge. Activate? (y/n)"`. On confirmation: (1) read existing `.claude/rules/working-knowledge.md` if it exists, (2) append genuinely new entries as `[uses: 1]` with `activated: <today>`. Dedup (by proposition text, NOT source slug), the 100-entry cap, and ordering are enforced deterministically by the session-start curator — see `~/.claude/skills/dev-wiki/working-knowledge-spec.md`; do NOT hand-dedup, hand-sort, or hand-prune here. Skip if no cross-phase facts found.
 
 #### 16g: Mirror Tasks to TodoWrite (Compaction Anchor)
 Write each task to TodoWrite with embedded constraints. Set all to `pending`. Set first to `in_progress` only if user will continue in this session (determined in Step 17).

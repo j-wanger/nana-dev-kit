@@ -96,3 +96,5 @@ scripts/generate-report.py
 tests/test_memory.sh
 tests/test_cognitive_readiness.sh
 tests/test_step_numbering.sh
+tests/test_working_knowledge_curation.sh
+templates/.claude/hooks/session-start.d/wk-prune.sh
