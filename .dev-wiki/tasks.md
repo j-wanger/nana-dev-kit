@@ -1,6 +1,6 @@
 # Tasks
 
-> Last updated: 2026-05-29 by /dev-debrief (Phase 62 ready for completion — deterministic hot-cache curator; delivery gate pending)
+> Last updated: 2026-05-29 by /dev-debrief (Phase 67 ready for completion — hook firing-coverage gate + 10-hook gap filled; delivery gate pending)
 
 <details>
 <summary>Phases 1-38 (all completed, 220+ tasks, collapsed)</summary>
@@ -804,3 +804,17 @@
 - [x] [S] T4 Full regression gate + scope-honesty. Depends: T1, T2, T3. | TDD: RED suite not re-run post-change; GREEN run full gate; REFACTOR confirm referential integrity (no dangling `[[…]]`/`source:` link; `harness-audit.sh` reports no new DRIFT) + NO scorer code shipped (no with/without run, no graded eval scenario added). | scope: tests/, eval/, Makefile | success: `make test && make eval 2>&1 | grep -qE 'Score: [0-9]+/[0-9]+ \(100%\)' && bash tests/test_registration.sh && bash tests/test_settings_template.sh` | size: S
 
 <!-- gate-log:phase-66 direction=approved delivery=accepted -->
+
+<!-- phase:phase-67-long-cadence-hook-firing-tests -->
+<!-- gate-log:phase-67 direction=approved delivery=accepted -->
+## Phase 67: Long-Cadence Hook Firing Tests + Hook Firing-Coverage Gate
+
+- [x] Build the hook firing-coverage meta-test (RED-first, FIRST/checkpoint): test tests/test_hook_firing_coverage.sh computes the firing-required denominator as the union of `jq '.hooks[]|select((.type//"command")!="prompt")|.script'` + every extra_dirs/*.sh, asserts a denominator-sanity floor (~21), checks each hook has an invocation-anchored covering test (NOT bare-filename grep), pins a literal exemption allow-list asserted by exact membership+size with each exemption machine-justified, and proves a negative control (a bogus uncovered hook ⇒ exit non-zero) (RED — RED for the true gap), implement the meta-test then run it to emit the authoritative untested-hook list (REFACTOR: extract union/coverage-detection helpers) | scope: tests/test_hook_firing_coverage.sh, Makefile | success: `bash tests/test_hook_firing_coverage.sh` runs and reports the untested set AND `grep -q extra_dirs tests/test_hook_firing_coverage.sh` AND a denominator-floor + negative-control assertion are present (temporarily adding a bogus hook makes it exit non-zero) | size: M
+
+- [x] Fill the firing-test gap until the meta-test is GREEN: test tests/test_long_cadence_hooks.sh asserts load-bearing side-effects for pre-compact (surfaces active-phase/next-task from fixtures), post-compact (removes .claude/.context-warned), session-stop (writes .dev-wiki/.session-end containing 'ended:') plus a graceful-skip case each, all in mktemp-d + HOME-override isolation; add the check-tests-were-run allow/skip exit-0 branch; cover any additional hooks T1 surfaced (firing test OR machine-justified exemption) (RED→GREEN), implement the tests + wire into Makefile + finalize the meta-test exemption allow-list (REFACTOR: dedup fixture-setup helpers) | scope: tests/test_long_cadence_hooks.sh, tests/test_hook_firing_coverage.sh, tests/test_firing_log.sh, Makefile | success: `bash tests/test_long_cadence_hooks.sh` exits 0 asserting a file/stdout side-effect (not exit-code-only) for all 3 advisory hooks AND `bash tests/test_hook_firing_coverage.sh` exits 0 (GREEN) | size: L
+
+- [x] Sandbox install.sh --project-local curator-chain regression test: test extends tests/test_install.sh to install into a mktemp -d, then FIRE the copied session-start.sh and assert a curator effect appears at the destination (chain executes end-to-end), copied-set==source-set, and +x perms (RED→GREEN), implement the assertions (REFACTOR: reuse existing test_install fixture scaffold) | scope: tests/test_install.sh | success: `bash tests/test_install.sh` exits 0 AND `grep -q session-start.d tests/test_install.sh` AND it asserts a fired-curator observable (not just file existence) | size: M
+
+- [x] Full regression gate + roadmap reconcile + scope-honesty: verify make test green at the new count, make eval 52/52, test_registration + test_settings_template green, repo .dev-wiki/.nana clean post-test; update .dev-wiki/articles/phase-63-remediation-roadmap.md marking the 3 items CLOSED (Phase 67) with corrections (gap was 3 not 4 — check-tests-were-run already firing-tested; eval/reasoning/.venv already gitignored + 0 tracked; install --project-local plumbing already correct lines 89-94); verify eval/reasoning/.venv hygiene | scope: .dev-wiki/articles/phase-63-remediation-roadmap.md, .gitignore | success: `make test` exits 0 && `make eval 2>&1 | grep -qE '52/52|52 / 52'` && `bash tests/test_registration.sh && bash tests/test_settings_template.sh` && `grep -c 'CLOSED\|closed (Phase 67)' .dev-wiki/articles/phase-63-remediation-roadmap.md` is >= 3 | size: S
+
+<!-- gate-log:phase-67 direction=approved delivery=accepted -->

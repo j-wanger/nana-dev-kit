@@ -8,6 +8,7 @@ source "$SCRIPT_DIR/helpers.sh"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 SPEC_HOOK="$REPO_ROOT/templates/.claude/hooks/enforce-spec.sh"
 LOOP_HOOK="$REPO_ROOT/templates/.claude/hooks/enforce-loop.sh"
+# fires: enforce-spec.sh enforce-loop.sh   # (coverage gate — see test_hook_firing_coverage.sh)
 
 ORIG_HOME="$HOME"
 

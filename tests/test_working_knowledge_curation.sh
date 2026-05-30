@@ -11,6 +11,7 @@ source "$SCRIPT_DIR/helpers.sh"
 
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 WK_PRUNE="$REPO_ROOT/templates/.claude/hooks/session-start.d/wk-prune.sh"
+# fires: wk-prune.sh   # (coverage gate — see test_hook_firing_coverage.sh)
 
 # shellcheck source=/dev/null
 source "$WK_PRUNE"   # defines prune_working_knowledge

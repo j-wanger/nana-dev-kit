@@ -29,6 +29,9 @@ test:
 	@bash "$(NANA_KIT_DIR)tests/test_working_knowledge_curation.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_signal_richness_probe.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_audit_log.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_long_cadence_hooks.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_tooluse_hooks.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_hook_firing_coverage.sh"
 	@echo ""
 	@echo "All tests passed."
 

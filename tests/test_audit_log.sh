@@ -10,6 +10,7 @@ source "$SCRIPT_DIR/helpers.sh"
 
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 HOOK="$REPO_ROOT/templates/.claude/hooks/audit-log.sh"
+# fires: audit-log.sh   # (coverage gate — see test_hook_firing_coverage.sh)
 
 TEST_TMP=$(mktemp -d)
 trap 'rm -rf "$TEST_TMP"' EXIT

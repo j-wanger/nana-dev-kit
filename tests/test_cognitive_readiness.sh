@@ -10,6 +10,7 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 source "$SCRIPT_DIR/helpers.sh"
 
 HOOK="$PROJECT_ROOT/templates/.claude/hooks/session-start.d/cognitive-readiness.sh"
+# fires: cognitive-readiness.sh   # (coverage gate — see test_hook_firing_coverage.sh)
 
 echo "=== test_cognitive_readiness.sh ==="
 

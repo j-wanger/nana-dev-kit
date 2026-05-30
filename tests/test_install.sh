@@ -404,6 +404,37 @@ if [ ! -d "$TPROJ_GLOBAL/.claude/hooks" ]; then
 else
   test_fail "--project-local wrote to global HOME"
 fi
+
+# --- Phase 67: the copied session-start.d curator chain must EXECUTE at the destination, not just land ---
+# Closes the session-start.d author-global-drift roadmap item as a PERMANENT regression test (was a
+# one-shot manual dogfood). A copy can succeed while dropping the +x bit or landing curators without the
+# orchestrator that loops them — so assert the chain runs end-to-end, not just that bytes arrived.
+test_start "--project-local copies the FULL session-start.d curator set (no partial copy)"
+SRC_CUR=$(ls "$PROJECT_ROOT/templates/.claude/hooks/session-start.d"/*.sh 2>/dev/null | xargs -n1 basename | sort | tr '\n' ' ')
+DST_CUR=$(ls "$TPROJ/.claude/hooks/session-start.d"/*.sh 2>/dev/null | xargs -n1 basename | sort | tr '\n' ' ')
+assert_eq "$SRC_CUR" "$DST_CUR" "copied session-start.d set differs from source"
+
+test_start "--project-local: copied session-start.sh entry point is executable"
+# session-start.sh is the EXECUTED hook entry point (install.sh chmod +x's it); the session-start.d
+# curators are SOURCED by it (line 9-11), so they intentionally need no +x bit — don't assert it.
+if [ -x "$TPROJ/.claude/hooks/session-start.sh" ]; then
+  test_pass
+else
+  test_fail "copied session-start.sh entry point is not executable"
+fi
+
+test_start "--project-local: firing the copied session-start.sh runs the curator chain end-to-end"
+# session-start.sh sources every session-start.d/*.sh under set -e (a missing/unsourceable curator ->
+# non-zero exit), so exit 0 + a curator's marker proves the chain EXECUTES at the install destination.
+# cognitive-readiness emits [nana:cognitive] (here, the uninitialized-project nudge).
+SS_EC=0
+SS_OUT=$(HOME="$TPROJ" bash -c "cd '$TPROJ' && bash .claude/hooks/session-start.sh" 2>/dev/null) || SS_EC=$?
+if [ "$SS_EC" = "0" ] && printf '%s' "$SS_OUT" | grep -q 'nana:cognitive'; then
+  test_pass
+else
+  test_fail "curator chain did not fire at destination (ec=$SS_EC out=$(printf '%s' "$SS_OUT" | tr '\n' '|'))"
+fi
+
 rm -rf "$TPROJ" "$TPROJ_GLOBAL"
 
 # --- --status flag ---

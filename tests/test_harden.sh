@@ -8,6 +8,7 @@ source "$SCRIPT_DIR/helpers.sh"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOOP_HOOK="$REPO_ROOT/templates/.claude/hooks/detect-loop.sh"
 START_HOOK="$REPO_ROOT/templates/.claude/hooks/session-start.sh"
+# fires: detect-loop.sh session-start.sh memory-nudge.sh   # (coverage gate — see test_hook_firing_coverage.sh)
 
 ORIG_HOME="$HOME"
 
@@ -155,5 +156,43 @@ else
   test_fail "entry from today should survive pruning"
 fi
 rm -rf "$T"
+
+# --- Memory nudge: DIRECT firing tests (Phase 67 — close the coverage gap; above it is only grepped
+#     for column-name + fired transitively for the cooldown/suppression path). Source the function and
+#     call it, asserting an OBSERVABLE nudge, not just exit code. ---
+
+# Load-bearing: MCP registered (settings.json) but no DB yet -> "no database" nudge. No dependency on
+# `timeout`/`sqlite3`, but the hook parses settings.json via python3 — guard it like the other tool deps
+# (python3 is a hard kit dependency, so this runs in practice; the guard is for symmetry/portability).
+if command -v python3 >/dev/null 2>&1; then
+  test_start "memory-nudge: nudges when MCP is registered but the DB is absent"
+  T=$(mktemp -d) && mkdir -p "$T/.claude"
+  printf '{"mcpServers":{"memory":{"command":"x"}}}' > "$T/.claude/settings.json"
+  OUTPUT=$( HOME="$T"; source "$NUDGE_HOOK"; check_memory_consolidation "$T/nonexistent.db" "$T/.ts" 2>/dev/null )
+  if echo "$OUTPUT" | grep -q 'No memory database found'; then test_pass; else test_fail "no nudge when MCP registered + DB absent (out=$OUTPUT)"; fi
+  rm -rf "$T"
+else
+  echo "  (note: python3 unavailable — memory-nudge's MCP-registered-no-DB path is unasserted on this host)"
+fi
+
+test_start "memory-nudge: silent when DB absent AND no MCP registered (not always-fire)"
+T=$(mktemp -d) && mkdir -p "$T/.claude"   # no settings.json
+OUTPUT=$( HOME="$T"; source "$NUDGE_HOOK"; check_memory_consolidation "$T/nonexistent.db" "$T/.ts" 2>/dev/null )
+if [ -z "$OUTPUT" ]; then test_pass; else test_fail "nudged with no MCP registered (out=$OUTPUT)"; fi
+rm -rf "$T"
+
+# The consolidation-nudge (>500 active entries) path depends on `timeout` (stock macOS lacks it ->
+# the hook's `timeout 2 sqlite3 ... || echo 0` silently yields 0). Exercise it only where `timeout`
+# exists, so we don't assert a path the env can't run; the gap is reported, never silently skipped.
+if command -v timeout >/dev/null 2>&1 && command -v sqlite3 >/dev/null 2>&1; then
+  test_start "memory-nudge: fires consolidation nudge past 500 active entries"
+  T=$(mktemp -d)
+  sqlite3 "$T/m.db" "CREATE TABLE memories(active INTEGER); WITH RECURSIVE c(n) AS (SELECT 1 UNION ALL SELECT n+1 FROM c WHERE n<501) INSERT INTO memories(active) SELECT 1 FROM c;" 2>/dev/null
+  OUTPUT=$( source "$NUDGE_HOOK"; check_memory_consolidation "$T/m.db" "$T/.ts" 2>/dev/null )
+  if echo "$OUTPUT" | grep -q 'active entries' && [ -f "$T/.ts" ]; then test_pass; else test_fail "no consolidation nudge past 500 (out=$OUTPUT)"; fi
+  rm -rf "$T"
+else
+  echo "  (note: 'timeout' unavailable — memory-nudge's >500-entries consolidation path is unasserted on this host)"
+fi
 
 test_summary "harden"

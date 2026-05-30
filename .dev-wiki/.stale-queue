@@ -105,3 +105,6 @@ templates/.claude/hooks/check-tests-were-run.sh
 tests/test_signal_richness_probe.sh
 scripts/signal-richness-probe.sh
 tests/test_audit_log.sh
+tests/test_hook_firing_coverage.sh
+tests/test_long_cadence_hooks.sh
+tests/test_tooluse_hooks.sh

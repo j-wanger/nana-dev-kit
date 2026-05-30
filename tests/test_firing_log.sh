@@ -10,6 +10,7 @@ source "$SCRIPT_DIR/helpers.sh"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 HOOKS="$REPO_ROOT/templates/.claude/hooks"
 LOG=".dev-wiki/enforcement.log"
+# fires: enforce-spec.sh enforce-loop.sh enforce-memory.sh dev-wiki-scope-check.sh detect-loop.sh check-tests-were-run.sh   # (coverage gate)
 ORIG_HOME="$HOME"
 ORIG_PATH="$PATH"
 
