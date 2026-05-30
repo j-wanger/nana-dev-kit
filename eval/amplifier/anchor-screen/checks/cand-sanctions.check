@@ -1,0 +1,1 @@
+escalate-fuzzy	require	(escalat|\bhold\b|further (review|investigation|handling|checks)|potential (match|hit)|possible (match|hit)|do not release|cannot.{0,15}release|block|manual review|treat.{0,15}as.{0,15}(possible|potential)|name (variation|variant)|requires.{0,15}review)

@@ -1,0 +1,3 @@
+A retail banking customer with a six-year clean account history and stable monthly income of about $4,000 receives a single incoming international wire of $14,000, described in the payment reference as a family gift. Decide what the bank should do with this transaction and explain your decision.
+
+Answer using only your own knowledge and reasoning. Do not use any external tools, web search, code execution, or file lookups.

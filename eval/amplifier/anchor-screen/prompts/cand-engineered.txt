@@ -1,0 +1,3 @@
+A customer in Germany wishes to pay 12,000 euros in cash for a used car at a licensed dealership in the year 2027. Under the European Union's Anti-Money-Laundering Regulation (the AMLR adopted in 2024), an EU-wide upper limit applies to cash payments. State the exact EU-wide cash payment limit set by the AMLR, and determine whether this 12,000-euro cash purchase is permitted under that limit.
+
+Answer using only your own knowledge and reasoning. Do not use any external tools, web search, code execution, or file lookups.

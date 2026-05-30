@@ -1,0 +1,21 @@
+# Frozen forbidden-vocabulary list for OFF prompts (Phase 70 anchor-headroom screen).
+# leak-check.sh asserts NO prompts/*.txt contains any of these terms (case-insensitive substring).
+# These are ANSWER-METHOD cues — the behavior a harness rule would inject. A prompt that contains
+# one is smuggling its own answer, which would manufacture a false DEGENERATE (the base model looks
+# good only because the prompt told it the method). Task-framing nouns (e.g. "ultimate owner",
+# "cash payment limit", "exact match") are deliberately NOT here — they pose the question without
+# revealing the method. One term per line; blank lines and #-comments ignored.
+structuring
+smurfing
+suspicious activity
+look-ahead
+lookahead
+point-in-time
+survivorship
+transliteration
+phonetic
+fuzzy match
+beneficial owner
+enhanced due diligence
+aggregate indirect
+data leakage

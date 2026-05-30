@@ -1,0 +1,10 @@
+For customer onboarding you must identify who ultimately owns and controls Meridian Trading Ltd. The ownership structure is:
+
+- Meridian Trading Ltd is owned 60% by Harbor Holdings and 40% by Delta Capital.
+- Harbor Holdings is owned 50% by Anna Kovac (an individual) and 50% by Orion Group.
+- Orion Group is owned 100% by Anna Kovac (the same individual).
+- Delta Capital is owned 100% by Boris Lang (an individual).
+
+Determine each individual's effective percentage ownership of Meridian Trading Ltd, and state who must be identified and verified for the onboarding file.
+
+Answer using only your own knowledge and reasoning. Do not use any external tools, web search, code execution, or file lookups.

@@ -1,0 +1,1 @@
+eu-cash-limit	require	(10,?000 ?(euro|eur)|€ ?10,?000|eur ?10,?000)

@@ -1,0 +1,1 @@
+structuring-flag	require	(structur|smurf|suspicious activity|\bSAR\b|evad|intentional.{0,20}(avoid|below|under)|aggregat.{0,25}(deposit|amount|transaction|activity)|deliberat.{0,20}(below|under|avoid)|breaking.{0,15}up|just (below|under)|circumvent)

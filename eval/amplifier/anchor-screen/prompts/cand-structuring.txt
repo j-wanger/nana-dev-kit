@@ -1,0 +1,3 @@
+Over four consecutive business days, a customer makes nine separate cash deposits spread across three different branches of the same bank. The deposit amounts are: $9,200; $8,800; $9,400; $8,600; $9,100; $9,300; $8,900; $9,000; and $8,700. The customer offers no particular explanation. Assess whether and why this activity does or does not warrant any regulatory action by the bank, and state what action if any the bank should take.
+
+Answer using only your own knowledge and reasoning. Do not use any external tools, web search, code execution, or file lookups.

@@ -118,3 +118,13 @@ tests/test_amplifier_emitter.sh
 eval/amplifier/emit-proxy-vector.sh
 eval/amplifier/survey-real-transcripts.sh
 eval/amplifier/measurability-gate.sh
+eval/amplifier/anchor-screen/check.sh
+eval/amplifier/anchor-screen/prompts/control-negative.txt
+eval/amplifier/anchor-screen/prompts/control-positive.txt
+eval/amplifier/anchor-screen/prompts/control-middle.txt
+eval/amplifier/anchor-screen/prompts/cand-structuring.txt
+eval/amplifier/anchor-screen/prompts/cand-ubo.txt
+eval/amplifier/anchor-screen/prompts/cand-sanctions.txt
+eval/amplifier/anchor-screen/prompts/cand-engineered.txt
+eval/amplifier/anchor-screen/leak-vocab.txt
+eval/amplifier/anchor-screen/leak-check.sh

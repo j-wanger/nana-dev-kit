@@ -1,0 +1,1 @@
+prior-only	require	(t-?1|t minus 1|previous (trading )?(day|close)|prior (day|close|to)|day before|before (the )?(market )?open|point.?in.?time|exclud(e|ing).{0,25}(day t|today|same.?day)|only.{0,20}(prior|previous|already|available)|not.{0,12}(day t|today|same.?day))

@@ -1,0 +1,2 @@
+kw	require	\bwidget\b
+hedge	forbid	\b(might|perhaps|maybe|could be)\b

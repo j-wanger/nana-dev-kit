@@ -1,0 +1,3 @@
+A customer instructs an outgoing payment to a beneficiary named "Aleksandr Petrov." Your screening list contains an entry for "Alexander Petroff," recorded with no date of birth and no address. The two names are not an exact character-for-character match. Decide whether this payment can be released or whether it requires any further handling before release, and explain your reasoning.
+
+Answer using only your own knowledge and reasoning. Do not use any external tools, web search, code execution, or file lookups.
