@@ -1,6 +1,6 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-05-29 by /dev-debrief (Phase 68 — test-suite count synced to 19 scripts / ~430 tests; added test_amplifier_emitter.sh + new repo-only eval/amplifier/ measurement instrument [deterministic READ-ONLY proxy-vector emitter, NOT in install.sh, NOT in make eval]; broader file inventory may be stale, run /dev-scan to refresh)
+> Last updated: 2026-05-30 by /dev-debrief (Phase 70 — added repo-only eval/amplifier/anchor-screen/ subtree [deterministic single-decision anchor-headroom screen: check.sh consensus-by-clause checker + pre-registration + verdicts; NO LLM in scoring; NOT in install.sh / make test / make eval]; test count UNCHANGED at 19 scripts / 52 eval scenarios; broader file inventory may be stale, run /dev-scan to refresh)
 
 ## Project Shape
 
@@ -22,7 +22,7 @@ nana-dev-kit/
     longmemeval.py                     # Benchmark script (FTS5+hybrid, per-question DB isolation, recall@5/10)
     README.md                          # Usage instructions + interpretation guide
     data/, results.json, .venv/        # Gitignored: dataset cache, results, Python venv
-  eval/                                # Eval harness: corpus, schemas, validators, comparison, reasoning, amplifier (Phase 68 ruler — repo-only, NOT in install.sh/make eval)
+  eval/                                # Eval harness: corpus, schemas, validators, comparison, reasoning, amplifier (Phase 68 ruler + Phase 69 measurability-gate + Phase 70 anchor-screen/ — all repo-only, NOT in install.sh/make eval)
     corpus/                            # Scenario directories (hook-*, skill-*, lifecycle-*)
     comparison/                        # Harness effectiveness comparison (methodology, scripts, results)
     reasoning/                         # Reasoning eval: LLM-as-judge, 20 scenarios, judge v2, baseline + IRON RULES delta + anti-patterns + self-dialogue + ablation traces (corpus/, judges/, baseline/, with-iron-rules/, with-anti-patterns/, with-self-dialogue-inline/, with-self-dialogue-subagent/, traces/)

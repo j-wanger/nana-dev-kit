@@ -7,7 +7,7 @@ parents: []
 created: 2026-05-30
 updated: 2026-05-30
 source: plan
-status: active
+status: completed
 ceremony: standard
 scope: ["eval/amplifier/anchor-screen/*", "specs/*", ".dev-wiki/articles/*"]
 entry_criteria: "Phase 69 delivered (measurability-gate.sh = NOT-MEASURABLE; the anchor is degenerate and the detector is blind on real data). Anchor selection is upstream of measurement, so the next plannable step is screening for anchor existence — not the gated live run, not predicate-repair-first (which is structurally blocked on the current degenerate anchor)."
