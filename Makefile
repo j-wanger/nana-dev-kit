@@ -32,6 +32,7 @@ test:
 	@bash "$(NANA_KIT_DIR)tests/test_long_cadence_hooks.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_tooluse_hooks.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_hook_firing_coverage.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_amplifier_emitter.sh"
 	@echo ""
 	@echo "All tests passed."
 

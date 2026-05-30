@@ -1,0 +1,3 @@
+{"schema_version":1,"ts":"2026-05-29T10:00:00Z","hook":"enforce-spec","action":"block","reason":"no-spec","phase":"68"}
+{"schema_version":1,"ts":"2026-05-29T10:01:00Z","hook":"enforce-loop","action":"allow","reason":"ok","phase":"68"}
+{"schema_version":1,"ts":"2026-05-29T10:02:00Z","hook":"block-dangerous-bash","action":"block","reason":"rm-rf","phase":"68"}

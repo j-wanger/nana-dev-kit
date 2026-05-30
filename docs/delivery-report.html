@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 67</title>
+<title>Delivery Report: Phase 68</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,34 +21,37 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 67 &mdash; Long-Cadence Hook Firing Tests + Hook Firing-Coverage Gate</h1>
+<h1>Delivery Report: Phase 68 &mdash; Amplifier Measurement Instrument (real-transcript proxy emitter, control-validated)</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">4/4</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">18</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">6/6</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">10</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (50 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">52/52</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+154</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-55</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+90</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-50</div><div class="label">Lines Removed</div></div>
   <div class="card"><div class="num">10</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">18:07</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num">23:02</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>Build the hook firing-coverage meta-test (RED-first, FIRST/checkpoint): test tests/test_hook_firing_coverage.sh compu...</td></tr>
-<tr><td>&#x2705;</td><td>Fill the firing-test gap until the meta-test is GREEN: test tests/test_long_cadence_hooks.sh asserts load-bearing sid...</td></tr>
-<tr><td>&#x2705;</td><td>Sandbox install.sh --project-local curator-chain regression test: test extends tests/test_install.sh to install into ...</td></tr>
-<tr><td>&#x2705;</td><td>Full regression gate + roadmap reconcile + scope-honesty: verify make test green at the new count, make eval 52/52, t...</td></tr>
+<tr><td>&#x2705;</td><td>[M] T1 (FIRST / hard checkpoint) Transcript-schema feasibility probe — BEHAVIORAL (not presence). [DONE 2026-05-29: G...</td></tr>
+<tr><td>&#x2705;</td><td>[M] T2 Proxy-vector schema + control fixtures. Depends: T1. [DONE 2026-05-29: 4-group schema frozen in SCHEMA-NOTES.m...</td></tr>
+<tr><td>&#x2705;</td><td>[L] T3 The emitter (bash+jq), built TDD against its own RED test. Depends: T2. [DONE 2026-05-29: RED test written fir...</td></tr>
+<tr><td>&#x2705;</td><td>[S] T4 Wire into make test + scope-honesty guards (executables-only no-LLM sweep). Depends: T3. [DONE 2026-05-29: add...</td></tr>
+<tr><td>&#x2705;</td><td>[S] T5 Regression gate + Phase-69 handoff + scope-honesty. Depends: T4. [DONE 2026-05-29: make test exits 0 (0 FAIL),...</td></tr>
+<tr><td>&#x2705;</td><td>[XS] (DISCOVERED, resolved in-session) Adding the new test to the Makefile bumped the script count that `tests/test_t...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Hook firing-coverage gate — make the functional-smoke invariant machine-checkable (RED-first, un-gameable)</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Amplifier Measurement Instrument — build Frontier 0 (the ruler) before any cognitive frontier</td><td>high</td></tr>
+<tr><td>Hook firing-coverage gate — make the functional-smoke invariant machine-checkable (RED-first, un-gameable)</td><td>high</td></tr>
 <tr><td>audit-log disposition: KEEP (harden) — a human-facing forensic trail, not code-dead</td><td>high</td></tr>
 <tr><td>Park the enforcement-firing scorer — signal-richness gate fails, two blockers are structural</td><td>high</td></tr>
 <tr><td>Build the enforcement-firing substrate, not a scorer — scored fixture-replay duplicates the corpus</td><td>high</td></tr>
@@ -57,7 +60,6 @@
 <tr><td>Cut the heuristic SCORING machinery, keep the 17 articles</td><td>high</td></tr>
 <tr><td>Eval-validity verdict: instrument is MIXED — binary corpus sensitive, LLM-judge evals blind</td><td>high</td></tr>
 <tr><td>Every deferred roadmap item carries a canonical decidable-when: line</td><td>medium</td></tr>
-<tr><td>Run the assessment over a frozen harness state; batch all cuts at the end as migrations</td><td>high</td></tr>
 </table>
 
 <h2>Files Changed</h2>
@@ -67,28 +69,20 @@
 <li><code>.dev-wiki/.stale-queue</code></li>
 <li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
-<li><code>.dev-wiki/articles/phase-63-remediation-roadmap.md</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
 <li><code>Makefile</code></li>
 <li><code>README.md</code></li>
-<li><code>tests/test_audit_log.sh</code></li>
-<li><code>tests/test_cognitive_readiness.sh</code></li>
-<li><code>tests/test_enforce.sh</code></li>
-<li><code>tests/test_firing_log.sh</code></li>
-<li><code>tests/test_harden.sh</code></li>
-<li><code>tests/test_install.sh</code></li>
-<li><code>tests/test_working_knowledge_curation.sh</code></li>
 
 
 </ul>
 
 <h2>Test Results</h2>
 <p><span class="status" style="background:#2d7d2d">PASS</span> 50 passed, 0 failed</p>
-<pre>  coverage: 20 / 20 firing-required hooks covered
+<pre>  real transcript -&gt; valid 4-group proxy vector      OK
 
-hook-firing-coverage: 6 run, 6 passed, 0 failed
+amplifier-emitter: 14 run, 14 passed, 0 failed
 
 All tests passed.</pre>
 
@@ -97,7 +91,7 @@ All tests passed.</pre>
 <pre>Score: 52/52 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-05-29 18:07:56 by generate-delivery-report.py
+  Generated 2026-05-29 23:02:58 by generate-delivery-report.py
 </div>
 </body>
 </html>

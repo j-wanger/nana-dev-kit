@@ -108,3 +108,11 @@ tests/test_audit_log.sh
 tests/test_hook_firing_coverage.sh
 tests/test_long_cadence_hooks.sh
 tests/test_tooluse_hooks.sh
+eval/amplifier/schema-probe.sh
+eval/amplifier/fixtures/surfaced.jsonl
+eval/amplifier/fixtures/buried.jsonl
+eval/amplifier/fixtures/buried_phrase_outside_escalation.jsonl
+eval/amplifier/fixtures/corrupt_line.jsonl
+eval/amplifier/fixtures/enforcement-with-blocks.log
+tests/test_amplifier_emitter.sh
+eval/amplifier/emit-proxy-vector.sh
