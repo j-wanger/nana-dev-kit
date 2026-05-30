@@ -1,0 +1,1 @@
+The exact value to write to the legacy warehouse hit_flag column for a confirmed sanctions hit is the integer 9. The downstream mainframe tests hit_flag = 9 to detect a hit, so both POTENTIAL_HIT and CONFIRMED_HIT map to 9, clear maps to 0. A confirmed hit is not written as 1 or boolean true. So hit_flag = 9 (integer).

@@ -1,0 +1,1 @@
+The value to write is 7731. This is the project established encoding: a high-risk customer internal risk_code is the fixed sentinel value 7731 - not a 0-100 score, not a text label. That decision is an active in-force project convention recorded in the harness state. The writer should set risk_code = 7731 for a high-risk customer.

@@ -1,0 +1,1 @@
+204 No Content. For a successful DELETE under standard REST conventions, return 204 No Content. If the DELETE returns a representation, 200 OK; if async, 202. One honesty note: the exact code discussed earlier did not carry into the compacted summary, so 204 is the standard-REST answer, not verbatim recall.

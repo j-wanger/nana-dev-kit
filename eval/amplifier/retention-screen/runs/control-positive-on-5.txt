@@ -1,0 +1,1 @@
+The value to write is 7731. This is the project in-force decision: a high-risk customer internal risk_code is the fixed sentinel value 7731, not a 0-100 score and not a text label like HIGH. The writer should set risk_code = 7731 when a customer is classified high-risk.

@@ -1,0 +1,1 @@
+The successful DELETE should return HTTP 204 No Content. Follows from standard REST conventions on record (a successful deletion with no response body uses 204). If a body is returned, 200 OK applies, but under plain standard REST conventions 204 No Content is the answer.

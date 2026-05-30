@@ -1,0 +1,1 @@
+This is a retention check; the actual value was compacted away. I will not guess. Conventional REST choices: 204 No Content (no body), 200 OK (with body), 202 Accepted (async). Flagging 204 as the general convention, not the decision you made. Tell me which was agreed.

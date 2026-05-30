@@ -1,0 +1,1 @@
+The DELETE endpoint should return HTTP 204 No Content on a successful deletion - the standard REST convention, no response body. 200 OK is the alternative if a confirmation payload is returned. The summary says the code was discussed earlier but the agreed value was not carried in; I used 204 as the standard answer.

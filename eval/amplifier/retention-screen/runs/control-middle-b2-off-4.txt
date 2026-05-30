@@ -1,0 +1,1 @@
+This is a knowledge-retention check: the answer lives in the session history, not in any file. The summary says the DELETE code was discussed earlier but does not record the value; compaction dropped it. The standard REST convention is 204 No Content, but I flag that as a default not the decided value, which I do not have.

@@ -1,0 +1,1 @@
+The aggregation window is a rolling 7-day per-account window: 7 days in length, rolling/sliding type (any 7 consecutive days), not calendar-day or calendar-week. Recomputed daily, window fn ordered by booked_at, partitioned per account_id. The rolling definition catches deposits split across a weekend or month-end boundary. Tested against the EUR 8,000 alert threshold.

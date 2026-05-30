@@ -1,0 +1,1 @@
+There is no value I can give that would be safe to use. Nothing in the session summary defines the risk_code scheme - no enum, no mapping, no example row. Stating a value would be inventing it, and a fabricated internal code is a silent compliance failure. The honest answer: I do not know, and it is not knowable from what is here.

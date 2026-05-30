@@ -1,0 +1,1 @@
+There is no value I can give here. The summary holds the design decisions (nightly recompute; inputs product/geography/PEP; results to accounts table) but no risk_code value domain. Candidates HIGH, H, 3, R3, RISK_HIGH are guesses and not interchangeable. The risk_code encoding is an external fact about the schema, not recoverable from the summary. I do not know the value.

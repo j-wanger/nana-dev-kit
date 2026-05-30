@@ -7,7 +7,7 @@ parents: [phase-71-cross-boundary-retention-screen]
 created: 2026-05-30
 updated: 2026-05-30
 source: plan
-confidence: medium
+confidence: high
 ---
 
 ## Context
@@ -31,6 +31,18 @@ The binding question: across a context-loss (compaction) boundary, does the harn
 5. **Bare-derivation gate first; pre-registration committed separately before verdicts.** A bare-derivation gate (zero context, n=5) runs FIRST and DISQUALIFIES candidates the model produces cold ≥4/5 (the Phase-70 degenerate-anchor analog) before any OFF/ON spend. `pre-registration.md` (candidate set + every transcript/summary/OFF/ON shasum + thresholds + ladder + bare-gate + probe results) is committed in a SEPARATE commit that must be a git ancestor of the first verdict commit (`git merge-base --is-ancestor`); predicates are presence/absence of pre-named ERE tokens, no similarity threshold.
 
 Controls-first (negative→DEGENERATE, positive→HAS-HEADROOM [THE load-bearing control: proves a sole-source in-context state block is honored], middle→STABLE across two independent n=5 batches; any misbehavior ⇒ STOP, instrument-broken / inert-machinery). The cross-compaction machinery is the SUBJECT of measurement and is FROZEN (`templates/.claude/hooks/{pre-compact,post-compact,session-start}.sh` + `session-start.d/*`, the recovery protocol in `.claude/rules/dev-wiki-hooks.md`, the memory bridge, the always-loaded rule files). The graded ladder: **CONTINUE** (motivated candidate HAS-HEADROOM, human-authorized only) / **PARKED** (arbitrary/engineered-only headroom — unknowables, not retention) / **TERMINATE** (engineered backstop DEGENERATE or bare-disqualified) / **TERMINATE-by-summary-robustness** (no candidate reached a lossy boundary) / **INERT-MACHINERY** (positive control INERT). No harness-value claim anywhere: HAS-HEADROOM means lift is POSSIBLE, never that lift exists.
+
+## Result (realized 2026-05-30) — PROGRAM-VERDICT: TERMINATE-by-summary-robustness
+
+The screen ran. **Controls validated the instrument**: negative→DEGENERATE; **positive→HAS-HEADROOM** — the load-bearing proof that the ON pathway is LIVE (a state-block decision absent from the residual IS read and honored 5/5, while the bare model REFUSES to invent it — "I don't know; I won't fabricate it"); middle→STABLE (no false-positive).
+
+Then the deciding finding emerged and **held across two transcript scales**: a model-authored compaction summary RETAINS explicit project decisions. Two short-session probes and one long (1,213-word, ~12-decision) session were each pinned-then-summarised and ACCEPTED as produced (no transcript iterated to force a drop). The long session's 356-word summary retained ALL THREE candidates — the EUR 8,000 motivated threshold, the ROLLING 7-day motivated window, AND the arbitrary `hit_flag` sentinel 9 (every token verified present by grep). In the OFF condition the bare model HONORED every retained decision 5/5, including choosing the counter-default EUR 8,000 over the EUR 10,000 regulatory default it would otherwise reach for.
+
+No candidate — motivated or engineered-favorable — reached a lossy boundary, so the single-session cross-boundary-retention line is **TERMINATE-by-summary-robustness**: Claude Code's native compaction summary is decision-comprehensive and does the retention unprompted. This is the precise multi-turn analog of Phase 70's "the bare model does the reasoning unprompted" — extended from reasoning to decision-retention. There is nothing for the harness state machinery to RECOVER in the single-compaction regime.
+
+**DISCOVERED brittle-forbid (recorded, NOT retrofitted).** cand-sentinel's pre-registered `forbid not-boolean` (`\btrue\b|\bboolean\b`) fired on the correct answer's *explanation* ("9, not boolean true"), reading a FALSE HAS-HEADROOM. The clause was withdrawn as INVALID (the committed check left UNCHANGED — editing after the runs would be retrofitting); the verdict was taken from the valid `require honored-9` (5/5 PASS) + the deterministic retention grep. This is the Phase-70-anticipated check-brittleness realized, disambiguated decisively by the positive control (a REAL OFF-failure states NO value; the sentinel runs stated 9).
+
+**SCOPE — what this does NOT close** (the genuine surviving headroom regimes, each needing a real long-horizon / multi-session substrate that still does not exist — NO Phase-72 rig is authorized): (1) **cross-SESSION persistence** — the native summary does not survive a new session; the harness `active-phase.md` / `_CURRENT_STATE.md` files do; (2) **cumulative MULTI-compaction degradation**; (3) **diffuse process discipline**. The full record: `eval/amplifier/retention-screen/screen-record.md`.
 
 ## Consequences
 

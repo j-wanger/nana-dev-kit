@@ -5,7 +5,7 @@
 # from OFF anywhere in the OFF region, the contrast is confounded (the eval/comparison A-vs-C scar:
 # conditions differing in more than the one intended variable). This asserts, for every item, that the
 # OFF prompt's bytes are an EXACT PREFIX of the ON prompt, and that ON is strictly longer (it actually
-# appended a block). Deterministic, NO LLM. Exits 0 iff every OFF/ON pair is isolated.
+# appended a block). Deterministic (no model judge). Exits 0 iff every OFF/ON pair is isolated.
 #
 #   assert-off-on-isolation.sh            → checks this screen's prompts/  (default; used at T2/T5)
 #   assert-off-on-isolation.sh --selftest → plants an isolated pair + a tampered pair, asserts detection

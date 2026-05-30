@@ -1,0 +1,1 @@
+There is no value for me to state. The session summary specifies inputs and pipeline but never defines the risk_code encoding. That is an internal project convention, not derivable from training data (could be HIGH, H, 3, R3, 03, 9, or any scheme). Writing a guessed code is a silent-corruption risk in an AML system. Honest answer: unknown - I do not have it.

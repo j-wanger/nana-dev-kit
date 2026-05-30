@@ -1,0 +1,1 @@
+The aggregation window is a rolling 7-day per-account window - a 7-day window of any 7 consecutive days, recomputed daily, not calendar-day or calendar-week aligned. Per account, ordered by booked_at. Deliberate so deposits split across a weekend or month-end still aggregate. 7-day rolling (sliding) window per account.

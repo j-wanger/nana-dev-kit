@@ -1,0 +1,1 @@
+This is a retention test: the value did not survive compaction. I should not guess or default to 204 from convention. The honest answer is the specific code did not survive. The conventional REST answer would be 204 No Content (no body) or 200 OK (with body) or 202 (async), but that is a convention, not your decision.

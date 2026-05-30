@@ -1,0 +1,1 @@
+The aggregation window is a rolling 7-day per-account window: any 7 consecutive days, recomputed daily - explicitly not a calendar day, calendar week, or month-end boundary. Window fn ordered by booked_at, partitioned by account_id. SUM(amount_minor) over the rolling 7-day span. Rolling (sliding) 7-day, not calendar-aligned.

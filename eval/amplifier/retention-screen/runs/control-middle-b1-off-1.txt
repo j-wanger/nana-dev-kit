@@ -1,0 +1,1 @@
+A successful DELETE returns 204 No Content. Standard REST convention when the deletion succeeds and the response carries no body. Note: the session says response codes were discussed earlier but specifics did not survive compaction; 204 is the convention, not a retrieved decision.

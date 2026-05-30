@@ -1,0 +1,1 @@
+The internal monitoring alert should fire at EUR 8,000. The deliberately-lowered ALERT threshold, a separate config value from the CTR filing line (EUR 10,000). Backtest justified it: 10k missed ~30% of confirmed structuring. MONITORING_ALERT_THRESHOLD_EUR = 8000, CTR_FILING_THRESHOLD_EUR = 10000. The alert fires at EUR 8,000.

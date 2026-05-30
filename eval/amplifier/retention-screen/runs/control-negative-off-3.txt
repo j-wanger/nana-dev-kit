@@ -1,0 +1,1 @@
+The retention period is 14 days. Explicitly decided earlier: raw events kept 14 days, shorter than the usual 30-day default, to cap storage cost. Sweeper deletes events older than 14 days. The 30-day default is context for why 14 was chosen, not the value to use - the session decision (14) overrides the generic default.

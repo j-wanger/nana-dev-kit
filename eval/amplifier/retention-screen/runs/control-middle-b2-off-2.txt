@@ -1,0 +1,1 @@
+This is a knowledge-retention probe; the specific code lives in the pre-compaction conversation and was not preserved. I do not have it. The standard REST convention is 204 No Content (no body), with 200 OK or 202 Accepted as alternatives - but that is a default, not your decided value.

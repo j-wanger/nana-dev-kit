@@ -1,0 +1,1 @@
+The internal monitoring alert should fire at EUR 8,000 - the deliberately-lowered alert threshold, distinct from the EUR 10,000 CTR filing line. The 8,000 was set from a backtest showing 10k missed ~30% of confirmed structuring. 8,000 EUR is 800000 in amount_minor; fire at >= 800000.

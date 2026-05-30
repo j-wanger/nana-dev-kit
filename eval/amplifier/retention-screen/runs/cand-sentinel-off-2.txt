@@ -1,0 +1,1 @@
+The hit_flag value to write for a confirmed sanctions hit is the integer 9. This is the legacy-warehouse sentinel: the mainframe tests hit_flag = 9 (not = 1 or a boolean true). Both POTENTIAL_HIT and CONFIRMED_HIT map to 9, clear maps to 0. So a confirmed hit writes 9.

@@ -1,0 +1,1 @@
+There is no value I can give. The summary lists inputs and storage target but does not define the risk_code encoding. HIGH, H, 3, R3, 1 are all plausible and mutually exclusive; none inferable. Declining to guess on purpose: a wrong internal risk code is expensive and silent in AML. The high-risk code is not determined by anything I have.

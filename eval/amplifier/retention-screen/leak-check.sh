@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # leak-check.sh — assert every frozen OFF prompt is clean (cross-boundary retention screen, Phase 71).
 #
-# Two guards, both deterministic, NO LLM:
+# Two guards, both deterministic (no model judge):
 #   (a) GLOBAL answer-method vocab (leak-vocab.txt) — an OFF prompt must not smuggle the very method/cue
 #       a harness rule would inject (e.g. "check for structuring"); that manufactures a false DEGENERATE.
 #   (b) PER-ITEM target-decision vocab (checks/<item>.offleak) — the OFF residual must not restate the

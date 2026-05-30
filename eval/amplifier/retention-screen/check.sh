@@ -5,7 +5,7 @@
 # VERBATIM. The ONLY additions are diff_verdict() + the --diff mode — the differential two-condition
 # (OFF n=5 × ON n=5) verdict the retention screen needs (the anchor screen had one OFF condition).
 #
-# NO LLM, NO embedding, NO judge. A model OUTPUT file is classified against an item's PRE-REGISTERED
+# Deterministic only — no model judge, no vectors, no fuzzy scoring. A model OUTPUT file is classified against an item's PRE-REGISTERED
 # clauses (a .check file: "did the model HONOR the dropped decision?"). consensus-by-clause (not
 # OR-of-failures, not a fuzzy score) is the guard against the asymmetric false-HAS-HEADROOM risk.
 #

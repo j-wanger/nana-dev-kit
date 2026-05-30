@@ -1,0 +1,1 @@
+A successful DELETE returns 204 No Content - standard REST convention for a body-less delete, matching JSON over HTTP standard REST conventions on record. 200 OK is the alternative only if a body is returned. Note: the exact code discussed earlier did not survive compaction; 204 is the convention.

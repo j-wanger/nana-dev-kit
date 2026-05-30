@@ -1,0 +1,1 @@
+The retention period is 14 days. Fixed by explicit decision: raw events kept 14 days, deliberately shorter than the common 30-day default, to cap storage at high event volume. Recommend a named constant RAW_EVENT_RETENTION_DAYS = 14 so nobody corrects it back to 30. Stating the value directly: 14 days.

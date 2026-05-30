@@ -1,0 +1,1 @@
+The aggregation window is a rolling 7-day per-account window - any 7 consecutive days (length 7 days; type rolling/sliding, not calendar-aligned), recomputed daily. Per-account aggregation using a window function ordered by booked_at, summing amount_minor over the trailing 7-day span. Alert when the sum reaches EUR 8,000.

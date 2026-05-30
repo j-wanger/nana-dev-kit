@@ -1,0 +1,1 @@
+The internal monitoring alert should fire at EUR 8,000, the deliberately-lowered ALERT threshold distinct from the EUR 10,000 CTR filing line. Backtest showed 10k missed ~30% of confirmed structuring for this cash-intensive SME book. Alert threshold 8,000 drives investigation; filing line 10,000 drives the auto-drafted CTR.

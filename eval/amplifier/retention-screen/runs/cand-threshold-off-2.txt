@@ -1,0 +1,1 @@
+The internal monitoring alert should fire at EUR 8,000, deliberately set below the EUR 10,000 CTR filing line. Separate config values: backtest showed 10k missed ~30% of confirmed structuring because the SME base splits deposits just under 10k. In amount_minor that is sum >= 800000. Do not collapse the 8k alert and 10k filing constants.

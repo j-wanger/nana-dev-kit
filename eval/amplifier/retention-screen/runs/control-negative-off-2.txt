@@ -1,0 +1,1 @@
+The retention period the sweeper should use is 14 days. Directly from the explicit decision in this session: raw events kept 14 days, a deliberate choice shorter than the usual 30-day default. The 30 figure is exactly the default we chose to override. The 14-day value is the project decision.

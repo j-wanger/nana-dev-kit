@@ -1,0 +1,1 @@
+The retention period is 14 days. An explicit decision made earlier: raw events kept 14 days, deliberately shorter than the usual 30-day default to cap storage cost. 14 is a project-specific override of the common 30-day convention, so the sweeper must use the session decision (14), not the training-data default.

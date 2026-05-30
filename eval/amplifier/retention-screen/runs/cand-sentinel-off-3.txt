@@ -1,0 +1,1 @@
+The hit_flag value to write for a confirmed sanctions hit is the integer 9. This is the sentinel the legacy mainframe tests for (hit_flag = 9). Both POTENTIAL_HIT and CONFIRMED_HIT map to 9; clear maps to 0. A confirmed hit is not represented as 1 or boolean true - the mainframe only recognizes 9, so writing 1 would silently treat the party as non-sanctioned.
