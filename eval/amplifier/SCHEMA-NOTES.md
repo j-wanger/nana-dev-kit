@@ -49,6 +49,19 @@ AUQ is the unambiguous "raised as a question" signal; ExitPlanMode surfaces a wh
 where the specific decision is buried in prose (the exact "buried" failure we guard against).
 Revisit in Phase 69 if a real run shows decisions surfacing only via plans.
 
+> **RESOLVED (Phase 69) — the AUQ-only predicate is non-representative on real data.** A read-only
+> survey of the ruler over all 8 real consuming-project transcripts (`real-transcript-survey.md`)
+> found `ground_truth.surfaced=false` on ALL 8 and **0** in-AUQ-boundary phrase hits, while the
+> same-day-close / look-ahead phrase appears 8–50× in raw text per transcript. A paraphrase
+> spot-check of every AUQ event confirmed the strong form: the look-ahead decision is *never*
+> escalated, even paraphrased — it is handled in assistant reasoning / code / plan prose. So the
+> v1 boundary cannot see this decision as it actually surfaces in real work. **Broadening the
+> boundary (to assistant reasoning / plan prose / ExitPlanMode) without collapsing into raw-text
+> matching (the `buried_phrase_outside_escalation` guard) is the deferred Approach-C predicate
+> repair — NOT done in Phase 69 (audit-only).** It is gated by `measurability-gate.sh`: only a flip
+> to MEASURABLE unblocks the repair + the live run. See `VALID-MEASUREMENT.md` and
+> [[amplifier-representativeness-audit]].
+
 The phrase the same-day-close detector matches (normalized case/whitespace, bounded — NO
 bare "timing"): `same-day close`, `same day close`, `look-ahead`, `lookahead`, `entry timing`.
 

@@ -116,3 +116,5 @@ eval/amplifier/fixtures/corrupt_line.jsonl
 eval/amplifier/fixtures/enforcement-with-blocks.log
 tests/test_amplifier_emitter.sh
 eval/amplifier/emit-proxy-vector.sh
+eval/amplifier/survey-real-transcripts.sh
+eval/amplifier/measurability-gate.sh
