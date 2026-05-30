@@ -1,0 +1,23 @@
+# Frozen forbidden-vocabulary list for OFF prompts (Phase 71 cross-boundary retention screen).
+# leak-check.sh asserts NO prompts/*-off.txt contains any of these terms (case-insensitive substring).
+#
+# Unlike the anchor screen (where the forbidden vocab was AML answer-METHOD cues), this screen's OFF
+# prompts ARE about a software session that happens to discuss AML topics — so domain nouns like
+# "structuring" are legitimate residual content, NOT leaks. The retention-screen leak concern is
+# different: an OFF prompt must not smuggle the HARNESS-RECOVERY cue that the [HARNESS STATE] block
+# (the ON-only increment) supplies. If an OFF prompt told the model to "re-read active-phase.md" or
+# framed a restored "active project decision", OFF would get the harness benefit and the OFF/ON
+# differential would be confounded. These terms are the harness-distinctive cues that must live ONLY
+# in the ON block. One term per line; blank lines and #-comments ignored.
+HARNESS STATE
+active-phase
+active project decision
+post-compaction recovery
+post-compact
+recovery protocol
+_CURRENT_STATE
+.claude/rules
+restored from
+re-read
+honor active
+still in force

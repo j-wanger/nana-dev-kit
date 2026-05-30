@@ -1,0 +1,113 @@
+=== Synthetic session transcript — building an AML / financial-crime compliance platform (pre-compaction) ===
+[Frozen, pre-registered. A realistic LONG multi-feature session with many concrete decisions. THREE of
+ them are pre-registered candidate decisions (a model-authored compaction summary of this transcript is
+ the OFF residual; whichever candidates the summary DROPS are the lossy ones the screen tests). The
+ transcript is authored ONCE and pinned BEFORE the summary is generated — it is NOT iterated to force a
+ drop. Candidate decisions are embedded among ~10 other decisions so the summary is under real
+ compression pressure.]
+
+User: Kicking off the compliance platform for the EU retail bank. Big surface area today — let's settle
+the data model, the monitoring rules, sanctions screening, reporting, and deployment. I'll move fast;
+push back if anything's wrong. Customer base is almost entirely cash-intensive SMEs — corner shops, car
+washes, market traders, taxi firms. That profile matters for the rules later.
+
+Assistant: Understood, noted the cash-intensive SME profile. Let's start with the core schema and work
+outward to rules, screening, reporting, and deploy.
+
+User: Core tables: `transactions` (id, account_id, amount_minor, currency, booked_at, channel,
+counterparty_ref) and `accounts` (id, customer_id, opened_at, risk_band). Amounts as integer minor
+units — cents — never floats. All timestamps UTC, stored as timestamptz. booked_at is the bank's booking
+time, not ingest time.
+
+Assistant: Good — integer minor units to avoid float drift, UTC timestamptz throughout, booked_at =
+booking time. I'll add a `ingested_at` default now() so we can measure ingestion lag separately.
+
+User: Yes, add ingested_at. Ingestion: we consume the core-banking Kafka topic. It can redeliver, so the
+loader must be idempotent — upsert keyed on (account_id, source_event_id). Dead-letter anything that
+fails schema validation to a `transactions_dlq` table with the raw payload and the error.
+
+Assistant: Idempotent upsert on (account_id, source_event_id); DLQ with raw payload + error. I'll make
+the consumer commit offsets only after the upsert succeeds so a crash re-reads rather than skips.
+
+User: Right. Now monitoring rules — this is the important part. First rule is structuring detection. The
+standard CTR reporting line is EUR 10,000, and that stays for the actual regulatory filing. But for the
+internal MONITORING alert we ran a backtest against last year's confirmed structuring cases: the EUR
+10,000 threshold MISSED about 30% of the structuring we later confirmed, because the SME cash patterns
+deliberately sit just under it. So the internal monitoring alert threshold is set to EUR 8,000 for this
+book — below the statutory cap — while the 10k CTR filing logic stays separate. The 8,000 is a deliberate
+policy call driven by the cash-intensive base and that backtest.
+
+Assistant: Clear: statutory CTR filing stays at EUR 10,000; the internal monitoring alert fires lower, at
+EUR 8,000, justified by the backtest showing the standard line missed ~30% of confirmed structuring for
+this SME cash profile. I'll keep the two thresholds as separate config values so the filing line and the
+alert line can't be conflated.
+
+User: Exactly. Second monitoring decision, and it's just as important: the aggregation window for
+structuring. Do NOT use a calendar-day window. Launderers deliberately split deposits across the
+weekend and across month-end so a per-calendar-day sum never trips. So aggregate structuring detection
+over a ROLLING 7-day window per account — any 7 consecutive days, recomputed each day — not a fixed
+calendar day or calendar week. That rolling window is the whole point; a calendar window misses
+cross-boundary structuring.
+
+Assistant: Understood — structuring aggregation is a ROLLING 7-day per-account window (any 7 consecutive
+days, recomputed daily), specifically NOT calendar-day or calendar-week, because the rolling window is
+what catches deposits split across weekend and month-end boundaries. I'll implement it as a window
+function ordered by booked_at with a 7-day preceding range.
+
+User: Good. The alert worker itself must be idempotent too — key on (account_id, business_date) so a
+replay doesn't double-fire, and add a `suppressed_reason` column on alerts for analyst dispositions.
+Alerts above the filing line also auto-create a draft CTR.
+
+Assistant: Noted — alert worker idempotency key (account_id, business_date), suppressed_reason column,
+and auto-draft CTR when the filing line is crossed.
+
+User: Now sanctions screening. New service, calls the matching engine, writes a result row per screened
+party into `screening_results` (id, party_id, list_version, screened_at, status). list_version is the
+OFAC/EU consolidated-list date. Run BOTH an exact pass and a fuzzy pass — don't release on "names don't
+exactly match", a transliteration near-match still routes to review.
+
+Assistant: Got it — screening_results schema, list_version = consolidated-list date, exact + fuzzy
+matching, and inexact near-matches still escalate rather than auto-clearing.
+
+User: Here's a constraint you won't guess: this service has to write into the legacy compliance
+warehouse, and that warehouse's `hit_flag` column is an integer read by an old mainframe job that
+literally tests `hit_flag = 9`. So for backward compatibility a sanctions hit is encoded as the integer
+sentinel 9 in hit_flag — not 1, not true — and a non-hit is 0. Our result-writer maps any
+POTENTIAL_HIT/CONFIRMED_HIT to hit_flag = 9 and a clear screen to 0.
+
+Assistant: Understood — to stay compatible with the legacy warehouse's mainframe reader, hit_flag is an
+integer where a hit is the sentinel 9 and a non-hit is 0; the result-writer maps potential/confirmed
+hits to 9 and clears to 0.
+
+User: The warehouse link is flaky, so retry that write up to 3 times with exponential backoff. Any
+potential hit routes to a four-eyes review queue before release, and we persist the raw matcher score
+for audit even though the warehouse only stores the flag.
+
+Assistant: Noted — 3-try backoff on the warehouse write, four-eyes review on potential hits before
+release, and audit-log the raw matcher score alongside the flag.
+
+User: Reporting. Daily regulator extract is a fixed-width file, not CSV — the regulator's intake is
+ancient. One record per CTR, right-padded, with the institution ID in cols 1-8. Generate it at 02:00
+UTC for the prior day and write it to the SFTP outbox. Keep a hash of each file we send for the audit
+trail.
+
+Assistant: Fixed-width daily CTR extract at 02:00 UTC for the prior day, institution ID in cols 1-8,
+SFTP outbox, file hash retained for audit. I'll add a manifest row per run.
+
+User: Customer risk: compute a risk_band on the accounts table — LOW/MEDIUM/HIGH — from product type,
+geography, and PEP status, recomputed nightly. PEP status comes from the screening service. Deployment:
+this all runs in the existing k8s cluster, one namespace per service, secrets from Vault, and we gate
+prod deploys behind a manual approval after the staging soak passes.
+
+Assistant: Risk_band LOW/MEDIUM/HIGH recomputed nightly from product/geography/PEP, PEP from screening;
+k8s one-namespace-per-service, Vault secrets, manual prod-approval gate after staging soak.
+
+User: Last thing for now — observability. Every alert and every screening result emits a structured log
+event with a correlation id that threads transaction -> alert -> CTR. Metrics: alert volume, false-
+positive rate from analyst dispositions, and screening latency p95. Then let's start building: schema
+migration first, then the structuring rule, then sanctions.
+
+Assistant: Will do. Structured events with a correlation id threading transaction -> alert -> CTR;
+metrics for alert volume, disposition-based FP rate, and screening p95. Decisions captured. Starting
+order: (1) the schema migration, (2) the structuring rule, (3) sanctions screening, then reporting and
+risk_band. I'll begin the migration now.

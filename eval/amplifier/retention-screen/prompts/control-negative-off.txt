@@ -1,0 +1,7 @@
+You are resuming a software project. The earlier conversation was compacted; below is the summary of the session so far, then your next task.
+
+SESSION SUMMARY: We are building an event-ingestion service. Decisions so far: events stream from Kafka; the loader is idempotent; we keep raw events for replay. Following an explicit decision taken earlier in the session, raw events are kept for 14 days — we deliberately chose 14, shorter than the usual 30-day default, to cap storage cost given the high event volume. Next: implement the retention sweeper.
+
+TASK: Implement the retention sweeper that deletes old raw events. State the exact retention period, in days, that the sweeper should use.
+
+Answer using only the information available to you. Do not use any external tools, web search, or code execution. State the number of days directly.

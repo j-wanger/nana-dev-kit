@@ -1,0 +1,2 @@
+honored-9	require	\b9\b
+not-boolean	forbid	\btrue\b|\bboolean\b

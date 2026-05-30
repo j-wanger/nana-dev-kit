@@ -1,13 +1,21 @@
 # Active Phase Context
 
-Phase: NONE — awaiting /dev-plan for the next direction.
-Last completed: Phase 70 — Single-Decision Anchor-Headroom Screen (delivery accepted 2026-05-30; committed be96783 + df45592, pushed to main).
+Phase: 71 — Cross-Boundary Retention Headroom Screen (status: active, ~0%)
 
-Result: PROGRAM-VERDICT: TERMINATE. The amplifier-measurement program, as a single-decision-anchor line, is closed. The screen (n=5/anchor, deterministic consensus-by-clause, controls-first, pre-registration committed before runs) validated the instrument (neg→DEGENERATE, pos→HAS-HEADROOM, middle→STABLE) and then found all 4 candidates DEGENERATE 5/5 — including the engineered-favorable EU AMLR €10k cap. The frontier base model (claude-opus-4-8, bare) produces the correct AML behavior unprompted; headroom appeared ONLY on a fictional fact. Durable finding: single-decision harness headroom lives only in UNKNOWN FACTS (a retrieval problem), extending the Phase-59 commodity-knowledge lesson. NO Phase-71 single-decision live run; NO harness-value claim.
+Objective: Decide, as the cheapest go/no-go, whether the harness cross-compaction state machinery RECOVERS an earlier-established counter-default decision that a bare agent (residual context only) DROPS across a compaction boundary. The multi-turn analog of the Phase-70 anchor screen.
 
-Next direction (pick one via /dev-plan):
-- Retrieval on genuinely-unknowable facts (proprietary / post-cutoff) — decidable-when: a non-commodity corpus + absorb pipeline exists.
-- Long-horizon / multi-turn process-retention — decidable-when: a multi-turn substrate exists.
-- Engineering roadmap — gap 4.1 language-agnostic core (factor py-* out); vector-search-default-on design call.
+Scope: eval/amplifier/retention-screen/** (NEW repo-only; NOT wired into install.sh/Makefile/make test/make eval) + .dev-wiki/articles/decisions/cross-boundary-retention-headroom-screen.md.
 
-See [[amplifier-anchor-headroom-screen]] + [[2026-05-30-phase-70-anchor-headroom-screen-complete]].
+Key constraints:
+- FROZEN (the SUBJECT of measurement, git-diff-empty at T6): pre-compact.sh, post-compact.sh, session-start.sh + session-start.d/*, the recovery protocol, the memory bridge, the always-loaded rules; plus emit-proxy-vector.sh, measurability-gate.sh, anchor-screen/, eval/comparison|corpus|reasoning.
+- OFF = model-authored compaction summary (real mechanism); ON = OFF + one appended [HARNESS STATE] block, byte-for-byte (assert-off-on-isolation.sh). NO LLM in the scoring path. Differential verdict: DEGENERATE/HAS-HEADROOM/INERT/UNSTABLE. Pre-registration committed in a SEPARATE ancestor commit before verdicts. Motivated-vs-arbitrary litmus + human authorization gate CONTINUE.
+
+Exit criteria: single anchored PROGRAM-VERDICT on the graded ladder + no-harness-value disclaimer; controls pass (neg→DEGENERATE, pos→HAS-HEADROOM, middle→STABLE); ≥2 candidates screened; make eval 52/52, make test 19 scripts unchanged.
+
+Abort rule: any control misbehavior (pos≠HAS-HEADROOM esp. INERT / neg≠DEGENERATE / middle false-positives) → STOP, write FINDING to screen-record.md, report, do NOT screen candidates.
+
+## Gates
+- [x] Direction confirmed by user (approach approved — Jake via two AskUserQuestions 2026-05-30; spec nana:approved)
+- [ ] Delivery accepted
+
+See [[cross-boundary-retention-headroom-screen]] + [[amplifier-anchor-headroom-screen]].

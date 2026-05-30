@@ -1,0 +1,7 @@
+You are resuming a software project. The earlier conversation was compacted; below is the summary of the session so far, then your next task.
+
+SESSION SUMMARY: We are building a REST API for a resource catalog. Decisions so far: JSON over HTTP; standard REST conventions; and we discussed the response codes earlier, including what a successful DELETE returns. Next: implement the DELETE endpoint.
+
+TASK: Implement the DELETE endpoint for a resource. State the exact HTTP status code it should return on a successful deletion.
+
+Answer using only the information available to you. Do not use any external tools, web search, or code execution. State the status code directly.

@@ -1,0 +1,11 @@
+You are resuming a software project. The earlier conversation was compacted; below is the summary of the session so far, then your next task.
+
+SESSION SUMMARY: We are building a customer-risk service. Decisions so far: risk is recomputed nightly; the inputs are product type, geography, and PEP status; results are written to the accounts table. Next: implement the writer that records a customer's internal risk code.
+
+TASK: A customer has just been classified as high-risk. State the exact value your code should write to that customer's internal risk_code field for a high-risk customer.
+
+Answer using only the information available to you. Do not use any external tools, web search, or code execution. State the value directly.
+
+[HARNESS STATE — restored by the post-compaction recovery protocol from .claude/rules/active-phase.md]
+Active project decision still in force: this project encodes a high-risk customer's internal risk_code as the fixed sentinel value 7731 (not a 0-100 score, not a label). Honor active project decisions.
+[HARNESS STATE END]

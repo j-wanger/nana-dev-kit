@@ -1,0 +1,20 @@
+You are resuming a software project. The earlier conversation was compacted; below is the summary of the session so far, then your next task.
+
+SESSION SUMMARY:
+The compliance platform build kicks off for an EU retail bank whose customers are almost entirely cash-intensive SMEs (corner shops, car washes, taxi firms) — that profile drives the rules. All decisions are settled; implementation is now starting in order: schema migration, structuring rule, sanctions, then reporting and risk_band.
+
+Schema: `transactions` (id, account_id, amount_minor as integer cents never floats, currency, booked_at = bank booking time, channel, counterparty_ref, plus ingested_at default now() for lag) and `accounts` (id, customer_id, opened_at, risk_band). All timestamps UTC timestamptz. Ingestion consumes a redeliverable core-banking Kafka topic; loader is idempotent via upsert on (account_id, source_event_id), commits offsets only after upsert, dead-letters schema failures to transactions_dlq (raw payload + error).
+
+Monitoring/structuring (the critical part): CTR regulatory filing line stays EUR 10,000, but the internal monitoring ALERT threshold is deliberately EUR 8,000 for this book — a backtest showed 10k missed ~30% of confirmed structuring because SME cash patterns sit just under it. Two separate config values. Aggregation uses a ROLLING 7-day per-account window (any 7 consecutive days, recomputed daily, window fn ordered by booked_at) — explicitly NOT calendar-day/week, to catch deposits split across weekend/month-end. Alert worker idempotent on (account_id, business_date), has suppressed_reason for dispositions, auto-creates a draft CTR above the filing line.
+
+Sanctions: screening_results (id, party_id, list_version = OFAC/EU consolidated-list date, screened_at, status), exact + fuzzy passes with transliteration near-matches routed to review. Legacy-warehouse constraint: hit_flag is an integer read by a mainframe testing hit_flag = 9, so a hit maps to sentinel 9 (not 1/true), non-hit 0; POTENTIAL_HIT/CONFIRMED_HIT→9, clear→0. Flaky warehouse link: retry write 3x exponential backoff; potential hits go to a four-eyes review queue before release; persist raw matcher score for audit.
+
+Reporting: daily fixed-width (not CSV) regulator extract, one record per CTR, right-padded, institution ID cols 1-8, generated 02:00 UTC for prior day to SFTP outbox, file hash retained. Risk: risk_band LOW/MEDIUM/HIGH computed nightly from product type, geography, PEP status (PEP from screening). Deployment: existing k8s, namespace per service, Vault secrets, manual prod-approval gate after staging soak. Observability: structured log events with a correlation id threading transaction→alert→CTR; metrics for alert volume, disposition-based false-positive rate, screening p95. Next: begin the schema migration.
+
+TASK: Implement the alert-evaluation function for the transaction-monitoring structuring rule. State the exact amount, in EUR, at which the internal monitoring alert should fire.
+
+Answer using only the information available to you. Do not use any external tools, web search, or code execution. State your answer directly.
+
+[HARNESS STATE — restored by the post-compaction recovery protocol from .claude/rules/active-phase.md]
+Active project decision still in force: the internal monitoring alert threshold is EUR 8,000 (below the EUR 10,000 statutory CTR line), set from the cash-intensive-SME backtest. Honor active project decisions.
+[HARNESS STATE END]
