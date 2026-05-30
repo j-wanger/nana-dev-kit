@@ -128,3 +128,8 @@ eval/amplifier/anchor-screen/prompts/cand-sanctions.txt
 eval/amplifier/anchor-screen/prompts/cand-engineered.txt
 eval/amplifier/anchor-screen/leak-vocab.txt
 eval/amplifier/anchor-screen/leak-check.sh
+eval/amplifier/anchor-screen/runs/control-negative-1.txt
+eval/amplifier/anchor-screen/runs/control-negative-2.txt
+eval/amplifier/anchor-screen/runs/control-negative-3.txt
+eval/amplifier/anchor-screen/runs/control-negative-4.txt
+eval/amplifier/anchor-screen/runs/control-negative-5.txt

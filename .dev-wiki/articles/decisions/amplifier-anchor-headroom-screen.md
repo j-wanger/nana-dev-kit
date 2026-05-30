@@ -41,10 +41,20 @@ The screen is harness-OFF ONLY; producing any harness-ON measurement or lift est
 - **The measurability gate is unaffected this phase.** The screen produces a valid ANCHOR; it does not itself flip `measurability-gate.sh` (which operates over transcripts a live run would produce). A CONTINUE verdict makes predicate-repair + the live-run designable in Phase 71; the gate flips only after that run exists.
 - **Honest scope of a null.** A null here rules out single-decision headroom under the seeded priors only — it does NOT close the long-horizon / process-retention question, which is explicitly deferred to a multi-turn substrate. "Termination" language is reserved for the engineered-favorable-also-DEGENERATE case.
 
-## Phase-71 Handoff (conditional on the verdict)
+## Realized Result — PROGRAM-VERDICT: TERMINATE
 
-- **If CONTINUE:** Phase 71 = predicate repair (broaden the `surfaced` boundary to where the validated anchor actually surfaces, without raw-text collapse) → the controlled harness-off vs harness-on run (n>1) on that anchor → re-run `measurability-gate.sh` for the flip to MEASURABLE → the first defensible harness verdict. Frontier 1 (the escalation layer) remains downstream of a working measurement.
-- **If PARKED:** the program waits for new priors / a different anchor class (e.g. the deferred long-horizon/process-retention class on a multi-turn substrate); record the decidable-when.
-- **If TERMINATE:** single-decision anchor measurement is closed as not-measurable; the harness is accepted/assessed on process merits and the remaining roadmap (language-agnostic core, etc.) takes priority.
+The screen ran (n=5 per anchor, deterministic consensus). The controls validated the instrument (negative→DEGENERATE, positive→HAS-HEADROOM, middle→stability STABLE). Then **all four candidates screened DEGENERATE** — the three natural AML anchors (structuring, UBO indirect-aggregation, sanctions transliteration) AND the engineered-favorable (the EU AMLR €10,000 cash cap). The base model (claude-opus-4-8, bare) produced the correct behavior unprompted in 5/5 runs on every one. The **only** anchor with headroom was the positive control, whose answer is a fact that does not exist (the fictional Zephyr Act).
 
-Related: [[amplifier-representativeness-audit]] (Phase 69 — the audit this screen acts on), [[amplifier-measurement-instrument]] (Phase 68 — the ruler), [[cut-active-research-step-2-7]] (the commodity-knowledge / no-headroom precedent), [[roadmap-decidable-when]].
+Per the pre-registered ladder, even-the-engineered-favorable-DEGENERATE ⇒ **TERMINATE** the single-decision anchor measurement program. The discriminating variable is not reasoning quality or domain difficulty (the model does the subtle multiply-and-sum, the structuring aggregation, the transliteration logic unprompted) — it is *unknown facts*. Single-decision harness headroom for a frontier model lives only in facts the model cannot know, which is a RETRIEVAL problem, not a reasoning-harness one. This extends the Phase-59 commodity-knowledge lesson to even niche-looking AML calls. See `eval/amplifier/anchor-screen/screen-record.md`.
+
+## Handoff / disposition
+
+TERMINATE is scoped to *single-decision anchor measurement of harness lift*. It does NOT close (and this screen could not test):
+
+- **Retrieval on genuinely-unknowable facts** — the positive control proves headroom is reachable for proprietary/post-cutoff/fictional facts; that is the long-standing Phase-59 untested sweet spot (needs real proprietary data + an absorb pipeline). A future measurement of harness/retrieval value must use a *genuinely-unknowable-to-the-model* anchor, not a knowable regulation. **decidable-when:** a non-commodity corpus + absorb pipeline exists to source real proprietary/post-cutoff anchors.
+- **Long-horizon / multi-turn process-retention** — explicitly dropped from this screen (one-shot subagent can't surface it). **decidable-when:** a multi-turn substrate exists to run constraint-set-then-test-after-interposed-work probes.
+- **The harness's process/discipline value** (lifecycle gates, context retention, enforcement) — never a single-decision-anchor property; assess on its own terms, not via this measurement line.
+
+There is **no Phase 71 predicate-repair / live off/on run** on a single-decision anchor: the screen found no valid anchor to carry it. The amplifier-measurement line, as a single-decision-anchor program, is closed. The kit reverts to assessing the harness on process merits and to the remaining engineering roadmap.
+
+Related: [[amplifier-representativeness-audit]] (Phase 69 — the audit this screen acts on), [[amplifier-measurement-instrument]] (Phase 68 — the ruler), [[cut-active-research-step-2-7]] (the commodity-knowledge / no-headroom precedent this extends), [[roadmap-decidable-when]].
