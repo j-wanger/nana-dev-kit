@@ -1,6 +1,6 @@
 # Tasks
 
-> Last updated: 2026-05-29 by /dev-debrief (Phase 68 ready for completion — Amplifier Measurement Instrument / Frontier 0 ruler built + control-validated; delivery gate pending)
+> Last updated: 2026-05-30 by /dev-debrief (Phase 73 COMPLETE — Cross-Session Substrate thin handoff: external edge-screener project bootstrapped with the real harness; nana-dev-kit → active phase NONE, awaiting the deferred cross-session measurement)
 
 <details>
 <summary>Phases 1-38 (all completed, 220+ tasks, collapsed)</summary>
@@ -894,3 +894,13 @@
 - [x] [S] T2 (LAST) Record rationale + regression gate. Depends: T1. [DONE 2026-05-30: decision article cash-compaction-recovery-subtraction.md written (subtraction rationale + P70/P71 evidence chain + right-size-from-measurement precedent + supersede note for the stale hook-reconciliation implication, history NOT rewritten); make eval 52/52, make test "All tests passed" at unchanged script count (no Makefile change), test_registration 41/41, test_settings_template green.] | TDD: RED no article, suite not re-run; GREEN write decision article; VERIFY make eval 52/52 + make test 0-fail unchanged-count + registration + settings green. REFACTOR none. | scope: .dev-wiki/articles/decisions/**, .dev-wiki/** | success: `test -f .dev-wiki/articles/decisions/cash-compaction-recovery-subtraction.md && make eval 2>&1 | grep -qE '52/52' && make test >/dev/null 2>&1` | size: S
 
 <!-- gate-log:phase-72 direction=approved delivery=accepted -->
+
+<!-- phase:phase-73-cross-session-substrate -->
+<!-- gate-log:phase-73 direction=approved delivery=accepted -->
+## Phase 73: Cross-Session Substrate (thin handoff)
+
+- [x] [S] T1 Record the pivot decision + nana-dev-kit state. [DONE 2026-05-30: decision article cross-session-substrate-stock-screener.md (high); _CURRENT_STATE.md + active-phase.md updated, direction gate marked. Jake-chosen at the /dev-plan fork (AskUserQuestion: Build a real substrate → cross-session persistence → stock screener; defaults approved).] | scope: .dev-wiki/**, .claude/rules/active-phase.md | success: test -f .dev-wiki/articles/decisions/cross-session-substrate-stock-screener.md
+- [x] [M] T2 Bootstrap the external substrate with the REAL harness. [DONE 2026-05-30: /Users/jwang/edge-screener created + committed 5cceac6 (183 files): Python src-layout package on uv (ruff/mypy/pytest green); full real harness (26 skills, hook tree incl. session-start.d curators, settings, rules, pre-commit, CI); AGENTS.md retailored to backtest integrity + synced 4 surfaces; .dev-wiki bootstrapped (ruler-first 4-phase roadmap, Phase 1 active, standard ceremony). Drove dev-init manually (CWD git-root coupling) + recursive hook copy (py-init literal steps miss curators) — both DISCOVERY deviations, recorded.] | scope: (external: /Users/jwang/edge-screener) | success: external repo committed, toolchain green
+- [x] [S] T3 (LAST) Record deferred-measurement design + return to NONE. [DONE 2026-05-30: deferred OFF/ON cross-session recovery protocol recorded as a standing open question (designed when the substrate has real multi-session history, not pre-registered now); nana-dev-kit → active phase NONE; journal + index + log updated at debrief.] | scope: .dev-wiki/** | success: open-question recorded; active phase NONE
+
+<!-- gate-log:phase-73 direction=approved delivery=accepted -->
