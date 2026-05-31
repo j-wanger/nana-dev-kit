@@ -35,7 +35,12 @@ After acceptance:
 
 1. **Stage all changes:** `git add -A` (the phase work is complete; all changes are intentional).
 2. **Commit** with message: `Phase N: <phase name> — <1-line summary>` + Co-Authored-By trailer.
-3. **Push** to the current branch's upstream: `git push`. If no upstream is set, run `git push -u origin HEAD`. If push fails, report the error but do NOT retry with --force.
+3. **Verify the commit landed — do not assume it did.** Check BOTH the commit exit status and that HEAD advanced to the new commit (e.g. `git log -1 --format=%s` now shows the `Phase N` message, and `git status --porcelain` is clean of the phase work). A commit can be **silently aborted by a pre-commit hook** (lint / type / secret-scan / test gate): `git add -A && git commit` then leaves the tree dirty with nothing committed. If the commit did NOT land:
+   - Surface the failure **loudly** — show the pre-commit hook output / the non-zero exit.
+   - Do NOT push. Do NOT mark the delivery gate accepted (leave it `- [ ]`). The phase is NOT complete until its work is committed.
+   - STOP and report so the user fixes the blocker (e.g. the failing gate) and re-runs. Never paper over an uncommitted phase by marking it done.
+4. **Mark the delivery gate accepted — only now, with the commit verified.** Flip `- [ ] Delivery accepted` → `- [x] Delivery accepted (post-implementation report <date>)` in `active-phase.md`, and set `delivery=accepted` in the `tasks.md` gate-log comment. Both halves of the gate are pending until here: the executor (executor-prompt #11) writes the `active-phase.md` checkbox UNCHECKED, and the `tasks.md` gate-log carries no `delivery=accepted` (absent ≡ pending) until D3 — **D3 is the sole writer of `delivery=accepted`.** The gate becomes accepted ONLY after the commit verifiably lands — **gate-state must follow git-state, never precede it.** (A `session-start.sh` divergence detector backstops this deterministically if the step is ever skipped — see the delivery-commit-verification decision.)
+5. **Push** to the current branch's upstream: `git push`. If no upstream is set, run `git push -u origin HEAD`. If push fails, report the error but do NOT retry with --force.
 
 **Safety:**
 - Do NOT push to main/master without explicit user confirmation.

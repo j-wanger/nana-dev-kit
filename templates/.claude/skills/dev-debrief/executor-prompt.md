@@ -98,7 +98,7 @@ Read `~/.claude/skills/dev-debrief/debrief-finalization.md` Step 17.
 
 ### 11. Write active-phase.md
 
-Write `$ROOT/.claude/rules/active-phase.md`. Format: Phase, Objective, Scope, Key constraints, Exit criteria, Abort rule. 10-15 lines, 20 line hard cap per `~/.claude/skills/dev-wiki/size-budgets.md`.
+Write `$ROOT/.claude/rules/active-phase.md`. Format: Phase, Objective, Scope, Key constraints, Exit criteria, Abort rule, Gates. 10-15 lines, 20 line hard cap per `~/.claude/skills/dev-wiki/size-budgets.md`. In the Gates section, write the **delivery gate UNCHECKED** (`- [ ] Delivery accepted`): the executor runs BEFORE the commit, so it must not pre-mark acceptance. Delivery-flow Step D3 flips it to `[x]` only after the commit verifiably lands (gate-state follows git-state — prevents the accepted-but-uncommitted divergence).
 
 ### 12. Active-Knowledge Transition
 

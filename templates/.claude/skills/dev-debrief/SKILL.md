@@ -254,7 +254,7 @@ Read `~/.claude/skills/dev-debrief/debrief-finalization.md` Step 17 instructions
 
 ### Step 18: Update .claude/rules/active-phase.md
 
-Always rewrite `$ROOT/.claude/rules/active-phase.md` in full debrief mode. Format: Phase, Objective, Scope, Key constraints, Exit criteria, Abort rule. Keep to 10-15 lines, 20 line hard cap per `~/.claude/skills/dev-wiki/size-budgets.md`.
+Always rewrite `$ROOT/.claude/rules/active-phase.md` in full debrief mode. Format: Phase, Objective, Scope, Key constraints, Exit criteria, Abort rule, Gates. Keep to 10-15 lines, 20 line hard cap per `~/.claude/skills/dev-wiki/size-budgets.md`. Write the **delivery gate UNCHECKED** — delivery-flow Step D3 flips it to `[x]` only after the commit verifies (gate-state follows git-state).
 
 ### Step 19: Validate/Transition active-knowledge.md
 

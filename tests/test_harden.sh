@@ -195,4 +195,85 @@ else
   echo "  (note: 'timeout' unavailable — memory-nudge's >500-entries consolidation path is unasserted on this host)"
 fi
 
+# --- Delivery-commit divergence detector (Phase 75) — phase marked delivery-accepted but never
+#     committed (the edge-screener dogfood failure: gate-state diverged from git-state silently).
+#     Deterministic, fail-open; fires at session-start independent of agent adherence. ---
+
+write_active_phase() {  # $1=dir $2=phase-number $3=delivery-line ([x] or [ ])
+  cat > "$1/.claude/rules/active-phase.md" <<APEOF
+# Active Phase Context
+Phase: $2 — Some Phase
+Status: Active
+Gates:
+- [x] Direction confirmed by user (approach approved)
+- $3 Delivery accepted (post-implementation report)
+APEOF
+}
+
+test_start "delivery-divergence: fires when phase delivery-accepted but uncommitted"
+T=$(mktemp -d) && mkdir -p "$T/.claude/rules"
+write_active_phase "$T" 2 "[x]"
+( cd "$T" && git init -q && git -c user.email=t@t -c user.name=t commit -q --allow-empty -m "initial, no phase ref" )
+OUTPUT=$(HOME="$T" bash -c "cd '$T' && bash '$START_HOOK'" 2>/dev/null || true)
+if echo "$OUTPUT" | grep -q '\[nana:recovery\]' && echo "$OUTPUT" | grep -qiE 'uncommitted|no commit'; then
+  test_pass
+else
+  test_fail "expected divergence warning for accepted-but-uncommitted Phase 2 (out=$OUTPUT)"
+fi
+rm -rf "$T"
+
+test_start "delivery-divergence: silent when a Phase-N commit exists"
+T=$(mktemp -d) && mkdir -p "$T/.claude/rules"
+write_active_phase "$T" 2 "[x]"
+( cd "$T" && git init -q && git -c user.email=t@t -c user.name=t commit -q --allow-empty -m "Phase 2: Some Phase — done" )
+OUTPUT=$(HOME="$T" bash -c "cd '$T' && bash '$START_HOOK'" 2>/dev/null || true)
+if echo "$OUTPUT" | grep -qiE '\[nana:recovery\].*(uncommitted|no commit)'; then
+  test_fail "false-positive: Phase 2 IS committed but flagged (out=$OUTPUT)"
+else
+  test_pass
+fi
+rm -rf "$T"
+
+test_start "delivery-divergence: silent when delivery gate is unchecked (in-flight phase)"
+T=$(mktemp -d) && mkdir -p "$T/.claude/rules"
+write_active_phase "$T" 2 "[ ]"
+( cd "$T" && git init -q && git -c user.email=t@t -c user.name=t commit -q --allow-empty -m "initial" )
+OUTPUT=$(HOME="$T" bash -c "cd '$T' && bash '$START_HOOK'" 2>/dev/null || true)
+if echo "$OUTPUT" | grep -qiE '\[nana:recovery\].*(uncommitted|no commit)'; then
+  test_fail "fired on an unchecked (in-flight) delivery gate (out=$OUTPUT)"
+else
+  test_pass
+fi
+rm -rf "$T"
+
+test_start "delivery-divergence: fail-open when active-phase.md absent / no git / no phase number"
+T=$(mktemp -d) && mkdir -p "$T/.claude/rules"   # no active-phase.md, no git repo
+if HOME="$T" bash -c "cd '$T' && bash '$START_HOOK'" >/dev/null 2>&1; then test_pass; else test_fail "session-start not fail-open with no active-phase/git"; fi
+# accepted gate but no parseable 'Phase: N' line -> must not crash, must not fire
+printf '# Active Phase Context\nStatus: Active\n- [x] Delivery accepted\n' > "$T/.claude/rules/active-phase.md"
+if OUTPUT=$(HOME="$T" bash -c "cd '$T' && bash '$START_HOOK'" 2>/dev/null) && ! echo "$OUTPUT" | grep -qiE '\[nana:recovery\].*(uncommitted|no commit)'; then test_pass; else test_fail "crashed or fired with no parseable phase number (out=${OUTPUT:-})"; fi
+rm -rf "$T"
+
+# Regression: the kit's OWN debrief writes "Phase: NONE — Phase N COMPLETE" (number NOT right after the
+# colon). The detector must still extract N and fire when uncommitted — caught by dogfooding the detector
+# against nana-dev-kit's own active-phase.md format.
+test_start "delivery-divergence: fires on the 'Phase: NONE — Phase N COMPLETE' completion format"
+T=$(mktemp -d) && mkdir -p "$T/.claude/rules"
+cat > "$T/.claude/rules/active-phase.md" <<'APEOF'
+# Active Phase Context
+Phase: NONE — Phase 9 COMPLETE (Some Thing).
+Status: Active
+Gates:
+- [x] Direction confirmed by user (approach approved)
+- [x] Delivery accepted (post-implementation report)
+APEOF
+( cd "$T" && git init -q && git -c user.email=t@t -c user.name=t commit -q --allow-empty -m "unrelated, no phase ref" )
+OUTPUT=$(HOME="$T" bash -c "cd '$T' && bash '$START_HOOK'" 2>/dev/null || true)
+if echo "$OUTPUT" | grep -q '\[nana:recovery\]' && echo "$OUTPUT" | grep -qiE 'Phase 9.*(uncommitted|no commit)'; then
+  test_pass
+else
+  test_fail "expected divergence warning for 'Phase: NONE — Phase 9 COMPLETE' + uncommitted (out=$OUTPUT)"
+fi
+rm -rf "$T"
+
 test_summary "harden"

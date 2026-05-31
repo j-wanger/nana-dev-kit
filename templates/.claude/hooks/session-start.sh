@@ -53,6 +53,22 @@ if [ -f "$DEVWIKI_STATE" ]; then
   fi
 fi
 
+# --- Delivery-commit divergence: a phase marked delivery-accepted but never committed ---
+# Catches the gate-state-vs-git-state split (a delivery gate ticked while D3's commit never landed —
+# agent skipped it or a pre-commit hook aborted it). Deterministic + fail-open; the skill-text commit
+# step it backstops can be skipped, this check cannot.
+if [ -f "$ACTIVE_PHASE" ] && grep -qE '^- \[x\] Delivery accepted' "$ACTIVE_PHASE" 2>/dev/null; then
+  # The phase number may sit right after the colon ("Phase: 2 —") or later ("Phase: NONE — Phase 75
+  # COMPLETE", the kit's own completion format) — match a number that follows the word "Phase".
+  PHASE_N=$(grep -m1 '^Phase:' "$ACTIVE_PHASE" 2>/dev/null | grep -oiE 'phase[ :_-]*[0-9]+' | grep -oE '[0-9]+' | head -1 || true)
+  if [ -n "${PHASE_N:-}" ]; then
+    PHASE_COMMITS=$(git log --oneline 2>/dev/null | grep -icE "phase[ _-]?${PHASE_N}\b" || true)
+    if [ "${PHASE_COMMITS:-0}" -eq 0 ] 2>/dev/null; then
+      echo "[nana:recovery] Phase $PHASE_N marked delivery-accepted but no commit references it — work may be uncommitted. Commit it or run /dev-check."
+    fi
+  fi
+fi
+
 # --- Stale post-commit sidecar ---
 if [ -f ".dev-wiki/.pending-commit" ]; then
   echo "[nana:pending] Unprocessed commit detected. Run task matching."
