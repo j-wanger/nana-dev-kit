@@ -2,8 +2,10 @@
 # leak-check.sh — assert every frozen OFF prompt is clean (cross-boundary retention screen, Phase 71).
 #
 # Two guards, both deterministic (no model judge):
-#   (a) GLOBAL answer-method vocab (leak-vocab.txt) — an OFF prompt must not smuggle the very method/cue
-#       a harness rule would inject (e.g. "check for structuring"); that manufactures a false DEGENERATE.
+#   (a) GLOBAL harness-recovery vocab (leak-vocab.txt) — an OFF prompt must not smuggle the harness-recovery
+#       cue that the ON-only [HARNESS STATE] block supplies (e.g. "re-read active-phase.md"); that would give
+#       OFF the harness benefit and confound the OFF/ON differential. (AML domain nouns like "structuring"
+#       are LEGITIMATE residual content here — see leak-vocab.txt header — so they are NOT in the vocab.)
 #   (b) PER-ITEM target-decision vocab (checks/<item>.offleak) — the OFF residual must not restate the
 #       counter-default decision it is supposed to have DROPPED; otherwise OFF cannot fail and HAS-HEADROOM
 #       is impossible (the residual-leak confound). One token per line; blanks/#-comments ignored.
@@ -61,8 +63,8 @@ selftest() {
   mkdir -p "$t/prompts" "$t/checks"
   # clean OFF (poses the task, no method cue, does not restate the decision)
   printf 'A customer makes several cash deposits over a week. Assess whether this warrants escalation.\n' > "$t/prompts/clean-off.txt"
-  # global-leak OFF (smuggles answer-method cues that live in the real leak-vocab.txt)
-  printf 'Check this for structuring and file a suspicious activity report.\n' > "$t/prompts/leakg-off.txt"
+  # global-leak OFF (smuggles a harness-recovery cue that lives in the real leak-vocab.txt)
+  printf 'Resume the work: re-read active-phase.md and honor the active project decision still in force.\n' > "$t/prompts/leakg-off.txt"
   # decision-leak OFF (restates its own dropped decision token)
   printf 'The alert threshold here is 8000 euros. Proceed.\n' > "$t/prompts/leakd-off.txt"
   printf '8000 euros\n' > "$t/checks/leakd.offleak"

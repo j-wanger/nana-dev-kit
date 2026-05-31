@@ -7,13 +7,15 @@ parents: [phase-70-anchor-headroom-screen]
 created: 2026-05-30
 updated: 2026-05-30
 source: plan
-status: active
+status: completed
 scope: ["eval/amplifier/retention-screen/**", ".dev-wiki/articles/decisions/cross-boundary-retention-headroom-screen.md"]
 entry_criteria: "Phase 70 named long-horizon/multi-turn process-retention as a surviving avenue (decidable-when: a multi-turn substrate exists); Jake selected it via AskUserQuestion 2026-05-30; spec nana:approved."
 exit_criteria: "A pre-registered differential screen runs over controls + ≥2 candidates and yields a single anchored PROGRAM-VERDICT on the graded ladder; frozen machinery git-diff-empty; make eval 52/52, make test 19 scripts unchanged."
 ---
 
 # Phase 71: Cross-Boundary Retention Headroom Screen
+
+> **READY FOR COMPLETION (delivery gate pending, 2026-05-30).** All 6 tasks [x]; exit criteria met. **PROGRAM-VERDICT: TERMINATE-by-summary-robustness** — controls validated the instrument (neg→DEGENERATE, pos→HAS-HEADROOM [ON pathway LIVE], middle→STABLE); then no candidate reached a lossy boundary because Claude Code's native model-authored compaction summary RETAINS explicit project decisions and bare opus HONORS them 5/5 in OFF. Committed `896e096` (pre-registration, BEFORE runs) + `d7067e6` (verdicts). make eval 52/52, make test unchanged at 19 scripts, frozen cross-compaction machinery git-diff-empty. See [[cross-boundary-retention-headroom-screen]] (Result section) + the full record at `eval/amplifier/retention-screen/screen-record.md`.
 
 ## Objective
 
@@ -29,14 +31,14 @@ FROZEN (the SUBJECT of measurement — must be git-diff-empty at T6): `templates
 
 ## Exit Criteria
 
-- [ ] `check.sh --selftest` / `--verify-pins` / `leak-check.sh` / `assert-off-on-isolation.sh` exit 0
-- [ ] `git merge-base --is-ancestor <pre-registration commit> <first verdicts/ commit>` exits 0
-- [ ] `grep -c '^PROGRAM-VERDICT:' screen-record.md` returns exactly 1; the no-harness-value disclaimer string is present
-- [ ] Bare-derivation gate result + motivated|arbitrary classification recorded per candidate; 3 controls present (negative→DEGENERATE, positive→HAS-HEADROOM, middle→STABLE); ≥2 candidates screened
-- [ ] `check.sh --stability <middle-b1> <middle-b2>` prints `STABLE`; 10 middle-control run files exist
-- [ ] Engineered-favorable backstop screens DEGENERATE or is recorded bare-disqualified
-- [ ] ≥1 candidate reached a lossy boundary (OFF-fail) OR `TERMINATE-by-summary-robustness` is recorded
-- [ ] `make eval` 52/52; `make test` runs the UNCHANGED 19 scripts; frozen set `git diff`-empty
+- [x] `check.sh --selftest` / `--verify-pins` / `leak-check.sh` / `assert-off-on-isolation.sh` exit 0
+- [x] `git merge-base --is-ancestor 896e096 d7067e6` exits 0 (pre-registration precedes verdicts)
+- [x] `grep -c '^PROGRAM-VERDICT:' screen-record.md` returns exactly 1; the no-harness-value disclaimer string is present
+- [x] Bare-derivation gate result + motivated|arbitrary classification recorded per candidate; 3 controls present (negative→DEGENERATE, positive→HAS-HEADROOM, middle→STABLE); 3 candidates screened
+- [x] `check.sh --stability <middle-b1> <middle-b2>` prints `STABLE`; 10 middle-control run files exist
+- [x] Engineered-favorable backstop screened (summary-robust — no lossy boundary reached)
+- [x] No candidate reached a lossy boundary → `TERMINATE-by-summary-robustness` recorded
+- [x] `make eval` 52/52; `make test` runs the UNCHANGED 19 scripts; frozen set `git diff`-empty
 
 ## Constraints
 
