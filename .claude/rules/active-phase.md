@@ -1,19 +1,34 @@
 # Active Phase Context
 
-Phase: NONE — Phase 75 COMPLETE (Delivery-Commit Verification; delivery gate pending orchestrator commit-verify). Awaiting `/dev-plan` for the next direction.
-Last completed: Phase 75 — closed the accepted-but-uncommitted divergence the edge-screener dogfood exposed (the 2nd dogfood→harden fix after Phase 74).
+Phase: 76 — Installed-Copy-Drift Guard
+Status: Active
 
-Result: a fail-open `session-start.sh` divergence detector (PRIMARY — fires `[nana:recovery]` when active-phase.md shows `- [x] Delivery accepted` for Phase N but `git log` has 0 commits matching `phase[ _-]?N\b`; fires independent of agent adherence, RED-first, 4 tests in test_harden.sh 17/17, firing-coverage 21/21 no churn); delivery-flow D3 commit self-assert + gate-after-commit ordering (SECONDARY — executor writes the delivery gate UNCHECKED, D3 flips it post-verified-commit; gate-state follows git-state). make test green, make eval 52/52, eval/ git-diff-clean. Reframed at the direction gate from "guarantee the commit fires" (unachievable) to "make gate-state diverging from git-state impossible to ignore." Decision [[delivery-commit-verification]] (high); journal [[2026-05-31-phase-75-delivery-commit-verification]].
+Objective: Detect when the maintainer's installed `~/.claude` has drifted from the kit source
+(`templates/.claude`), so a stale installed copy stops silently undermining work. The kit develops in
+templates/ but RUNS from ~/.claude — bit twice (Phase-73 curator gap; Phase-75 debrief ran the OLD
+delivery-flow). Deterministic, fail-open, scoped to the kit repo so it is signal not noise.
 
-Soft observation (2nd instance, logged): the kit's OWN `/dev-debrief` runs the INSTALLED `~/.claude/skills/dev-debrief/`, so this `templates/` fix is not live for the kit's own debrief until install.sh re-syncs — strengthens the case for an installed-copy-drift guard (templates/ vs ~/.claude).
+Scope:
+- `scripts/check-install-drift.sh` — comparator over kit-managed copy-verbatim files (modules.json:
+  skills + global hooks + verbatim rules), templates/.claude vs installed-root (default ~/.claude,
+  OVERRIDABLE for hermetic tests); pinned exclusion allow-list (settings.json [merged], nana-personal.md, …).
+- `templates/.claude/hooks/session-start.sh` — `[nana:drift]` advisory gated to git-root == the
+  `~/.claude/.nana-dev-kit-path` marker (kit repo only); fail-open, once/session.
+- `install.sh --status` — drift line via the same script. tests/test_install.sh extended (no new file).
 
-Next direction (pick one via /dev-plan):
-- The screener build itself — in its OWN repo (`/Users/jwang/edge-screener`, Phase 1 Data Foundation active there); fresh session there → `/dev-plan`.
-- Deferred cross-session measurement — when the screener has accrued real multi-session history.
-- Phase-75/74 soft-observation candidates — an installed-copy-drift guard (now a 2nd-instance finding) and a fresh-scaffold smoke test.
+Key constraints: FAIL-OPEN (never blocks); noise-scoped to the kit repo; comparison set + bounded-count
+exclusion allow-list from modules.json (firing-coverage-exemption analog); tests use an installed-root
+override (NEVER touch real ~/.claude); surgical, respect the session-start line-cap.
 
-See [[delivery-commit-verification]] + [[2026-05-31-phase-75-delivery-commit-verification]] + [[harden-consuming-project-scaffold]] (Phase 74) + [[cross-session-substrate-stock-screener]] (Phase 73).
+Exit criteria: comparator detect/silent/exclude/fail-open + shellcheck clean; session-start emits
+`[nana:drift]` in the kit repo on drift, silent outside + when synced; `install.sh --status` shows it;
+make test green (no new test file/hook → no count/firing/registration churn); make eval unchanged.
+
+Abort: if blocked >3 attempts on a task, mark [blocked] + ask user skip/abort.
+
+Decision: [[installed-copy-drift-guard]]. Spec: `specs/phase-76-installed-copy-drift-guard.md`.
+Deferred: (B) consuming-project drift; `install.sh --link` symlink dev-mode.
 
 Gates:
-- [x] Direction confirmed by user (approach approved 2026-05-31)
-- [x] Delivery accepted (post-implementation report 2026-05-31; commit 0af308c verified)
+- [x] Direction confirmed by user (approach approved 2026-05-31 — "A only")
+- [ ] Delivery accepted (post-implementation report)
