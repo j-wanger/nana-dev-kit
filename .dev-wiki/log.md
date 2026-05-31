@@ -151,3 +151,4 @@
 [2026-05-30T19:09:47Z] DEBRIEF -- 0 new decisions (cross-boundary-retention-headroom-screen finalized in-session, not duplicated), 1 journal, tasks updated (T3+T4 marked [x]), state refreshed, active-knowledge carried forward + cleared
 [2026-05-30T20:47:58] PLAN -- Phase 72 planned, 2 tasks, 1 decision (compaction-recovery subtraction)
 [2026-05-30T20:47:58] DEBRIEF -- Phase 72 COMPLETE — removed dead .session-anchor machinery; make test/eval green; delivery accepted
+[2026-05-30T20:58:10] DEBRIEF -- Phase 72 finalize: index.md + phase-72 article + state/working-knowledge reconcile (full debrief)

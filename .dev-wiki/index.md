@@ -73,7 +73,8 @@
 - [[phase-68-amplifier-measurement-instrument|Phase 68: Amplifier Measurement Instrument]] -- completed
 - [[phase-69-amplifier-representativeness-audit|Phase 69: Amplifier Measurement — Representativeness Audit + Anchor-Validity Verdict]] -- completed
 - [[phase-70-anchor-headroom-screen|Phase 70: Single-Decision Anchor-Headroom Screen]] -- completed
-- [[phase-71-cross-boundary-retention-screen|Phase 71: Cross-Boundary Retention Headroom Screen]] -- ready for completion (delivery pending)
+- [[phase-71-cross-boundary-retention-screen|Phase 71: Cross-Boundary Retention Headroom Screen]] -- completed
+- [[phase-72-compaction-recovery-subtraction|Phase 72: Compaction-Recovery Subtraction (.session-anchor)]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -92,6 +93,7 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[cash-compaction-recovery-subtraction|Cash the P70/71 conclusion — subtract the dead .session-anchor recovery machinery; subtraction over construction since the recovery pathway is measured headroom-free (Phase 72)]] -- high confidence, accepted
 - [[cross-boundary-retention-headroom-screen|Cross-Boundary Retention Headroom Screen — the multi-turn analog of the anchor screen; does harness state recover a counter-default decision a model-authored compaction summary drops? (Phase 71)]] -- high confidence, realized (PROGRAM-VERDICT: TERMINATE-by-summary-robustness)
 - [[amplifier-anchor-headroom-screen|Anchor-Headroom Screen — anchor selection is upstream of measurement; screen single-decision headroom before any live run (Phase 70)]] -- high confidence, accepted
 - [[amplifier-representativeness-audit|Amplifier Representativeness Audit — the ruler is non-representative on real data and the anchor is degenerate; ship a measurability gate, defer the live run (Phase 69)]] -- high confidence, accepted
@@ -248,6 +250,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-30-phase-72-compaction-recovery-subtraction-complete|Phase 72 complete — Compaction-Recovery Subtraction (removed the dead .session-anchor recovery machinery; first "cash the P70/71 conclusion" subtraction)]] -- 2026-05-30
 - [[2026-05-30-phase-71-cross-boundary-retention-screen-complete|Phase 71 complete — Cross-Boundary Retention Headroom Screen → PROGRAM-VERDICT: TERMINATE-by-summary-robustness]] -- 2026-05-30
 - [[2026-05-30-phase-70-anchor-headroom-screen-complete|Phase 70 complete — Single-Decision Anchor-Headroom Screen → PROGRAM-VERDICT: TERMINATE]] -- 2026-05-30
 - [[2026-05-30-phase-69-amplifier-representativeness-audit-complete|Phase 69 complete — Amplifier Representativeness Audit + Anchor-Validity Verdict (the cheap probe falsified the expensive plan)]] -- 2026-05-30
