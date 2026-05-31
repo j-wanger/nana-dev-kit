@@ -132,8 +132,8 @@
       {
         "hooks": [
           {
-            "type": "prompt",
-            "prompt": ".claude/hooks/py-review-stop-prompt.md"
+            "type": "command",
+            "command": ".claude/hooks/py-review-stop.sh"
           }
         ]
       }

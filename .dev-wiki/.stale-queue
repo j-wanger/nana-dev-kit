@@ -149,3 +149,5 @@ eval/amplifier/retention-screen/prompts/control-middle-off.txt
 eval/amplifier/retention-screen/checks/control-negative.check
 eval/amplifier/retention-screen/checks/control-positive.check
 eval/amplifier/retention-screen/checks/control-middle.check
+templates/.claude/hooks/py-review-stop.sh
+templates/pyproject.toml

@@ -154,3 +154,5 @@
 [2026-05-30T20:58:10] DEBRIEF -- Phase 72 finalize: index.md + phase-72 article + state/working-knowledge reconcile (full debrief)
 [2026-05-31T01:56:10] PLAN -- Phase 73 planned (thin handoff), 3 tasks, 1 decision (cross-session-substrate-stock-screener); direction fork via AskUserQuestion
 [2026-05-31T01:56:10] DEBRIEF -- Phase 73 COMPLETE — external edge-screener substrate bootstrapped with the real harness (5cceac6); nana-dev-kit → active phase NONE; delivery accepted (full debrief)
+[2026-05-31T03:01:32] PLAN -- Phase 74 planned (Harden Consuming-Project Scaffold), 5 tasks, 1 decision; direction "yes, do Phase 74 now"
+[2026-05-31T03:01:32] DEBRIEF -- Phase 74 COMPLETE — py-review prompt->gated command + recursive hook copy + pyproject/AGENTS template fixes; reviewer SHIP; make test green, make eval 52/52; delivery accepted (full debrief)

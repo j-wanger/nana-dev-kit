@@ -5,7 +5,7 @@
 # synthesized-trigger firing test is ([[HEU-012]]). Every assertion checks a LOAD-BEARING SIDE-EFFECT
 # (stdout content, or a file write/removal), never exit code alone — an advisory hook gutted to a no-op
 # still exits 0, so exit-code-only "coverage" is satisfied by a broken hook.
-# fires: pre-compact.sh post-compact.sh session-stop.sh check-tests-were-run.sh
+# fires: pre-compact.sh post-compact.sh session-stop.sh check-tests-were-run.sh py-review-stop.sh
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/helpers.sh"
@@ -93,6 +93,33 @@ EC=$(run_hook check-tests-were-run.sh "$T" '{"tool_uses":[{"input":{"file_path":
 LINE=$(tail -n1 "$T/.dev-wiki/enforcement.log" 2>/dev/null || echo "")
 if [ "$EC" = "0" ] && printf '%s' "$LINE" | jq -e '(.action=="skipped")' >/dev/null 2>&1; then
   test_pass; else test_fail "no skipped record (ec=$EC line=$LINE)"; fi
+teardown "$T"
+
+# ---- py-review-stop.sh: PLANNING path (no .py touched) -> exit 0, no review prompt, skipped record ----
+# (Phase 74: replaces the old unconditional py-review-stop-prompt.md prompt hook that looped during planning.)
+test_start "py-review: planning path (no .py touched) exits 0 with no review prompt"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude/rules"; printf 'Phase: 99 - x\n' > "$T/.claude/rules/active-phase.md"
+EC=$(run_hook py-review-stop.sh "$T" '{"stop_hook_active":false,"tool_uses":[{"input":{"file_path":".dev-wiki/tasks.md"}},{"input":{"command":"uv run ruff check ."}}]}')
+LINE=$(tail -n1 "$T/.dev-wiki/enforcement.log" 2>/dev/null || echo "")
+if [ "$EC" = "0" ] && ! grep -q 'nana:review' "$T/.err" && printf '%s' "$LINE" | jq -e '(.hook=="py-review") and (.action=="skipped")' >/dev/null 2>&1; then
+  test_pass; else test_fail "planning path should exit 0 silent + skipped record (ec=$EC err=$(tr '\n' '|' < "$T/.err") line=$LINE)"; fi
+teardown "$T"
+
+# ---- py-review-stop.sh: CODE-CHANGED path (.py touched, first stop) -> exit 2 + review prompt + block record ----
+test_start "py-review: code-changed path (.py touched, first stop) exits 2 with review prompt"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude/rules"; printf 'Phase: 99 - x\n' > "$T/.claude/rules/active-phase.md"
+EC=$(run_hook py-review-stop.sh "$T" '{"stop_hook_active":false,"tool_uses":[{"input":{"file_path":"src/pkg/loader.py"}}]}')
+LINE=$(tail -n1 "$T/.dev-wiki/enforcement.log" 2>/dev/null || echo "")
+if [ "$EC" = "2" ] && grep -q 'nana:review' "$T/.err" && printf '%s' "$LINE" | jq -e '(.hook=="py-review") and (.action=="block")' >/dev/null 2>&1; then
+  test_pass; else test_fail "code-changed path should exit 2 + review prompt + block record (ec=$EC err=$(tr '\n' '|' < "$T/.err") line=$LINE)"; fi
+teardown "$T"
+
+# ---- py-review-stop.sh: LOOP GUARD (stop_hook_active=true) -> exit 0 even with .py changed (no infinite stop loop) ----
+test_start "py-review: loop guard (stop_hook_active=true) exits 0 even with .py changed"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude/rules"; printf 'Phase: 99 - x\n' > "$T/.claude/rules/active-phase.md"
+EC=$(run_hook py-review-stop.sh "$T" '{"stop_hook_active":true,"tool_uses":[{"input":{"file_path":"src/pkg/loader.py"}}]}')
+if [ "$EC" = "0" ] && ! grep -q 'nana:review' "$T/.err"; then
+  test_pass; else test_fail "loop guard should exit 0 silent (ec=$EC err=$(tr '\n' '|' < "$T/.err"))"; fi
 teardown "$T"
 
 test_summary "long-cadence-hooks"

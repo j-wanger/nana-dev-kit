@@ -79,15 +79,15 @@ PROMPT_HOOKS=$(prompt_set)
 EXEMPT=""
 EXEMPT_EXPECTED=0
 
-# Floor: 17 command .hooks[] + 3 session-start.d curators = expected union of 20 (as of Phase 67).
-# A wrong classifier (e.g. literal type=="command") collapses this toward 0 — catch it instead of
-# reporting 100% green. (expected >= 20)
-REQUIRED_FLOOR=20
+# Floor: 18 command .hooks[] + 3 session-start.d curators = expected union of 21 (Phase 74 converted
+# py-review prompt->command, 17->18). A wrong classifier (e.g. literal type=="command") collapses this
+# toward 0 — catch it instead of reporting 100% green. (expected >= 21)
+REQUIRED_FLOOR=21
 
 echo "=== Phase 67 Hook Firing-Coverage Gate ==="
 
 req_count=$(printf '%s\n' "$REQUIRED" | grep -c . || true)
-test_start "denominator-sanity: firing-required union >= $REQUIRED_FLOOR (17 command + 3 curators)"
+test_start "denominator-sanity: firing-required union >= $REQUIRED_FLOOR (18 command + 3 curators)"
 if [ "$req_count" -ge "$REQUIRED_FLOOR" ]; then
   test_pass
 else

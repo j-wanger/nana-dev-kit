@@ -76,6 +76,7 @@
 - [[phase-71-cross-boundary-retention-screen|Phase 71: Cross-Boundary Retention Headroom Screen]] -- completed
 - [[phase-72-compaction-recovery-subtraction|Phase 72: Compaction-Recovery Subtraction (.session-anchor)]] -- completed
 - [[phase-73-cross-session-substrate|Phase 73: Cross-Session Substrate (thin handoff)]] -- completed
+- [[phase-74-harden-consuming-scaffold|Phase 74: Harden the Consuming-Project Scaffold Path]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -94,6 +95,7 @@
 - [[templates-claude-hooks-session-start|session-start.sh]] -- SessionStart state loader
 
 ### Decisions
+- [[harden-consuming-project-scaffold|Harden the consuming-project scaffold path — fix the 4 edge-screener-dogfood defects at the source (py-review prompt→gated command, recursive hook copy, pyproject guards, AGENTS.md neutralize); #5 deferred (Phase 74)]] -- high confidence, accepted
 - [[cross-session-substrate-stock-screener|Cross-session-persistence substrate = an external stock-screener project; build a real unconfounded substrate with the real harness; honest goal = un-foolable validator not alpha; measurement deferred (Phase 73)]] -- high confidence, accepted
 - [[cash-compaction-recovery-subtraction|Cash the P70/71 conclusion — subtract the dead .session-anchor recovery machinery; subtraction over construction since the recovery pathway is measured headroom-free (Phase 72)]] -- high confidence, accepted
 - [[cross-boundary-retention-headroom-screen|Cross-Boundary Retention Headroom Screen — the multi-turn analog of the anchor screen; does harness state recover a counter-default decision a model-authored compaction summary drops? (Phase 71)]] -- high confidence, realized (PROGRAM-VERDICT: TERMINATE-by-summary-robustness)
@@ -252,6 +254,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-05-30-phase-74-harden-consuming-scaffold|Phase 74 complete — Harden the Consuming-Project Scaffold Path (the dogfood→harden loop; reviewer SHIP)]] -- 2026-05-30
 - [[2026-05-30-phase-73-cross-session-substrate-bootstrap|Phase 73 complete — Cross-Session Substrate (thin handoff): amplifier program pivots to substrate-construction; external edge-screener bootstrapped with the real harness]] -- 2026-05-30
 - [[2026-05-30-phase-72-compaction-recovery-subtraction-complete|Phase 72 complete — Compaction-Recovery Subtraction (removed the dead .session-anchor recovery machinery; first "cash the P70/71 conclusion" subtraction)]] -- 2026-05-30
 - [[2026-05-30-phase-71-cross-boundary-retention-screen-complete|Phase 71 complete — Cross-Boundary Retention Headroom Screen → PROGRAM-VERDICT: TERMINATE-by-summary-robustness]] -- 2026-05-30

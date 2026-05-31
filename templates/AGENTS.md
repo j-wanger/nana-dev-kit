@@ -5,35 +5,36 @@
 ## Toolchain
 
 - Python 3.12+. Package manager: uv (never pip or poetry).
-- Install: `uv sync`. Run: `uv run <cmd>`. Add dep: `uv add <pkg>`.
+- Install: `uv sync` (add `--extra dev` if dev tools are an optional group). Run: `uv run <cmd>`. Add dep: `uv add <pkg>`.
 - Lint, types, and tests run via the Pre-commit sequence below (ruff, mypy, pytest — all config in pyproject.toml).
 - Lock: `uv.lock` is committed. Never run `uv add` without checking the package exists on PyPI.
 
 ## Hard Rules
 
 - Never commit secrets. `.env*` is gitignored and contains placeholders only.
-- Never modify migration files after merge — generate new migrations.
 - Run `pre-commit run --all-files` before declaring any task done.
 - Never add a dependency without verifying it exists on PyPI and is actively maintained.
 - Never use `# type: ignore` without an inline comment explaining why.
 
 ## Conventions
 
-- All public API boundaries use Pydantic v2 models (`model_config`, not `class Config`).
-- Database access through `src/repositories/`; routers never import SQLAlchemy directly.
-- Logging via `structlog`; never `print()`.
-- Config via environment variables loaded through `pydantic-settings`.
+- Validate at boundaries; keep core logic in pure, typed functions (no hidden I/O) so it is unit-testable.
+- Logging via a structured logger; never `print()`.
+- Config via environment / a typed settings object; no magic constants buried in logic.
 - Imports: absolute from `src/`. No relative imports across packages.
 - Error handling: let exceptions propagate. No bare `except Exception`. No `pass` in except blocks.
 - One function, one job. If a docstring needs "and", split the function.
 
+<!-- Replace the generic conventions above with your domain's real rules (e.g. for a web service:
+     Pydantic v2 at API boundaries, DB access behind a repository layer, no SQLAlchemy in routers).
+     The point is project-specific rules the agent must follow — not these defaults verbatim. -->
+
 ## Testing
 
-- Tests live in `tests/unit/` and `tests/integration/`.
+- Tests live in `tests/unit/` and `tests/integration/`. Fixtures in `tests/conftest.py`.
 - Every public function has at least one positive and one negative test.
 - Test names are specifications: `test_returns_empty_list_when_no_matching_records`.
-- Fixtures in `tests/conftest.py`. No test-specific database setup outside fixtures.
-- Mock external services only. Never mock the database — use a test database.
+- Mock external services at the boundary only; prefer real implementations for your own code.
 
 ## Branch + Commit
 
@@ -48,10 +49,7 @@
   src/
     {{PACKAGE_NAME}}/
       __init__.py
-      models/          # Pydantic models (domain + API)
-      repositories/    # Database access layer
-      services/        # Business logic
-      api/             # FastAPI routers
+      ...              # organize modules by responsibility (one job each)
   tests/
     unit/
     integration/
@@ -64,7 +62,6 @@
 
 - Architecture: `docs/architecture.md`
 - Testing patterns: `docs/testing.md`
-- API conventions: `docs/api.md`
 - Security checklist: `docs/security.md`
 
 ## Pre-commit sequence

@@ -105,10 +105,8 @@ Read `transform.md` (in this skill directory) and follow its procedure. Uses `so
    mkdir -p .claude/hooks
    cp "$KIT/templates/.claude/settings.json" .claude/settings.json
    cp "$KIT/templates/.claude/enforce" .claude/enforce   # opt-in marker → scaffold self-enforces
-   cp "$KIT/templates/.claude/hooks/"*.sh .claude/hooks/
-   cp "$KIT/templates/.claude/hooks/"*.md .claude/hooks/
-   cp -r "$KIT/templates/.claude/hooks/session-start.d" .claude/hooks/   # sourced by session-start.sh under `set -euo pipefail` — omitting it aborts the whole SessionStart hook
-   chmod +x .claude/hooks/*.sh .claude/hooks/session-start.d/*.sh
+   cp -R "$KIT/templates/.claude/hooks/." .claude/hooks/   # recursive: top-level *.sh + the session-start.d/ curators (sourced by session-start.sh under `set -euo pipefail` — omitting them aborts SessionStart). Recursive so no hook subdir is left behind and so it survives a hooks dir with no .md files.
+   find .claude/hooks -name '*.sh' -exec chmod +x {} +
    
    # Layer 3: Identity rule + session state template
    mkdir -p .claude/rules

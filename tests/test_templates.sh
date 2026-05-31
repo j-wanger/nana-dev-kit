@@ -31,6 +31,30 @@ assert_contains "$PROJECT_ROOT/templates/AGENTS.md" '{{PACKAGE_NAME}}'
 test_start "pyproject.toml placeholder is not empty string"
 assert_exit_code 1 grep -q 'name = ""' "$PROJECT_ROOT/templates/pyproject.toml"
 
+# --- Phase 74: consuming-project scaffold hardening ---
+# T3: pyproject template lints/types clean out of the box (vendored .claude/ excluded; mypy has a target)
+test_start "pyproject.toml ruff excludes vendored .claude/ (extend-exclude)"
+assert_contains "$PROJECT_ROOT/templates/pyproject.toml" 'extend-exclude'
+test_start "pyproject.toml mypy has an explicit files target (bare 'uv run mypy' works)"
+assert_contains "$PROJECT_ROOT/templates/pyproject.toml" 'files = '
+
+# T4: AGENTS.md template is domain-neutral (no web-stack mandates baked into the default)
+test_start "AGENTS.md template has no hardcoded web-stack mandate (SQLAlchemy in routers)"
+assert_exit_code 1 grep -qi 'routers never import SQLAlchemy' "$PROJECT_ROOT/templates/AGENTS.md"
+test_start "AGENTS.md template structure is not FastAPI-specific"
+assert_exit_code 1 grep -q 'FastAPI routers' "$PROJECT_ROOT/templates/AGENTS.md"
+
+# T2: py-init/ts-init copy the hook tree recursively (curators survive; no dangling *.md glob after the
+# py-review prompt->command conversion removed the last .md hook)
+test_start "py-init Step 4 copies hooks recursively (no dangling *.md glob)"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/py-init/SKILL.md" 'cp -R "$KIT/templates/.claude/hooks/."'
+test_start "py-init Step 4 has no dangling hooks/*.md copy"
+assert_exit_code 1 grep -qE 'hooks/"\*\.md' "$PROJECT_ROOT/templates/.claude/skills/py-init/SKILL.md"
+test_start "ts-init Step 4 copies hooks recursively (no dangling *.md glob)"
+assert_contains "$PROJECT_ROOT/templates/.claude/skills/ts-init/SKILL.md" 'cp -R "$KIT/templates/.claude/hooks/."'
+test_start "ts-init Step 4 has no dangling hooks/*.md copy"
+assert_exit_code 1 grep -qE 'hooks/"\*\.md' "$PROJECT_ROOT/templates/.claude/skills/ts-init/SKILL.md"
+
 # --- Protocol presence in nana-soul.md ---
 SOUL="$PROJECT_ROOT/templates/.claude/rules/nana-soul.md"
 

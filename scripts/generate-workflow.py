@@ -474,9 +474,9 @@ def generate_html():
         ("Stop", "—", "enforce-loop.sh",
          "Checks file-existence exit criteria from spec. Advisories: open tasks, debrief status. Events logged.",
          "0 = allow, 2 = block (global hook)"),
-        ("Stop", "—", "py-review-stop-prompt.md",
-         "Prompt-type hook: 6-point review checklist.",
-         "n/a (prompt)"),
+        ("Stop", "—", "py-review-stop.sh",
+         "Command hook: prompts a 6-point review only when Python changed; guards against the stop-loop.",
+         "0 = allow, 2 = force continue"),
     ]
 
     for event, matcher, script, behavior, exits in hook_details:
@@ -824,7 +824,7 @@ def _template_purpose(path):
         ".claude/hooks/pre-compact.sh": "PreCompact: injects dev-wiki state before context compaction",
         ".claude/hooks/check-tests-were-run.sh": "Stop: gates completion on pytest execution",
         ".claude/hooks/enforce-loop.sh": "Stop: checks deliverables + debrief status (global)",
-        ".claude/hooks/py-review-stop-prompt.md": "Stop: 6-point code review checklist prompt",
+        ".claude/hooks/py-review-stop.sh": "Stop: 6-point review prompt, gated on Python changes (loop-safe)",
         ".claude/settings.json": "Hook wiring: maps lifecycle events to scripts",
         ".pre-commit-config.yaml": "9 pre-commit hooks: ruff, mypy, gitleaks, sync-rules, notebooks",
         ".github/workflows/ci.yml": "4-job CI: lint, typecheck, test (85% gate), security",

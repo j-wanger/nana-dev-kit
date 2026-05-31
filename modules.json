@@ -62,7 +62,7 @@
     { "event": "Stop", "matcher": "", "script": "enforce-loop.sh", "scope": "project" },
     { "event": "Stop", "matcher": "", "script": "session-stop.sh", "scope": "project" },
     { "event": "Stop", "matcher": "", "script": "check-tests-were-run.sh", "scope": "project" },
-    { "event": "Stop", "matcher": "", "script": "py-review-stop-prompt.md", "type": "prompt", "scope": "project" },
+    { "event": "Stop", "matcher": "", "script": "py-review-stop.sh", "scope": "project" },
     { "event": "PreCompact", "matcher": "", "script": "pre-compact.sh", "scope": "project" },
     { "event": "PostCompact", "matcher": "", "script": "post-compact.sh", "scope": "project" },
     { "event": "UserPromptSubmit", "matcher": "", "script": "context-size-check.sh", "scope": "global" }

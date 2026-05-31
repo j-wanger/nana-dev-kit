@@ -22,6 +22,9 @@ build-backend = "hatchling.build"
 target-version = "py312"
 line-length = 120
 src = ["src"]
+# .claude/ holds vendored kit skill code (not this project's source); data/ is a gitignored cache.
+# Without this, a fresh consuming project fails `ruff check .` on the vendored skill Python.
+extend-exclude = [".claude", "data"]
 
 [tool.ruff.lint]
 select = [
@@ -49,6 +52,9 @@ ignore = [
 
 [tool.mypy]
 python_version = "3.12"
+# Explicit target so bare `uv run mypy` (per AGENTS.md pre-commit sequence) has something to check
+# instead of erroring "Missing target module"; also keeps mypy off the vendored .claude/ code.
+files = ["src", "tests"]
 strict = true
 warn_return_any = true
 warn_unused_configs = true
