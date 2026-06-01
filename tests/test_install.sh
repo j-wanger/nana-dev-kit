@@ -462,6 +462,13 @@ else
   test_fail "--status missing version line"
 fi
 
+test_start "--status shows install-drift line (Phase 76)"
+if echo "$STATUS_OUT" | grep -qi 'drift'; then
+  test_pass
+else
+  test_fail "--status missing drift line"
+fi
+
 test_start "--status exits 0"
 assert_exit_code 0 env HOME="$THOME_STATUS" bash "$PROJECT_ROOT/install.sh" --status
 rm -rf "$THOME_STATUS"
@@ -728,5 +735,85 @@ if [ -z "$MISSING_HOOKS" ]; then
 else
   test_fail "missing hook scripts:$MISSING_HOOKS"
 fi
+
+# --- Phase 76: installed-copy-drift comparator (check-install-drift.sh) ---
+# Hermetic: uses the REAL kit (templates/.claude + modules.json) but an ISOLATED installed-root
+# via the override arg — NEVER touches the real ~/.claude.
+DRIFT_SCRIPT="$PROJECT_ROOT/scripts/check-install-drift.sh"
+
+make_synced_root() {  # $1 = installed-root to populate with the kit-managed copy-verbatim set
+  local root="$1" s h
+  for s in $(jq -r '.modules[].skills[]' "$PROJECT_ROOT/modules.json"); do
+    if [ -d "$PROJECT_ROOT/templates/.claude/skills/$s" ]; then
+      mkdir -p "$root/skills/$s"
+      cp -r "$PROJECT_ROOT/templates/.claude/skills/$s/." "$root/skills/$s/"
+    fi
+  done
+  mkdir -p "$root/hooks"
+  for h in $(jq -r '.hooks[]|select(.scope=="global")|.script' "$PROJECT_ROOT/modules.json"); do
+    [ -f "$PROJECT_ROOT/templates/.claude/hooks/$h" ] && cp "$PROJECT_ROOT/templates/.claude/hooks/$h" "$root/hooks/$h"
+  done
+  mkdir -p "$root/rules"
+  cp "$PROJECT_ROOT/templates/.claude/rules/"*.md "$root/rules/"
+}
+
+test_start "drift: silent (exit 0) when installed root is synced"
+DROOT=$(mktemp -d)
+make_synced_root "$DROOT"
+assert_exit_code 0 bash "$DRIFT_SCRIPT" "$DROOT"
+rm -rf "$DROOT"
+
+test_start "drift: detects an injected drift in a skill companion"
+DROOT=$(mktemp -d)
+make_synced_root "$DROOT"
+echo "DRIFTED" >> "$DROOT/skills/dev-debrief/delivery-flow.md"
+DEC=0; DOUT=$(bash "$DRIFT_SCRIPT" "$DROOT" 2>&1) || DEC=$?
+if [ "$DEC" -ne 0 ] && echo "$DOUT" | grep -q 'delivery-flow.md'; then
+  test_pass
+else
+  test_fail "expected drift on delivery-flow.md (ec=$DEC out=$DOUT)"
+fi
+rm -rf "$DROOT"
+
+test_start "drift: --count prints the drift count and exits 0 (fail-open contract)"
+DROOT=$(mktemp -d)
+make_synced_root "$DROOT"
+echo "DRIFTED" >> "$DROOT/skills/dev-debrief/delivery-flow.md"
+DCOUNT=$(bash "$DRIFT_SCRIPT" --count "$DROOT" 2>/dev/null)
+assert_exit_code 0 bash "$DRIFT_SCRIPT" --count "$DROOT"
+if [ "${DCOUNT:-0}" -ge 1 ]; then test_pass; else test_fail "--count returned '$DCOUNT', expected >=1"; fi
+rm -rf "$DROOT"
+
+test_start "drift: exclusion allow-list respected (nana-personal.md drift NOT reported)"
+DROOT=$(mktemp -d)
+make_synced_root "$DROOT"
+echo "# user customized" >> "$DROOT/rules/nana-personal.md"
+DEC=0; DOUT=$(bash "$DRIFT_SCRIPT" "$DROOT" 2>&1) || DEC=$?
+if [ "$DEC" -eq 0 ] && ! echo "$DOUT" | grep -q 'nana-personal'; then
+  test_pass
+else
+  test_fail "excluded nana-personal.md was reported as drift (ec=$DEC out=$DOUT)"
+fi
+rm -rf "$DROOT"
+
+test_start "drift: exclusion allow-list is pinned + bounded (1..6 entries)"
+NEXCL=$(bash "$DRIFT_SCRIPT" --excludes 2>/dev/null | grep -c .)
+if [ "${NEXCL:-99}" -ge 1 ] && [ "${NEXCL:-99}" -le 6 ]; then
+  test_pass
+else
+  test_fail "exclusion list count $NEXCL not in 1..6"
+fi
+
+test_start "drift: missing installed file is handled (no crash; reported as drift)"
+DROOT=$(mktemp -d)
+make_synced_root "$DROOT"
+rm -f "$DROOT/skills/dev-debrief/delivery-flow.md"
+assert_exit_code 0 bash "$DRIFT_SCRIPT" --count "$DROOT"
+DEC=0; DOUT=$(bash "$DRIFT_SCRIPT" "$DROOT" 2>&1) || DEC=$?
+if echo "$DOUT" | grep -qi 'delivery-flow.md'; then test_pass; else test_fail "missing file not handled (ec=$DEC out=$DOUT)"; fi
+rm -rf "$DROOT"
+
+test_start "drift: fail-open (exit 0) when installed root does not exist"
+assert_exit_code 0 bash "$DRIFT_SCRIPT" --count "/nonexistent/installed/root/xyz-$$"
 
 test_summary "test_install"

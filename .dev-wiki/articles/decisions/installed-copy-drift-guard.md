@@ -1,10 +1,10 @@
 ---
 title: Installed-Copy-Drift Guard — detect-and-warn over symlink, kit-maintainer scope
 status: active
-confidence: medium
+confidence: high
 date: 2026-05-31
 phase: 76
-source: plan
+source: debrief
 tags: [install, drift, session-start, deterministic-validator, dogfood, modules-json]
 ---
 
@@ -56,6 +56,36 @@ message keeps it signal.
   installed file requires a justified allow-list entry.
 - This guard itself only goes live for nana-dev-kit after an `install.sh` re-sync (the very drift it
   detects) — first install bootstraps it.
+
+## Implementation notes (Phase 76 delivery)
+
+How the approved decision was realized (these are refinements of the one approved decision, not
+separate decisions):
+
+1. **Comparison set + bounded exclusion allow-list.** The comparison set is derived from
+   `modules.json` (installed skills + `scope:global` hooks + the managed rules-dir glob). The pinned
+   exclusion allow-list has exactly 3 entries — `rules/nana-personal.md`, `rules/py-session-state.md`,
+   `settings.json` (merged). It EARNS its complexity by removing template-only rule files the rules-dir
+   glob picks up but `install.sh` does not copy verbatim. Not-installed skill dirs are SKIPPED (avoids
+   partial-install false positives; assumes the maintainer's `--all` install).
+
+2. **Canonical physical-path gate (correctness catch).** The kit-repo gate compares CANONICAL physical
+   paths: `git rev-parse --show-toplevel` is already physical, and the marker is resolved via
+   `cd && pwd -P`. A plain string compare silently never fired under a symlinked checkout
+   (macOS `/var` → `/private/var`) — a real correctness bug found during T2 testing.
+
+3. **Advisory kept INLINE in session-start.sh (not extracted).** Extraction to a `session-start.d/`
+   curator would add to the firing-coverage `extra_dirs` denominator, violating T3's "21/21 unchanged"
+   constraint; the block is small/tested/cohesive (consistent with the Phase-75 delivery-divergence
+   sibling). session-start.sh is now 108 lines (two inline advisory blocks).
+
+4. **Reviewer 9/10 accept.** Two MEDIUM observations are by-design: project-scoped hooks (incl.
+   `session-start.sh` itself) are out of the comparison set — a bounded false-negative, now documented
+   in the comparator header; a missing whole-skill-dir is treated as not-installed, not drift.
+
+5. **Dogfood confirmation.** At session start the maintainer's real `~/.claude` was 36 files behind
+   `templates/` — including `skills/dev-debrief/delivery-flow.md` (the exact Phase-75 scar). Resynced
+   via `install.sh` this session; detect→resync→silent verified end-to-end (drift 36 → 0).
 
 ## Links
 

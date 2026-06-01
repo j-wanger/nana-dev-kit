@@ -151,3 +151,4 @@ eval/amplifier/retention-screen/checks/control-positive.check
 eval/amplifier/retention-screen/checks/control-middle.check
 templates/.claude/hooks/py-review-stop.sh
 templates/pyproject.toml
+scripts/check-install-drift.sh

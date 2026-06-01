@@ -276,4 +276,46 @@ else
 fi
 rm -rf "$T"
 
+# --- Installed-copy-drift advisory (Phase 76) — session-start fires [nana:drift] ONLY in the kit
+#     repo (git-root == the ~/.claude/.nana-dev-kit-path marker) when the installed copy has drifted
+#     from templates/. Deterministic, fail-open, kit-repo-scoped (signal not noise). ---
+DRIFT_SCRIPT_SRC="$REPO_ROOT/scripts/check-install-drift.sh"
+
+setup_drift_kit() {  # $1 = sandbox kit root; minimal self-contained kit with one drifted skill file
+  local k="$1"
+  mkdir -p "$k/scripts" "$k/templates/.claude/skills/foo" "$k/templates/.claude/rules" "$k/.claude/skills/foo"
+  cp "$DRIFT_SCRIPT_SRC" "$k/scripts/check-install-drift.sh"
+  printf '{ "modules": [ { "name": "core", "skills": ["foo"], "rules": [] } ], "hooks": [] }\n' > "$k/modules.json"
+  printf 'v2 (source)\n'          > "$k/templates/.claude/skills/foo/SKILL.md"
+  printf 'v1 (stale installed)\n' > "$k/.claude/skills/foo/SKILL.md"     # the drift
+  printf '%s' "$k"                > "$k/.claude/.nana-dev-kit-path"
+  ( cd "$k" && git init -q && git -c user.email=t@t -c user.name=t commit -q --allow-empty -m init )
+}
+
+test_start "drift-advisory: fires [nana:drift] in the kit repo when the installed copy drifted"
+T=$(mktemp -d); setup_drift_kit "$T"
+OUTPUT=$(HOME="$T" bash -c "cd '$T' && bash '$START_HOOK'" 2>/dev/null || true)
+if echo "$OUTPUT" | grep -q '\[nana:drift\]'; then test_pass; else test_fail "expected [nana:drift] in kit repo (out=$OUTPUT)"; fi
+rm -rf "$T"
+
+test_start "drift-advisory: SILENT outside the kit repo (consuming project) even when drift exists"
+T=$(mktemp -d); setup_drift_kit "$T"
+T2=$(mktemp -d); ( cd "$T2" && git init -q && git -c user.email=t@t -c user.name=t commit -q --allow-empty -m init )
+# HOME=$T (marker → $T) but CWD=$T2 (a different repo): git-root != marker → must stay silent
+OUTPUT=$(HOME="$T" bash -c "cd '$T2' && bash '$START_HOOK'" 2>/dev/null || true)
+if echo "$OUTPUT" | grep -q '\[nana:drift\]'; then test_fail "fired outside the kit repo (out=$OUTPUT)"; else test_pass; fi
+rm -rf "$T" "$T2"
+
+test_start "drift-advisory: SILENT in the kit repo when the installed copy is synced"
+T=$(mktemp -d); setup_drift_kit "$T"
+cp "$T/templates/.claude/skills/foo/SKILL.md" "$T/.claude/skills/foo/SKILL.md"   # resync away the drift
+OUTPUT=$(HOME="$T" bash -c "cd '$T' && bash '$START_HOOK'" 2>/dev/null || true)
+if echo "$OUTPUT" | grep -q '\[nana:drift\]'; then test_fail "fired when synced (out=$OUTPUT)"; else test_pass; fi
+rm -rf "$T"
+
+test_start "drift-advisory: fail-open (no crash, silent) when the kit-path marker is absent"
+T=$(mktemp -d); mkdir -p "$T/.claude"   # no marker, no git repo
+if OUTPUT=$(HOME="$T" bash -c "cd '$T' && bash '$START_HOOK'" 2>/dev/null) && ! echo "$OUTPUT" | grep -q '\[nana:drift\]'; then test_pass; else test_fail "crashed or fired without a marker (out=${OUTPUT:-})"; fi
+rm -rf "$T"
+
 test_summary "harden"

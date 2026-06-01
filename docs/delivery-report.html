@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 69</title>
+<title>Delivery Report: Phase 76</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,29 +21,28 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 69 &mdash; Amplifier Measurement: Representativeness Audit + Anchor-Validity Verdict</h1>
+<h1>Delivery Report: Phase 76 &mdash; Phase 76</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">4/4</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">9</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">3/3</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">12</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (50 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">52/52</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+79</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-46</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+234</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-42</div><div class="label">Lines Removed</div></div>
   <div class="card"><div class="num">0</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">00:19</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num">20:00</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>[M] T1 (FIRST / checkpoint) Survey runner + committed empirical record. [DONE 2026-05-29: survey-real-transcripts.sh ...</td></tr>
-<tr><td>&#x2705;</td><td>[M] T2 Measurability gate + VALID-MEASUREMENT spec. Depends: T1. [DONE 2026-05-30: measurability-gate.sh → NOT-MEASUR...</td></tr>
-<tr><td>&#x2705;</td><td>[S] T3 SCHEMA-NOTES revisit-resolution + honest apparatus disposition. Depends: T2. [DONE 2026-05-30: SCHEMA-NOTES li...</td></tr>
-<tr><td>&#x2705;</td><td>[S] T4 (LAST) Regression gate + Phase-70 handoff + scope-honesty. Depends: T3. [DONE 2026-05-30: make eval 52/52 unch...</td></tr>
+<tr><td>&#x2705;</td><td>[M] T1 `scripts/check-install-drift.sh` deterministic comparator + test.</td></tr>
+<tr><td>&#x2705;</td><td>[S] T2 Surface the drift check: session-start advisory (kit-repo-scoped) + install.sh --status.</td></tr>
+<tr><td>&#x2705;</td><td>[S] T3 (LAST) Regression + record deferrals.</td></tr>
 
 </table>
 
@@ -52,15 +51,18 @@
 
 <h2>Files Changed</h2>
 <ul>
-<li><code>.claude/rules/active-knowledge.md</code></li>
 <li><code>.claude/rules/active-phase.md</code></li>
 <li><code>.dev-wiki/.stale-queue</code></li>
+<li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
-<li><code>.dev-wiki/articles/phase-63-remediation-roadmap.md</code></li>
+<li><code>.dev-wiki/articles/decisions/installed-copy-drift-guard.md</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
-<li><code>eval/amplifier/SCHEMA-NOTES.md</code></li>
+<li><code>install.sh</code></li>
+<li><code>templates/.claude/hooks/session-start.sh</code></li>
+<li><code>tests/test_harden.sh</code></li>
+<li><code>tests/test_install.sh</code></li>
 
 
 </ul>
@@ -78,7 +80,7 @@ All tests passed.</pre>
 <pre>Score: 52/52 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-05-30 00:19:48 by generate-delivery-report.py
+  Generated 2026-05-31 20:00:43 by generate-delivery-report.py
 </div>
 </body>
 </html>

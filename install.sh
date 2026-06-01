@@ -145,6 +145,19 @@ if $SHOW_STATUS; then
   else
     echo "  enforce: inactive"
   fi
+  echo ""
+  echo "Install drift (templates/ vs installed ~/.claude):"
+  DRIFT_SCRIPT="$SCRIPT_DIR/scripts/check-install-drift.sh"
+  if [ -x "$DRIFT_SCRIPT" ]; then
+    DRIFT_N=$("$DRIFT_SCRIPT" --count 2>/dev/null || echo 0)
+    if [ "${DRIFT_N:-0}" -gt 0 ] 2>/dev/null; then
+      echo "  drift:   $DRIFT_N kit file(s) differ — run install.sh to sync"
+    else
+      echo "  drift:   none (installed copy matches templates/)"
+    fi
+  else
+    echo "  drift:   unknown (comparator missing)"
+  fi
   exit 0
 fi
 

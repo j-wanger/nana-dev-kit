@@ -69,6 +69,28 @@ if [ -f "$ACTIVE_PHASE" ] && grep -qE '^- \[x\] Delivery accepted' "$ACTIVE_PHAS
   fi
 fi
 
+# --- Installed-copy drift (kit repo only) ---
+# The kit develops in templates/ but RUNS from ~/.claude; a stale installed copy silently undermines
+# work (bit twice: Phase-73 curator gap, Phase-75 stale delivery-flow). Fire ONLY in the kit repo
+# (git-root == the kit-path marker) so it is signal not noise. Fail-open, once per session.
+KIT_PATH_MARKER="$HOME/.claude/.nana-dev-kit-path"
+if [ -f "$KIT_PATH_MARKER" ]; then
+  RAW_KIT=$(cat "$KIT_PATH_MARKER" 2>/dev/null || true)
+  KIT_PATH=""
+  # Resolve both sides to physical paths — git-root is already canonical, so the marker must be too
+  # (guards against symlinked checkouts, e.g. macOS /var → /private/var).
+  if [ -n "$RAW_KIT" ] && [ -d "$RAW_KIT" ]; then
+    KIT_PATH=$(cd "$RAW_KIT" 2>/dev/null && pwd -P || true)
+  fi
+  GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || true)
+  if [ -n "$KIT_PATH" ] && [ "$GIT_ROOT" = "$KIT_PATH" ] && [ -x "$KIT_PATH/scripts/check-install-drift.sh" ]; then
+    DRIFT_N=$("$KIT_PATH/scripts/check-install-drift.sh" --count 2>/dev/null || echo 0)
+    if [ "${DRIFT_N:-0}" -gt 0 ] 2>/dev/null; then
+      echo "[nana:drift] $DRIFT_N kit file(s) differ from your installed ~/.claude — run install.sh to sync."
+    fi
+  fi
+fi
+
 # --- Stale post-commit sidecar ---
 if [ -f ".dev-wiki/.pending-commit" ]; then
   echo "[nana:pending] Unprocessed commit detected. Run task matching."
