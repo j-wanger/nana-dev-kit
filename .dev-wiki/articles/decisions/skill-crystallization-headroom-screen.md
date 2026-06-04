@@ -48,8 +48,13 @@ A HAS-HEADROOM artifact does not auto-imply "build a skill module." A "never rei
 - A TERMINATE here closes the capability-crystallization line as DEAD-ON-ARRIVAL the same way Ph70/71/77 closed decision-retention; the kit's existing knowledge/lifecycle capture routes are kept on operational grounds.
 
 ## Result
-<!-- appended at T4 -->
-PENDING — screen not yet run.
+**PROGRAM-VERDICT: TERMINATE** (2026-06-04). Both real candidates DEGENERATE; do NOT build a capability→skill module.
+- **edge-eligibility** (domain — PIT survivorship; prior HAS-HEADROOM): **DEGENERATE 4/5**. Given the explicit-goal corpus (book the delisting crater + the `members_on(d)`-drops-at-`d` dependency fact), the bare model DERIVED the inclusive-through-`d` survivorship add-back in 4/5 closed-book samples — independent variable names/structures, verified not copied. The one failure (#5) was on a basic `re-added` assertion, not the survivorship crux.
+- **nana-drift** (general — drift-comparator core; prior DEGENERATE): **DEGENERATE 5/5**, as predicted.
+- Controls valid (negative 5/5 PASS; positive-unknowable 0/5 PASS — the bare model REFUSED to invent the unknowable project token, raising rather than hallucinating; recoverable-fully-specified 5/5 PASS) ⇒ instrument LIVE, not INSTRUMENT-DEAD.
+- **Headline:** a tooling artifact's correctness IS in the goal that motivated it — when the goal is stated, the model re-derives the implementation. Extends the amplifier finding from decisions (Ph70/71/77) to capability: harness headroom does not live in re-presenting what the model can recover.
+- **Scope condition (load-bearing):** conditional on the explicit-goal `R_A` framing (Jake's choice). Under a goal-only corpus that did not name the crater, the survivorship boundary might have shown headroom. The surviving untested avenue stays the Ph70 one — genuinely PROPRIETARY/POST-CUTOFF correctness the model cannot derive from ANY fair corpus (the positive-unknowable control proves the instrument WOULD flag such a case as headroom; these candidates were not such).
+- Apparatus frozen repo-only `eval/amplifier/skill-screen/`; subjects byte-identical pre/post; prereg `3f6a0cb` ⊂ HEAD; NO LLM in scoring; make test + make eval 52/52 green at unchanged surface. Confidence raised to high. See `screen-record.md` + `classification.md`.
 
 ## Source
 Phase 78 plan (2026-06-04). Direction approved by Jake across the post-Phase-77 planning thread ("plan Phase 78 as that screen"). Successor to [[cross-session-retention-headroom-screen]]; applies the verifier-independence principle surfaced in the domain-harness-engineering thought-exercise to the kit's own capability-capture question.

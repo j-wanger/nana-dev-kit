@@ -1,7 +1,16 @@
 # Active Phase Context
 
 Phase: 78 — Skill-Crystallization Headroom Screen
-Status: ACTIVE — planned 2026-06-04, implementation pending. 4 tasks (M/S/L/S). Direction approved.
+Status: COMPLETE — 4/4 tasks done; PROGRAM-VERDICT TERMINATE; delivery gate pending acceptance.
+
+Result: TERMINATE. Both real candidates DEGENERATE — edge-eligibility (domain PIT-survivorship) 4/5,
+nana-drift (general) 5/5; controls valid (neg 5/5 PASS, positive-unknowable 0/5 PASS, recoverable 5/5
+PASS → instrument LIVE). The bare model DERIVED the inclusive-through-d survivorship boundary from the
+explicit-goal corpus (4/5), so the capability→skill module is DEAD-ON-ARRIVAL — not built. Headline:
+"a tooling artifact's correctness IS in the goal that motivated it." Extends the amplifier finding from
+decisions (Ph70/71/77) to capability. Scope caveat: conditional on the explicit-goal R_A framing
+(Jake's pre-registered choice); surviving avenue stays Ph70 (proprietary/post-cutoff). Apparatus frozen
+repo-only eval/amplifier/skill-screen/; prereg 3f6a0cb ⊂ HEAD; NO LLM; make test + make eval 52/52 green.
 
 Objective: Measure whether crystallizing a phase's TOOLING into a reusable skill adds value over
 bare re-derivation — i.e. whether a candidate tooling artifact embeds NON-RECOVERABLE correctness a
