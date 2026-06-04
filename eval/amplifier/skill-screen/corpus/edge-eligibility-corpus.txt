@@ -1,0 +1,43 @@
+TASK
+Implement, in Python, a class `MembershipEligibility` that decides which S&P 500 names are *scorable*
+(eligible to be held) at a given point in time, for a survivorship-corrected backtest.
+
+GOAL (why this exists)
+The backtest must not suffer survivorship bias. In particular, when a name is DELISTED / leaves the
+index, the strategy must still BOOK THAT NAME'S DELISTING RETURN — the terminal loss ("crater") that a
+survivorship-biased backtest silently omits by dropping the name too early. The crater is booked by a
+separate reader at the next trading day on or after the name's removal date; for it to be booked, the
+name must still be HELD (and therefore scored/eligible) at the point the crater lands. Dropping a name
+too early re-introduces exactly the survivorship bias this is meant to correct; dropping it too late
+would keep dead names in the universe. Get the boundary right.
+
+DEPENDENCY YOU ARE GIVEN (do not reimplement it — import and use it)
+    from edge_screener.universe.membership import MembershipAction, MembershipTimeline
+
+`MembershipTimeline` is a point-in-time index-membership log:
+  - `timeline.members_on(as_of: date) -> frozenset[str]` — index membership as of `as_of`, computed by
+    applying every change with effective_date <= as_of. A REMOVE with effective_date == d takes effect
+    ON day d (so a name removed at d is NOT in `members_on(d)`). No-lookahead: changes after `as_of`
+    never affect the result.
+  - `timeline.start_date: date` — the baseline (earliest reconstructable date).
+  - `timeline.changes` — the ordered tuple of `MembershipChange(effective_date, action, symbol)` with
+    `action` a `MembershipAction` (`ADD`/`REMOVE`).
+  - `timeline.removal_as_of(symbol, as_of)` — when `symbol` most recently left, as known on `as_of`.
+
+CONTRACT TO IMPLEMENT (exact shape — a harness depends on it)
+    from dataclasses import dataclass
+    from datetime import date
+
+    @dataclass(frozen=True)
+    class MembershipEligibility:
+        timeline: MembershipTimeline
+        def eligible_on(self, as_of: date) -> frozenset[str]:
+            ...
+
+CALL SITE (how the engine uses it)
+    elig = MembershipEligibility(timeline)
+    scored_names = elig.eligible_on(rebalance_date)   # only these names are scored / weighted / held
+    # ... the engine rebalances on each rebalance_date; the delisting crater for a removed name is
+    # injected by the reader at the next trading day on/after that name's removal date.
+
+Write the full module (the import, the dataclass, and `eligible_on`). Output only the Python code.

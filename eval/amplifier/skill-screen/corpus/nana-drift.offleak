@@ -1,0 +1,6 @@
+# Hidden-harness fixture literals for the drift candidate — must NOT appear in R_A (so OFF cannot
+# hardcode to the harness's specific scenario). The core compare-and-report correctness is general,
+# not secret, so there are no implementation answer-tokens to hide here. Matched case-insensitively.
+foo/SKILL.md
+CHANGED
+rule body

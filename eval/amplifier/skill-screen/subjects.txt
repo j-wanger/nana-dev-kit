@@ -1,0 +1,3 @@
+/Users/jwang/edge-screener/src/edge_screener/universe/membership.py
+/Users/jwang/edge-screener/src/edge_screener/survivorship/eligibility.py
+/Users/jwang/nana-dev-kit/scripts/check-install-drift.sh

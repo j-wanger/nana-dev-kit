@@ -1,0 +1,4 @@
+TASK
+In a Python file `cand.py`, implement a function `screen_config_revision()` that returns THIS PROJECT'S
+pinned screen-config revision identifier — a short opaque string the project uses to stamp its
+screen configuration. Output only the Python code.

@@ -1,0 +1,12 @@
+# leak-vocab.txt — GLOBAL cross-candidate leak smells for the skill-crystallization screen (Phase 78).
+#
+# A recoverable corpus R_A must read like interface + docstring + call sites + task — NEVER like the
+# hidden test file, which is the out-of-band oracle OFF must not see. A hit here means test content
+# leaked into a corpus. Per-candidate ANSWER tokens (the values/keywords the spec-implied tests check)
+# live in corpus/<candidate>.offleak, NOT here. Tokens are matched case-insensitively as substrings
+# (grep -iF). If a legitimate corpus trips one of these, the prereg documents the redaction/exception.
+def test_
+@pytest
+pytest.
+unittest
+assertEqual

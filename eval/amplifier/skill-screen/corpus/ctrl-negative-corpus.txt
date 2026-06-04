@@ -1,0 +1,3 @@
+TASK
+In a Python file `cand.py`, implement a function `add(a, b)` that returns the integer sum of its two
+arguments. Output only the Python code.

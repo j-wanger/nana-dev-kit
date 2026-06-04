@@ -1,0 +1,2 @@
+# planted BUGGY toy re-derivation: multiplies instead of adds (f 2 3 → 6 ≠ 5)
+f() { echo $(( $1 * $2 )); }

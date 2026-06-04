@@ -1,0 +1,25 @@
+TASK
+Implement, in bash, `cand.sh` — a comparator that detects when an INSTALLED copy of a tool's config
+tree has drifted from its SOURCE tree.
+
+GOAL (why this exists)
+A kit develops in a source tree (`templates/.claude/`) but RUNS from an installed copy (`~/.claude/`).
+A stale installed copy silently undermines work. This script catches that: it reports every kit-managed
+file whose installed copy differs from (or is missing relative to) the source, so the user knows to
+re-sync. Synced → say nothing and succeed; drifted → report the offending file(s) and fail.
+
+CONTRACT TO IMPLEMENT (exact shape — a harness depends on it)
+    cand.sh <installed-root>
+  - The SOURCE tree is `templates/.claude`, resolved relative to the script:
+        SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"; SOURCE="$SCRIPT_DIR/../templates/.claude"
+  - The kit-managed set, for THIS contract, is every file under `SOURCE/skills/` and `SOURCE/rules/`.
+  - For each managed file, compare it byte-for-byte against `<installed-root>/<same-relative-path>`.
+  - Print each managed file that is MISSING from or DIFFERS in the installed root (its path relative to
+    `.claude/`, e.g. `skills/<skill-name>/<file>` or `rules/<file>`).
+  - Exit 0 if nothing differs; exit non-zero if any file drifts.
+
+(Out of scope for this contract: how the managed set is declared in the real kit, which files are
+exempt from comparison, and behavior on a totally-absent installed root — implement only the core
+compare-and-report above.)
+
+Output only the bash script.

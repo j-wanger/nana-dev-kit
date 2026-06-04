@@ -1,0 +1,2 @@
+# planted CORRECT toy re-derivation: f(a,b) = a+b
+f() { echo $(( $1 + $2 )); }

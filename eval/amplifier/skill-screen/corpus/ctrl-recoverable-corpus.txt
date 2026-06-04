@@ -1,0 +1,7 @@
+TASK
+In a Python file `cand.py`, implement a function `clamp(x, lo, hi)` that constrains `x` to the range
+[lo, hi]: return `lo` if `x < lo`, return `hi` if `x > hi`, and otherwise return `x` unchanged.
+Output only the Python code.
+
+(This is the recoverable-fully-specified control: the correctness is fully stated above, so a competent
+implementation MUST pass — it proves the corpus channel is fair, not starved.)
