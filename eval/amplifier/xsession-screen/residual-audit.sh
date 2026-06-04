@@ -48,10 +48,14 @@ assemble_corpus() {  # <subject> <channels-csv>
   CORP_TREE="$(mktemp)"; CORP_GITMSG="$(mktemp)"
   if printf '%s' ",$channels," | grep -q ',tree,'; then
     # text files only; substrate + vcs + build + binary/data blobs excluded
+    # binary/data/cache blobs are EXCLUDED per the pre-registered OFF-corpus spec (a NUL-containing
+    # corpus makes grep treat the whole temp as binary; excluding caches keeps it clean text).
     find "$subject" -type f \
       -not -path '*/.git/*' -not -path '*/.dev-wiki/*' -not -path '*/.claude/*' \
       -not -path '*/__pycache__/*' -not -path '*/.venv/*' -not -path '*/node_modules/*' \
-      -not -name 'AGENTS.md' \
+      -not -path '*/.mypy_cache/*' -not -path '*/.pytest_cache/*' -not -path '*/.ruff_cache/*' \
+      -not -path '*/.hypothesis/*' \
+      -not -name 'AGENTS.md' -not -name '.coverage' -not -name '.coverage.*' \
       -not -name '*.pyc' -not -name '*.parquet' -not -name '*.feather' -not -name '*.pkl' \
       -not -name '*.csv' -not -name '*.csv.gz' -not -name '*.gz' -not -name '*.zip' \
       -not -name '*.db' -not -name '*.png' -not -name '*.jpg' -not -name '*.pdf' -print0 2>/dev/null \
@@ -78,8 +82,9 @@ classify_token() {  # <subject> <slug> <token> <status>  → echoes RECOVERABLE:
     stale)      echo "EXCLUDED:stale";      return 0;;
   esac
   if ! slug_resolves "$subject" "$slug"; then echo "EXCLUDED:unresolved-at-HEAD"; return 0; fi
-  if [ -s "$CORP_TREE" ]   && LC_ALL=C grep -F -i -q -- "$token" "$CORP_TREE";   then echo "RECOVERABLE:tree";   return 0; fi
-  if [ -s "$CORP_GITMSG" ] && LC_ALL=C grep -F -i -q -- "$token" "$CORP_GITMSG"; then echo "RECOVERABLE:gitmsg"; return 0; fi
+  # -a: treat the corpus as text even if a stray NUL survives the binary/cache exclusions above.
+  if [ -s "$CORP_TREE" ]   && LC_ALL=C grep -a -F -i -q -- "$token" "$CORP_TREE";   then echo "RECOVERABLE:tree";   return 0; fi
+  if [ -s "$CORP_GITMSG" ] && LC_ALL=C grep -a -F -i -q -- "$token" "$CORP_GITMSG"; then echo "RECOVERABLE:gitmsg"; return 0; fi
   echo "RESIDUAL"
 }
 

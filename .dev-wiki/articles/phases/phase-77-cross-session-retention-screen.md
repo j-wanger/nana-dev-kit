@@ -7,7 +7,7 @@ parents: []
 created: 2026-06-04
 updated: 2026-06-04
 source: plan
-status: active
+status: complete
 scope: ["eval/amplifier/xsession-screen/**", ".dev-wiki/articles/decisions/**", ".dev-wiki/articles/journal/**"]
 entry_criteria: "Phase 76 closed; the amplifier program's last untested regime is cross-SESSION retention; the edge-screener substrate (Phase 73) has accrued real multi-session history (9 phases, 14 decision articles, 11 journals across 3 dates, 28 commits) — the deferred-measurement decidable-when gate is green."
 exit_criteria: "residual-audit.sh --selftest passes both ways + residual.md exists; screen-record.md carries a closed-vocabulary ^PROGRAM-VERDICT; if residual non-empty, pre-registration precedes verdicts (ancestor guard) + check.sh --selftest passes + positive control recovered by ON (else INSTRUMENT-DEAD); assert-subject-untouched.sh green (edge-screener read-only); make test + make eval green at unchanged surface (apparatus repo-only); decision article + journal written."
@@ -28,14 +28,14 @@ Files and modules affected:
 
 ## Exit Criteria
 
-- [ ] `test -x eval/amplifier/xsession-screen/residual-audit.sh && bash eval/amplifier/xsession-screen/residual-audit.sh --selftest` (audit predicate + absence-grep selftest pass both ways)
-- [ ] `test -f eval/amplifier/xsession-screen/residual.md` (residual enumerated or recorded empty)
-- [ ] `grep -Eq '^PROGRAM-VERDICT: (TERMINATE|NULL|HAS-HEADROOM|INSTRUMENT-DEAD|INCONCLUSIVE)' eval/amplifier/xsession-screen/screen-record.md` (closed verdict vocabulary)
-- [ ] If residual non-empty: `git merge-base --is-ancestor "$(cat eval/amplifier/xsession-screen/.prereg-commit)" HEAD` AND `bash eval/amplifier/xsession-screen/check.sh --selftest`
-- [ ] If T2 ran: positive control recovered by ON (recorded pass) — else verdict reads `INSTRUMENT-DEAD`, not NULL
-- [ ] `bash eval/amplifier/xsession-screen/assert-subject-untouched.sh` (edge-screener git status clean + substrate hashes byte-identical pre/post)
-- [ ] `make test` green and `make eval` green (apparatus repo-only → no registration/settings/README/firing-coverage churn)
-- [ ] Decision article + journal written
+- [x] `test -x eval/amplifier/xsession-screen/residual-audit.sh && bash eval/amplifier/xsession-screen/residual-audit.sh --selftest` (audit predicate + absence-grep selftest pass both ways)
+- [x] `test -f eval/amplifier/xsession-screen/residual.md` (residual recorded — 0/14, all RECOVERABLE:tree)
+- [x] `grep -Eq '^PROGRAM-VERDICT: (TERMINATE|NULL|HAS-HEADROOM|INSTRUMENT-DEAD|INCONCLUSIVE)' eval/amplifier/xsession-screen/screen-record.md` (PROGRAM-VERDICT: TERMINATE)
+- [x] If residual non-empty: ancestor guard + check.sh selftest — N/A by gate (residual empty); the prereg ancestor guard `git merge-base --is-ancestor 21a6c52 HEAD` passes regardless
+- [x] If T2 ran: positive control / INSTRUMENT-DEAD — N/A (T2/T3 ablation SKIPPED-BY-GATE; residual 0 < floor 3; the audit `--selftest` already proves instrument liveness, a planted substrate-only token survives)
+- [x] `bash eval/amplifier/xsession-screen/assert-subject-untouched.sh` (edge-screener read-only; PASS)
+- [x] `make test` green and `make eval` green (52/52; apparatus repo-only → no registration/settings/README/firing-coverage churn)
+- [x] Decision article (RESULT appended) + journal written
 
 ## Constraints
 

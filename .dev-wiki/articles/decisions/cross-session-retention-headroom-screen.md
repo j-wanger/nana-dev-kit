@@ -36,6 +36,14 @@ The honest prior is degenerate: the decisions are likely recoverable from code +
 
 Degenerate is the expected outcome (git-log + code + tests already carry the decisions), placing this one regime past Ph70/71. The positive control GATES the null (INSTRUMENT-DEAD blocks a false TERMINATE), and the n≥3 floor forces INCONCLUSIVE below it (the Phase-58/70/71 n=1-lucky-draw scar). Excellence is the verdict being un-foolable in EITHER direction, not the direction it points. A null residual ≠ substrate worthless — record that caveat so the verdict is not over-read.
 
+## RESULT: PROGRAM-VERDICT: TERMINATE
+
+The audit gate HALTED at **residual 0 / 14** — every pre-registered operative discriminator (one per edge-screener decision, pinned to terminal value, committed in prereg `21a6c52` BEFORE the run) is RECOVERABLE from the OFF corpus, in fact from **code + tests alone** (the `gitmsg` channel was not even needed). This includes the two residual-FAVORABLE candidates chosen because they were most likely to be substrate-only: `Shumway` (the −30% delisting citation) and `Stooq` (the deferred-alternative source) — both in the code. Per the pre-registered ladder, residual 0 < floor 3 ⇒ **TERMINATE**; the T3 OFF/ON ablation correctly did NOT run (no positive control needed — the audit `--selftest` already proves instrument liveness: a planted substrate-only token DOES survive into the residual, so residual-0 is a property of the SUBJECT, not a broken grep). `git merge-base --is-ancestor 21a6c52 HEAD` passes; edge-screener byte-identical pre/post.
+
+Stronger than the pre-registered git-log caveat anticipated: the residual is 0 from CODE+TESTS, *before* commit messages are consulted — **a decision that has been implemented IS in the implementation**. The substrate was never the sole carrier of any decision's operative value.
+
+**The decision-retention line is now closed across all three regimes** (single-decision Ph70, single-session Ph71, cross-session Ph77). Harness headroom does not live in re-presenting decisions the model can recover from artifacts it already has. Scope of this TERMINATE: the operative discriminators of the 14 decision ARTICLES (incl. citation + negative candidates); pure rationale and roadmap process/sequencing discipline were NOT separately sampled (strong prior they are also degenerate — process narration is in-tree via `METHODOLOGY.md` and the phase sequence is legible in git history — re-trigger = a fresh pre-registered round). No measured harness-value claim is made; the substrate is kept on operational grounds. Full record: `eval/amplifier/xsession-screen/screen-record.md`.
+
 ## Links
 
 - [[cross-session-substrate-stock-screener]] (Phase 73) — the substrate this measures.

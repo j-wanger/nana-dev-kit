@@ -2,7 +2,7 @@
 
 - subject: `/Users/jwang/edge-screener`
 - channels: tree,gitmsg  (OFF corpus = code + tests + git commit MESSAGES; `git log -p` excluded)
-- generated: 2026-06-04T13:17:42Z
+- generated: 2026-06-04T13:49:27Z
 - floor: 3 distinct residual decisions
 
 ## Per-decision provenance

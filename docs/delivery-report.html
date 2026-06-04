@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 76</title>
+<title>Delivery Report: Phase 77</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,48 +21,50 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 76 &mdash; Phase 76</h1>
+<h1>Delivery Report: Phase 77 &mdash; Phase 77</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">3/3</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">4/4</div><div class="label">Tasks (100%)</div></div>
   <div class="card"><div class="num">12</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (50 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">52/52</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+234</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-42</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">0</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">20:00</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+59</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-69</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">1</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">09:54</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>[M] T1 `scripts/check-install-drift.sh` deterministic comparator + test.</td></tr>
-<tr><td>&#x2705;</td><td>[S] T2 Surface the drift check: session-start advisory (kit-repo-scoped) + install.sh --status.</td></tr>
-<tr><td>&#x2705;</td><td>[S] T3 (LAST) Regression + record deferrals.</td></tr>
+<tr><td>&#x2705;</td><td>[M] T1 Residual-audit gate.</td></tr>
+<tr><td>&#x2705;</td><td>[S] T2 Pre-registration + pinned n-floor (GATED: only if residual ≥ 3). RESULT: residual=0/14 (all RECOVERABLE:tree i...</td></tr>
+<tr><td>&#x2705;</td><td>[L] T3 Controlled OFF/ON ablation (GATED: only if residual ≥ 3). SKIPPED-BY-GATE: residual 0 &lt; floor 3 → the pre-regi...</td></tr>
+<tr><td>&#x2705;</td><td>[S] T4 (LAST) Record, disposition, freeze.</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<p>No new decisions this phase.</p>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Phase 77 — Cross-Session Retention Headroom Screen (audit-gated ablation): the amplifier program's terminal regime, measured on the real edge-screener substrate</td><td>high</td></tr>
+</table>
 
 <h2>Files Changed</h2>
 <ul>
+<li><code>.claude/rules/active-knowledge.md</code></li>
 <li><code>.claude/rules/active-phase.md</code></li>
-<li><code>.dev-wiki/.stale-queue</code></li>
+<li><code>.claude/rules/working-knowledge.md</code></li>
 <li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
-<li><code>.dev-wiki/articles/decisions/installed-copy-drift-guard.md</code></li>
+<li><code>.dev-wiki/articles/decisions/cross-session-retention-headroom-screen.md</code></li>
+<li><code>.dev-wiki/articles/phases/phase-77-cross-session-retention-screen.md</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
-<li><code>install.sh</code></li>
-<li><code>templates/.claude/hooks/session-start.sh</code></li>
-<li><code>tests/test_harden.sh</code></li>
-<li><code>tests/test_install.sh</code></li>
+<li><code>eval/amplifier/xsession-screen/residual-audit.sh</code></li>
+<li><code>eval/amplifier/xsession-screen/residual.md</code></li>
 
 
 </ul>
@@ -80,7 +82,7 @@ All tests passed.</pre>
 <pre>Score: 52/52 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-05-31 20:00:43 by generate-delivery-report.py
+  Generated 2026-06-04 09:54:06 by generate-delivery-report.py
 </div>
 </body>
 </html>

@@ -161,3 +161,4 @@
 [2026-05-31T17:50:43Z] PLAN -- Phase 76 planned (Installed-Copy-Drift Guard), 3 tasks, 1 decision (installed-copy-drift-guard)
 [2026-05-31T23:58:58Z] DEBRIEF -- 1 decision (finalized), 1 journal, 1 phase article, tasks updated, state refreshed
 [2026-06-04T00:00:00Z] PLAN -- Phase 77 planned (Cross-Session Retention Headroom Screen, audit-gated ablation), 4 tasks (M/S/L/S), 1 decision (cross-session-retention-headroom-screen, high); direction gate approved "audit-gated ablation"; spec nana:approved; the amplifier program's terminal (cross-session) regime on the real READ-ONLY edge-screener substrate, repo-only eval/amplifier/xsession-screen/
+[2026-06-04T13:52:34Z] DEBRIEF -- 0 new decisions (1 finalized: cross-session-retention-headroom-screen RESULT appended), 1 journal, tasks updated (4/4 Phase-77 [x]), state refreshed, status snapshot, active-knowledge cleared->working-knowledge

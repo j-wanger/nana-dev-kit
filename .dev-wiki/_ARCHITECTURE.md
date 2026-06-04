@@ -1,6 +1,6 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-05-31 by /dev-debrief (Phase 76 — added scripts/check-install-drift.sh [deterministic fail-open installed-copy-drift comparator: modules.json comparison set minus a pinned 3-entry exclusion allow-list; report/--count/--excludes; installed-root override; surfaced via session-start.sh kit-repo-scoped [nana:drift] advisory + install.sh --status]; test count UNCHANGED at 19 scripts / 52 eval scenarios [extended test_install.sh + test_harden.sh in place, no new file]; broader file inventory may be stale, run /dev-scan to refresh)
+> Last updated: 2026-06-04 by /dev-debrief (Phase 77 — added repo-only `eval/amplifier/xsession-screen/` [frozen cross-session retention-headroom screen: residual-audit.sh NO-LLM provenance grep + assert-subject-untouched.sh + pre-registration + residual.md (0/14) + screen-record.md → PROGRAM-VERDICT TERMINATE; sibling to anchor-screen/+retention-screen/; NOT wired into install.sh/Makefile/make test/make eval]; NO change to the kit's installed surface — test count UNCHANGED at 19 scripts / 52 eval scenarios, no registration/settings/README drift; broader file inventory may be stale, run /dev-scan to refresh)
 
 ## Project Shape
 
@@ -22,7 +22,7 @@ nana-dev-kit/
     longmemeval.py                     # Benchmark script (FTS5+hybrid, per-question DB isolation, recall@5/10)
     README.md                          # Usage instructions + interpretation guide
     data/, results.json, .venv/        # Gitignored: dataset cache, results, Python venv
-  eval/                                # Eval harness: corpus, schemas, validators, comparison, reasoning, amplifier (Phase 68 ruler + Phase 69 measurability-gate + Phase 70 anchor-screen/ + Phase 71 retention-screen/ — all repo-only, NOT in install.sh/make eval)
+  eval/                                # Eval harness: corpus, schemas, validators, comparison, reasoning, amplifier (Phase 68 ruler + Phase 69 measurability-gate + Phase 70 anchor-screen/ + Phase 71 retention-screen/ + Phase 77 xsession-screen/ — all repo-only, NOT in install.sh/make eval)
     corpus/                            # Scenario directories (hook-*, skill-*, lifecycle-*)
     comparison/                        # Harness effectiveness comparison (methodology, scripts, results)
     reasoning/                         # Reasoning eval: LLM-as-judge, 20 scenarios, judge v2, baseline + IRON RULES delta + anti-patterns + self-dialogue + ablation traces (corpus/, judges/, baseline/, with-iron-rules/, with-anti-patterns/, with-self-dialogue-inline/, with-self-dialogue-subagent/, traces/)
