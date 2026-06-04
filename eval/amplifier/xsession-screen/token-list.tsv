@@ -1,0 +1,26 @@
+# Phase 77 — pre-registered discriminating tokens for the cross-session residual audit.
+# One operative discriminator per edge-screener decision (the value/identifier a fresh session must
+# know to HONOR the decision, pinned to its terminal/HEAD value). Chosen as the NATURAL discriminator,
+# NOT to inflate the residual. The audit greps each fixed-string + case-insensitive over the OFF corpus
+# (code + tests + git commit messages); ABSENT-everywhere ⇒ RESIDUAL (substrate-unique).
+#
+# columns:  <slug>\t<token>\t<kind>\t<status>
+#   kind:   fact (operative value) | negative (rejected option) | process (sequencing/discipline)
+#   status: live | superseded | stale
+#
+# prior (honest, pre-run): most tokens are code/commit-recoverable ⇒ degenerate, one regime past Ph70/71.
+# The plausible residual is citations / cut-alternatives (Shumway, reason-aware) — likely < floor(3).
+backtest-return-space-engine-v1	multiplicat	fact	live
+benchmark-spy-tr-proxy	SPY	fact	live
+closeout-hardening-v1	robustness_golden	process	live
+data-price-model-pit-adjustment	SPLIT_ONLY	fact	live
+dsr-active-basis-v1	dsr_basis	fact	live
+incremental-walkforward-v1	prefix	fact	live
+multiple-testing-correction-v1	effective_trials	fact	live
+null-robustness-battery-v1	frictionless	fact	live
+oos-edge-measurement-harness-v1	walkforward	fact	live
+reproducible-closeout-cli-v1	reproduce	fact	live
+signal-undefined-error-contract-v1	SignalUndefinedError	fact	live
+stooq-deferred-yfinance-only-v1	Stooq	negative	live
+survivorship-pit-membership-v1	Shumway	fact	live
+universe-v1-current-sp500	constituent	fact	live

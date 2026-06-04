@@ -78,7 +78,8 @@
 - [[phase-73-cross-session-substrate|Phase 73: Cross-Session Substrate (thin handoff)]] -- completed
 - [[phase-74-harden-consuming-scaffold|Phase 74: Harden the Consuming-Project Scaffold Path]] -- completed
 - [[phase-75-delivery-commit-verification|Phase 75: Delivery-Commit Verification]] -- completed
-- [[phase-76-installed-copy-drift-guard|Phase 76: Installed-Copy-Drift Guard]] -- active (READY FOR COMPLETION, delivery gate pending)
+- [[phase-76-installed-copy-drift-guard|Phase 76: Installed-Copy-Drift Guard]] -- completed
+- [[phase-77-cross-session-retention-screen|Phase 77: Cross-Session Retention Headroom Screen (audit-gated ablation)]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -98,7 +99,8 @@
 - [[check-install-drift|scripts/check-install-drift.sh]] -- deterministic fail-open installed-copy-drift comparator (Phase 76)
 
 ### Decisions
-- [[installed-copy-drift-guard|Installed-Copy-Drift Guard — detect-and-warn (NOT symlink) when the maintainer's installed ~/.claude has drifted from kit source templates/.claude; a deterministic fail-open scripts/check-install-drift.sh comparator (modules.json comparison set minus a pinned 3-entry exclusion allow-list) surfaced at session-start (kit-repo-scoped, canonical-path gate) + install.sh --status; scope (A) maintainer-side, (B) consuming-project drift deferred (Phase 76)]] -- high confidence, accepted (delivery gate pending)
+- [[cross-session-retention-headroom-screen|Cross-Session Retention Headroom Screen (audit-gated ablation) — the amplifier program's terminal (cross-session) regime, measured on the real READ-ONLY edge-screener substrate; a cheap T1 residual-audit GATE (dev-wiki decisions minus git/code/test-recoverable, terminal-value-pinned, HEAD-resolvable) short-circuits to TERMINATE/INCONCLUSIVE before any OFF/ON run; T2/T3 controlled ablation (bare-OFF/padded-OFF/ON/positive-control, n=5, NO-LLM consensus, pinned n≥3 floor, ancestor-guarded pre-reg) runs only on a residual ≥ 3; reuses the frozen retention-screen/ apparatus (Phase 77)]] -- high confidence, accepted (planned)
+- [[installed-copy-drift-guard|Installed-Copy-Drift Guard — detect-and-warn (NOT symlink) when the maintainer's installed ~/.claude has drifted from kit source templates/.claude; a deterministic fail-open scripts/check-install-drift.sh comparator (modules.json comparison set minus a pinned 3-entry exclusion allow-list) surfaced at session-start (kit-repo-scoped, canonical-path gate) + install.sh --status; scope (A) maintainer-side, (B) consuming-project drift deferred (Phase 76)]] -- high confidence, accepted
 - [[delivery-commit-verification|Delivery-Commit Verification — detector-first fix for the accepted-but-uncommitted divergence: a fail-open session-start divergence detector (PRIMARY) + delivery-flow D3 commit self-assert + gate-after-commit ordering (SECONDARY); reframed from "guarantee the commit fires" to "make gate-state diverging from git-state impossible to ignore" (Phase 75)]] -- high confidence, accepted
 - [[harden-consuming-project-scaffold|Harden the consuming-project scaffold path — fix the 4 edge-screener-dogfood defects at the source (py-review prompt→gated command, recursive hook copy, pyproject guards, AGENTS.md neutralize); #5 deferred (Phase 74)]] -- high confidence, accepted
 - [[cross-session-substrate-stock-screener|Cross-session-persistence substrate = an external stock-screener project; build a real unconfounded substrate with the real harness; honest goal = un-foolable validator not alpha; measurement deferred (Phase 73)]] -- high confidence, accepted

@@ -152,3 +152,6 @@ eval/amplifier/retention-screen/checks/control-middle.check
 templates/.claude/hooks/py-review-stop.sh
 templates/pyproject.toml
 scripts/check-install-drift.sh
+eval/amplifier/xsession-screen/residual-audit.sh
+eval/amplifier/xsession-screen/assert-subject-untouched.sh
+eval/amplifier/xsession-screen/token-list.tsv
