@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/session-start.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/session-start.sh"
           }
         ]
       }
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/enforce-spec.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/enforce-spec.sh"
           }
         ]
       },
@@ -25,7 +25,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/enforce-memory.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/enforce-memory.sh"
           }
         ]
       },
@@ -34,7 +34,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/dev-wiki-scope-check.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/dev-wiki-scope-check.sh"
           }
         ]
       },
@@ -43,7 +43,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/scan-secrets.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/scan-secrets.sh"
           }
         ]
       },
@@ -52,7 +52,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/block-dangerous-bash.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/block-dangerous-bash.sh"
           }
         ]
       }
@@ -63,7 +63,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/auto-ruff-format.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/auto-ruff-format.sh"
           }
         ]
       },
@@ -72,7 +72,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/audit-log.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/audit-log.sh"
           }
         ]
       },
@@ -81,7 +81,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/stale-queue.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/stale-queue.sh"
           }
         ]
       },
@@ -90,7 +90,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/detect-loop.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/detect-loop.sh"
           }
         ]
       },
@@ -99,7 +99,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/post-commit.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/post-commit.sh"
           }
         ]
       }
@@ -109,7 +109,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/enforce-loop.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/enforce-loop.sh"
           }
         ]
       },
@@ -117,7 +117,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/session-stop.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/session-stop.sh"
           }
         ]
       },
@@ -125,7 +125,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/check-tests-were-run.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/check-tests-were-run.sh"
           }
         ]
       },
@@ -133,7 +133,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/py-review-stop.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/py-review-stop.sh"
           }
         ]
       }
@@ -143,7 +143,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/pre-compact.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-compact.sh"
           }
         ]
       }
@@ -153,7 +153,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/post-compact.sh"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/post-compact.sh"
           }
         ]
       }

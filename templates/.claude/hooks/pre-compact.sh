@@ -4,6 +4,7 @@
 # Output is injected into post-compaction context by Claude Code.
 
 set -euo pipefail
+cd "${CLAUDE_PROJECT_DIR:-.}" 2>/dev/null || true  # Phase 79: resolve project-relative refs regardless of CWD
 
 echo "[nana:compact] === Pre-Compaction State Snapshot ==="
 

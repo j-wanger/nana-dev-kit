@@ -4,6 +4,7 @@
 # Emits [dev-wiki:post-commit] for Claude to act on via dev-wiki-hooks rules.
 
 set -euo pipefail
+cd "${CLAUDE_PROJECT_DIR:-.}" 2>/dev/null || true  # Phase 79: resolve project-relative refs regardless of CWD
 
 # --- Opt-in check ---
 if [ ! -f "$HOME/.claude/enforce" ]; then

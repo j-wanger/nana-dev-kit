@@ -3,6 +3,7 @@
 # for incremental refresh at next session start. See dev-wiki-reference.md Section R.
 
 set -euo pipefail
+cd "${CLAUDE_PROJECT_DIR:-.}" 2>/dev/null || true  # Phase 79: resolve project-relative refs regardless of CWD
 
 ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
 [ -d "$ROOT/.dev-wiki" ] || exit 0

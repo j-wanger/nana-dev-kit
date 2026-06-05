@@ -4,6 +4,7 @@
 # Claude Code pipes session context JSON to stdin.
 
 set -euo pipefail
+cd "${CLAUDE_PROJECT_DIR:-.}" 2>/dev/null || true  # Phase 79: resolve project-relative refs regardless of CWD
 
 INPUT=$(cat)
 

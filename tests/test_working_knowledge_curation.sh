@@ -316,4 +316,28 @@ run_curator "$T/does-not-exist.md" "$SQ" 100 210 >/dev/null
 if [ ! -f "$T/does-not-exist.md" ]; then test_pass; else test_fail "curator created a file for an absent path"; fi
 rm -rf "$T"
 
+# ---------------------------------------------------------------------------
+# 11. size advisory (Phase 79): NON-DESTRUCTIVE per-entry char-cap warning
+# ---------------------------------------------------------------------------
+test_start "size: an over-cap entry FIRES the advisory and does NOT mutate the file"
+T=$(mktemp -d); WK="$T/wk.md"; SQ="$T/.stale-queue"
+BIG=$(python3 -c 'print("x"*1600)')
+printf '# Working Knowledge\n- [uses: 1] %s\n  source: [[y]] | activated: 2026-06-04\n' "$BIG" > "$WK"
+B4=$(shasum "$WK" | awk '{print $1}')
+OUT=$( set +e; WK_MAX_ENTRY_CHARS=1500 WK_MAX_ENTRIES=100 WK_MAX_LINES=210 prune_working_knowledge "$WK" "$SQ" 2>&1 ) || true
+AF=$(shasum "$WK" | awk '{print $1}')
+if echo "$OUT" | grep -q 'SIZE:.*exceed' && [ "$B4" = "$AF" ]; then
+  test_pass
+else
+  test_fail "advisory must fire AND leave the file byte-intact (fired=$(echo "$OUT" | grep -c 'SIZE:'), mutated=$([ "$B4" = "$AF" ] && echo no || echo yes))"
+fi
+rm -rf "$T"
+
+test_start "size: all-terse entries stay SILENT (no advisory noise on a healthy file)"
+T=$(mktemp -d); WK="$T/wk.md"; SQ="$T/.stale-queue"
+printf '# Working Knowledge\n- [uses: 1] a short terse fact.\n  source: [[z]] | activated: 2026-06-04\n' > "$WK"
+OUT=$( set +e; WK_MAX_ENTRY_CHARS=1500 WK_MAX_ENTRIES=100 WK_MAX_LINES=210 prune_working_knowledge "$WK" "$SQ" 2>&1 ) || true
+if echo "$OUT" | grep -q 'SIZE:'; then test_fail "advisory fired on an under-cap file (noise)"; else test_pass; fi
+rm -rf "$T"
+
 test_summary "working-knowledge-curation"

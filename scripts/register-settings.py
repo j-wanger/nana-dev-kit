@@ -58,7 +58,11 @@ def cmd_hooks(args):
     all_hooks = manifest.get("hooks", [])
     if args.scope == "project-local":
         hook_defs = [h for h in all_hooks if h.get("scope") == "project"]
-        hooks_dir = args.hooks_dir or ".claude/hooks"
+        # ${CLAUDE_PROJECT_DIR} (set + expanded by Claude Code before execution) makes the registered
+        # command resolve regardless of the CWD Claude Code runs the hook from — bare relative paths
+        # 404 under CWD-drift (Phase 79). The file COPY still targets the relative .claude/hooks; only
+        # the registered command path is absolutized here.
+        hooks_dir = args.hooks_dir or "${CLAUDE_PROJECT_DIR}/.claude/hooks"
         ghosts = []
     else:
         hook_defs = [h for h in all_hooks if h.get("scope") == "global"]

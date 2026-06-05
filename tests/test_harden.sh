@@ -318,4 +318,38 @@ T=$(mktemp -d); mkdir -p "$T/.claude"   # no marker, no git repo
 if OUTPUT=$(HOME="$T" bash -c "cd '$T' && bash '$START_HOOK'" 2>/dev/null) && ! echo "$OUTPUT" | grep -q '\[nana:drift\]'; then test_pass; else test_fail "crashed or fired without a marker (out=${OUTPUT:-})"; fi
 rm -rf "$T"
 
+# --- Phase 79: hook commands resolve from a non-root CWD via ${CLAUDE_PROJECT_DIR} ---
+# The hermetic replacement for the unconfirmable live check (edge-screener Stop-hook dogfood): replicate
+# how Claude Code runs a registered command — expand ${CLAUDE_PROJECT_DIR} (an env var) and exec via sh —
+# from a WRONG cwd. The ${CLAUDE_PROJECT_DIR}-anchored command must resolve; the bare relative path must not.
+RESOLVE_HOOK="session-stop.sh"
+PROJ=$(mktemp -d); WRONG=$(mktemp -d)
+mkdir -p "$PROJ/.claude/hooks"
+cp "$REPO_ROOT/templates/.claude/hooks/$RESOLVE_HOOK" "$PROJ/.claude/hooks/$RESOLVE_HOOK"
+chmod +x "$PROJ/.claude/hooks/$RESOLVE_HOOK"
+
+test_start "cwd-resolve: \${CLAUDE_PROJECT_DIR}-anchored hook resolves from a non-root CWD"
+RC=0
+echo '{}' | ( cd "$WRONG" && HOME="$PROJ" CLAUDE_PROJECT_DIR="$PROJ" sh -c '${CLAUDE_PROJECT_DIR}/.claude/hooks/'"$RESOLVE_HOOK" ) >/dev/null 2>&1 || RC=$?
+if [ "$RC" -eq 0 ]; then test_pass; else test_fail "anchored command failed to resolve from wrong cwd (rc=$RC)"; fi
+
+test_start "cwd-resolve: the BARE relative path FAILS from a non-root CWD (proves the bug + the fix)"
+RC=0
+echo '{}' | ( cd "$WRONG" && HOME="$PROJ" CLAUDE_PROJECT_DIR="$PROJ" sh -c '.claude/hooks/'"$RESOLVE_HOOK" ) >/dev/null 2>&1 || RC=$?
+if [ "$RC" -ne 0 ]; then test_pass; else test_fail "bare relative path unexpectedly resolved from wrong cwd"; fi
+rm -rf "$PROJ" "$WRONG"
+
+# A2 proof: a CWD-relative hook FUNCTIONS from a non-root CWD — session-start's drift advisory only fires
+# when git-root == the marker path with drift present, so firing from a WRONG cwd proves its internal refs
+# (git-root, templates, marker, the drift script) resolved via the in-hook `cd "${CLAUDE_PROJECT_DIR:-.}"`.
+test_start "cwd-resolve: session-start drift advisory FIRES from a non-root CWD (internal refs via cd)"
+T=$(mktemp -d); setup_drift_kit "$T"; WD=$(mktemp -d)
+OUT=$( cd "$WD" && HOME="$T" CLAUDE_PROJECT_DIR="$T" bash "$START_HOOK" 2>/dev/null || true )
+if echo "$OUT" | grep -q '\[nana:drift\]'; then test_pass; else test_fail "internal refs did not resolve from wrong cwd (out=$OUT)"; fi
+
+test_start "cwd-resolve: WITHOUT CLAUDE_PROJECT_DIR the same wrong-cwd run stays silent (differential)"
+OUT2=$( cd "$WD" && HOME="$T" bash "$START_HOOK" 2>/dev/null || true )
+if echo "$OUT2" | grep -q '\[nana:drift\]'; then test_fail "fired without the var from a wrong cwd"; else test_pass; fi
+rm -rf "$T" "$WD"
+
 test_summary "harden"

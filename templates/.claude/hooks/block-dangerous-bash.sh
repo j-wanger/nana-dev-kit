@@ -4,6 +4,7 @@
 # Claude Code pipes tool input JSON to stdin.
 
 set -euo pipefail
+cd "${CLAUDE_PROJECT_DIR:-.}" 2>/dev/null || true  # Phase 79: resolve project-relative refs regardless of CWD
 
 command -v jq >/dev/null 2>&1 || { echo "[nana:block] jq not found, hook skipped" >&2; exit 0; }
 

@@ -4,6 +4,7 @@
 # Tracks command+exitcode in .claude/.loop-state (cleared each SessionStart).
 
 set -euo pipefail
+cd "${CLAUDE_PROJECT_DIR:-.}" 2>/dev/null || true  # Phase 79: resolve project-relative refs regardless of CWD
 
 # --- Phase 65 fail-open firing log: one JSONL record {schema_version,ts,hook,action,reason,phase} ---
 # Exit-code-neutral (never aborts the hook under set -e); records controlled-vocab reasons only,

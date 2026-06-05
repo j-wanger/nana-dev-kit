@@ -3,6 +3,7 @@
 # Emits [dev-wiki:stop] for Claude to act on via dev-wiki-hooks rules.
 
 set -euo pipefail
+cd "${CLAUDE_PROJECT_DIR:-.}" 2>/dev/null || true  # Phase 79: resolve project-relative refs regardless of CWD
 
 ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
 

@@ -8,6 +8,9 @@
 #     the max uses. Distinct facts that merely share a source slug are NOT collapsed.
 #   - pre-existing >30d [uses:1] non-pinned stale prune (max 5/run) -> .stale-queue.
 #   - well-formedness: any broken 2-line pairing => whole-file no-op + warning, file byte-intact.
+#   - size advisory (Phase 79): NON-DESTRUCTIVE warn when an entry exceeds WK_MAX_ENTRY_CHARS (default
+#     1500) — the count/line caps do NOT bound SIZE, so a few mega-entries blow the always-loaded token
+#     budget; this only warns (never truncates/evicts/bails), prompting a human to compress to a pointer.
 #   - atomic write (temp + validate + os.replace); aborts leaving the original intact on failure.
 # Policy single source of truth: ~/.claude/skills/dev-wiki/working-knowledge-spec.md.
 # Heavy logic is in python3 (already a dependency of this hook); fail-open if python3 is absent.
@@ -20,6 +23,7 @@ prune_working_knowledge() {
   command -v python3 >/dev/null 2>&1 || return 0
 
   WK_MAX_ENTRIES="${WK_MAX_ENTRIES:-100}" WK_MAX_LINES="${WK_MAX_LINES:-210}" \
+    WK_MAX_ENTRY_CHARS="${WK_MAX_ENTRY_CHARS:-1500}" \
     python3 - "$WK_FILE" "$STALE_QUEUE" <<'PYEOF' || return 0
 import os, re, sys, tempfile
 from datetime import date, datetime
@@ -32,6 +36,25 @@ max_lines = int(os.environ.get("WK_MAX_LINES", "210"))
 
 def warn(msg):
     print("[working-knowledge] " + msg)
+
+
+def size_audit(raw_text, parsed):
+    # NON-DESTRUCTIVE size advisory (Phase 79): the always-loaded file is in EVERY session's context, so a
+    # few mega-entries silently blow the token budget (the count/line caps below do NOT bound size). This
+    # ONLY warns — it never truncates, evicts, or bails. Per-entry over-cap entries are the human-compress
+    # signal; detail belongs in the dev-wiki (not always-loaded). Silent when every entry is terse.
+    cap = int(os.environ.get("WK_MAX_ENTRY_CHARS", "1500"))
+    over = []
+    for e in parsed:
+        ec = len("- [uses: %d] %s" % (e["uses"], e["rest"])) + 1 + len(e["src"]) + 1
+        if ec > cap:
+            over.append((ec, re.sub(r"\s+", " ", e["rest"]).strip()[:48]))
+    if over:
+        over.sort(reverse=True)
+        warn("SIZE: %d chars (~%d tokens); %d entr%s exceed the %d-char per-entry cap — compress to a terse pointer (detail belongs in the dev-wiki):"
+             % (len(raw_text), len(raw_text) // 4, len(over), "y" if len(over) == 1 else "ies", cap))
+        for ec, label in over:
+            warn("  - %d chars: %s…" % (ec, label))
 
 
 try:
@@ -88,6 +111,9 @@ while i < n:
         sys.exit(0)
     header.append(line)
     i += 1
+
+# --- Stage 0: non-destructive size advisory (read-only; never modifies the file) ------------
+size_audit(raw, entries)
 
 keep = [True] * len(entries)
 removed = []

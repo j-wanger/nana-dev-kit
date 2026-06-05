@@ -9,7 +9,7 @@ sync-rules:
 	@bash "$(NANA_KIT_DIR)scripts/sync-rules.sh" . .
 
 template:
-	@python3 "$(NANA_KIT_DIR)scripts/register-settings.py" hooks "$(NANA_KIT_DIR)templates/.claude/settings.json" "$(NANA_KIT_DIR)modules.json" --scope project-local --hooks-dir .claude/hooks --regenerate
+	@python3 "$(NANA_KIT_DIR)scripts/register-settings.py" hooks "$(NANA_KIT_DIR)templates/.claude/settings.json" "$(NANA_KIT_DIR)modules.json" --scope project-local --regenerate
 	@echo "Regenerated templates/.claude/settings.json from modules.json"
 
 test:

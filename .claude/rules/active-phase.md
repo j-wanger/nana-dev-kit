@@ -1,50 +1,45 @@
 # Active Phase Context
 
-Phase: 78 — Skill-Crystallization Headroom Screen
-Status: COMPLETE — 4/4 tasks done; PROGRAM-VERDICT TERMINATE; delivery gate pending acceptance.
+Phase: 79 — Harness Hygiene (hook path resolution + working-knowledge size cap)
+Status: COMPLETE — 4/4 tasks done; make test all-passed, make eval 52/52; delivery gate pending acceptance.
 
-Result: TERMINATE. Both real candidates DEGENERATE — edge-eligibility (domain PIT-survivorship) 4/5,
-nana-drift (general) 5/5; controls valid (neg 5/5 PASS, positive-unknowable 0/5 PASS, recoverable 5/5
-PASS → instrument LIVE). The bare model DERIVED the inclusive-through-d survivorship boundary from the
-explicit-goal corpus (4/5), so the capability→skill module is DEAD-ON-ARRIVAL — not built. Headline:
-"a tooling artifact's correctness IS in the goal that motivated it." Extends the amplifier finding from
-decisions (Ph70/71/77) to capability. Scope caveat: conditional on the explicit-goal R_A framing
-(Jake's pre-registered choice); surviving avenue stays Ph70 (proprietary/post-cutoff). Apparatus frozen
-repo-only eval/amplifier/skill-screen/; prereg 3f6a0cb ⊂ HEAD; NO LLM; make test + make eval 52/52 green.
+Result: both sub-fixes shipped. (A) register-settings.py + template + install.sh emit
+${CLAUDE_PROJECT_DIR}/.claude/hooks/X.sh (all 17 project commands; global already absolute); all 17
+hook scripts `cd "${CLAUDE_PROJECT_DIR:-.}"`; unconfirmable live check → committed hermetic wrong-CWD
+test (resolution + function differentials). (B) working-knowledge 45,217→35,726 chars (4 amplifier
+entries → 1 + pointers); non-destructive curator size_audit (WK_MAX_ENTRY_CHARS=1500, warns never
+truncates) + terseness note in both seeding steps. test_harden 26/26, curation 15/15, firing 21/21.
+Deferred: prune-on-value (subtraction framing); edge-screener re-sync (interim hand-patch holds).
 
-Objective: Measure whether crystallizing a phase's TOOLING into a reusable skill adds value over
-bare re-derivation — i.e. whether a candidate tooling artifact embeds NON-RECOVERABLE correctness a
-bare model fails to reproduce even given the RECOVERABLE CORPUS a non-crystallized consuming project
-would have (interface + call sites + task), but not the implementation or its tests. Successor to the
-decision-retention line (Ph70/71/77, all null); tests the capability/correctness boundary instead.
-Cheap go/no-go SCREEN before building any capability→skill module (Phase 79+). Honest prior: SPLIT
-(general tooling DEGENERATE, domain tooling HAS-HEADROOM — the split is the finding).
+Objective: Fix two kit defects degrading real consuming-project sessions.
+(A) Hooks registered with bare relative `.claude/hooks/X.sh` 404 when Claude Code runs them from a
+    non-project-root CWD (edge-screener Stop-hook dogfood). Claude Code does NOT guarantee CWD=root;
+    the documented fix is `${CLAUDE_PROJECT_DIR}`. 4th dogfood→harden fix (Ph74/75/76 line).
+(B) Always-loaded `working-knowledge.md` bloated to ~45k chars/99 entries → trips Claude Code's
+    context-size warning. The curator caps entry-count(100)/lines(210) not SIZE, so 4 amplifier
+    mega-entries (~11k chars) slip through.
 
-Scope (repo-only, frozen on completion; NOT wired into install.sh/Makefile/make test/make eval):
-- `eval/amplifier/skill-screen/**` (sibling to anchor-screen/retention-screen/xsession-screen/)
-- `specs/phase-78-skill-crystallization-headroom-screen.md` (nana:approved)
-- `.dev-wiki/articles/{decisions,phases,journal}/**`
-- READ-ONLY subjects: `scripts/check-install-drift.sh` (+tests) and a real edge-screener domain
-  artifact (PIT survivorship membership +tests), copied as frozen fixtures; byte-identical pre/post.
+Scope:
+- `scripts/register-settings.py` + `templates/.claude/settings.json` (regenerated via `make template`) —
+  project hooks → `${CLAUDE_PROJECT_DIR}/.claude/hooks/X.sh`, global → `$HOME/.claude/hooks/X.sh`.
+- `templates/.claude/hooks/*.sh` (project) — `cd "${CLAUDE_PROJECT_DIR:-.}"` near top (internal refs).
+- `.claude/rules/working-knowledge.md` — compress 4 amplifier entries → 1 + `[[decision:…]]` pointers.
+- `templates/.claude/hooks/session-start.d/wk-prune.sh` — per-entry char-cap ADVISORY + size report.
+- `tests/**` — settings-drift, hermetic wrong-CWD resolution, firing-coverage, curator size test.
 
-Key constraints (design hardened by adversarial review 2026-06-04 — C1–C4/M1–M5):
-- NO LLM in the scoring path; `check.sh` runs pinned tests, n=5/threshold=4 cloned from anchor-screen.
-- OFF gets the RECOVERABLE CORPUS R_A (interface+docstring+callsites+task), NEVER the impl or tests (C2).
-- `.offleak` leak guard: R_A must contain none of the spec-implied tests' answer-tokens/fixtures (C4/M5).
-- spec-implied = ENTAILED-by-R_A with a QUOTED entailing sentence per test; un-citable → unstated-by-rule (C3).
-- candidate correctness must be LOCATED+QUOTED from T_A, not asserted in prose (C1: the drift script has NO
-  /var canonical-path fix — that was Ph76 session-start.sh; its real correctness is the exclusion allow-list).
-- 4 controls gate it: negative(pass)/positive-unknowable(fail)/recoverable-fully-specified(pass)/.offleak;
-  any violation ⇒ INSTRUMENT-DEAD (M3).
-- pre-registration committed BEFORE runs, ancestor-guarded; apparatus repo-only.
+Key constraints:
+- Fail-open / NON-DESTRUCTIVE: size cap WARNS (never truncates/evicts); hook cd uses `|| true`.
+- No bare-relative hook command may remain (assert in drift test).
+- Hermetic tests only (mktemp -d + env override; never touch real ~/.claude or live working-knowledge).
+- modules.json single source of truth; settings.json regenerated, never hand-edited.
+- Firing-coverage 21/21 preserved (cd drops no coverage). edge-screener untouched (re-syncs later).
 
-Verdict: `^PROGRAM-VERDICT: (TERMINATE|HAS-HEADROOM|INSTRUMENT-DEAD|INCONCLUSIVE)`.
-all real candidates DEGENERATE → TERMINATE (don't build); ≥1 HAS-HEADROOM → build (scoped, + router reframe:
-skill vs regression-test/lint vessel); control violated → INSTRUMENT-DEAD; <2 measurable → INCONCLUSIVE.
+Tasks (in order): B1 compress wk (S, immediate relief) → A1 register-settings ${CLAUDE_PROJECT_DIR} +
+drift/wrong-CWD tests (M) → A2 hook-internal cd (L) → B2 wk-prune size advisory + regression (M, LAST).
 
-Decision: [[skill-crystallization-headroom-screen]] (high). Spec: nana:approved 2026-06-04.
+Decision: [[harness-hygiene]] (high). Spec: nana:approved 2026-06-04.
 Abort rule: if blocked >3 attempts, mark [blocked] + ask user skip/abort.
 
 Gates:
-- [x] Direction confirmed by user (approach approved 2026-06-04 — "plan Phase 78 as that screen")
-- [x] Delivery accepted (post-implementation report 2026-06-04)
+- [x] Direction confirmed by user (approach approved 2026-06-04 — "approved", bundled scope)
+- [ ] Delivery accepted (post-implementation report)

@@ -17,7 +17,9 @@ fail=0
 echo "=== Drift: committed template == generated from modules.json ==="
 TMP=$(mktemp)
 echo '{}' > "$TMP"
-python3 "$REG" hooks "$TMP" "$MODULES" --scope project-local --hooks-dir .claude/hooks --regenerate
+# Mirror the Makefile `template` target exactly (no --hooks-dir override — project-local commands
+# default to ${CLAUDE_PROJECT_DIR}/.claude/hooks so they resolve regardless of CWD, Phase 79).
+python3 "$REG" hooks "$TMP" "$MODULES" --scope project-local --regenerate
 if diff <(jq -S . "$TMP") <(jq -S . "$TEMPLATE") >/dev/null; then
   echo "  PASS: template in sync with modules.json"
 else
@@ -26,6 +28,22 @@ else
   fail=1
 fi
 rm -f "$TMP"
+
+# --- Hook commands resolve regardless of CWD: ${CLAUDE_PROJECT_DIR}-prefixed, NO bare relative ---
+# Bare `.claude/hooks/X.sh` 404s when Claude Code runs the hook from a non-project-root CWD (Phase 79,
+# the edge-screener Stop-hook dogfood). Every project hook command must be ${CLAUDE_PROJECT_DIR}-anchored.
+echo ""
+echo "=== Hook command paths are CWD-independent (\${CLAUDE_PROJECT_DIR}-prefixed) ==="
+if jq -r '.hooks[][].hooks[].command' "$TEMPLATE" | grep -q '^\.claude/hooks/'; then
+  echo "  FAIL: a bare-relative .claude/hooks command remains (404s under CWD-drift)"
+  jq -r '.hooks[][].hooks[].command' "$TEMPLATE" | grep '^\.claude/hooks/' || true
+  fail=1
+elif [ "$(jq -r '.hooks[][].hooks[].command' "$TEMPLATE" | grep -c '^${CLAUDE_PROJECT_DIR}/.claude/hooks/')" -ge 1 ]; then
+  echo "  PASS: all hook commands are \${CLAUDE_PROJECT_DIR}-anchored"
+else
+  echo "  FAIL: no \${CLAUDE_PROJECT_DIR}-anchored hook command found"
+  fail=1
+fi
 
 # --- Enforcement hooks registered in the generated template ---
 echo ""

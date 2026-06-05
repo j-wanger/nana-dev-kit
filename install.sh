@@ -92,8 +92,11 @@ if $PROJECT_LOCAL; then
         cp "$HOOKS_SRC/$d"/*.sh "$PROJ_HOOKS_DIR/$d/"
       fi
     done
+    # NB: no --hooks-dir override — register-settings defaults project-local commands to
+    # ${CLAUDE_PROJECT_DIR}/.claude/hooks so they resolve regardless of CWD (Phase 79). The hook
+    # FILES were copied to $PROJ_HOOKS_DIR (.claude/hooks) above; only the registered command path differs.
     python3 "$REGISTER_SCRIPT" hooks "$PROJ_SETTINGS" "$MODULES_JSON" \
-      --scope project-local --hooks-dir "$PROJ_HOOKS_DIR"
+      --scope project-local
     touch .claude/enforce
     echo ""
     echo "Project-local hooks installed in $PROJ_HOOKS_DIR/"

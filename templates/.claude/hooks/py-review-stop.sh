@@ -6,6 +6,7 @@
 # Exit 0 = allow stop, Exit 2 = force Claude to keep working (stderr shown as the reason).
 
 set -euo pipefail
+cd "${CLAUDE_PROJECT_DIR:-.}" 2>/dev/null || true  # Phase 79: resolve project-relative refs regardless of CWD
 
 # --- fail-open firing log (parity with check-tests-were-run.sh): one JSONL record ---
 log_firing() {

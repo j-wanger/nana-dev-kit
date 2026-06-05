@@ -4,6 +4,7 @@
 # All reads are optional — graceful silent skip when files are missing.
 
 set -euo pipefail
+cd "${CLAUDE_PROJECT_DIR:-.}" 2>/dev/null || true  # Phase 79: resolve project-relative refs regardless of CWD
 
 HOOK_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$HOOK_DIR/session-start.d/wk-prune.sh"
