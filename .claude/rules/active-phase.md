@@ -42,4 +42,4 @@ Abort rule: if blocked >3 attempts, mark [blocked] + ask user skip/abort.
 
 Gates:
 - [x] Direction confirmed by user (approach approved 2026-06-04 — "approved", bundled scope)
-- [ ] Delivery accepted (post-implementation report)
+- [x] Delivery accepted (post-implementation report 2026-06-04)
