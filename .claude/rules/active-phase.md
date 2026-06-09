@@ -36,4 +36,4 @@ Decision: [[assumption-surfacer-completeness-screen]] (high). Abort rule: if blo
 
 Gates:
 - [x] Direction confirmed by user (revised spike-first design approved 2026-06-09 — "yes lets go")
-- [ ] Delivery accepted (post-implementation report — orchestrator flips at D3 after the commit lands)
+- [x] Delivery accepted (user accepted 2026-06-09; debrief committed 04bc520)
