@@ -29,4 +29,4 @@ Abort: if blocked >3 attempts, mark [blocked] + ask user skip/abort.
 
 Gates:
 - [x] Direction confirmed by user (assumption positions taken, no unresolved reject — approved 2026-06-09)
-- [ ] Delivery accepted
+- [x] Delivery accepted (post-implementation report 2026-06-09)

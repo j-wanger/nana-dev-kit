@@ -988,7 +988,7 @@ outcome-determined ground truth. Jake's A2 reject made this a SCREEN, not a buil
 
 ## Phase 81: Assumption-Approval Gate
 
-<!-- gate-log:phase-81 direction=approved delivery=pending -->
+<!-- gate-log:phase-81 direction=approved delivery=accepted -->
 
 Decision: [[assumption-approval-gate]] (high). Ship the SIMPLEST gate (Phase 80 INSTRUMENT-DEAD: the
 scope-anchored surfacer's only edge was a working-knowledge leak; the clean signal is DEGENERATE). The
