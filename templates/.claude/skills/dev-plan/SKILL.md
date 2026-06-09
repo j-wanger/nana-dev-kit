@@ -11,7 +11,7 @@ tier: complex-orchestration
 
 Plan one phase at a time, informed by accumulated wiki knowledge. Replaces brainstorming for projects with a `.dev-wiki/` directory. Reads project state, asks targeted questions, proposes an approach, writes the plan to the wiki with compaction anchors.
 
-**Orchestrator + executor pattern.** State loading and artifact writing are dispatched to background Agent subagents. Interactive steps (user questions, approach approval, plan review) stay with the orchestrator. See [Orchestrator Protocol](#orchestrator-protocol) below.
+**Orchestrator + executor pattern.** State loading and artifact writing are dispatched to background Agent subagents. Interactive steps (user questions, the assumption-approval gate, plan review) stay with the orchestrator. See [Orchestrator Protocol](#orchestrator-protocol) below.
 
 ---
 
@@ -40,7 +40,7 @@ When it returns, you receive: project state summary, scope analysis, wiki knowle
 - **Step 9:** Ask user goal-oriented questions (informed by state loader's design questions + your own memory/knowledge recall)
 - **Step 10:** Propose approach (using state loader's wiki insights + your judgment)
 - **Step 12:** Dispatch approach reviewer (agent-internal quality check — incorporate findings, do not present to user)
-- **Step 13:** Present approach, get user approval — this is the **direction gate**
+- **Step 13:** Run the assumption-approval gate — accept/reject/don't-know positions on the plan's load-bearing assumptions ARE the **direction gate** (they replace approach-approval)
 - **Step 14:** Draft tasks, dispatch plan reviewer (agent-internal — incorporate findings, proceed to Step 15)
 
 Before formulating your approach (Step 10), search memory and knowledge for relevant prior context. Form a position — don't default to asking the user.
@@ -92,7 +92,7 @@ May SEED: `.claude/rules/working-knowledge.md` (Step 15f-ter, user-gated). wiki-
 ## Direction Gate
 
 <HARD-GATE>
-Do NOT write any implementation code until the user has approved the direction in Step 13.
+Do NOT write any implementation code until the assumption-approval gate closes in Step 13 (positions taken on every surfaced assumption; no unresolved reject/don't-know; ledger row appended).
 </HARD-GATE>
 
 ---
@@ -223,16 +223,15 @@ Critique the approach using a subagent. This is an **agent-internal quality chec
    - Score 1-5: Revise approach to address CRITICAL issues, then proceed to Step 13. Note unresolved concerns in the phase article.
 5. **Graceful fallback:** If companion file missing or subagent times out, proceed to Step 13 without critique.
 
-### Step 13: User Approves Direction (Direction Gate)
+### Step 13: Assumption-Approval Gate (Direction Gate)
 
-Present the approach and wait for explicit approval. This is the **direction gate** — the only pre-implementation user approval point. The user confirms intent and scope, not technical details.
+The direction gate. Read `~/.claude/skills/dev-plan/assumption-gate.md` and run it: surface the plan's load-bearing assumptions (cost-sorted; Step-10 T0's weakest assumption is a required member) and take **accept / reject / don't-know** positions via AskUserQuestion. **Positions REPLACE "approve the approach?"** — this is the only pre-implementation user gate; the maintainer confirms direction by positioning on assumptions, not by approving a conclusion they can't evaluate.
 
 <HARD-GATE>
-Do NOT write any implementation code until the user has approved.
-A vague "sure" counts as approval. Silence does NOT.
+Do NOT write any implementation code until the gate closes: a position taken on every surfaced assumption with NO unresolved reject or don't-know, and the ledger row appended to `.dev-wiki/assumption-ledger.md`. A reject revises + re-surfaces; a don't-know is defended/down-scoped or routed to Blockers (never a silent pass). Silence is NOT a position.
 </HARD-GATE>
 
-If the user requests changes, revise, update the draft decision article, and re-present. **Maximum 3 revision rounds.** After 3: proceed with the best available version and note unresolved concerns in the phase article.
+All-accept is allowed but never silent — warn + track `all_accept: true` + restate how each accepted assumption shapes the approach (see the companion). **Maximum 3 revision rounds** on rejects; after 3, proceed with the best version and note unresolved concerns in the phase article.
 
 ### Step 14: Draft Tasks and Review Plan Quality *(Lite: skip — merge into Step 13)*
 
@@ -267,7 +266,7 @@ The Gates section tracks the two boundary checkpoints (2-gate ceremony model):
 
 ```
 Gates:
-- [ ] Direction confirmed by user (approach approved)
+- [ ] Direction confirmed by user (assumption positions taken; no unresolved reject/don't-know)
 - [ ] Delivery accepted (post-implementation report)
 ```
 

@@ -268,6 +268,8 @@ Read `~/.claude/skills/dev-debrief/retro-check.md` for the lightweight retrospec
 
 Parse the completed phase's gate comment in `tasks.md` (format: `<!-- gate-log:phase-N direction=approved delivery=pending|accepted -->`). Under the 2-gate ceremony model, verify: `direction=approved` is present (required for all phases), `delivery=accepted` is present for completed phases. Flag missing direction gate. Include findings in journal entry under `### Gate Compliance`. If no gate comment exists for the phase, emit: `"Gate comment missing for Phase N — audit skipped."` (non-blocking warning).
 
+Then run the **Assumption-Ledger Revisit** (read `~/.claude/skills/dev-debrief/debrief-finalization.md`, "Assumption-Ledger Revisit"): fill the closing phase's `revisit-status` (did each surfaced assumption bite?), re-scan prior phases for late bites, and run `bash scripts/check-assumption-ledger.sh --revisit "$WIKI/assumption-ledger.md" <phase>` — blank rows mean finalization is not clean. The detect-after backstop for [[assumption-approval-gate]]; runs in Lite too.
+
 ### Steps 22-24: Index Rebuild, Log, Breadcrumb Cleanup
 
 Read `~/.claude/skills/dev-debrief/debrief-finalization.md` Steps 22 *(Lite: skip Step 22)*, 23, and 24 instructions.

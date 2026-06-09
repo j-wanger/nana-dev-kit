@@ -1,39 +1,32 @@
 # Active Phase Context
 
-Phase: 80 — Assumption-Surfacer Completeness Screen
-Status: COMPLETE (6/6 tasks) — `^PROGRAM-VERDICT: INSTRUMENT-DEAD`; make test green; delivery gate PENDING.
+Phase: 81 — Assumption-Approval Gate
+Status: READY FOR COMPLETION (4/4 tasks [x], all 10 spec exit criteria pass, make test green, make eval
+52/52, reviewer 9/10 ACCEPT both findings fixed inline) — delivery gate PENDING.
 
-Result: pivoted (post-spike) to the SILENT class via the project's REAL silent failures (mcp-cwd,
-line-cap, cascade), not synthetic plants. T1 GATE → GO; prereg `86d8584` BEFORE runs, ancestor-guarded.
-The 50-run screen (5 fixtures × 2 conditions × n5, NO-LLM scoring) returned INSTRUMENT-DEAD: a CONTROL
-FAILED — the workflow subagents ran INSIDE nana-dev-kit and inherited always-loaded working-knowledge,
-which documents all 3 fixtures' buried assumptions; SURFACER leaked them 4/5,5/5,5/5 on real cases vs 0/5
-on the 2 invented (NAIVE clean ~0/5). The headline SURFACER>NAIVE is a leak artifact — the amplifier-null
-caught in the act (5th null). Clean signal points DEGENERATE (NAIVE recovered 3/4 by reasoning; silent
-failures were silent because nobody ASKED). FORWARD (Phase 81): ship the SIMPLEST gate (naive cost-sorted
-surfacer + accept/reject/don't-know + A3 ledger detect-after + all-accept block), NOT the scope-anchored
-machinery. Residual (parked): accretion/budget class unmeasured — needs a CLEAN consuming-project context.
+Objective: the dev-plan direction gate now takes accept/reject/don't-know positions on the plan's
+cost-sorted load-bearing assumptions (positions ARE the gate, REPLACING approach-approval), recorded in an
+append-only cross-phase ledger whose revisit-status is surfaced at debrief — rubber-stamp → interrogator.
+Earned from Phase 80's INSTRUMENT-DEAD: shipped the SIMPLEST gate (frozen NAIVE surfacer), NOT the
+scope-anchored machinery. Efficacy UNMEASURABLE in-kit — tests assert MECHANICS only.
+Decision [[assumption-approval-gate]] (high); spec nana:approved.
 
-Objective: EARN the right to build the assumption-approval gate. Jake's live A2 reject ("can't trust the
-agent-CHOSEN assumption set; solve set-completeness first") made Phase 80 a SCREEN, not a build.
+Shipped (all [x]): T1 ledger + `## Ledger schema` source + `scripts/check-assumption-ledger.sh` (4 modes +
+--selftest, NO LLM) + RED-first `tests/test_assumption_ledger.sh` (20th make-test script) → T2 dev-plan
+assumption-gate.md/-example.md + SKILL Step-13 rewrite (positions REPLACE approval) + Step-15f → T3
+dev-debrief Assumption-Ledger Revisit forcing-function at Step 21 (NO new hook) → T4 single-schema-source
+consistency + regression.
 
-Scope (repo-only, NOT wired into install.sh/Makefile/make test/make eval):
-- `eval/assumption-screen/` — spike (T1 GATE), pre-registration + `.prereg-commit`, surfacer.md +
-  coverage-check.sh, fixtures (3 real silent + cost-sort-adversarial + negative) + checks, check.sh
-  (cloned from anchor-screen, NO LLM, `--selftest`), runs/ (50), verdicts/summary.md, screen-record.md.
-- UNTOUCHED: dev-plan SKILL.md, any ledger, the all-accept block (all Phase 81).
+Key constraints (held):
+- NO new hook (debrief-finalization check is the firing point; session-start advisory deferred).
+- All-accept → warn + track all_accept:true + restate (NOT a hard block).
+- Ledger append-only + per-block monotonic-row guarded; the row is the firing evidence ([[HEU-012]]).
+- New gate semantics apply to FUTURE phases (Phase 82 = first live dogfood).
 
-Key constraints:
-- T1 is a HARD GATE (INSTRUMENT-DEAD stops cheap). Prereg committed BEFORE runs, ancestor-guarded.
-- NO LLM in the scoring path. Cost-sort-adversarial control mandatory. Amplifier program closed — NEW line.
-- Cannot measure assumption-surfacing INSIDE the kit (always-loaded working-knowledge leaks the answers).
-
-Tasks (all [x]): T1 spike (GATE→GO) → T2 prereg → T3 surfacer spec → T4 fixtures + check.sh → T5 50-run
-scored → T6 screen-record + `^PROGRAM-VERDICT`.
-
-Decision: [[assumption-surfacer-completeness-screen]] (high). Abort rule: if blocked >3 attempts, mark
-[blocked] + ask user skip/abort (T1 INSTRUMENT-DEAD is a valid cheap terminal, not a block).
+Residual (parked): the accretion/budget class is genuinely unmeasured — needs a CONSUMING-project context
+(Ph66/69/80 representativeness). A separate user call.
+Abort: if blocked >3 attempts, mark [blocked] + ask user skip/abort.
 
 Gates:
-- [x] Direction confirmed by user (revised spike-first design approved 2026-06-09 — "yes lets go")
-- [x] Delivery accepted (user accepted 2026-06-09; debrief committed 04bc520)
+- [x] Direction confirmed by user (assumption positions taken, no unresolved reject — approved 2026-06-09)
+- [ ] Delivery accepted
