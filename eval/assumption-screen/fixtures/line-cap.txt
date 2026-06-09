@@ -1,0 +1,4 @@
+Plan: enrich session-start.sh — add an MCP memory health probe and a memory-nudge reminder so the
+agent gets a startup status report on memory state. Wire the probe to read the server config and
+report healthy / broken / not-configured.
+Success: every session begins with an accurate memory-health line.

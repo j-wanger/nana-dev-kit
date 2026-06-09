@@ -1,0 +1,1 @@
+loc-or-path	require	(\bcwd\b|working[ -]?director|\bpath\b|\bdirector|\blocation\b|resolve|persist[a-z]* (at|in|to|where)|where .*(db|database|data|memory|store|it|they).*(store|persist|sav|writ|live|resid))

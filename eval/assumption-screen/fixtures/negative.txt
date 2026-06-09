@@ -1,0 +1,3 @@
+Plan: rename the function `calc_total` to `compute_total` across its three call sites in billing.py,
+invoice.py, and report.py. Pure rename; update the one unit test that references the old name.
+Success: tests pass, no behavior change.

@@ -1,0 +1,4 @@
+Plan: add a spec-enforcement hook that blocks implementation work when no approved spec exists.
+Write enforce-spec.sh, register it as a PreToolUse hook in settings.json, and have it exit 2 (block)
+when the spec marker is absent.
+Success: in a consuming project, work without an approved spec is blocked.

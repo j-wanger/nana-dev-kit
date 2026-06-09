@@ -1,0 +1,1 @@
+mask	require	(mask|hide|swallow|silent[a-z]*|typo|misconfig|wrong default|hard to (detect|notice|debug|catch)|conceal|suppress[a-z]*.*(error|misconfig|mistake)|mistyp|fail[a-z]* silently|no (error|warning).*(typo|wrong|missing|misconfig))

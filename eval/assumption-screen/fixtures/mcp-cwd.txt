@@ -1,0 +1,4 @@
+Plan: enable the MCP memory server so the agent can store and recall decisions across sessions.
+Register the server in settings.json under mcpServers, launch it via `python -m memory_server`, and
+confirm the agent can call memory_store and memory_search from a normal session.
+Success: a decision recorded in one session is recalled in the next.

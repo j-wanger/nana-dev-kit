@@ -1,0 +1,1 @@
+budget	require	(budget|line[ -]?count|\bsize\b|\blength\b|bloat|too (long|large|big|many)|grow[a-z]*.*(too|unbounded|large|long)|exceed[a-z]*.*(cap|limit|budget|line)|\bcap\b)

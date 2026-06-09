@@ -1,0 +1,3 @@
+Plan: migrate the config loader to read from a new `config.toml`. Minor cleanup while we're in here:
+when a config key is missing, return the built-in default instead of raising — smoother for users.
+Success: configs load from toml; missing keys use built-in defaults.

@@ -1,0 +1,1 @@
+infra-fab	forbid	(hook .*(fir|instal|registered)|memory.*(persist|path|cwd)|session-start.*(budget|line[ -]?count|bloat)|merely registered|silently (disabl|off))
