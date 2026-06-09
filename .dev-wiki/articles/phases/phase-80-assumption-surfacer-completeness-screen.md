@@ -7,7 +7,7 @@ parents: []
 created: 2026-06-09
 updated: 2026-06-09
 source: plan
-status: active
+status: completed
 scope: ["eval/assumption-screen/**"]
 entry_criteria: "Phase 79 complete/accepted. A handover doc + a team-upskilling conversation proposed reframing the dev-plan human gate from approving the APPROACH to taking accept/reject/don't-know positions on the plan's load-bearing ASSUMPTIONS. The plan was interrogated live via that very mechanism; Jake ACCEPTED 3 assumptions and REJECTED A2 ('can't trust the agent-CHOSEN assumption set — solve set-completeness before building anything'). The reject makes Phase 80 a SCREEN, not a build."
 exit_criteria: "eval/assumption-screen/ carries a committed ancestor-guarded pre-registration + a deterministic NO-LLM check.sh (--selftest both-ways) + a screen-record.md with a closed-vocabulary ^PROGRAM-VERDICT (TRUSTWORTHY | UNTRUSTWORTHY | INSTRUMENT-DEAD). Either: T1 returns INSTRUMENT-DEAD (non-circular ground truth not constructible) and the phase stops cheap; OR the surfacer is scored against outcome-determined ground truth + a blind baseline + a cost-sort-adversarial control, and the verdict gates whether Phase 81 builds the gate/ledger/all-accept block."
@@ -37,11 +37,24 @@ pre-registered up front. The gate + ledger + all-accept block defer to Phase 81,
 - UNTOUCHED: dev-plan SKILL.md, any ledger, the all-accept block (all Phase 81).
 
 ## Exit Criteria
-- [ ] T1 GATE resolved: `spike/feasibility.md` with `DECISION: GO` (≥3 phases' non-circular labels) or `DECISION: INSTRUMENT-DEAD` (stop cheap)
-- [ ] Pre-registration committed BEFORE scoring runs; `.prereg-commit` an ancestor of the verdict commit (anti-retrofit)
-- [ ] `bash eval/assumption-screen/check.sh --selftest` exit 0 (deterministic, NO LLM in scoring)
-- [ ] cost-sort-adversarial control present + scored
-- [ ] `screen-record.md` carries `^PROGRAM-VERDICT: (TRUSTWORTHY|UNTRUSTWORTHY|INSTRUMENT-DEAD)` + the surfacer-vs-baseline result + named limits + the Phase-81 gate consequence
+- [x] T1 GATE resolved: `spike/feasibility.md` `DECISION: GO` (non-circular labels constructible for ≥3 phases)
+- [x] Pre-registration committed BEFORE scoring runs; `.prereg-commit` (`86d8584`) an ancestor of HEAD (anti-retrofit, re-verified at T6)
+- [x] `bash eval/assumption-screen/check.sh --selftest` exit 0 (deterministic, NO LLM in scoring)
+- [x] cost-sort-adversarial control present + scored (the one fully-clean comparison; BOTH-CATCH)
+- [x] `screen-record.md` carries `^PROGRAM-VERDICT: INSTRUMENT-DEAD` + the surfacer-vs-baseline (leak) result + named limits + the Phase-81 gate consequence
+
+## Result
+**`^PROGRAM-VERDICT: INSTRUMENT-DEAD`** — a control FAILED. The phase pivoted (post-spike) to the SILENT
+class via the project's REAL silent failures (`mcp-cwd`, `line-cap`, `cascade`), not synthetic plants. The
+50-run screen's clean-context premise broke for SURFACER: the workflow subagents inherited nana-dev-kit's
+always-loaded `working-knowledge.md`, which documents all 3 fixtures' buried assumptions; SURFACER leaked
+them 4/5, 5/5, 5/5 on the real cases and 0/5 on the 2 invented cases (NAIVE clean ~0/5). The headline
+SURFACER>NAIVE is a leak artifact — **the amplifier-null caught in the act** (5th null). Clean signal points
+DEGENERATE: NAIVE recovered 3/4 silent assumptions by reasoning; the silent failures were silent because
+nobody ASKED. FORWARD: Phase 81 ships the SIMPLEST gate (naive cost-sorted surfacer + accept/reject/don't-know
++ A3 ledger detect-after + all-accept block), NOT the scope-anchored machinery. Residual (open): the
+accretion/budget class is genuinely unmeasured — needs a CLEAN consuming-project context (Ph66/69
+representativeness, re-confirmed). Full record: `eval/assumption-screen/screen-record.md`.
 
 ## Key Decisions
 - [[assumption-surfacer-completeness-screen]] (low→pending) — the full rationale: the four live verdicts,

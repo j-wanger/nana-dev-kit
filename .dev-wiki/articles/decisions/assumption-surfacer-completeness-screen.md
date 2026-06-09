@@ -5,9 +5,9 @@ category: decisions
 tags: [assumption-interrogation, blind-yes, surfacer, completeness, screen, scope-anchored, framing-pass, ledger, dogfood, cost-of-error]
 parents: [phase-80-assumption-surfacer-completeness-screen]
 created: 2026-06-08
-updated: 2026-06-08
+updated: 2026-06-09
 source: plan
-confidence: low
+confidence: high
 status: active
 ---
 
@@ -99,3 +99,29 @@ are **untouched** in Phase 80.
 Rejected alternatives: build the full gate now (A2 reject blocks it); reconstruction-delta surfacing
 (heavier, reconstructor has its own blind spots); validate+backstop-only (lighter, but Jake set a higher
 bar); author-selected real-history ground truth (the review's CRITICAL — circular).
+
+## RESULT (2026-06-09 — `^PROGRAM-VERDICT: INSTRUMENT-DEAD`)
+The phase pivoted (after the spike) to the **SILENT** class via the project's REAL silent failures (the
+R5 silence-gap: `mcp-cwd`, `line-cap`, `cascade`), not synthetic plants. T1 GATE → **GO**; pre-registration
+committed `86d8584` BEFORE runs, ancestor-guarded. The 50-run screen (5 fixtures × 2 conditions × n=5,
+NO-LLM scoring) returned **INSTRUMENT-DEAD because a control FAILED**: the workflow subagents ran INSIDE
+nana-dev-kit and inherited its always-loaded `working-knowledge.md`, which documents all 3 real fixtures'
+buried assumptions. The SURFACER **leaked** those documented answers — 4/5, 5/5, 5/5 on the three real
+cases and 0/5 on the two cases NOT in working-knowledge. The headline SURFACER>NAIVE (line-cap 5/5 vs 0/5)
+is a **leak artifact** (SURFACER reciting working-knowledge, not surfacing from the plan); the clean-context
+premise is violated for SURFACER on exactly the cases that matter.
+
+**Informative-null, not nothing:** (1) the leak IS the amplifier-null caught in the act — the harness
+re-presents documented answers (Ph70/71/77/78 sharpest form), a **5th amplifier-null** extending the
+finding from decisions/tooling-correctness to assumption-surfacing; (2) the **clean signal points
+DEGENERATE** — NAIVE ran clean and recovered 3/4 silent-class assumptions by pure reasoning; the one
+fully-clean comparison (costsort-adversarial) was BOTH-CATCH. The project's silent failures were silent
+because **nobody ASKED** at planning time, not because the assumptions are unsurfaceable.
+
+**FORWARD (Phase 81):** ship the **SIMPLEST** gate — a naive clean-context "list the plan's load-bearing
+assumptions, cost-sorted" surfacer feeding accept/reject/don't-know + lean on the A3 ledger (detect-after)
++ the all-accept blocking check ([[HEU-012]]); do **NOT** build the elaborate scope-anchored machinery (its
+only apparent edge was the leak). **RESIDUAL (open):** the accretion/budget class (line-cap) — where NAIVE
+cleanly missed AND the leak was strongest — is genuinely UNMEASURED; a valid test needs a CLEAN
+consuming-project context (the recurring Ph66/69 representativeness requirement). Full record:
+`eval/assumption-screen/screen-record.md` + `verdicts/summary.md`.

@@ -80,6 +80,9 @@
 - [[phase-75-delivery-commit-verification|Phase 75: Delivery-Commit Verification]] -- completed
 - [[phase-76-installed-copy-drift-guard|Phase 76: Installed-Copy-Drift Guard]] -- completed
 - [[phase-77-cross-session-retention-screen|Phase 77: Cross-Session Retention Headroom Screen (audit-gated ablation)]] -- completed
+- [[phase-78-skill-crystallization-headroom-screen|Phase 78: Skill-Crystallization Headroom Screen]] -- completed
+- [[phase-79-harness-hygiene|Phase 79: Harness Hygiene]] -- completed
+- [[phase-80-assumption-surfacer-completeness-screen|Phase 80: Assumption-Surfacer Completeness Screen]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -99,6 +102,9 @@
 - [[check-install-drift|scripts/check-install-drift.sh]] -- deterministic fail-open installed-copy-drift comparator (Phase 76)
 
 ### Decisions
+- [[assumption-surfacer-completeness-screen|Assumption-Surfacer Completeness Screen — reframe the dev-plan gate from approving the APPROACH to accept/reject/don't-know on the plan's load-bearing ASSUMPTIONS; Jake's live A2 reject made it a SCREEN; the silent-class 50-run screen returned INSTRUMENT-DEAD (clean-context control FAILED — workflow subagents inherited working-knowledge, SURFACER leaked documented answers); clean signal DEGENERATE; FORWARD = ship the SIMPLEST naive gate in Phase 81 (Phase 80)]] -- high confidence, RESULT: PROGRAM-VERDICT INSTRUMENT-DEAD (5th amplifier-null, caught in the act)
+- [[harness-hygiene|Harness Hygiene — bundle two kit-hardening fixes: (A) register hooks with ${CLAUDE_PROJECT_DIR} + hook-internal cd (bare-relative paths 404 under non-root CWD; edge-screener dogfood); (B) compress 4 amplifier working-knowledge entries + non-destructive per-entry char-cap advisory (45k bloat trips the context warning); 4th dogfood→harden fix (Phase 79)]] -- high confidence, accepted
+- [[skill-crystallization-headroom-screen|Skill-Crystallization Headroom Screen — before building any capability→skill route, screen whether a tooling artifact embeds correctness a bare model can't re-derive from the RECOVERABLE CORPUS; successor to the decision-retention line; NO-LLM check.sh, .offleak guard, 4 controls, ancestor-guarded prereg (Phase 78)]] -- high confidence, RESULT: PROGRAM-VERDICT TERMINATE (both candidates DEGENERATE; capability-crystallization module dead-on-arrival)
 - [[cross-session-retention-headroom-screen|Cross-Session Retention Headroom Screen (audit-gated ablation) — the amplifier program's terminal (cross-session) regime, measured on the real READ-ONLY edge-screener substrate; a cheap T1 residual-audit GATE (dev-wiki decisions minus git/code/test-recoverable, terminal-value-pinned, HEAD-resolvable) short-circuits to TERMINATE/INCONCLUSIVE before any OFF/ON run; T2/T3 controlled ablation (bare-OFF/padded-OFF/ON/positive-control, n=5, NO-LLM consensus, pinned n≥3 floor, ancestor-guarded pre-reg) runs only on a residual ≥ 3; reuses the frozen retention-screen/ apparatus (Phase 77)]] -- high confidence, RESULT: PROGRAM-VERDICT TERMINATE (residual 0/14; T3 SKIPPED-BY-GATE; decision-retention line closed across all 3 regimes)
 - [[installed-copy-drift-guard|Installed-Copy-Drift Guard — detect-and-warn (NOT symlink) when the maintainer's installed ~/.claude has drifted from kit source templates/.claude; a deterministic fail-open scripts/check-install-drift.sh comparator (modules.json comparison set minus a pinned 3-entry exclusion allow-list) surfaced at session-start (kit-repo-scoped, canonical-path gate) + install.sh --status; scope (A) maintainer-side, (B) consuming-project drift deferred (Phase 76)]] -- high confidence, accepted
 - [[delivery-commit-verification|Delivery-Commit Verification — detector-first fix for the accepted-but-uncommitted divergence: a fail-open session-start divergence detector (PRIMARY) + delivery-flow D3 commit self-assert + gate-after-commit ordering (SECONDARY); reframed from "guarantee the commit fires" to "make gate-state diverging from git-state impossible to ignore" (Phase 75)]] -- high confidence, accepted
@@ -261,6 +267,9 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-06-09-phase-80-assumption-surfacer-completeness-screen|Phase 80 complete — Assumption-Surfacer Completeness Screen: clean-context control FAILED → INSTRUMENT-DEAD (the 5th amplifier-null, caught in the act)]] -- 2026-06-09
+- [[2026-06-04-phase-79-harness-hygiene|Phase 79 complete — Harness Hygiene: hooks → ${CLAUDE_PROJECT_DIR} + working-knowledge size cap]] -- 2026-06-04
+- [[2026-06-04-phase-78-skill-crystallization-headroom-screen|Phase 78 complete — Skill-Crystallization Headroom Screen: both arms DEGENERATE → TERMINATE]] -- 2026-06-04
 - [[2026-06-04-phase-77-cross-session-retention-screen|Phase 77 complete — Cross-Session Retention Headroom Screen (audit-gated ablation): residual 0/14 → TERMINATE, decision-retention line closed across all 3 regimes]] -- 2026-06-04
 - [[2026-05-31-phase-76-installed-copy-drift-guard|Phase 76 complete — Installed-Copy-Drift Guard (the dogfood the guard itself caught)]] -- 2026-05-31
 - [[2026-05-31-phase-75-delivery-commit-verification|Phase 75 complete — Delivery-Commit Verification (the 2nd dogfood→harden fix)]] -- 2026-05-31
