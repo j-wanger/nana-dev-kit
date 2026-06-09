@@ -1,45 +1,55 @@
 # Active Phase Context
 
-Phase: 79 — Harness Hygiene (hook path resolution + working-knowledge size cap)
-Status: COMPLETE — 4/4 tasks done; make test all-passed, make eval 52/52; delivery gate pending acceptance.
+Phase: 80 — Assumption-Surfacer Completeness Screen
+Status: ACTIVE — T1 (GATE) COMPLETE: DECISION GO (non-circular ground truth constructible — see
+eval/assumption-screen/spike/). But the spike PREVIEWED an amplifier-null: a naive clean-context "list the
+load-bearing assumptions, cost-sorted" prompt already recovered all 3 traced load-bearing assumptions
+top-ranked. PIVOT (Jake, 2026-06-09): attack the SILENT class (A2's real fear), via the project's REAL
+silent failures (R5 silence-gap label: MCP-CWD Ph4→38, session-start line-cap Ph22→54, cascade-failure
+class) NOT synthetic plants. RE-SCOPED T2–T6 question: does the scope-anchored+framing surfacer recover a
+silently-buried load-bearing assumption the STRONG naive baseline MISSES? (both-catch ⇒ not silent;
+both-miss ⇒ honest negative, Phase-81 leans on the A3 ledger; surfacer-catches∧naive-misses ⇒ HAS-HEADROOM).
+Next: T2 pre-registration of the silent-class verdict, then reconstruct a real silent case's plan-as-of-then
++ run naive-vs-surfacer. tasks.md T2–T6 lines to be refreshed to this design at T2 start.
 
-Result: both sub-fixes shipped. (A) register-settings.py + template + install.sh emit
-${CLAUDE_PROJECT_DIR}/.claude/hooks/X.sh (all 17 project commands; global already absolute); all 17
-hook scripts `cd "${CLAUDE_PROJECT_DIR:-.}"`; unconfirmable live check → committed hermetic wrong-CWD
-test (resolution + function differentials). (B) working-knowledge 45,217→35,726 chars (4 amplifier
-entries → 1 + pointers); non-destructive curator size_audit (WK_MAX_ENTRY_CHARS=1500, warns never
-truncates) + terseness note in both seeding steps. test_harden 26/26, curation 15/15, firing 21/21.
-Deferred: prune-on-value (subtraction framing); edge-screener re-sync (interim hand-patch holds).
+Objective: EARN the right to build the assumption-approval gate. Jake's live A2 reject ("can't trust the
+agent-CHOSEN assumption set; solve set-completeness before building anything") makes Phase 80 a SCREEN, not
+a build. Validate a scope-anchored assumption surfacer against NON-CIRCULAR controls; gate + ledger +
+all-accept block defer to Phase 81, gated on this phase's `^PROGRAM-VERDICT`.
 
-Objective: Fix two kit defects degrading real consuming-project sessions.
-(A) Hooks registered with bare relative `.claude/hooks/X.sh` 404 when Claude Code runs them from a
-    non-project-root CWD (edge-screener Stop-hook dogfood). Claude Code does NOT guarantee CWD=root;
-    the documented fix is `${CLAUDE_PROJECT_DIR}`. 4th dogfood→harden fix (Ph74/75/76 line).
-(B) Always-loaded `working-knowledge.md` bloated to ~45k chars/99 entries → trips Claude Code's
-    context-size warning. The curator caps entry-count(100)/lines(210) not SIZE, so 4 amplifier
-    mega-entries (~11k chars) slip through.
+The screen's real question (post-review reframe): does the scope+framing surfacer BEAT a blind
+(outcome-unaware) baseline at recovering assumptions the project's own history PROVED load-bearing? Ground
+truth = outcome-determined + mechanically extracted (confidence revisions / supersessions / blocked tasks /
+later-phase contradictions), NOT author-selected (author-selected = the review's CRITICAL circularity).
+This is structurally the amplifier's harness-vs-baseline question; `surfacer ≈ baseline` is a legitimate
+5th-null TERMINATE, pre-registered up front.
 
-Scope:
-- `scripts/register-settings.py` + `templates/.claude/settings.json` (regenerated via `make template`) —
-  project hooks → `${CLAUDE_PROJECT_DIR}/.claude/hooks/X.sh`, global → `$HOME/.claude/hooks/X.sh`.
-- `templates/.claude/hooks/*.sh` (project) — `cd "${CLAUDE_PROJECT_DIR:-.}"` near top (internal refs).
-- `.claude/rules/working-knowledge.md` — compress 4 amplifier entries → 1 + `[[decision:…]]` pointers.
-- `templates/.claude/hooks/session-start.d/wk-prune.sh` — per-entry char-cap ADVISORY + size report.
-- `tests/**` — settings-drift, hermetic wrong-CWD resolution, firing-coverage, curator size test.
+Scope (repo-only, NOT wired into install.sh / Makefile / make test / make eval):
+- NEW `eval/assumption-screen/` — surfacer spec, fixtures (mechanical ground truth + blind baseline +
+  cost-sort-adversarial control + planted pos/neg), `check.sh` (cloned from
+  `eval/amplifier/anchor-screen/check.sh`, NO LLM in scoring, `--selftest`), `pre-registration.md`,
+  `screen-record.md`.
+- UNTOUCHED: dev-plan SKILL.md, any ledger, the all-accept block (all Phase 81).
 
 Key constraints:
-- Fail-open / NON-DESTRUCTIVE: size cap WARNS (never truncates/evicts); hook cd uses `|| true`.
-- No bare-relative hook command may remain (assert in drift test).
-- Hermetic tests only (mktemp -d + env override; never touch real ~/.claude or live working-knowledge).
-- modules.json single source of truth; settings.json regenerated, never hand-edited.
-- Firing-coverage 21/21 preserved (cd drops no coverage). edge-screener untouched (re-syncs later).
+- T1 is a HARD GATE: if non-circular ground truth can't be built for ~3 past phases → INSTRUMENT-DEAD, STOP.
+- Pre-registration (variance-derived bar, two-track verdict [scope completeness+recovery / framing
+  recovery-only weaker], named representativeness limit) committed BEFORE runs, ancestor-guarded (anti-retrofit).
+- NO LLM in the scoring path; entity-presence recovery scoring where checkable (a require-ERE measures
+  vocabulary not recovery for paraphrase-heavy assumptions).
+- Cost-sort adversarial control mandatory (burial relocates to the cost-sort otherwise).
+- Mechanical labels capture only assumptions that left a trace; Jake-adjudicates-delta is the fallback if
+  too sparse. Amplifier program closed — this is a NEW line.
 
-Tasks (in order): B1 compress wk (S, immediate relief) → A1 register-settings ${CLAUDE_PROJECT_DIR} +
-drift/wrong-CWD tests (M) → A2 hook-internal cd (L) → B2 wk-prune size advisory + regression (M, LAST).
+Tasks (in order): T1 circularity-escape spike (GATE) → T2 pre-registration (committed, ancestor-guarded) →
+T3 surfacer spec (scope-anchored + framing; cost-sort as explicit judgment) → T4 fixtures (mechanical GT +
+blind baseline + cost-sort-adversarial + planted) → T5 check.sh + run surfacer-vs-baseline → T6
+screen-record + `^PROGRAM-VERDICT`.
 
-Decision: [[harness-hygiene]] (high). Spec: nana:approved 2026-06-04.
-Abort rule: if blocked >3 attempts, mark [blocked] + ask user skip/abort.
+Decision: [[assumption-surfacer-completeness-screen]] (low→pending). Origin: team-upskilling conversation
++ handover doc, interrogated live via the very accept/reject/don't-know mechanism (Jake: A1 accept, A2
+REJECT, A3 accept, A4 accept). Abort rule: if blocked >3 attempts, mark [blocked] + ask user skip/abort.
 
 Gates:
-- [x] Direction confirmed by user (approach approved 2026-06-04 — "approved", bundled scope)
-- [x] Delivery accepted (post-implementation report 2026-06-04)
+- [x] Direction confirmed by user (revised spike-first design approved 2026-06-09 — "yes lets go")
+- [ ] Delivery accepted (post-implementation report)
