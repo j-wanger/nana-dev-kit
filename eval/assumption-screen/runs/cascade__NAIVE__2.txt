@@ -1,0 +1,6 @@
+- A PreToolUse hook reliably fires on the tool calls that constitute 'implementation work,' so the block actually intercepts the targeted actions (if false, work proceeds unblocked and the feature silently fails).
+- Claude Code honors exit code 2 from a PreToolUse hook as a hard block on the tool call (if false, the hook runs but the action is allowed, defeating the entire purpose).
+- A reliable, present spec marker exists that the hook can detect to distinguish approved from unapproved specs (if false, the hook either blocks everything or blocks nothing).
+- The hook can correctly scope what counts as 'implementation work' vs. allowed activity like spec-writing or reading (if false, it blocks the very work needed to create the spec, deadlocking the user).
+- The hook is installable and active in consuming projects via settings.json registration (if false, it never fires in the environments where the success criterion is defined).
+- Hard-blocking (exit 2) is the right enforcement posture rather than fail-open/advisory (if false, a hook bug or missing marker can lock users out of legitimate work).

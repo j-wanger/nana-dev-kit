@@ -1,0 +1,6 @@
+- The probe can reliably read the actual MCP server config from a known/stable location — if it reads the wrong path or the config moves, the health line is silently wrong yet still 'reports', defeating the accuracy goal.
+- The three states (healthy/broken/not-configured) are distinguishable by a deterministic check the probe can run — if 'healthy' requires a real connectivity test (not just config presence), config-only inspection misclassifies broken servers as healthy.
+- session-start.sh actually fires at every session start and its output reaches the agent — if the hook is unregistered or output is suppressed, no memory-health line ever appears.
+- A startup memory-health line measurably helps the agent — if it's noise the agent ignores, the feature adds startup cost with no behavioral payoff.
+- The probe stays fast and fail-open at startup — if config reads hang or error, they could delay or break every session launch.
+- Server config alone reflects true memory state (e.g., DB reachable, entries present) — if config looks fine but the store is empty/corrupt, 'healthy' is inaccurate.

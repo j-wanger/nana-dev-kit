@@ -1,0 +1,5 @@
+- No code path relies on a missing config key raising an error — i.e. the raise was never load-bearing control flow (worst if wrong: silently swallowing errors that previously halted misconfiguration, producing wrong behavior under a 'success').
+- A built-in default exists and is correct/safe for every config key that can go missing (wrong defaults applied silently are harder to detect than a loud raise).
+- All current config consumers can read from TOML — every existing key maps cleanly into config.toml's format and types (e.g. no values TOML can't represent).
+- The full set of existing config values has been migrated into config.toml, so nothing silently falls through to a default during the cutover.
+- The two changes (toml source + missing-key defaulting) are independent and safe to ship together, not coupled in a way that hides a regression behind the 'minor cleanup'.

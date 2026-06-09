@@ -1,0 +1,6 @@
+- A PreToolUse exit-2 actually blocks the tool call in the consuming project — if Claude Code treats it as advisory or ignores the code, nothing is blocked and the feature is inert.
+- The hook can reliably detect spec presence/approval via a marker that consistently exists — a wrong path or absent marker convention makes it block everything (false-positive lockout) or nothing.
+- The hook gets registered and fires in the consuming project (settings.json merged, hook installed/enabled) — an unwired hook silently passes and ships broken, the kit's recurring cascade-failure mode.
+- 'Implementation work' is identifiable from the PreToolUse matcher (which tools/edits to gate) — too broad blocks legitimate non-impl actions, too narrow lets real impl through.
+- Blocking-before-spec is the desired workflow and won't trap users (escape hatch / fail-open on hook error) — if the hook fails closed on its own errors, it can lock the user out of their own project.
+- A 'consuming project' is the right validation target and reproduces real hook behavior — if the test environment differs from how Claude Code runs hooks live, the success check is unconfirmable.

@@ -1,0 +1,6 @@
+- No caller distinguishes a missing key from an explicitly-set value, so silently returning defaults won't mask config errors or change downstream behavior.
+- Every config key actually has a sensible built-in default; keys with no safe default won't silently fall back to a wrong/insecure value.
+- A complete, correct config.toml exists at the expected path with the right schema; otherwise the new loader reads nothing or the wrong data.
+- Removing the missing-key exception is purely a 'minor cleanup' and not a behavior change relied upon elsewhere (e.g., tests or callers that expect the raise).
+- All current config consumers are migrated to the new toml source; no code path still reads the old config format.
+- The toml values parse into the types callers expect (strings/ints/bools), so no implicit type coercion breaks downstream use.

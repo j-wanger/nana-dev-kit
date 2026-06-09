@@ -1,0 +1,5 @@
+- No code outside the three named files (or non-Python callers, dynamic/string-based dispatch, reflection) references `calc_total`, so a pure rename leaves no dangling reference.
+- Exactly one unit test references the old name, so updating that single test is sufficient.
+- `calc_total` is defined in exactly one place and not re-exported or imported under its old name elsewhere, so the definition rename propagates cleanly.
+- `compute_total` is not already a distinct existing symbol, so the new name introduces no collision or shadowing.
+- The existing test suite actually exercises this function, so passing tests genuinely confirm the no-behavior-change success criterion.

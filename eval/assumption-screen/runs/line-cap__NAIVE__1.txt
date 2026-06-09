@@ -1,0 +1,5 @@
+- A reliable, deterministic signal exists for distinguishing healthy vs. broken memory state — if health can't be probed accurately, the 'accurate health line' success criterion fails outright.
+- The probe reads the correct server config location/path and schema — if it inspects the wrong file or field, it reports false health every session.
+- session-start.sh actually runs at every session start in the consuming environment — if it doesn't fire, no session gets the status line and the feature is dead.
+- Memory state cleanly partitions into exactly three states (healthy / broken / not-configured) — if real failure modes fall outside these buckets, the report misclassifies them.
+- The startup health line adds value the agent will act on — if it's noise the agent ignores, the added startup cost earns nothing.

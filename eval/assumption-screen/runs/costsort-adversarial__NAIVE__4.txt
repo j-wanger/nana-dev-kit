@@ -1,0 +1,6 @@
+- No code path relies on a missing key raising an error; silently substituting defaults won't mask misconfigurations or change downstream behavior in ways that harm users.
+- The built-in defaults are correct and safe to apply for every key that could be missing, not just the few keys the author had in mind.
+- A complete and correct config.toml exists (or will be produced) for every environment, so the new loader has valid TOML to read.
+- Every existing consumer of the config reads through this loader, so no other code path still expects the old source format or the old raise-on-missing contract.
+- The bundled cleanup (default-on-missing) is in scope and low-risk enough to ship alongside the migration rather than being gated or tested separately.
+- A TOML parser is available in the runtime and the old format's data maps cleanly onto TOML's type/structure model without loss.

@@ -1,0 +1,5 @@
+- The three named files (billing.py, invoice.py, report.py) are the ONLY call sites of calc_total — if a fourth caller exists elsewhere, the rename breaks it at runtime with no test catching it.
+- calc_total is referenced by its literal name only, never reached dynamically (getattr, string dispatch, serialization, monkeypatch) — dynamic references survive the rename and silently break.
+- The single unit test is the ONLY test exercising calc_total, so 'tests pass' actually proves the rename is complete and behavior-preserving.
+- No name collision exists: compute_total is not already defined or imported in any of the three files, so the rename introduces no shadowing or redefinition.
+- The function is private/internal with no external consumers (other packages, public API, configs) depending on the calc_total name.

@@ -1,0 +1,6 @@
+- The three call sites are the ONLY references to calc_total — if any caller (or dynamic/string-based reference) is missed, those sites break at runtime.
+- No external/out-of-repo consumer imports calc_total by name — if one does, renaming silently breaks a public API the tests can't see.
+- Exactly one unit test references the old name — if others reference it, the suite fails or stale references survive.
+- The passing test suite actually exercises the renamed function — if coverage is absent, 'tests pass' won't confirm the rename is correct.
+- No name `compute_total` already exists in those files — a collision would shadow or conflict rather than cleanly rename.
+- The change is a pure rename with no signature/behavior coupling — if calc_total is referenced via getattr/reflection or re-exported, 'no behavior change' fails.

@@ -1,0 +1,6 @@
+- A single fixed config location/format reliably identifies where the memory server lives — if the probe reads the wrong path or schema, it reports broken/not-configured on a healthy setup (false alarm undermines the whole 'accurate' success criterion).
+- The probe can actually distinguish broken from not-configured from healthy — if these states are conflated or one is unreachable, the status line is misleading rather than accurate.
+- session-start.sh runs reliably at every session start and is the right hook to carry this report — if it doesn't fire or fires inconsistently, 'every session begins with a health line' fails.
+- An agent-visible startup status line changes agent behavior — if a passive report doesn't actually get read or acted on, the feature adds noise without improving memory usage.
+- A health/nudge check is cheap enough to run at startup without latency cost — if the probe is slow or hangs (e.g. server import/DB checks), it degrades every session start.
+- The memory server's health is deterministically checkable at startup time — if state is transient or warms up after launch, a startup-time snapshot misreports it.

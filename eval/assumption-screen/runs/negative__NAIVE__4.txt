@@ -1,0 +1,5 @@
+- The name `calc_total` is not bound or referenced anywhere beyond the three named call sites and the one test (no dynamic dispatch via getattr/string, no external importers, no serialized/config references) — if false, the rename silently breaks callers and 'no behavior change' fails.
+- There is exactly one definition of `calc_total` and `compute_total` is not already an existing distinct symbol — if false, the rename collides with or shadows another function and changes behavior.
+- The plan's count is accurate: precisely three call sites and exactly one test reference the old name — if false, a missed reference breaks at runtime or an extra edit overreaches.
+- The existing test suite actually exercises these call paths and would fail on a broken rename — if false, 'tests pass' is not a valid proxy for correctness.
+- `calc_total` is not part of a public/external API or contract consumed outside this repo — if false, renaming breaks downstream consumers despite local tests passing.

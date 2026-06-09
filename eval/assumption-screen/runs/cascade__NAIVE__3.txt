@@ -1,0 +1,6 @@
+- Claude Code runs PreToolUse hooks from a CWD where the spec-marker path resolves, so the hook reads the right location (wrong here silently lets all work through, or false-blocks every project).
+- PreToolUse hook exit-2 actually blocks the implementation tool call rather than merely warning, so the gate has teeth at all.
+- The set of tools the PreToolUse matcher fires on covers actual 'implementation work' (Edit/Write/Bash) without also blocking the spec-creation steps needed to UNblock — else the gate either leaks or deadlocks the user.
+- A reliable 'approved spec' marker exists and is detectable by a shell test; if absent or ambiguous, the hook can't distinguish approved from unapproved and the success criterion is unverifiable.
+- The hook is installed/registered in the consuming project's settings.json (not just the kit), so the block fires in the target environment where success is defined.
+- Blocking-by-default is the desired UX; if users legitimately work without specs, an always-on block harms more than it helps and the outcome is rejected.

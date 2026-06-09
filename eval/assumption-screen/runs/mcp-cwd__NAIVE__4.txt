@@ -1,0 +1,6 @@
+- Memory persists across sessions to disk in a stable location — if the server uses a per-session or wrongly-located store, recall in the next session silently fails and the entire success criterion is unmet.
+- settings.json mcpServers registration is the correct, sufficient mechanism for Claude Code to actually launch and connect to the server — if the launch path or working directory is wrong, the agent never gains the tools.
+- `python -m memory_server` resolves to an installed, importable package on the runtime PATH/environment — if the module or its dependencies are absent, the server never starts.
+- The agent reliably calls memory_store at decision time without enforcement — if storing is voluntary and skipped, nothing is there to recall regardless of correct wiring.
+- memory_search retrieval actually surfaces the relevant prior decision when queried next session — if recall quality is poor, a stored decision still won't be 'recalled'.
+- A 'normal session' grants the agent access to MCP tools the same way the verification session does — if tool availability differs by session type, the confirmation test misrepresents real use.

@@ -1,0 +1,6 @@
+- A canonical server-config location/format exists and is readable at session start, so the probe can find the truth it reports against.
+- The three states (healthy/broken/not-configured) are distinguishable by a deterministic probe, not by guessing — otherwise the report is inaccurate.
+- session-start.sh actually runs at every session start in the real environment, so the memory-health line genuinely appears every time.
+- A reachable memory backend can be probed cheaply and quickly enough not to delay or stall startup.
+- Config-presence is a faithful proxy for actual memory health, so a server that is configured-but-broken is detected rather than reported healthy.
+- The agent will read and act on the startup status line, so surfacing it changes behavior rather than adding ignored noise.

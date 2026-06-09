@@ -1,0 +1,6 @@
+- Returning a built-in default for every missing key is safe — i.e. no key is mandatory such that silently defaulting it would mask a misconfiguration and cause wrong behavior in production.
+- A built-in default value exists and is correct for each config key that could be absent from config.toml.
+- Switching from raising to returning defaults won't break callers that currently depend on the missing-key exception to detect and handle configuration errors.
+- The source data/config previously consumed translates cleanly into valid TOML, so existing settings survive the format migration without loss or reinterpretation.
+- TOML's type and structure model can represent every config value the old loader handled (nesting, types, lists), so no setting becomes unexpressible.
+- 'Smoother for users' is the right tradeoff here — users prefer silent defaults over an explicit error when a key is missing.

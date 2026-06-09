@@ -1,0 +1,6 @@
+- The MCP memory server config is at a known, fixed, readable location and uses the schema the probe expects — wrong path/schema makes every health line silently inaccurate, defeating the success criterion.
+- session-start.sh is actually wired to fire reliably at every session start — if it isn't invoked, no memory-health line ever appears.
+- The three states (healthy/broken/not-configured) are mutually exclusive and exhaustive — an unanticipated state would be misreported as one of these, again breaking accuracy.
+- Reading the config is a sufficient health signal — i.e. a present/valid config implies a working server, so the probe need not actually exercise the server to call it 'healthy'.
+- The probe runs cheaply and fail-open within session-start without blocking or slowing startup — a hang or hard failure would degrade or break every session launch.
+- An accurate health line at startup is something the agent will actually consume and act on, justifying the feature's value.

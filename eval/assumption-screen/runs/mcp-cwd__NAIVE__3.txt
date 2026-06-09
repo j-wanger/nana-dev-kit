@@ -1,0 +1,6 @@
+- Memory persists to durable storage that survives session boundaries — if state is in-memory or per-session only, cross-session recall (the success criterion) fails outright.
+- The next session reads from the same store the prior session wrote to (same DB path/scope/CWD), not a fresh or divergent location — a path mismatch silently breaks recall while everything looks registered.
+- `python -m memory_server` is resolvable and launchable in the runtime environment (package installed, importable, deps present) — a launch failure means the server never comes up.
+- The agent actually invokes memory_store/memory_search at the right moments rather than relying on parametric recall — if it never calls the tools, registration alone produces nothing.
+- Claude Code honors the mcpServers settings.json registration and exposes the tools to a normal session — if registration is ignored or mis-scoped, the tools are unavailable.
+- Recall is reliable at the verification scale (a single recorded decision is actually returned by search) — if retrieval is lossy or mis-ranked, the success test can pass or fail by chance rather than by correctness.

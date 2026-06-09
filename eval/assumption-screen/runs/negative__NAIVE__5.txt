@@ -1,0 +1,6 @@
+- The three named files (billing.py, invoice.py, report.py) are the only places that reference calc_total — if any other caller, dynamic/string reference, or external importer exists, the rename silently breaks it while tests still pass.
+- Exactly one unit test references the old name — if more tests or other references exist, the suite breaks or stale references survive.
+- calc_total is not part of a public API consumed outside this codebase — if downstream code imports it, the rename is a breaking change despite local tests passing.
+- The existing test suite actually exercises calc_total's call sites — if coverage is thin, 'tests pass' won't confirm 'no behavior change'.
+- compute_total is not already in use as a name in these modules — if it collides, the rename introduces a shadowing/redefinition bug.
+- The change is a pure mechanical rename with no behavioral coupling to the name (e.g., reflection, serialization, logging keyed on the name) — if any exists, behavior changes despite the rename being syntactically pure.

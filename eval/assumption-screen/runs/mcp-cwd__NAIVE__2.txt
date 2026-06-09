@@ -1,0 +1,6 @@
+- Stored decisions persist durably across sessions (stable DB, not ephemeral/in-process state) — if false, cross-session recall, the entire goal, silently fails.
+- The server resolves the same storage path every session regardless of CWD — if the DB lands in different locations per session, writes and reads diverge and recall returns nothing.
+- Verifying store/search within one session proves the success criterion — but the criterion is cross-session recall, so a same-session round-trip can pass while next-session recall still fails.
+- `python -m memory_server` is the correct, installed, importable launch invocation — if the module/entrypoint or environment is wrong, the server never starts.
+- Registering under mcpServers in settings.json actually causes the running session to launch the server and expose memory_store/memory_search to the agent.
+- The agent will actively invoke memory_search in the next session, not merely be capable of it — recall requires retrieval to be triggered, not just available.

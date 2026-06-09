@@ -1,0 +1,6 @@
+- No code path relies on a missing key raising an error; the new silent-default behavior won't mask misconfigurations or cause wrong-but-quiet runtime behavior.
+- The built-in defaults are correct and safe to substitute for every config key, including ones where there is no sensible default (e.g. secrets, paths, endpoints).
+- TOML can faithfully represent the existing config's structure and types, so no data is lost or coerced incorrectly during the format migration.
+- Existing config consumers/callers don't depend on the old format or old loading semantics in ways that break when the source switches to config.toml.
+- A migration/compatibility path exists (or isn't needed) so deployed environments still on the old config format keep working after the switch.
+- The 'minor cleanup' (raise -> default) is genuinely in scope and low-risk, not a behavior change that warrants its own review and tests.

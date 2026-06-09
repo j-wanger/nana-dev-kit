@@ -1,0 +1,6 @@
+- Cross-session persistence assumption: the server writes memories to durable storage that the next session reads from the same location — if state is in-memory or the DB path differs between sessions, the success criterion (recall in the next session) fails outright.
+- Launch-environment assumption: `python -m memory_server` resolves to the right interpreter/venv with the package importable on the configured working directory — if the CWD or env is wrong, the server never starts and nothing works.
+- Auto-recall assumption: the agent will actually invoke memory_search at the start of the next session — if recall is not triggered, a stored decision is never surfaced even though it persisted.
+- Registration-honored assumption: Claude Code reads the mcpServers entry in this settings.json and exposes memory_store/memory_search as callable tools — if the file/scope is ignored, the tools never appear.
+- Dedup/integrity assumption: storing a decision creates a distinct retrievable entry rather than being silently merged, deduped, or dropped — if write hygiene discards it, recall returns nothing.
+- Single-writer assumption: only one session/process accesses the store at a time — if concurrent sessions share one DB, writes can race or corrupt and the recall guarantee breaks.

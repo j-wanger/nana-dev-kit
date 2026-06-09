@@ -1,0 +1,6 @@
+- PreToolUse hooks receive enough signal to reliably distinguish implementation work from non-implementation actions, so blocking does not catch the wrong tool calls.
+- Claude Code honors a PreToolUse hook's exit-2 as a hard block on the tool use (rather than merely warning or proceeding), or the gate does not actually enforce anything.
+- A reliable, present 'spec marker' exists whose absence/presence the hook can deterministically detect, so it doesn't false-block legitimate work or pass un-spec'd work.
+- The hook can locate the spec marker correctly regardless of the consuming project's CWD/path layout, so detection works in real consuming projects, not just the dev repo.
+- Registering the hook in settings.json is sufficient for it to fire in a consuming project (the consuming project installs/inherits and enables this settings.json).
+- Fail-open vs fail-closed behavior on errors (missing deps, bad JSON, script error) matches intent; if it fails-open silently, the block silently disappears.

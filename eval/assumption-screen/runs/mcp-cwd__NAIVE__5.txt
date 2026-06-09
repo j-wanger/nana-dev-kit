@@ -1,0 +1,6 @@
+- Memory persists to durable storage outside the per-session process, so a decision stored in one session survives into the next (if it's only in-process/in-RAM, recall across sessions fails entirely).
+- The cross-session recall actually depends on this MCP server — i.e., the agent will route store/recall through it and there isn't a separate context-loading path that already supplies decisions (if false, the work is redundant and success could be falsely attributed).
+- `python -m memory_server` resolves to the correct working directory/data path so writes and reads hit the same store across launches (a CWD/path mismatch means stored decisions are written somewhere later reads never look).
+- Registering under mcpServers in settings.json is the right file/scope and the runtime honors it, making the server discoverable and the memory_store/memory_search tools callable from a normal session (wrong scope or ignored config => tools never load).
+- The runtime environment can actually launch the server (python available, memory_server module installed/importable), otherwise registration succeeds but the server never starts.
+- A single recorded-then-recalled trial is a sufficient success check — that one passing case reflects reliable cross-session recall rather than a lucky retrieval (if false, the plan ships on a flaky/unverified result).

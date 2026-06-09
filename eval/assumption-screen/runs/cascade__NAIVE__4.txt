@@ -1,0 +1,6 @@
+- A PreToolUse hook exit code of 2 actually blocks the tool call rather than just warning — if Claude Code treats exit 2 as advisory or ignores it, no work is ever blocked.
+- The hook reliably distinguishes implementation work from non-implementation work (planning, spec-writing, reads) — if it can't, it either blocks legitimate spec-creation (deadlock: you can't write the spec that unblocks you) or fails to block real implementation.
+- A detectable 'spec marker' exists and unambiguously signals an approved spec — if approval isn't represented by a checkable marker, the hook can't tell approved from absent and its decision is meaningless.
+- Claude Code runs the hook from a context where the spec marker is locatable (correct CWD / path resolution) — if the hook can't find the marker, it blocks everything or nothing regardless of spec state.
+- The hook fires on the tool calls that constitute implementation (Edit/Write/Bash) — if implementation can proceed through tools the PreToolUse matcher doesn't cover, the block is bypassable.
+- The hook is fail-closed for blocking purposes (registered, executable, dependencies present) — if it errors or is unregistered in the consuming project, it silently allows all work, defeating the success criterion.
