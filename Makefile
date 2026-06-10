@@ -3,10 +3,13 @@
 
 NANA_KIT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-.PHONY: sync-rules test eval report workflow template
+.PHONY: sync-rules test eval report workflow template audit
 
 sync-rules:
 	@bash "$(NANA_KIT_DIR)scripts/sync-rules.sh" . .
+
+audit:
+	@bash "$(NANA_KIT_DIR)scripts/harness-audit.sh" || true
 
 template:
 	@python3 "$(NANA_KIT_DIR)scripts/register-settings.py" hooks "$(NANA_KIT_DIR)templates/.claude/settings.json" "$(NANA_KIT_DIR)modules.json" --scope project-local --regenerate

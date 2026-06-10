@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Functional smoke tests for scripts/ entries that previously had NO functional coverage
-# (Phase 82 coverage area). Two deferred with rationale in the verification matrix:
-# generate-delivery-report.py (functional smoke needs a stubbed `make` — M/L design),
-# harness-audit.sh (unwired; routed to the subtraction-review list, not test-backfill).
+# (Phase 82 coverage area). One deferred with rationale in the verification matrix:
+# generate-delivery-report.py (functional smoke needs a stubbed `make` — M/L design).
+# harness-audit.sh wired in Phase 83 (checkpoint override: wire-in over cut) — smoke below.
 set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/helpers.sh"
@@ -58,6 +58,18 @@ if [ "$EC" = "0" ] && [ -f "$REPO_ROOT/docs/workflow.html" ] && grep -qi '<html'
   test_pass
 else
   test_fail "generate-workflow.py failed (ec=$EC) or no HTML output"
+fi
+
+# ---- harness-audit.sh: wired via `make audit` (Phase 83) — emits a per-hook utilization report ----
+test_start "harness-audit: runs and emits USED/LATENT/UNCERTAIN utilization lines"
+T=$(mktemp -d)
+EC=0
+OUT=$( (cd "$T" && bash "$REPO_ROOT/scripts/harness-audit.sh") 2>&1 ) || EC=$?
+rm -rf "$T"
+if { [ "$EC" = "0" ] || [ "$EC" = "1" ]; } && echo "$OUT" | grep -qE '^(USED|LATENT|UNCERTAIN|DEAD) '; then
+  test_pass
+else
+  test_fail "harness-audit did not emit a utilization report (ec=$EC, head: $(echo "$OUT" | head -1))"
 fi
 
 test_summary "scripts-smoke"
