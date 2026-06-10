@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Functional-smoke tests for audit-log.sh (Phase 66 T3 — KEEP disposition).
-# The hook appends {ts,tool,file,model} to .nana/audit.jsonl on each file edit — a human-facing
+# The hook appends {ts,tool,file} to .nana/audit.jsonl on each file edit — a human-facing
 # forensic trail. The eval corpus only asserts exit_code:0; these assert the RECORD shape and
 # injection-safety (the jq --arg hardening), which the corpus does not cover.
 
@@ -31,7 +31,7 @@ test_start "write event → well-formed audit record"
 D=$(freshdir)
 EC=$(run_audit "$D" '{"tool_name":"Write","tool_input":{"file_path":"src/app.py"}}')
 LINE=$(tail -n1 "$D/.nana/audit.jsonl" 2>/dev/null || echo "")
-if [ "$EC" = "0" ] && printf '%s' "$LINE" | jq -e '(.ts|type=="string") and (.tool=="Write") and (.file=="src/app.py") and has("model")' >/dev/null 2>&1; then
+if [ "$EC" = "0" ] && printf '%s' "$LINE" | jq -e '(.ts|type=="string") and (.tool=="Write") and (.file=="src/app.py") and (has("model")|not)' >/dev/null 2>&1; then
   test_pass; else test_fail "no well-formed record (ec=$EC line=$LINE)"; fi
 
 # 2. Empty file_path → exit 0, no record written.
