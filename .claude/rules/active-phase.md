@@ -15,4 +15,4 @@ Next: accept delivery → gate flip + commit/push; then next direction (prune-on
 edge-screener Phase 10 — analysis input at its .dev-wiki/phase-10-candidate-analysis.md).
 Gates:
 - [x] Direction confirmed by user (assumption positions A1 defer-to-checkpoint-1, A2 accept, A3 down-scoped, A4 accept — 2026-06-10)
-- [ ] Delivery accepted (post-implementation report)
+- [x] Delivery accepted (post-implementation report 2026-06-10, commit verified)
