@@ -16,4 +16,4 @@ Next: accept delivery → gate flip + commit/push; then next direction (A5 memor
 edge-screener dogfood / install-gap extra_dirs fix).
 Gates:
 - [x] Direction confirmed by user (assumption positions A1/A3/A5 accept, A2 deferred, A4 verified — 2026-06-09)
-- [ ] Delivery accepted (post-implementation report)
+- [x] Delivery accepted (post-implementation report 2026-06-10, commit 2407259)
