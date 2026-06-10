@@ -1059,10 +1059,10 @@ A2 reject -> orchestrator-only verdicts; ledger block appended, 6 rows, all_acce
 
 ## Phase 86 — Ceremony Lift Measurement
 
-<!-- gate-log:phase-86 direction=approved delivery=pending -->
+<!-- gate-log:phase-86 direction=approved delivery=accepted -->
 
 <details>
-<summary>Phase 86 tasks (8/8 complete, collapsed — verdicts in the phase article; delivery gate pending)</summary>
+<summary>Phase 86 tasks (8/8 complete, collapsed — verdicts in the phase article; delivery accepted 2026-06-10)</summary>
 
 - [x] Author pre-registration document (corpus window + frozen end-commit 5360486 + measurement-session exclusion + hand-counted anchor phase; canonical Step list; re-presentation Class membership; Admissibility rule + pinned downgrade direction; Token attribution scheme; cost-materiality thresholds; MDE arithmetic + verdict menu incl. underpowered; early-exit reporting mode for the runner (criteria 2/4/6 N/A-by-early-exit recorded at checkpoint); Stage-2 parameters incl. leak canary + positive control + ship criteria) and commit BEFORE any tabulation — document FROZEN post-commit (byte-unchanged check; no mid-phase wording fixes): test spec exit-criterion-1 section greps fail pre-write (RED), write document covering all required H2 sections (GREEN), tighten closed vocabularies BEFORE the freeze commit (REFACTOR) | scope: eval/ceremony-lift/pre-registration.md | success: spec exit criterion 1 command passes && git log shows pre-registration.md committed | size: M
 - [x] Build transcript cost extractor with hand-labeled positive control: hand-label one known-composition session and write eval/ceremony-lift/test-cost-extractor-control.sh asserting pipeline totals match the hand count, incl. truncated-final-line and empty-file fixtures (live .jsonl may be mid-append) (RED), implement extractor — programmatic jq/python only, never loads transcripts into agent context; raw + cache-adjusted tokens per pre-registered attribution scheme; subagent-transcript linkage; wall-clock; interruption count; STOP if control fails after 2 fix attempts (instrument-dead, re-present A3) (GREEN), factor shared parsing/table-emission helpers (REFACTOR) | scope: eval/ceremony-lift/* | success: bash eval/ceremony-lift/test-cost-extractor-control.sh exits 0 | size: L
