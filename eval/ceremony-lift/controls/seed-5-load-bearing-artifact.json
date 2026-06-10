@@ -1,0 +1,2 @@
+{"id": "seed-5", "kind": "artifact", "finding": "decision article documenting a constraint cited by 2 later decisions and read by a gate",
+ "consumption": {"uses": 2, "citations": 2}, "gate_referenced": true}

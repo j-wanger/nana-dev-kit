@@ -1,0 +1,2 @@
+{"id": "seed-2", "kind": "outcome-candidate", "finding": "reviewer flagged broken import; make test also fails on it",
+ "reexec": {"recoverable": true, "dir": "seed-fixtures", "cmd": "bash gate-catches.sh"}}

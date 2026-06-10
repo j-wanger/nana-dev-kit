@@ -1,0 +1,2 @@
+{"id": "seed-1", "kind": "outcome-candidate", "finding": "reviewer flagged stale predicate; tests were green at the time",
+ "reexec": {"recoverable": true, "dir": "seed-fixtures", "cmd": "bash gate-misses.sh"}}
