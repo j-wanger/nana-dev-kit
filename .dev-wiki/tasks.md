@@ -1005,7 +1005,7 @@ templates/.claude/skills/dev-debrief/**, tests/test_assumption_ledger.sh, Makefi
 
 ## Phase 82: QA & Verification Sweep (ultracode)
 
-<!-- gate-log:phase-82 direction=approved delivery=pending -->
+<!-- gate-log:phase-82 direction=approved delivery=accepted -->
 
 Decision: [[qa-verification-sweep]] (high). Coverage-defined QA sweep over nana-dev-kit, 8 audit areas
 (wiring/firing/companions/schema/drift/coverage/docs/usage), four stages: T1 controls-first baseline

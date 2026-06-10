@@ -17,4 +17,4 @@ drift residue, misc (incl. enforcement.log provenance hazard).
 Abort: if blocked >3 attempts, mark [blocked] + ask user skip/abort.
 Gates:
 - [x] Direction confirmed by user (assumption positions: A1 don't-know + A2 reject → 2 forced revisions; ledger appended, all_accept:false — approved 2026-06-09)
-- [ ] Delivery accepted
+- [x] Delivery accepted (post-implementation report 2026-06-09)
