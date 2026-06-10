@@ -275,6 +275,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-06-09-phase-83-prune-on-value-subtraction|Phase 83 complete — Prune-on-Value Subtraction: 4 of 6 dead-weight zeros were measurement artifacts; 2 cuts, 2 keeps, 2 hardens activated]] -- 2026-06-09
 - [[2026-06-09-phase-82-qa-verification-sweep|Phase 82 complete — QA & Verification Sweep (ultracode): 58 candidates, 35 fixed, enforcement layer restored from 15-day dormancy]] -- 2026-06-09
 - [[2026-06-09-phase-81-assumption-approval-gate|Phase 81 complete — Assumption-Approval Gate: positions REPLACE approach-approval + append-only ledger + debrief revisit forcing-function]] -- 2026-06-09
 - [[2026-06-09-phase-80-assumption-surfacer-completeness-screen|Phase 80 complete — Assumption-Surfacer Completeness Screen: clean-context control FAILED → INSTRUMENT-DEAD (the 5th amplifier-null, caught in the act)]] -- 2026-06-09

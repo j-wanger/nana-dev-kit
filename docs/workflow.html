@@ -55,7 +55,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <body>
 
 <h1>Nana Dev Kit &mdash; Workflow Breakdown</h1>
-<p class="subtitle">7-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-06-09 15:40</p>
+<p class="subtitle">7-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-06-09 22:43</p>
 
 <div class="toc">
 <h3>Contents</h3>
@@ -404,7 +404,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <h3>Layer 3: Hooks <span class="badge badge-blue">22 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
-<tr><td><code>.claude/hooks/audit-log.sh</code></td><td>27</td><td>PostToolUse: JSONL audit trail of all writes</td></tr>
+<tr><td><code>.claude/hooks/audit-log.sh</code></td><td>26</td><td>PostToolUse: JSONL audit trail of all writes</td></tr>
 <tr><td><code>.claude/hooks/auto-ruff-format.sh</code></td><td>18</td><td>PostToolUse: auto-formats Python with ruff</td></tr>
 <tr><td><code>.claude/hooks/block-dangerous-bash.sh</code></td><td>38</td><td>PreToolUse: blocks rm -rf, force-push, --no-verify</td></tr>
 <tr><td><code>.claude/hooks/check-tests-were-run.sh</code></td><td>58</td><td>Stop: gates completion on pytest execution</td></tr>
@@ -427,10 +427,10 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/hooks/stale-queue.sh</code></td><td>54</td><td></td></tr>
 <tr><td><code>.claude/settings.json</code></td><td>162</td><td>Hook wiring: maps lifecycle events to scripts</td></tr>
 </table>
-<h3>Layer 3: Skills <span class="badge badge-blue">122 files</span></h3>
+<h3>Layer 3: Skills <span class="badge badge-blue">119 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
-<tr><td><code>.claude/skills/MANIFEST</code></td><td>149</td><td></td></tr>
+<tr><td><code>.claude/skills/MANIFEST</code></td><td>146</td><td></td></tr>
 <tr><td><code>.claude/skills/dev-check/SKILL.md</code></td><td>150</td><td>"Validate dev wiki integrity and fix drift. Run when state feels stale, after long breaks, or when drift warnings appear. Do NOT use for knowledge wiki health (use wiki-lint) or for session startup (use AGENTS.md)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/SKILL.md</code></td><td>313</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/active-knowledge-transition.md</code></td><td>24</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
@@ -482,7 +482,6 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/skills/dev-wiki/phase-template.md</code></td><td>69</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
 <tr><td><code>.claude/skills/dev-wiki/size-budgets.md</code></td><td>24</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
 <tr><td><code>.claude/skills/dev-wiki/slugification.md</code></td><td>62</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
-<tr><td><code>.claude/skills/dev-wiki/stale-queue-spec.md</code></td><td>73</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
 <tr><td><code>.claude/skills/dev-wiki/state-template.md</code></td><td>79</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
 <tr><td><code>.claude/skills/dev-wiki/working-knowledge-spec.md</code></td><td>52</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
 <tr><td><code>.claude/skills/knowledge-wiki/SKILL.md</code></td><td>112</td><td>"Route wiki operations and enforce wiki workflow discipline. Use when the user mentions 'wiki', 'knowledge base', or wants to manage project knowledge. Also activated by SessionStart hook when a registered wiki applies to the current directory. Do NOT invoke directly when the user names a specific wiki command — invoke that command instead (wiki-query, wiki-add, etc.)."</td></tr>
@@ -495,10 +494,8 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/skills/knowledge-wiki/domain-profiles/machine-learning.md</code></td><td>47</td><td>"Route wiki operations and enforce wiki workflow discipline. Use when the user mentions 'wiki', 'knowledge base', or wants to manage project knowledge. Also activated by SessionStart hook when a registered wiki applies to the current directory. Do NOT invoke directly when the user names a specific wiki command — invoke that command instead (wiki-query, wiki-add, etc.)."</td></tr>
 <tr><td><code>.claude/skills/knowledge-wiki/domain-profiles/trading.md</code></td><td>47</td><td>"Route wiki operations and enforce wiki workflow discipline. Use when the user mentions 'wiki', 'knowledge base', or wants to manage project knowledge. Also activated by SessionStart hook when a registered wiki applies to the current directory. Do NOT invoke directly when the user names a specific wiki command — invoke that command instead (wiki-query, wiki-add, etc.)."</td></tr>
 <tr><td><code>.claude/skills/knowledge-wiki/pipeline-spec.md</code></td><td>313</td><td>"Route wiki operations and enforce wiki workflow discipline. Use when the user mentions 'wiki', 'knowledge base', or wants to manage project knowledge. Also activated by SessionStart hook when a registered wiki applies to the current directory. Do NOT invoke directly when the user names a specific wiki command — invoke that command instead (wiki-query, wiki-add, etc.)."</td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/registry-schema.md</code></td><td>83</td><td>"Route wiki operations and enforce wiki workflow discipline. Use when the user mentions 'wiki', 'knowledge base', or wants to manage project knowledge. Also activated by SessionStart hook when a registered wiki applies to the current directory. Do NOT invoke directly when the user names a specific wiki command — invoke that command instead (wiki-query, wiki-add, etc.)."</td></tr>
 <tr><td><code>.claude/skills/knowledge-wiki/reviewer-checklist.md</code></td><td>167</td><td>"Route wiki operations and enforce wiki workflow discipline. Use when the user mentions 'wiki', 'knowledge base', or wants to manage project knowledge. Also activated by SessionStart hook when a registered wiki applies to the current directory. Do NOT invoke directly when the user names a specific wiki command — invoke that command instead (wiki-query, wiki-add, etc.)."</td></tr>
 <tr><td><code>.claude/skills/knowledge-wiki/search-spec.md</code></td><td>175</td><td>"Route wiki operations and enforce wiki workflow discipline. Use when the user mentions 'wiki', 'knowledge base', or wants to manage project knowledge. Also activated by SessionStart hook when a registered wiki applies to the current directory. Do NOT invoke directly when the user names a specific wiki command — invoke that command instead (wiki-query, wiki-add, etc.)."</td></tr>
-<tr><td><code>.claude/skills/knowledge-wiki/session-context.md</code></td><td>40</td><td>"Route wiki operations and enforce wiki workflow discipline. Use when the user mentions 'wiki', 'knowledge base', or wants to manage project knowledge. Also activated by SessionStart hook when a registered wiki applies to the current directory. Do NOT invoke directly when the user names a specific wiki command — invoke that command instead (wiki-query, wiki-add, etc.)."</td></tr>
 <tr><td><code>.claude/skills/memory-consolidate/SKILL.md</code></td><td>45</td><td>"Consolidate duplicate/overlapping memory entries using Claude. Use when memory_search returns redundant results, after many phases, or for periodic memory maintenance."</td></tr>
 <tr><td><code>.claude/skills/nana-init/SKILL.md</code></td><td>91</td><td>Bootstrap the full Nana experience — language scaffold, dev-wiki lifecycle, optional knowledge wiki. Use when starting a new project or completing activation on an existing one.</td></tr>
 <tr><td><code>.claude/skills/nana/SKILL.md</code></td><td>37</td><td>"Show installed nana-dev-kit skills grouped by module. Use when the user asks what skills are available, what the kit can do, or wants a quick reference."</td></tr>
@@ -637,7 +634,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>test_manifest_freshness.sh</code></td><td>0 assertions, 49 lines</td></tr>
 <tr><td><code>test_memory.sh</code></td><td>11 assertions, 293 lines</td></tr>
 <tr><td><code>test_registration.sh</code></td><td>0 assertions, 86 lines</td></tr>
-<tr><td><code>test_scripts_smoke.sh</code></td><td>0 assertions, 63 lines</td></tr>
+<tr><td><code>test_scripts_smoke.sh</code></td><td>0 assertions, 75 lines</td></tr>
 <tr><td><code>test_settings_template.sh</code></td><td>0 assertions, 125 lines</td></tr>
 <tr><td><code>test_signal_richness_probe.sh</code></td><td>1 assertions, 126 lines</td></tr>
 <tr><td><code>test_step_numbering.sh</code></td><td>1 assertions, 38 lines</td></tr>
@@ -848,7 +845,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 </pre>
 
 <footer>
-  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-06-09 15:40<br>
+  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-06-09 22:43<br>
   <code>scripts/generate-workflow.py</code> &mdash; run <code>make workflow</code> to regenerate
 </footer>
 

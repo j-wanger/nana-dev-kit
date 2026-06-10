@@ -40,12 +40,12 @@
 <body>
 
 <h1>Nana Dev Kit</h1>
-<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-06-09 15:40</p>
+<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-06-09 22:43</p>
 
 <div class="stats">
-  <div class="stat"><div class="num">834</div><div class="label">Files</div></div>
-  <div class="stat"><div class="num">54,411</div><div class="label">Lines of Code</div></div>
-  <div class="stat"><div class="num">487</div><div class="label">Automated Tests</div></div>
+  <div class="stat"><div class="num">844</div><div class="label">Files</div></div>
+  <div class="stat"><div class="num">55,561</div><div class="label">Lines of Code</div></div>
+  <div class="stat"><div class="num">488</div><div class="label">Automated Tests</div></div>
   <div class="stat"><div class="num">7</div><div class="label">Harness Layers</div></div>
   <div class="stat"><div class="num">v0.5.0</div><div class="label">Latest Tag</div></div>
 </div>
@@ -134,9 +134,9 @@
 
 <h2>File Inventory</h2>
 <div class="category">
-  <h3>Core Scripts <span class="badge badge-green">12 files, 3,346 lines</span></h3>
+  <h3>Core Scripts <span class="badge badge-green">12 files, 3,349 lines</span></h3>
   <ul class="file-list">
-    <li><span>Makefile</span><span class='lines'>49</span></li>
+    <li><span>Makefile</span><span class='lines'>52</span></li>
     <li><span>install.sh</span><span class='lines'>342</span></li>
     <li><span>scripts/check-assumption-ledger.sh</span><span class='lines'>235</span></li>
     <li><span>scripts/check-install-drift.sh</span><span class='lines'>146</span></li>
@@ -151,7 +151,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Test Suite <span class="badge badge-green">21 files, 4,717 lines</span></h3>
+  <h3>Test Suite <span class="badge badge-green">23 files, 4,841 lines</span></h3>
   <ul class="file-list">
     <li><span>tests/helpers.sh</span><span class='lines'>74</span></li>
     <li><span>tests/test_amplifier_emitter.sh</span><span class='lines'>89</span></li>
@@ -165,8 +165,10 @@
     <li><span>tests/test_hook_firing_coverage.sh</span><span class='lines'>168</span></li>
     <li><span>tests/test_install.sh</span><span class='lines'>846</span></li>
     <li><span>tests/test_long_cadence_hooks.sh</span><span class='lines'>159</span></li>
+    <li><span>tests/test_manifest_freshness.sh</span><span class='lines'>49</span></li>
     <li><span>tests/test_memory.sh</span><span class='lines'>293</span></li>
     <li><span>tests/test_registration.sh</span><span class='lines'>86</span></li>
+    <li><span>tests/test_scripts_smoke.sh</span><span class='lines'>75</span></li>
     <li><span>tests/test_settings_template.sh</span><span class='lines'>125</span></li>
     <li><span>tests/test_signal_richness_probe.sh</span><span class='lines'>126</span></li>
     <li><span>tests/test_step_numbering.sh</span><span class='lines'>38</span></li>
@@ -213,9 +215,9 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 3: Hooks <span class="badge badge-green">22 files, 1,615 lines</span></h3>
+  <h3>Templates — Layer 3: Hooks <span class="badge badge-green">22 files, 1,614 lines</span></h3>
   <ul class="file-list">
-    <li><span>templates/.claude/hooks/audit-log.sh</span><span class='lines'>27</span></li>
+    <li><span>templates/.claude/hooks/audit-log.sh</span><span class='lines'>26</span></li>
     <li><span>templates/.claude/hooks/auto-ruff-format.sh</span><span class='lines'>18</span></li>
     <li><span>templates/.claude/hooks/block-dangerous-bash.sh</span><span class='lines'>38</span></li>
     <li><span>templates/.claude/hooks/check-tests-were-run.sh</span><span class='lines'>58</span></li>
@@ -240,9 +242,9 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 3: Skills <span class="badge badge-green">123 files, 11,554 lines</span></h3>
+  <h3>Templates — Layer 3: Skills <span class="badge badge-green">120 files, 11,355 lines</span></h3>
   <ul class="file-list">
-    <li><span>templates/.claude/skills/MANIFEST</span><span class='lines'>149</span></li>
+    <li><span>templates/.claude/skills/MANIFEST</span><span class='lines'>146</span></li>
     <li><span>templates/.claude/skills/dev-check/SKILL.md</span><span class='lines'>150</span></li>
     <li><span>templates/.claude/skills/dev-debrief/SKILL.md</span><span class='lines'>313</span></li>
     <li><span>templates/.claude/skills/dev-debrief/active-knowledge-transition.md</span><span class='lines'>24</span></li>
@@ -295,7 +297,6 @@
     <li><span>templates/.claude/skills/dev-wiki/phase-template.md</span><span class='lines'>69</span></li>
     <li><span>templates/.claude/skills/dev-wiki/size-budgets.md</span><span class='lines'>24</span></li>
     <li><span>templates/.claude/skills/dev-wiki/slugification.md</span><span class='lines'>62</span></li>
-    <li><span>templates/.claude/skills/dev-wiki/stale-queue-spec.md</span><span class='lines'>73</span></li>
     <li><span>templates/.claude/skills/dev-wiki/state-template.md</span><span class='lines'>79</span></li>
     <li><span>templates/.claude/skills/dev-wiki/working-knowledge-spec.md</span><span class='lines'>52</span></li>
     <li><span>templates/.claude/skills/knowledge-wiki/SKILL.md</span><span class='lines'>112</span></li>
@@ -308,10 +309,8 @@
     <li><span>templates/.claude/skills/knowledge-wiki/domain-profiles/machine-learning.md</span><span class='lines'>47</span></li>
     <li><span>templates/.claude/skills/knowledge-wiki/domain-profiles/trading.md</span><span class='lines'>47</span></li>
     <li><span>templates/.claude/skills/knowledge-wiki/pipeline-spec.md</span><span class='lines'>313</span></li>
-    <li><span>templates/.claude/skills/knowledge-wiki/registry-schema.md</span><span class='lines'>83</span></li>
     <li><span>templates/.claude/skills/knowledge-wiki/reviewer-checklist.md</span><span class='lines'>167</span></li>
     <li><span>templates/.claude/skills/knowledge-wiki/search-spec.md</span><span class='lines'>175</span></li>
-    <li><span>templates/.claude/skills/knowledge-wiki/session-context.md</span><span class='lines'>40</span></li>
     <li><span>templates/.claude/skills/memory-consolidate/SKILL.md</span><span class='lines'>45</span></li>
     <li><span>templates/.claude/skills/nana-init/SKILL.md</span><span class='lines'>91</span></li>
     <li><span>templates/.claude/skills/nana/SKILL.md</span><span class='lines'>37</span></li>
@@ -406,7 +405,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Eval Harness <span class="badge badge-green">502 files, 17,613 lines</span></h3>
+  <h3>Eval Harness <span class="badge badge-green">511 files, 18,596 lines</span></h3>
   <ul class="file-list">
     <li><span>eval/README.md</span><span class='lines'>86</span></li>
     <li><span>eval/amplifier/SCHEMA-NOTES.md</span><span class='lines'>110</span></li>
@@ -840,6 +839,15 @@
     <li><span>eval/corpus/skill-spec-valid/artifact.md</span><span class='lines'>53</span></li>
     <li><span>eval/corpus/skill-spec-valid/scenario.json</span><span class='lines'>10</span></li>
     <li><span>eval/memory-integration/results.md</span><span class='lines'>270</span></li>
+    <li><span>eval/prune-on-value/arming-runs.log</span><span class='lines'>9</span></li>
+    <li><span>eval/prune-on-value/check-artifacts.sh</span><span class='lines'>41</span></li>
+    <li><span>eval/prune-on-value/liveness-grep.log</span><span class='lines'>62</span></li>
+    <li><span>eval/prune-on-value/run-exit-criteria.sh</span><span class='lines'>38</span></li>
+    <li><span>eval/prune-on-value/verdict-table.md</span><span class='lines'>57</span></li>
+    <li><span>eval/qa-sweep/candidates.md</span><span class='lines'>399</span></li>
+    <li><span>eval/qa-sweep/repro-runs.log</span><span class='lines'>238</span></li>
+    <li><span>eval/qa-sweep/run-exit-criteria.sh</span><span class='lines'>35</span></li>
+    <li><span>eval/qa-sweep/verification-matrix.md</span><span class='lines'>104</span></li>
     <li><span>eval/reasoning/README.md</span><span class='lines'>152</span></li>
     <li><span>eval/reasoning/baseline/results-25.json</span><span class='lines'>990</span></li>
     <li><span>eval/reasoning/baseline/results-v2.json</span><span class='lines'>87</span></li>
@@ -913,7 +921,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Specs <span class="badge badge-green">69 files, 6,170 lines</span></h3>
+  <h3>Specs <span class="badge badge-green">71 files, 6,338 lines</span></h3>
   <ul class="file-list">
     <li><span>specs/cut-heuristic-machinery-self-dialogue.md</span><span class='lines'>79</span></li>
     <li><span>specs/domain-research-in-dev-plan.md</span><span class='lines'>81</span></li>
@@ -983,22 +991,24 @@
     <li><span>specs/phase-78-skill-crystallization-headroom-screen.md</span><span class='lines'>102</span></li>
     <li><span>specs/phase-79-harness-hygiene.md</span><span class='lines'>121</span></li>
     <li><span>specs/phase-81-assumption-approval-gate.md</span><span class='lines'>172</span></li>
+    <li><span>specs/phase-82-qa-verification-sweep.md</span><span class='lines'>72</span></li>
+    <li><span>specs/phase-83-prune-on-value-subtraction.md</span><span class='lines'>96</span></li>
     <li><span>specs/ts-init-design.md</span><span class='lines'>252</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Other <span class="badge badge-green">51 files, 5,902 lines</span></h3>
+  <h3>Other <span class="badge badge-green">51 files, 5,974 lines</span></h3>
   <ul class="file-list">
-    <li><span>.claude/rules/active-knowledge.md</span><span class='lines'>0</span></li>
+    <li><span>.claude/rules/active-knowledge.md</span><span class='lines'>29</span></li>
     <li><span>.claude/rules/active-phase.md</span><span class='lines'>20</span></li>
-    <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>203</span></li>
+    <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>207</span></li>
     <li><span>benchmark/README.md</span><span class='lines'>108</span></li>
     <li><span>benchmark/longmemeval.py</span><span class='lines'>302</span></li>
-    <li><span>docs/delivery-report.html</span><span class='lines'>87</span></li>
+    <li><span>docs/delivery-report.html</span><span class='lines'>119</span></li>
     <li><span>docs/memory-knowledge-architecture.md</span><span class='lines'>611</span></li>
     <li><span>docs/nanaclaw-architecture.md</span><span class='lines'>722</span></li>
-    <li><span>docs/report.html</span><span class='lines'>1077</span></li>
-    <li><span>docs/workflow.html</span><span class='lines'>856</span></li>
+    <li><span>docs/report.html</span><span class='lines'>1087</span></li>
+    <li><span>docs/workflow.html</span><span class='lines'>853</span></li>
     <li><span>modules.json</span><span class='lines'>74</span></li>
     <li><span>patches/nanaclaw-sanitize-fts.patch</span><span class='lines'>23</span></li>
     <li><span>quarantine/README.md</span><span class='lines'>6</span></li>
@@ -1063,11 +1073,11 @@
 </table>
 
 <h2>Recent Git History</h2>
-<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">e625ef2 Phase 81 — delivery accepted; flip delivery gate
-e4e6e07 Phase 81: Assumption-Approval Gate — positions on load-bearing assumptions replace approach-approval
-ea710ef Phase 80 — delivery accepted; flip delivery gate
-04bc520 Phase 80 — debrief: journal + finalized decision + state refresh + wk seed
-405b4f7 Phase 80 — T5/T6: silent-class runs scored => PROGRAM-VERDICT INSTRUMENT-DEAD</pre>
+<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">f6c7e8d Phase 83 review-gate fixes: 4 MEDIUM findings (reviewer 9/10 accept)
+82a69d8 Phase 83 self-check: sync audit-log file article (model field cut) + scope additions
+1e5f5cc Phase 83 T5: close-out — exit-criteria aggregator 10/10, residue filed
+9a1a4a9 Phase 83 harden: wire in harness-audit + fastembed reinforcement verification
+646b977 Phase 83 cut: orphan-companions</pre>
 
 <footer>
   Generated by <code>scripts/generate-report.py</code> &mdash; run <code>make report</code> to regenerate
