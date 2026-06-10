@@ -98,7 +98,7 @@ fi
 # passed. Pinned exemption allow-list (the 3 known orphans, filed as subtraction-review
 # candidates in Phase 82) keeps this green today while catching any NEW orphan.
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-ORPHAN_EXEMPT="dev-wiki/stale-queue-spec.md knowledge-wiki/registry-schema.md knowledge-wiki/session-context.md"
+ORPHAN_EXEMPT=""  # Phase 83: the 3 pinned orphans were cut — any orphan is now a failure
 
 test_start "Direction C: no NEW orphan companions (pinned 3-entry exemption)"
 C_FAIL=0

@@ -51,7 +51,6 @@ fd5484628656368faab0d5550def2257  templates/.claude/skills/dev-wiki/decision-tem
 c9ba93116ddd0439bd1f489940ce4968  templates/.claude/skills/dev-wiki/phase-template.md
 97084346b0a685e166d5566da48c96ff  templates/.claude/skills/dev-wiki/size-budgets.md
 3ba9520205f3f441e9ff4df7383858d6  templates/.claude/skills/dev-wiki/slugification.md
-06273fd497fcbbc09ae19efe46210939  templates/.claude/skills/dev-wiki/stale-queue-spec.md
 844f10628dc8f313ab403aaf6529acf2  templates/.claude/skills/dev-wiki/state-template.md
 fa85b8d10773411fb734c86e47ad89db  templates/.claude/skills/dev-wiki/working-knowledge-spec.md
 62d52f32f8ae6efd237613e6d97a1dc7  templates/.claude/skills/knowledge-wiki/SKILL.md
@@ -64,10 +63,8 @@ e1f4c25ee14d7dc218641d2e0dc28864  templates/.claude/skills/knowledge-wiki/conver
 eef27373ac41937dbf0763042ab0458a  templates/.claude/skills/knowledge-wiki/domain-profiles/machine-learning.md
 4aa3d6125261741abeb8894ac0ea0326  templates/.claude/skills/knowledge-wiki/domain-profiles/trading.md
 af1a16f3050f7cb4aa9ea22b275c2978  templates/.claude/skills/knowledge-wiki/pipeline-spec.md
-bb5290f58c92d998d4bc58d343d51fdb  templates/.claude/skills/knowledge-wiki/registry-schema.md
 066f2061171f46b36335c6a3af240fde  templates/.claude/skills/knowledge-wiki/reviewer-checklist.md
 6a8521185763c09e7c3210cf52f41f7d  templates/.claude/skills/knowledge-wiki/search-spec.md
-c81d3a047d5b8d6916df2108d32c57ce  templates/.claude/skills/knowledge-wiki/session-context.md
 793ff7ba68bb46f5732fc339a69ff5ac  templates/.claude/skills/memory-consolidate/SKILL.md
 e1a8fb68d256f4e35bc46ca6b0c5d1ef  templates/.claude/skills/nana-init/SKILL.md
 3cb21107c1f218c7e5db86649a6a4a6e  templates/.claude/skills/nana/SKILL.md

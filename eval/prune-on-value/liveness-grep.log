@@ -37,3 +37,26 @@ HISTORICAL: dev-wiki records only.
 LIVE-REFS-OUTSIDE-REMOVAL-SET: none in repo (only self, current-phase artifacts, tests/test_scripts_smoke.sh entry = removal-set member).
 OUT-OF-BOUNDARY (filed, not edited): user-owned ~/.claude/rules/dev-wiki-hooks.md references "/dev-harness H6" (stale either way — no such skill exists).
 HISTORICAL: 2 spec refs, dev-wiki records.
+DEREG audit-log-model-field /Users/jwang/edge-screener/.claude/hooks/audit-log.sh: absent
+DEREG audit-log-model-field /Users/jwang/ab-test/stock-screener/.claude/hooks/audit-log.sh: absent
+DEREG audit-log-model-field /Users/jwang/edge-analyst/.claude/hooks/audit-log.sh: absent
+DEREG audit-log-model-field /Users/jwang/fate/.claude/hooks/audit-log.sh: absent
+DEREG audit-log-model-field /Users/jwang/ai-game/.claude/hooks/audit-log.sh: absent
+DEREG orphan-companions /Users/jwang/.claude/skills/dev-wiki/stale-queue-spec.md: absent
+DEREG orphan-companions /Users/jwang/.claude/skills/knowledge-wiki/registry-schema.md: absent
+DEREG orphan-companions /Users/jwang/.claude/skills/knowledge-wiki/session-context.md: absent
+DEREG orphan-companions /Users/jwang/edge-screener/.claude/skills/dev-wiki/stale-queue-spec.md: absent
+DEREG orphan-companions /Users/jwang/edge-screener/.claude/skills/knowledge-wiki/registry-schema.md: absent
+DEREG orphan-companions /Users/jwang/edge-screener/.claude/skills/knowledge-wiki/session-context.md: absent
+DEREG orphan-companions /Users/jwang/ab-test/stock-screener/.claude/skills/dev-wiki/stale-queue-spec.md: absent
+DEREG orphan-companions /Users/jwang/ab-test/stock-screener/.claude/skills/knowledge-wiki/registry-schema.md: absent
+DEREG orphan-companions /Users/jwang/ab-test/stock-screener/.claude/skills/knowledge-wiki/session-context.md: absent
+DEREG orphan-companions /Users/jwang/edge-analyst/.claude/skills/dev-wiki/stale-queue-spec.md: absent
+DEREG orphan-companions /Users/jwang/edge-analyst/.claude/skills/knowledge-wiki/registry-schema.md: absent
+DEREG orphan-companions /Users/jwang/edge-analyst/.claude/skills/knowledge-wiki/session-context.md: absent
+DEREG orphan-companions /Users/jwang/fate/.claude/skills/dev-wiki/stale-queue-spec.md: absent
+DEREG orphan-companions /Users/jwang/fate/.claude/skills/knowledge-wiki/registry-schema.md: absent
+DEREG orphan-companions /Users/jwang/fate/.claude/skills/knowledge-wiki/session-context.md: absent
+DEREG orphan-companions /Users/jwang/ai-game/.claude/skills/dev-wiki/stale-queue-spec.md: absent
+DEREG orphan-companions /Users/jwang/ai-game/.claude/skills/knowledge-wiki/registry-schema.md: absent
+DEREG orphan-companions /Users/jwang/ai-game/.claude/skills/knowledge-wiki/session-context.md: absent
