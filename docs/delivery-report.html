@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 84</title>
+<title>Delivery Report: Phase 85</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,79 +21,73 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 84 &mdash; Phase 84</h1>
+<h1>Delivery Report: Phase 85 &mdash; Phase 85</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">6/6</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">31</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">8/8</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">20</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (51 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">52/52</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+209</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-111</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">0</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">07:43</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+294</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-121</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">3</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">10:50</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>T1 Hermetic instrument: test write tests/test_eval_hermeticity.sh — sandboxed hook run with CLAUDE_PROJECT_DIR pointi...</td></tr>
-<tr><td>&#x2705;</td><td>T2 Real-event capture + branch verdict: test write tests/test_fixture_provenance.sh asserting (a) tests/fixtures/real...</td></tr>
-<tr><td>&#x2705;</td><td>T3 Hook fixes (per T2 branch, with upstream off-ramp): test write tests/test_lifecycle_hooks_firing.sh using the real...</td></tr>
-<tr><td>&#x2705;</td><td>T4a Coverage matrix + rehearsal + HARD checkpoint: test write eval/hook-hygiene/check-matrix.sh asserting coverage-ma...</td></tr>
-<tr><td>&#x2705;</td><td>T4b Checkpoint-gated execution OR exceptions filing: test extend check-matrix.sh with an end-state assertion — basena...</td></tr>
-<tr><td>&#x2705;</td><td>T5 Close-out: test write eval/hook-hygiene/run-exit-criteria.sh skeleton with the spec's 10 criteria as numbered chec...</td></tr>
+<tr><td>&#x2705;</td><td>Install-path inventory: test inventory artifact format check rejects a row without a status and a missing causal-path...</td></tr>
+<tr><td>&#x2705;</td><td>modules.json hook_dirs migration: test jq asserts top-level hook_dirs maps "session-start.sh" to ["session-start.d"] ...</td></tr>
+<tr><td>&#x2705;</td><td>install.sh ships hook_dirs on every path: test sandbox-install asserts global path ships session-start.d/ when it shi...</td></tr>
+<tr><td>&#x2705;</td><td>check-install-drift.sh directory currency: test new tests/test_install_drift_dircurrency.sh seeded controls — session...</td></tr>
+<tr><td>&#x2705;</td><td>Maintainer-root rehearsal + checkpoint 1 + live run: test rehearsal in mktemp HOME/project runs full install then pip...</td></tr>
+<tr><td>&#x2705;</td><td>DRQ-1 verification + edge-screener migration + checkpoint 2: test sandbox project with the SAME hook in settings.json...</td></tr>
+<tr><td>&#x2705;</td><td>Dogfood round + A5 evidence: test check-dogfood-evidence.sh rejects an evidence file missing a numeric probe exit cod...</td></tr>
+<tr><td>&#x2705;</td><td>Close-out + exit-criteria runner: test run-exit-criteria.sh maps each of the spec's 9 exit criteria to a command and ...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<p>No new decisions this phase.</p>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Install-gap fix: extra_dirs shipping + directory currency</td><td>high</td></tr>
+<tr><td>A3 disposition: keep-current for registration-dead ~/.claude copies</td><td>high</td></tr>
+<tr><td>DRQ-1: settings merge semantics are string-keyed dedupe</td><td>high</td></tr>
+</table>
 
 <h2>Files Changed</h2>
 <ul>
 <li><code>.claude/rules/active-knowledge.md</code></li>
 <li><code>.claude/rules/active-phase.md</code></li>
 <li><code>.claude/rules/working-knowledge.md</code></li>
-<li><code>.dev-wiki/.stale-queue</code></li>
 <li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
 <li><code>.dev-wiki/assumption-ledger.md</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
-<li><code>.gitignore</code></li>
 <li><code>Makefile</code></li>
 <li><code>README.md</code></li>
 <li><code>docs/report.html</code></li>
 <li><code>docs/workflow.html</code></li>
-<li><code>eval/corpus/hook-post-commit-detected/scenario.json</code></li>
-<li><code>eval/corpus/lifecycle-full-phase-cycle/scenario.json</code></li>
-<li><code>scripts/eval-runner.sh</code></li>
-<li><code>templates/.claude/hooks/context-size-check.sh</code></li>
-<li><code>templates/.claude/hooks/dev-wiki-scope-check.sh</code></li>
-<li><code>templates/.claude/hooks/enforce-memory.sh</code></li>
-<li><code>templates/.claude/hooks/post-commit.sh</code></li>
-<li><code>templates/.claude/hooks/post-compact.sh</code></li>
-<li><code>templates/.claude/hooks/pre-compact.sh</code></li>
-<li><code>templates/.claude/hooks/session-start.d/cognitive-readiness.sh</code></li>
-<li><code>templates/.claude/hooks/session-start.d/memory-nudge.sh</code></li>
-<li><code>templates/.claude/hooks/session-start.d/wk-prune.sh</code></li>
-<li><code>templates/.claude/hooks/session-stop.sh</code></li>
-<li><code>templates/.claude/hooks/stale-queue.sh</code></li>
-<li><code>tests/test_templates.sh</code></li>
-<li><code>tests/test_tooluse_hooks.sh</code></li>
+<li><code>install.sh</code></li>
+<li><code>modules.json</code></li>
+<li><code>scripts/check-install-drift.sh</code></li>
+<li><code>scripts/harness-audit.sh</code></li>
+<li><code>tests/test_hook_firing_coverage.sh</code></li>
+<li><code>tests/test_install.sh</code></li>
+<li><code>tests/test_registration.sh</code></li>
 
 
 </ul>
 
 <h2>Test Results</h2>
 <p><span class="status" style="background:#2d7d2d">PASS</span> 51 passed, 1 failed</p>
-<pre>  detect-loop: legacy 3-failure path still warns (non-regression) OK
+<pre>  --count includes dir-currency rows                 OK
 
-lifecycle-hooks-firing: 16 run, 16 passed, 0 failed
+install-drift dir-currency: 7 run, 7 passed, 0 failed
 
 All tests passed.</pre>
 
@@ -102,7 +96,7 @@ All tests passed.</pre>
 <pre>Score: 52/52 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-06-10 07:43:09 by generate-delivery-report.py
+  Generated 2026-06-10 10:50:54 by generate-delivery-report.py
 </div>
 </body>
 </html>

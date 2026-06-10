@@ -16,8 +16,8 @@
 #
 # Denominator = the UNION of command-type .hooks[] (NOTE: command hooks carry NO `type` field — only
 # the prompt hook has type:"prompt"; a literal select(.type=="command") matches ZERO and would falsely
-# green the gate, so we use the negated predicate) PLUS every *.sh under project_local.extra_dirs
-# (the session-start.d curators are registered via extra_dirs, NOT .hooks[]).
+# green the gate, so we use the negated predicate) PLUS every *.sh under the hook_dirs map's dirs
+# (the session-start.d curators are shipped via hook_dirs, NOT registered in .hooks[]).
 #
 # The gate is un-gameable: a pinned exemption allow-list bounded by an exact count (each exemption
 # machine-justified), a denominator-sanity floor (a classifier bug that empties the union FAILS rather
@@ -34,10 +34,10 @@ HOOKS_SRC="$REPO_ROOT/templates/.claude/hooks"
 
 # --- Sets (newline-separated strings; hook names are space-free, bash-3.2 safe) ---
 
-# Firing-required = command-type .hooks[] + extra_dirs/*.sh curators.
+# Firing-required = command-type .hooks[] + hook_dirs/*.sh curators.
 required_set() {
   jq -r '.hooks[] | select((.type // "command") != "prompt") | .script' "$MODULES" | sed 's#.*/##'
-  for d in $(jq -r '.project_local.extra_dirs[]?' "$MODULES" 2>/dev/null); do
+  for d in $(jq -r '.hook_dirs[][]?' "$MODULES" 2>/dev/null); do
     if [ -d "$HOOKS_SRC/$d" ]; then
       ls "$HOOKS_SRC/$d"/*.sh 2>/dev/null | sed 's#.*/##'
     fi
@@ -94,9 +94,9 @@ else
   test_fail "union collapsed to $req_count (< $REQUIRED_FLOOR) — classifier bug? (literal type==command matches zero hooks)"
 fi
 
-test_start "coverage denominator includes the extra_dirs curators (not only .hooks[])"
+test_start "coverage denominator includes the hook_dirs curators (not only .hooks[])"
 # Sanity: at least one known curator is in the required set.
-if printf '%s\n' "$REQUIRED" | grep -qxF "wk-prune.sh"; then test_pass; else test_fail "extra_dirs curators missing from union"; fi
+if printf '%s\n' "$REQUIRED" | grep -qxF "wk-prune.sh"; then test_pass; else test_fail "hook_dirs curators missing from union"; fi
 
 exempt_count=$(printf '%s\n' "$EXEMPT" | grep -c . || true)
 test_start "exemption allow-list bounded (== $EXEMPT_EXPECTED pinned, each machine-justified)"

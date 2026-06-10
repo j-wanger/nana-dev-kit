@@ -16,7 +16,9 @@
 # skill dir + global-scope hook scripts + ANY kit-shipped hook script already present in the
 # installed root (Phase 82: pre-Phase-79 global installs left project-scoped hooks live in
 # ~/.claude — a present copy is running code, so its drift is compared regardless of scope tag;
-# the checker never ADDS files, refresh stays install.sh's job) + the managed rules directory.
+# the checker never ADDS files, refresh stays install.sh's job) + for each hook script in the set,
+# the companion dirs it consumes per modules.json .hook_dirs (Phase 85: consumer present ⇒ dir
+# must exist and match; installed-only files there are flagged `orphan:`) + the managed rules dir.
 # Assumes a full (--all) install (the maintainer's case): a skill dir absent from the installed
 # root is treated as a not-installed module and skipped, not as drift.
 #
@@ -98,13 +100,49 @@ done < <(jq -r '.hooks[] | select(.scope == "global") | .script' "$MODULES_JSON"
 # project-scoped hooks registered in ~/.claude/settings.json, and those copies kept RUNNING while
 # the scope:global filter above made their drift invisible (4 stale registered hooks found live).
 # Compare every such file; never ADD files to the installed root — refresh is install.sh's job.
-in_rel_files() { local r="$1" x; for x in "${REL_FILES[@]}"; do [ "$x" = "$r" ] && return 0; done; return 1; }
+# ${arr[@]+...} idiom: bash 3.2 + set -u errors on "${arr[@]}" for an EMPTY array (fires when a
+# sandbox kit has no skills/global hooks — the real modules.json never tripped it).
+in_rel_files() { local r="$1" x; for x in ${REL_FILES[@]+"${REL_FILES[@]}"}; do [ "$x" = "$r" ] && return 0; done; return 1; }
 if [ -d "$INSTALLED_ROOT/hooks" ]; then
   while IFS= read -r f; do
     h=$(basename "$f")
     [ -f "$TEMPLATES/hooks/$h" ] || continue   # user-owned / non-kit hook → not ours to compare
     in_rel_files "hooks/$h" || REL_FILES+=("hooks/$h")
   done < <(find "$INSTALLED_ROOT/hooks" -maxdepth 1 -type f -name '*.sh' 2>/dev/null)
+fi
+
+# 2c. Hook companion dirs (Phase 85): consumer present ⇒ its declared dirs must exist and match.
+# For every hook script ALREADY in the comparison set that declares dirs in modules.json
+# .hook_dirs, each templates file in those dirs joins the set — so a consumer whose companion
+# dir is missing or stale drifts LOUDLY. Incident 5 (2026-06-09): session-start.sh was
+# md5-current while session-start.d/ was EMPTY (this checker was the resync shopping list and
+# was blind to the dir) → every SessionStart on the machine errored. Installed-only files in a
+# covered dir are flagged as `orphan:` rows — detect-and-warn: flagged, never removed.
+# Content-only compare (cmp -s) is a pinned exemption for these dirs: the files are SOURCED,
+# not exec'd, so the exec bit is not load-bearing (eval/install-gap/inventory.md).
+HOOKDIR_ORPHANS=()
+HOOK_CONSUMERS=()
+for r in ${REL_FILES[@]+"${REL_FILES[@]}"}; do
+  case "$r" in hooks/*.sh) [[ "$r" == hooks/*/* ]] || HOOK_CONSUMERS+=("$(basename "$r")") ;; esac
+done
+if [ "${#HOOK_CONSUMERS[@]}" -gt 0 ]; then
+  for c in "${HOOK_CONSUMERS[@]}"; do
+    while IFS= read -r d; do
+      [ -n "$d" ] || continue
+      if [ -d "$TEMPLATES/hooks/$d" ]; then
+        while IFS= read -r f; do
+          rel="hooks/$d/$(basename "$f")"
+          in_rel_files "$rel" || REL_FILES+=("$rel")
+        done < <(find "$TEMPLATES/hooks/$d" -maxdepth 1 -type f 2>/dev/null)
+      fi
+      if [ -d "$INSTALLED_ROOT/hooks/$d" ]; then
+        while IFS= read -r f; do
+          b=$(basename "$f")
+          [ -f "$TEMPLATES/hooks/$d/$b" ] || HOOKDIR_ORPHANS+=("orphan: hooks/$d/$b")
+        done < <(find "$INSTALLED_ROOT/hooks/$d" -maxdepth 1 -type f 2>/dev/null)
+      fi
+    done < <(jq -r --arg s "$c" '.hook_dirs[$s][]?' "$MODULES_JSON" 2>/dev/null)
+  done
 fi
 
 # 3. Managed rules directory. The glob picks up template-only files (nana-personal, py-session-state);
@@ -129,6 +167,11 @@ if [ "${#REL_FILES[@]}" -gt 0 ]; then
       DRIFT+=("differs: $rel")
     fi
   done
+fi
+
+# Orphans in covered hook dirs count as drift rows (flagged, never removed).
+if [ "${#HOOKDIR_ORPHANS[@]}" -gt 0 ]; then
+  DRIFT+=("${HOOKDIR_ORPHANS[@]}")
 fi
 
 COUNT=${#DRIFT[@]}

@@ -344,9 +344,9 @@ while IFS= read -r cmd; do
   fi
 done <"$SETTINGS_HOOKS"
 
-# 4b: every modules.json project-scoped hook + each project_local.extra_dir must be copied
+# 4b: every modules.json project-scoped hook + each hook_dirs dir must be copied
 #     by BOTH install.sh --project-local AND the py-init/ts-init SKILL.md cp instructions.
-#     For extra_dirs (e.g. session-start.d) assert the cp glob is recursive (cp -r) or names
+#     For hook dirs (e.g. session-start.d) assert the cp glob is recursive (cp -r) or names
 #     the .d subdir explicitly.
 PYINIT="$SKILLS_DIR/py-init/SKILL.md"
 TSINIT="$SKILLS_DIR/ts-init/SKILL.md"
@@ -362,27 +362,28 @@ grep -q 'PROJECT_HOOKS=.*select(.scope == "project")' install.sh \
 
 for skillmd in "$PYINIT" "$TSINIT"; do
   who="$(basename "$(dirname "$skillmd")")"
-  # must copy the hook .sh and .md globs
-  grep -qE 'cp .*templates/\.claude/hooks/"\*\.sh' "$skillmd" \
-    || echo "DRIFT: $who SKILL.md missing recursive/glob cp of hooks/*.sh" >>"$DRIFT"
+  # must copy the hooks tree: recursive dot-copy (Phase 74: `cp -R .../hooks/. `) or legacy *.sh glob
+  grep -qE 'cp (-R|-r) .*templates/\.claude/hooks/\.|cp .*templates/\.claude/hooks/"\*\.sh' "$skillmd" \
+    || echo "DRIFT: $who SKILL.md missing recursive/glob cp of hooks/" >>"$DRIFT"
 done
 
-# extra_dirs: must be copied by install.sh extra-dir loop AND by py-init/ts-init with cp -r (or explicit .d name)
+# hook_dirs: must be shipped by install.sh (ship_hook_dirs, Phase 85) AND by py-init/ts-init via
+# recursive dot-copy (which carries every hook subdir) or an explicit cp -r of the dir.
 while IFS= read -r ed; do
   [ -n "$ed" ] || continue
-  # install.sh: extra-dir loop copying $HOOKS_SRC/$d
-  grep -q 'for d in \$EXTRA_DIRS' install.sh \
-    || echo "DRIFT: install.sh --project-local missing EXTRA_DIRS copy loop for '$ed'" >>"$DRIFT"
-  # py-init / ts-init: cp -r ...<extra_dir>  OR explicit name of the dir
+  # install.sh: consumer-conditioned dir shipping helper
+  grep -q 'ship_hook_dirs' install.sh \
+    || echo "DRIFT: install.sh missing ship_hook_dirs handling for '$ed'" >>"$DRIFT"
+  # py-init / ts-init: recursive dot-copy OR explicit cp -r naming the dir
   for skillmd in "$PYINIT" "$TSINIT"; do
     who="$(basename "$(dirname "$skillmd")")"
-    if grep -qE "cp -r .*hooks/$ed([\"[:space:]/]|\$)" "$skillmd"; then
-      : # recursive copy naming the .d subdir explicitly — OK
+    if grep -qE "cp (-R|-r) .*templates/\.claude/hooks/\.|cp -r .*hooks/$ed([\"[:space:]/]|\$)" "$skillmd"; then
+      : # recursive dot-copy carries the subdir, or it is named explicitly — OK
     else
-      echo "DRIFT: $who SKILL.md does not cp -r the extra_dir '$ed' (session-start.d cp-gap)" >>"$DRIFT"
+      echo "DRIFT: $who SKILL.md does not copy the hook dir '$ed' (session-start.d cp-gap)" >>"$DRIFT"
     fi
   done
-done < <(jq -r '.project_local.extra_dirs[]' "$MODULES_JSON" 2>/dev/null)
+done < <(jq -r '.hook_dirs[][]' "$MODULES_JSON" 2>/dev/null)
 
 # =============================================================================
 # STEP 5 — RECONCILE

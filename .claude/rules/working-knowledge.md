@@ -201,3 +201,9 @@
   source: [[decision:prune-on-value-subtraction]] (Ph83) | activated: 2026-06-09
 - [uses: 1] Shell-checker evidence standard (gate-time self-caught, Ph84): unquoted $VAR lists do NOT word-split in zsh — checker loops silently degenerate to one iteration (produced a false 0/11-everywhere registration matrix at the Phase-84 gate); any matrix/extraction script's output counts as evidence only AFTER a positive control (a cell known non-zero) passes. Use literal lists or arrays in zsh-context loops.
   source: [[decision:hook-registration-hygiene]] (Ph84) | activated: 2026-06-09
+- [uses: 1] `cp dir/*.sh` with an empty or no-match glob ABORTS the whole script under `set -euo pipefail` — installer/copy steps must be empty-glob tolerant (find-based or guarded), or a partial install reproduces the registered-but-broken class mid-sequence. Bit as install.sh:88-93 latent hazard (Ph85).
+  source: [[decision:install-gap-dir-currency]] | activated: 2026-06-10
+- [uses: 1] Sourced `.d/` companion files carry no load-bearing exec bit (only direct-exec'd hooks do) — mode/exec-bit currency checks must distinguish sourced-not-exec'd files or they false-positive; conversely content-only `cmp -s` misses mode drift on exec'd files. Pin the exemption per file class, not globally.
+  source: [[decision:install-gap-dir-currency]] | activated: 2026-06-10
+- [uses: 1] Claude Code settings merge for duplicate hook registrations is STRING-KEYED dedupe (verified empirically 2026-06-10, two headless-session probes with positive controls): identical command strings across settings.json + settings.local.json fire ONCE; DIFFERENT command strings invoking the same script BOTH fire. Any registration migration must normalize by script basename, not trust the dedupe.
+  source: [[decision:install-gap-dir-currency]] + eval/install-gap/drq1-verification.md | activated: 2026-06-10

@@ -1,6 +1,6 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-06-10 by /dev-debrief (Phase 84 — Hook & Registration Hygiene: NEW `eval/hook-hygiene/` durable record [capture-diagnosis.md + eval-diff.md + coverage-matrix.md + check-matrix.sh + rehearsal.log + run-exit-criteria.sh] + NEW `tests/test_eval_hermeticity.sh` + `tests/test_fixture_provenance.sh` + `tests/test_lifecycle_hooks_firing.sh` [23rd-25th make-test scripts] + `tests/fixtures/real-events/` provenance captures; post-commit.sh REDESIGNED on event-arrival-as-success; eval-runner.sh hermetic [CLAUDE_PROJECT_DIR=$WORK_DIR] + lifecycle init_git; kit repo self-consumes [gitignored .claude/settings.json + hooks/]; machine-wide: 11 ghost global registrations removed, 6 roots remediated; make test green 25 scripts ~500 assertions, make eval 52/52; broader file inventory may be stale, run /dev-scan to refresh)
+> Last updated: 2026-06-10 by /dev-debrief (Phase 85 — Install-Gap Fix + Edge-Screener Dogfood: modules.json `project_local.extra_dirs` → top-level `hook_dirs` map [4 consumers migrated]; install.sh NEW `ship_hook_dirs` helper [consumer-conditioned dir shipping on global + project-local paths]; check-install-drift.sh consumer-conditioned directory cells + `orphan:` rows + bash-3.2 empty-array fix; NEW `tests/test_install_drift_dircurrency.sh` [26th make-test script, 7 seeded controls]; NEW `eval/install-gap/` durable record [inventory + rehearsal + checkpoints + DRQ-1 + dogfood evidence + run-exit-criteria.sh 9/9]; harness-audit.sh 3 stale 4b predicates fixed; make test green 26 scripts ~500 assertions, make eval 52/52 zero flips; broader file inventory may be stale, run /dev-scan to refresh)
 
 ## Project Shape
 
@@ -10,7 +10,7 @@ Shell/Markdown/Python scaffolding kit (260+ files: 21 .sh hooks (18 + 3 session-
 
 nana-dev-kit/
   install.sh                           # Module-group installer (318 lines, zero inline Python, reads modules.json via jq, delegates JSON merges to register-settings.py)
-  modules.json                         # Declarative module manifest (5 modules: core, python, typescript, dev-wiki, knowledge-wiki)
+  modules.json                         # Declarative module manifest (5 modules: core, python, typescript, dev-wiki, knowledge-wiki; Phase 85 migrates project_local.extra_dirs → top-level hook_dirs map: consumer script → companion dirs)
   Makefile, VERSION, README.md         # Build targets, v0.5.0, docs (~95 lines, 7 sections)
   .github/workflows/kit-ci.yml        # Kit CI: shellcheck + make test
   memory_server/                       # Vendored MCP memory server (12 .py, nanaclaw)
@@ -22,7 +22,7 @@ nana-dev-kit/
     longmemeval.py                     # Benchmark script (FTS5+hybrid, per-question DB isolation, recall@5/10)
     README.md                          # Usage instructions + interpretation guide
     data/, results.json, .venv/        # Gitignored: dataset cache, results, Python venv
-  eval/                                # Eval harness: corpus, schemas, validators, comparison, reasoning, amplifier (Phase 68 ruler + Phase 69 measurability-gate + Phase 70 anchor-screen/ + Phase 71 retention-screen/ + Phase 77 xsession-screen/ — all repo-only, NOT in install.sh/make eval), qa-sweep/ (Phase 82 verification matrix + candidates + run-exit-criteria.sh — the QA sweep's durable record), hook-hygiene/ (Phase 84 — exit-criteria aggregator, eval-diff baseline/post-fix, capture-diagnosis, coverage matrix + rehearsal log)
+  eval/                                # Eval harness: corpus, schemas, validators, comparison, reasoning, amplifier (Phase 68 ruler + Phase 69 measurability-gate + Phase 70 anchor-screen/ + Phase 71 retention-screen/ + Phase 77 xsession-screen/ — all repo-only, NOT in install.sh/make eval), qa-sweep/ (Phase 82 verification matrix + candidates + run-exit-criteria.sh — the QA sweep's durable record), hook-hygiene/ (Phase 84 — exit-criteria aggregator, eval-diff baseline/post-fix, capture-diagnosis, coverage matrix + rehearsal log), install-gap/ (Phase 85 — install-path inventory, rehearsal log, checkpoint packages, DRQ-1 verification, dogfood evidence + A5 probe record, run-exit-criteria.sh)
     corpus/                            # Scenario directories (hook-*, skill-*, lifecycle-*)
     comparison/                        # Harness effectiveness comparison (methodology, scripts, results)
     reasoning/                         # Reasoning eval: LLM-as-judge, 20 scenarios, judge v2, baseline + IRON RULES delta + anti-patterns + self-dialogue + ablation traces (corpus/, judges/, baseline/, with-iron-rules/, with-anti-patterns/, with-self-dialogue-inline/, with-self-dialogue-subagent/, traces/)
@@ -91,10 +91,8 @@ Bash + jq (hooks + eval). memory_server requires python3 + pip deps (mcp, pydant
 | sync-rules.sh | AGENTS.md | CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md | Per-project |
 | session-start.sh | py-session-state.md, _CURRENT_STATE.md, active-phase.md | stdout | Context + memory guidance |
 | pre-compact.sh | _CURRENT_STATE.md, tasks.md, active-phase.md | stdout | Structured summary |
-
 ## Test Organization
-
-~500 automated tests (25 scripts) + 52 eval scenarios (4 categories) + 25 reasoning eval scenarios. `make test` runs regression tests (incl. test_amplifier_emitter.sh — the Phase-68 ruler's own test; test_assumption_ledger.sh — the Phase-81 ledger validator's test; test_manifest_freshness.sh + test_scripts_smoke.sh — Phase 82; test_eval_hermeticity.sh + test_fixture_provenance.sh + test_lifecycle_hooks_firing.sh — Phase 84, real-event anchored). `make eval` runs scored eval (jq); eval/amplifier/ is repo-only measurement infra, NOT part of `make eval`. `make dashboard` shows heuristic counter stats. Reasoning eval: `python3 eval/reasoning/run-eval.py` (subagent-based, non-deterministic, judge v2 exemplar-based; 9 modes including --ablation, --analyze, --selective for LOO trace analysis and heuristic coverage).
+~500 automated tests (26 scripts) + 52 eval scenarios (4 categories) + 25 reasoning eval scenarios. `make test` runs regression tests (incl. test_amplifier_emitter.sh — the Phase-68 ruler's own test; test_assumption_ledger.sh — the Phase-81 ledger validator's test; test_manifest_freshness.sh + test_scripts_smoke.sh — Phase 82; test_eval_hermeticity.sh + test_fixture_provenance.sh + test_lifecycle_hooks_firing.sh — Phase 84, real-event anchored). `make eval` runs scored eval (jq); eval/amplifier/ is repo-only measurement infra, NOT part of `make eval`. `make dashboard` shows heuristic counter stats. Reasoning eval: `python3 eval/reasoning/run-eval.py` (subagent-based, non-deterministic, judge v2 exemplar-based; 9 modes including --ablation, --analyze, --selective for LOO trace analysis and heuristic coverage).
 
 ## Known Issues
 

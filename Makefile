@@ -42,6 +42,7 @@ test:
 	@bash "$(NANA_KIT_DIR)tests/test_eval_hermeticity.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_fixture_provenance.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_lifecycle_hooks_firing.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_install_drift_dircurrency.sh"
 	@echo ""
 	@echo "All tests passed."
 

@@ -414,6 +414,56 @@ SRC_CUR=$(ls "$PROJECT_ROOT/templates/.claude/hooks/session-start.d"/*.sh 2>/dev
 DST_CUR=$(ls "$TPROJ/.claude/hooks/session-start.d"/*.sh 2>/dev/null | xargs -n1 basename | sort | tr '\n' ' ')
 assert_eq "$SRC_CUR" "$DST_CUR" "copied session-start.d set differs from source"
 
+# --- Phase 85: hook_dirs shipping invariant (install-gap fix) ---
+# Every install path that ships a hook script must also ship the companion dirs that script
+# consumes (modules.json .hook_dirs) — and ONLY for scripts it actually ships. An empty source
+# dir must NOT abort the installer under set -euo pipefail (incident-5 class: partial install).
+# fires: session-start.sh   # via the shipped-curator existence assertions on real modules.json
+HDKIT=$(mktemp -d)
+cp "$PROJECT_ROOT/install.sh" "$HDKIT/"
+cp -r "$PROJECT_ROOT/templates" "$HDKIT/templates"
+cp -r "$PROJECT_ROOT/scripts" "$HDKIT/scripts"
+cp -r "$PROJECT_ROOT/memory_server" "$HDKIT/memory_server"
+printf '#!/bin/bash\nexit 0\n' > "$HDKIT/templates/.claude/hooks/fake-global.sh"
+mkdir -p "$HDKIT/templates/.claude/hooks/fake-global.d"
+printf 'echo curator\n' > "$HDKIT/templates/.claude/hooks/fake-global.d/curator.sh"
+mkdir -p "$HDKIT/templates/.claude/hooks/empty.d"   # exists but EMPTY — the set -e glob trap
+jq '.hooks += [{"event":"SessionStart","matcher":"","script":"fake-global.sh","scope":"global"}]
+    | .hook_dirs."fake-global.sh" = ["fake-global.d","empty.d"]' \
+  "$PROJECT_ROOT/modules.json" > "$HDKIT/modules.json"
+
+THOME_HD=$(mktemp -d)
+# Pre-seed a stub venv python so the core module skips the slow venv build (pip lines are ||-guarded).
+mkdir -p "$THOME_HD/.claude/memory_server/.venv/bin"
+printf '#!/bin/sh\nexit 0\n' > "$THOME_HD/.claude/memory_server/.venv/bin/python3"
+chmod +x "$THOME_HD/.claude/memory_server/.venv/bin/python3"
+
+test_start "global path ships hook_dirs for consumer scripts it ships (and tolerates an empty dir)"
+if env HOME="$THOME_HD" bash "$HDKIT/install.sh" >/dev/null 2>&1 \
+   && [ -f "$THOME_HD/.claude/hooks/fake-global.d/curator.sh" ]; then
+  test_pass
+else
+  test_fail "fake-global.d/curator.sh not shipped by global path (or installer aborted on empty.d)"
+fi
+
+test_start "global path ships NO dirs for consumers it does not ship (session-start.sh is scope:project)"
+if [ ! -d "$THOME_HD/.claude/hooks/session-start.d" ]; then
+  test_pass
+else
+  test_fail "session-start.d shipped globally without its consumer script"
+fi
+
+test_start "--project-local tolerates an empty hook_dirs source dir (no set -e abort)"
+TPROJ_HD=$(mktemp -d)
+jq '.hook_dirs."session-start.sh" += ["empty.d"]' "$PROJECT_ROOT/modules.json" > "$HDKIT/modules.json"
+if (cd "$TPROJ_HD" && bash "$HDKIT/install.sh" --project-local >/dev/null 2>&1) \
+   && [ -f "$TPROJ_HD/.claude/hooks/session-start.d/wk-prune.sh" ]; then
+  test_pass
+else
+  test_fail "--project-local aborted or skipped session-start.d when empty.d present in hook_dirs"
+fi
+rm -rf "$HDKIT" "$THOME_HD" "$TPROJ_HD"
+
 test_start "--project-local: copied session-start.sh entry point is executable"
 # session-start.sh is the EXECUTED hook entry point (install.sh chmod +x's it); the session-start.d
 # curators are SOURCED by it (line 9-11), so they intentionally need no +x bit — don't assert it.

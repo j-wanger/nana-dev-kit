@@ -68,7 +68,7 @@
     { "event": "UserPromptSubmit", "matcher": "", "script": "context-size-check.sh", "scope": "global" }
   ],
   "ghost_cleanup": ["dev-wiki-post-commit"],
-  "project_local": {
-    "extra_dirs": ["session-start.d"]
+  "hook_dirs": {
+    "session-start.sh": ["session-start.d"]
   }
 }

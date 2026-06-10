@@ -1,0 +1,18 @@
+[2026-06-10T13:29:56Z] rehearsal start — kit=/Users/jwang/nana-dev-kit HEAD=e894dff
+[2026-06-10T13:29:56Z] A: project sandbox=/var/folders/lg/h9m6nvvd2_9d7s3hyjvdlqxr0000gn/T/tmp.KT3KofvOrW HOME=/var/folders/lg/h9m6nvvd2_9d7s3hyjvdlqxr0000gn/T/tmp.tiGn9eIqza
+[2026-06-10T13:29:57Z] PASS: A1 --project-local install exits 0
+[2026-06-10T13:29:57Z] PASS: A2 all 3 curators shipped to project sandbox
+[2026-06-10T13:29:57Z] PASS: A3 installed SessionStart chain exits 0 on the pinned (empty-stdin) event
+[2026-06-10T13:29:57Z] A3 provenance: session-start.sh reads no stdin fields (code-read verified); empty stdin = full coverage
+[2026-06-10T13:29:57Z] A3 output head: [nana:cognitive] Project not initialized — no .dev-wiki/ found.   Run /nana-init to bootstrap dev-wiki lifecycle, harness rules, and (optional) knowledge wiki. 
+[2026-06-10T13:29:57Z] B: global sandbox HOME=/var/folders/lg/h9m6nvvd2_9d7s3hyjvdlqxr0000gn/T/tmp.DZhYkibQwK
+[2026-06-10T13:29:57Z] PASS: B1 full global install exits 0
+[2026-06-10T13:29:57Z] PASS: B2 session-start.d NOT shipped globally (consumer is scope:project)
+[2026-06-10T13:29:57Z] PASS: B3 sandbox settings.json kit hooks == scope:global set
+[2026-06-10T13:29:57Z] PASS: B4 fresh sandbox root drift count 0 (got: 0)
+[2026-06-10T13:29:58Z] C: live-copy sandbox=/var/folders/lg/h9m6nvvd2_9d7s3hyjvdlqxr0000gn/T/tmp.YpemxhcU8j/claude-copy (real ~/.claude untouched)
+[2026-06-10T13:29:58Z] C1 live root CURRENT drift state (via copy, read-only): count=0
+[2026-06-10T13:29:58Z] PASS: C2 POSITIVE CONTROL: seeded stale curator on the live-copy is flagged
+[2026-06-10T13:29:58Z] rehearsal end — overall: GREEN
+
+[2026-06-10T13:34:00Z] CHECKPOINT-1 APPROVED (keep-current). Live run executed: install exit 0; post-run drift 0; assert-global-set PASS; backup backup-phase85-20260610-093320.tgz (restore tested).

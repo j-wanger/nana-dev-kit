@@ -56,10 +56,10 @@ else
   echo "  FAIL: $TAGGED_HOOKS/$TOTAL_HOOKS hooks have a valid scope"
 fi
 
-# Direction C: extra_dirs entries exist
+# Direction C: hook_dirs entries exist
 echo ""
-echo "=== Direction C: extra_dirs → disk ==="
-EXTRA_DIRS=$(jq -r '.project_local.extra_dirs[]' "$MODULES" 2>/dev/null || true)
+echo "=== Direction C: hook_dirs → disk ==="
+EXTRA_DIRS=$(jq -r '.hook_dirs[][]' "$MODULES" 2>/dev/null || true)
 for d in $EXTRA_DIRS; do
   TESTS_RUN=$((TESTS_RUN + 1))
   if [ -d "$HOOKS_DIR/$d" ]; then

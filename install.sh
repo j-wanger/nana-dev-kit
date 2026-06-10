@@ -63,13 +63,31 @@ done
 
 command -v jq >/dev/null 2>&1 || { echo "Error: jq is required. Install with: brew install jq (macOS) or apt install jq (Linux)." >&2; exit 1; }
 
+# --- Helper: ship hook companion dirs (modules.json .hook_dirs) alongside their consumer ---
+# A dir ships ONLY when its consumer script is among the scripts this path ships (never ship a
+# dir whose consumer this path does not install). find-based copy: an empty/no-match source dir
+# must NOT abort the installer under set -euo pipefail — a mid-sequence abort leaves a partial
+# install, the incident-5 class (session-start.sh present, session-start.d/ missing).
+ship_hook_dirs() {  # $1 = destination hooks dir; $2.. = shipped script basenames
+  local dest="$1" s d
+  shift
+  for s in "$@"; do
+    for d in $(jq -r --arg s "$s" '.hook_dirs[$s][]?' "$MODULES_JSON" 2>/dev/null); do
+      [ -d "$HOOKS_SRC/$d" ] || continue
+      mkdir -p "$dest/$d"
+      find "$HOOKS_SRC/$d" -maxdepth 1 -name '*.sh' -exec cp {} "$dest/$d/" \;
+      find "$dest/$d" -maxdepth 1 -name '*.sh' -exec chmod +x {} \;
+    done
+  done
+}
+
 # --- Project-local install (short-circuit, no global writes) ---
 if $PROJECT_LOCAL; then
   HOOKS_SRC="$SCRIPT_DIR/templates/.claude/hooks"
   PROJ_HOOKS_DIR=".claude/hooks"
   PROJ_SETTINGS=".claude/settings.local.json"
   PROJECT_HOOKS=$(jq -r '.hooks[] | select(.scope == "project") | .script' "$MODULES_JSON")
-  EXTRA_DIRS=$(jq -r '.project_local.extra_dirs[]' "$MODULES_JSON" 2>/dev/null || true)
+  EXTRA_DIRS=$(jq -r '.hook_dirs[][]' "$MODULES_JSON" 2>/dev/null || true)
   for h in $PROJECT_HOOKS; do
     [ -f "$HOOKS_SRC/$h" ] || { echo "Error: source missing: $HOOKS_SRC/$h" >&2; exit 1; }
   done
@@ -85,12 +103,8 @@ if $PROJECT_LOCAL; then
       cp "$HOOKS_SRC/$h" "$PROJ_HOOKS_DIR/$h"
       chmod +x "$PROJ_HOOKS_DIR/$h"
     done
-    for d in $EXTRA_DIRS; do
-      if [ -d "$HOOKS_SRC/$d" ]; then
-        mkdir -p "$PROJ_HOOKS_DIR/$d"
-        cp "$HOOKS_SRC/$d"/*.sh "$PROJ_HOOKS_DIR/$d/"
-      fi
-    done
+    # shellcheck disable=SC2086 — word-split intended: newline-separated script basenames
+    ship_hook_dirs "$PROJ_HOOKS_DIR" $PROJECT_HOOKS
     # NB: no --hooks-dir override — register-settings defaults project-local commands to
     # ${CLAUDE_PROJECT_DIR}/.claude/hooks so they resolve regardless of CWD (Phase 79). The hook
     # FILES were copied to $PROJ_HOOKS_DIR (.claude/hooks) above; only the registered command path differs.
@@ -292,6 +306,8 @@ if [ "$INSTALL_DEVWIKI" = true ]; then
   if $DRY_RUN; then
     HOOK_COUNT=$(echo "$HOOK_SCRIPTS" | wc -l | tr -d ' ')
     echo "[dry-run] install hooks ($HOOK_COUNT): $HOOK_SCRIPTS"
+    HOOK_DIRS_DRY=$(for h in $HOOK_SCRIPTS; do jq -r --arg s "$h" '.hook_dirs[$s][]?' "$MODULES_JSON" 2>/dev/null; done | sort -u | tr '\n' ' ')
+    [ -n "${HOOK_DIRS_DRY// /}" ] && echo "[dry-run] install hook dirs: $HOOK_DIRS_DRY"
     echo "[dry-run] register hooks in settings.json (nested schema)"
     echo "[dry-run] create markers: $MARKERS"
   else
@@ -301,6 +317,8 @@ if [ "$INSTALL_DEVWIKI" = true ]; then
       cp "$HOOKS_SRC/$h" ~/.claude/hooks/"$h"
       chmod +x ~/.claude/hooks/"$h"
     done
+    # shellcheck disable=SC2086 — word-split intended: newline-separated script basenames
+    ship_hook_dirs ~/.claude/hooks $HOOK_SCRIPTS
 
     GHOSTS=$(jq -r '.ghost_cleanup[]' "$MODULES_JSON" 2>/dev/null || true)
     for g in $GHOSTS; do rm -f ~/.claude/hooks/"$g".sh; done
