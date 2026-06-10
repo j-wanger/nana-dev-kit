@@ -159,12 +159,6 @@
   source: [[decision:char-level-sanitizer-fts5]] | activated: 2026-05-24
 - [uses: 1] search_hybrid() uses RRF fusion (alpha=0.4, k=60); nomic-embed-text-v1.5 produces 768d vectors matching vec0 table. Turn-level hybrid RRF is winning strategy (+27.6% lift on FTS5-failure questions, no degradation). fastembed + sqlite-vec are benchmark-only deps, NOT in install.sh.
   source: [[decision:turn-level-hybrid-recommended]] + [[decision:benchmark-only-hybrid-deps]] | activated: 2026-05-24
-- [uses: 1] /memory-consolidate is a skill-based alternative to vendored Qwen sidecar consolidator.py; uses memory_search/memory_store/memory_forget MCP tools with 10-merge budget cap. No Python changes to memory_server/ — skill-level solution avoids fork divergence.
-  source: [[decision:skill-based-memory-consolidation]] | activated: 2026-05-23
-- [uses: 1] All hooks use [nana:<hook-name>] prefix for messages; exception: [dev-wiki:post-commit] kept as semantic trigger. session-start uses sub-prefixes: [nana:gate], [nana:memory], [nana:recovery], [nana:pending], [nana:enforce], [nana:kit]. Future hooks must follow convention.
-  source: [[decision:hook-prefix-nana-namespace]] | activated: 2026-05-23
-- [uses: 1] install.sh --status shows runtime inventory: counts skills, hooks, rules, checks memory venv, reads VERSION, checks enforcement marker. Grouped by module category. No separate nana-status.sh script.
-  source: [[decision:status-in-install-sh]] | activated: 2026-05-23
 - [uses: 1] MANIFEST descriptions are additive comment section (# <skill-dir>: <first sentence from SKILL.md>) after existing md5+path checksums. Manually maintained -- no automation.
   source: [[journal:2026-05-23-phase-28-dx-discoverability-complete]] | activated: 2026-05-23
 - [uses: 1] memory_forget(memory_id, superseded_by="", scope="project") for soft delete with optional supersession chain; memory_prune only targets trust='low' + strength=1 so is dead code for bridge/harvest entries (trust='medium'/'high')

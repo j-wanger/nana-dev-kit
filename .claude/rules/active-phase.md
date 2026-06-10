@@ -1,18 +1,18 @@
 # Active Phase Context
 
-Phase: 85 — Install-Gap Fix + Edge-Screener Dogfood (READY FOR COMPLETION — delivery gate pending)
-Objective: DONE — installer ships consumer-adjacent hook_dirs on every path; drift checker gained
-consumer-conditioned directory currency (7 seeded controls); edge-screener migrated to a
-template-sourced single-registration install (checkpoint 2; DRQ-1 verdict: string-keyed dedupe);
-dogfood round complete (2 real sessions; A5 demand evidence: zero memory use, liveness-probed).
-Scope: install.sh, scripts/check-install-drift.sh, modules.json, tests/**, eval/install-gap/**;
-checkpoint-approved out-of-repo: ~/.claude (live run, drift 0), /Users/jwang/edge-screener.
-Constraints honored: inventory before checkpoint 1; files-never-registrations (scope:global set
-preserved); seeded controls before evidence; hard checkpoints + tested backups; couldnt-fire
-probe before the memory zero counted; frozen apparatus + ledger read-only.
-Exit: 9/9 via eval/install-gap/run-exit-criteria.sh (specs/phase-85-install-gap-dogfood.md).
-Next: accept delivery → gate flip + commit/push; then next direction (prune-on-value round 2 /
-edge-screener Phase 10 — analysis input at its .dev-wiki/phase-10-candidate-analysis.md).
+Phase: 86 — Ceremony Lift Measurement (READY FOR COMPLETION — all 8 tasks [x], 2026-06-10)
+Objective: tiered screen of whether ceremony steps earn their cost — DONE: stage-1 evidence
+assembled (cost table: ceremony ~66% adj tokens / ~64% wall; evidence table post-correction:
+1 outcome-grade / 10 ambiguous-downgrade / 8 consumption-capped / 25 zero-catch), maintainer
+checkpoint verdicts taken (dev-plan=trim, spec=ambiguous-stage-2, approach-rev=keep,
+plan-rev=keep-by-immateriality, review-gate=underpowered-keep-direction, debrief-capture=trim;
+STAGE-2 go, routed follow-on). Review gate 6/10 revise: CRITICAL taxonomy-widening fixed,
+A2 >50%-downgrade STOP fired + accepted (ledger A2 bit); verdicts re-confirmed.
+Scope: eval/ceremony-lift/** (frozen); phase article verdict block; NO kit component modified
+(check-verdicts-only.sh vs pinned base 5360486; pre-registration byte-FROZEN — never edit).
+Exit: 8/8 via eval/ceremony-lift/run-exit-criteria.sh (post-correction re-run) — MET.
+Next: delivery gate flip → then Phase 87 stage-2 episode contrast and/or trim follow-on round.
+Abort: delivery rejected → STOP, re-present.
 Gates:
-- [x] Direction confirmed by user (assumption positions A1 defer-to-checkpoint-1, A2 accept, A3 down-scoped, A4 accept — 2026-06-10)
-- [x] Delivery accepted (post-implementation report 2026-06-10, commit verified)
+- [x] Direction confirmed by user (assumption positions, A1 round 2 revision — 2026-06-10)
+- [ ] Delivery accepted

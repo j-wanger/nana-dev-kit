@@ -204,3 +204,9 @@ eval/amplifier/skill-screen/runs/ctrl-recoverable/3.py
 [pruned 2026-06-10]   source: [[decision:dev-plan-scope-extraction]] | activated: 2026-05-23
 [pruned 2026-06-10] - [uses: 1] /nana skill (37 lines) reads MANIFEST via kit path marker (~/.claude/.nana-dev-kit-path), parses description comments, groups by module. /memory-consolidate (45 lines) uses Claude MCP tools for memory dedup.
 [pruned 2026-06-10]   source: [[journal:2026-05-23-phase-29-grade-push-complete]] | activated: 2026-05-23
+[pruned 2026-06-10] - [uses: 1] /memory-consolidate is a skill-based alternative to vendored Qwen sidecar consolidator.py; uses memory_search/memory_store/memory_forget MCP tools with 10-merge budget cap. No Python changes to memory_server/ — skill-level solution avoids fork divergence.
+[pruned 2026-06-10]   source: [[decision:skill-based-memory-consolidation]] | activated: 2026-05-23
+[pruned 2026-06-10] - [uses: 1] All hooks use [nana:<hook-name>] prefix for messages; exception: [dev-wiki:post-commit] kept as semantic trigger. session-start uses sub-prefixes: [nana:gate], [nana:memory], [nana:recovery], [nana:pending], [nana:enforce], [nana:kit]. Future hooks must follow convention.
+[pruned 2026-06-10]   source: [[decision:hook-prefix-nana-namespace]] | activated: 2026-05-23
+[pruned 2026-06-10] - [uses: 1] install.sh --status shows runtime inventory: counts skills, hooks, rules, checks memory venv, reads VERSION, checks enforcement marker. Grouped by module category. No separate nana-status.sh script.
+[pruned 2026-06-10]   source: [[decision:status-in-install-sh]] | activated: 2026-05-23

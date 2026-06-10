@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 85</title>
+<title>Delivery Report: Phase 86</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,38 +21,40 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 85 &mdash; Phase 85</h1>
+<h1>Delivery Report: Phase 86 &mdash; Phase 86</h1>
 
 <div class="summary">
   <div class="card"><div class="num">8/8</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">20</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">13</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (51 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">52/52</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+294</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-121</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">3</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">10:50</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+181</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-104</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">5</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">19:02</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>Install-path inventory: test inventory artifact format check rejects a row without a status and a missing causal-path...</td></tr>
-<tr><td>&#x2705;</td><td>modules.json hook_dirs migration: test jq asserts top-level hook_dirs maps "session-start.sh" to ["session-start.d"] ...</td></tr>
-<tr><td>&#x2705;</td><td>install.sh ships hook_dirs on every path: test sandbox-install asserts global path ships session-start.d/ when it shi...</td></tr>
-<tr><td>&#x2705;</td><td>check-install-drift.sh directory currency: test new tests/test_install_drift_dircurrency.sh seeded controls — session...</td></tr>
-<tr><td>&#x2705;</td><td>Maintainer-root rehearsal + checkpoint 1 + live run: test rehearsal in mktemp HOME/project runs full install then pip...</td></tr>
-<tr><td>&#x2705;</td><td>DRQ-1 verification + edge-screener migration + checkpoint 2: test sandbox project with the SAME hook in settings.json...</td></tr>
-<tr><td>&#x2705;</td><td>Dogfood round + A5 evidence: test check-dogfood-evidence.sh rejects an evidence file missing a numeric probe exit cod...</td></tr>
-<tr><td>&#x2705;</td><td>Close-out + exit-criteria runner: test run-exit-criteria.sh maps each of the spec's 9 exit criteria to a command and ...</td></tr>
+<tr><td>&#x2705;</td><td>Author pre-registration document (corpus window + frozen end-commit 5360486 + measurement-session exclusion + hand-co...</td></tr>
+<tr><td>&#x2705;</td><td>Build transcript cost extractor with hand-labeled positive control: hand-label one known-composition session and writ...</td></tr>
+<tr><td>&#x2705;</td><td>Generate per-step cost table over the frozen corpus window and evaluate materiality: write eval/ceremony-lift/check-c...</td></tr>
+<tr><td>&#x2705;</td><td>Seed five BLIND tabulator controls + answer key: write eval/ceremony-lift/test-tabulator-controls.sh joining tabulato...</td></tr>
+<tr><td>&#x2705;</td><td>Build the frozen corpus manifest: mechanically enumerate ALL reviewer/spec/debrief dispatches in the pre-registered w...</td></tr>
+<tr><td>&#x2705;</td><td>Tabulate evidence table with admissibility re-execution log: write eval/ceremony-lift/check-evidence-table.sh — row c...</td></tr>
+<tr><td>&#x2705;</td><td>HARD CHECKPOINT — maintainer verdicts: write eval/ceremony-lift/check-verdict-block.sh validating closed-enum per-ste...</td></tr>
+<tr><td>&#x2705;</td><td>Close-out: author eval/ceremony-lift/check-verdicts-only.sh (IS spec criterion 8: git diff --quiet 5360486..HEAD over...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Install-gap fix: extra_dirs shipping + directory currency</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Ceremony-step checkpoint verdicts (Phase 86)</td><td>high</td></tr>
+<tr><td>Ceremony Lift: Tiered Screen Before Episode Experiment</td><td>high</td></tr>
+<tr><td>Install-gap fix: extra_dirs shipping + directory currency</td><td>high</td></tr>
 <tr><td>A3 disposition: keep-current for registration-dead ~/.claude copies</td><td>high</td></tr>
 <tr><td>DRQ-1: settings merge semantics are string-keyed dedupe</td><td>high</td></tr>
 </table>
@@ -62,23 +64,16 @@
 <li><code>.claude/rules/active-knowledge.md</code></li>
 <li><code>.claude/rules/active-phase.md</code></li>
 <li><code>.claude/rules/working-knowledge.md</code></li>
+<li><code>.dev-wiki/.stale-queue</code></li>
 <li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
 <li><code>.dev-wiki/assumption-ledger.md</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
-<li><code>Makefile</code></li>
-<li><code>README.md</code></li>
+<li><code>docs/delivery-report.html</code></li>
 <li><code>docs/report.html</code></li>
 <li><code>docs/workflow.html</code></li>
-<li><code>install.sh</code></li>
-<li><code>modules.json</code></li>
-<li><code>scripts/check-install-drift.sh</code></li>
-<li><code>scripts/harness-audit.sh</code></li>
-<li><code>tests/test_hook_firing_coverage.sh</code></li>
-<li><code>tests/test_install.sh</code></li>
-<li><code>tests/test_registration.sh</code></li>
 
 
 </ul>
@@ -96,7 +91,7 @@ All tests passed.</pre>
 <pre>Score: 52/52 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-06-10 10:50:54 by generate-delivery-report.py
+  Generated 2026-06-10 19:02:02 by generate-delivery-report.py
 </div>
 </body>
 </html>
