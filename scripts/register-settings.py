@@ -98,8 +98,21 @@ def cmd_hooks(args):
 
 
 def cmd_mcp(args):
+    # Server name + module come from modules.json when provided (Phase 82) — they were
+    # hardcoded here, which made the manifest's declared mcp block dead config.
+    name, module = "memory", "memory_server"
+    if getattr(args, "modules_json", None) and os.path.isfile(args.modules_json):
+        with open(args.modules_json) as f:
+            manifest = json.load(f)
+        for m in manifest.get("modules", []):
+            mcp = m.get("mcp")
+            if mcp:
+                name = mcp.get("name", name)
+                module = mcp.get("module", module)
+                break
+
     if args.dry_run:
-        print(f"[dry-run] register MCP: python={args.python}, cwd={args.cwd}")
+        print(f"[dry-run] register MCP: name={name}, module={module}, python={args.python}, cwd={args.cwd}")
         return
 
     settings_path = args.settings_json
@@ -109,9 +122,9 @@ def cmd_mcp(args):
             data = json.load(f)
     if "mcpServers" not in data:
         data["mcpServers"] = {}
-    data["mcpServers"]["memory"] = {
+    data["mcpServers"][name] = {
         "command": os.path.expanduser(args.python),
-        "args": ["-m", "memory_server"],
+        "args": ["-m", module],
         "cwd": os.path.expanduser(args.cwd),
     }
 
@@ -137,6 +150,7 @@ def main():
     p_mcp.add_argument("settings_json", help="Path to settings.json")
     p_mcp.add_argument("--python", required=True, help="Path to Python interpreter")
     p_mcp.add_argument("--cwd", required=True, help="Working directory for MCP server")
+    p_mcp.add_argument("--modules-json", help="modules.json path; mcp server name/module read from its mcp block")
     p_mcp.add_argument("--dry-run", action="store_true")
 
     args = parser.parse_args()

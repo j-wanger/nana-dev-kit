@@ -572,12 +572,14 @@ else
   test_fail "scope-check.sh failed to parse .input.file_path"
 fi
 
-# Hook functional test: scope-check does NOT parse old .tool_input path
-test_start "scope-check.sh ignores .tool_input (old broken field)"
-if ! grep -q 'tool_input' "$PROJECT_ROOT/templates/.claude/hooks/dev-wiki-scope-check.sh"; then
+# Hook functional test (Phase 82 INVERTED): the old assertion enshrined a bug — it required
+# scope-check to IGNORE .tool_input, but current platform events carry .tool_input (the .input-only
+# parse made the hook dormant in production). Both fields must now be parsed, defensively.
+test_start "scope-check.sh parses .tool_input with .input fallback (current event shape)"
+if grep -q 'tool_input.file_path // .input.file_path' "$PROJECT_ROOT/templates/.claude/hooks/dev-wiki-scope-check.sh"; then
   test_pass
 else
-  test_fail "scope-check.sh still references .tool_input"
+  test_fail "scope-check.sh must parse .tool_input.file_path with .input.file_path fallback"
 fi
 
 # MultiEdit in matchers: generated template preserves the Write|Edit|MultiEdit matcher
@@ -815,5 +817,30 @@ rm -rf "$DROOT"
 
 test_start "drift: fail-open (exit 0) when installed root does not exist"
 assert_exit_code 0 bash "$DRIFT_SCRIPT" --count "/nonexistent/installed/root/xyz-$$"
+
+# --- Phase 82: installed-hooks comparison pass (2b) ---
+# Pre-Phase-79 global installs left project-scoped hooks LIVE in the installed root while the
+# scope:global filter made their drift invisible (4+ stale registered hooks ran for weeks).
+# Any kit-shipped hook PRESENT in the installed root is now compared regardless of scope tag.
+
+test_start "drift: stale project-scoped hook present in installed root IS reported (2b)"
+DROOT=$(mktemp -d)
+make_synced_root "$DROOT"
+cp "$PROJECT_ROOT/templates/.claude/hooks/enforce-spec.sh" "$DROOT/hooks/enforce-spec.sh"
+echo "# stale" >> "$DROOT/hooks/enforce-spec.sh"
+DEC=0; DOUT=$(bash "$DRIFT_SCRIPT" "$DROOT" 2>&1) || DEC=$?
+if [ "$DEC" -ne 0 ] && echo "$DOUT" | grep -q 'hooks/enforce-spec.sh'; then
+  test_pass
+else
+  test_fail "stale installed project-scoped hook not reported (ec=$DEC out=$DOUT)"
+fi
+rm -rf "$DROOT"
+
+test_start "drift: user-owned non-kit hook in installed root is ignored (ownership boundary)"
+DROOT=$(mktemp -d)
+make_synced_root "$DROOT"
+printf '#!/usr/bin/env bash\nexit 0\n' > "$DROOT/hooks/my-custom-hook.sh"
+assert_exit_code 0 bash "$DRIFT_SCRIPT" "$DROOT"
+rm -rf "$DROOT"
 
 test_summary "test_install"

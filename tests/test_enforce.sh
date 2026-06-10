@@ -135,4 +135,38 @@ EXIT=$(run_loop_hook "$T" "$STOP_JSON")
 assert_eq "0" "$EXIT" "should allow without enforce marker"
 rm -rf "$T"
 
+# --- Phase 82: current platform event shape (.tool_input) + absolute paths — the dormancy regressions ---
+# enforce-spec parsed only legacy .input.file_path (a .tool_input-only event sailed through), its
+# relative allowlist never matched absolute event paths, and its spec lookup reconstructed the slug
+# with an ASCII-dash sed that an em-dash phase line broke. All three must hold both ways.
+
+test_start "spec: current shape (.tool_input) blocks without approved spec"
+T=$(setup_fixture)
+printf 'Phase: 99 - test\n' > "$T/.claude/rules/active-phase.md"
+EXIT=$(run_spec_hook "$T" '{"tool_name":"Write","tool_input":{"file_path":"src/main.py"}}')
+assert_eq "2" "$EXIT" "tool_input shape must hit the same gate as legacy .input"
+teardown_fixture "$T"
+
+test_start "spec: ABSOLUTE in-project path hits the allowlist (tests/)"
+T=$(setup_fixture)
+printf 'Phase: 99 - test\n' > "$T/.claude/rules/active-phase.md"
+EXIT=$(run_spec_hook "$T" "{\"tool_name\":\"Write\",\"tool_input\":{\"file_path\":\"$T/tests/test_foo.py\"}}")
+assert_eq "0" "$EXIT" "absolute path must be relativized before the allowlist"
+teardown_fixture "$T"
+
+test_start "spec: em-dash phase line + status suffix still finds the approved spec (glob lookup)"
+T=$(setup_fixture)
+printf 'Phase: 99 — Some Name (ultracode) | ACTIVE\n' > "$T/.claude/rules/active-phase.md"
+printf '<!-- nana:approved 2026-06-09 -->\n# Spec: x\n' > "$T/specs/phase-99-some-name.md"
+EXIT=$(run_spec_hook "$T" "{\"tool_name\":\"Write\",\"tool_input\":{\"file_path\":\"$T/src/main.py\"}}")
+assert_eq "0" "$EXIT" "spec lookup must match by phase number glob, not slug reconstruction"
+teardown_fixture "$T"
+
+test_start "spec: outside-project absolute path is allowed (not this project's gate)"
+T=$(setup_fixture)
+printf 'Phase: 99 - test\n' > "$T/.claude/rules/active-phase.md"
+EXIT=$(run_spec_hook "$T" '{"tool_name":"Write","tool_input":{"file_path":"/somewhere/else/src/main.py"}}')
+assert_eq "0" "$EXIT" "outside-project writes must not be blocked"
+teardown_fixture "$T"
+
 test_summary "enforce"

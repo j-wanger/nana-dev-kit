@@ -33,7 +33,16 @@ if [ "$STOP_ACTIVE" = "true" ]; then
 fi
 
 # Planning guard: only review when Python files were actually touched this session.
-HAS_PY_CHANGES=$(echo "$INPUT" | jq -r '[.tool_uses[].input | (.file_path // .command // "")] | any(contains(".py"))' 2>/dev/null || echo "false")
+# Prefer the legacy/fixture .tool_uses array; real Stop events carry transcript_path instead,
+# so fall back to scanning the transcript JSONL for tool_use inputs (parity with check-tests-were-run.sh).
+TOOL_ACTIVITY=$(echo "$INPUT" | jq -r '[.tool_uses[]?.input | (.file_path // .command // "")] | join("\n")' 2>/dev/null || echo "")
+if [ -z "$TOOL_ACTIVITY" ]; then
+  TRANSCRIPT=$(echo "$INPUT" | jq -r '.transcript_path // empty' 2>/dev/null || echo "")
+  if [ -n "$TRANSCRIPT" ] && [ -f "$TRANSCRIPT" ]; then
+    TOOL_ACTIVITY=$(jq -r 'select(.type=="assistant") | .message.content[]? | select(.type=="tool_use") | .input | (.file_path // .command // "")' "$TRANSCRIPT" 2>/dev/null || echo "")
+  fi
+fi
+HAS_PY_CHANGES=$(printf '%s' "$TOOL_ACTIVITY" | grep -q '\.py' && echo true || echo false)
 if [ "$HAS_PY_CHANGES" != "true" ]; then
   log_firing skipped no-py-changes || true
   exit 0

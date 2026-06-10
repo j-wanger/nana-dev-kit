@@ -93,5 +93,47 @@ else
   test_fail "$B_FAIL dangling references"
 fi
 
+# ---- Direction C (Phase 82): orphan companions — every companion must be referenced ----
+# 8 stale referenced_at values and 3 orphan files accumulated invisibly while Directions A/B
+# passed. Pinned exemption allow-list (the 3 known orphans, filed as subtraction-review
+# candidates in Phase 82) keeps this green today while catching any NEW orphan.
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+ORPHAN_EXEMPT="dev-wiki/stale-queue-spec.md knowledge-wiki/registry-schema.md knowledge-wiki/session-context.md"
+
+test_start "Direction C: no NEW orphan companions (pinned 3-entry exemption)"
+C_FAIL=0
+while IFS= read -r comp; do
+  rel="${comp#"$SKILLS_DIR"/}"
+  case " $ORPHAN_EXEMPT " in *" $rel "*) continue ;; esac
+  case "$rel" in knowledge-wiki/domain-profiles/*) continue ;; esac  # dynamic dispatch: wiki-init reads <domain>.md built at runtime
+  base=$(basename "$comp")
+  # Cross-skill references are legitimate (dev-plan reads dev-wiki templates) — grep the WHOLE tree.
+  REFS=$(grep -rl --include='*.md' "$base" "$SKILLS_DIR" 2>/dev/null | grep -v "^$comp\$" || true)
+  if [ -z "$REFS" ] \
+     && ! grep -rl -q "$base" "$REPO_ROOT/scripts" "$REPO_ROOT/Makefile" "$REPO_ROOT/modules.json" 2>/dev/null; then
+    echo "  ORPHAN: $rel (referenced nowhere)"
+    C_FAIL=$((C_FAIL + 1))
+  fi
+done < <(find "$SKILLS_DIR" -mindepth 2 -name '*.md' ! -name 'SKILL.md')
+if [ "$C_FAIL" -eq 0 ]; then test_pass; else test_fail "$C_FAIL new orphan companion(s)"; fi
+
+# ---- Direction D (Phase 82): referenced_at "Step N" pointers must name a real step ----
+test_start "Direction D: referenced_at Step-N values resolve to a heading in the parent SKILL.md"
+D_FAIL=0
+while IFS= read -r comp; do
+  dir=$(dirname "$comp")
+  skill="$dir/SKILL.md"
+  [ -f "$skill" ] || continue
+  REF=$(sed -n 's/^referenced_at: *"\(.*\)"/\1/p' "$comp" | head -1)
+  NUMS=$(echo "$REF" | grep -oE 'Step [0-9]+(\.[0-9]+)?(-[0-9]+)?' | head -1 | sed 's/^Step //' || true)
+  [ -z "$NUMS" ] && continue   # free-text pointers (e.g. "companion") are not step-checked
+  # Accept singular or plural heading style: "Step 2", "Steps 2-4" — match the full stated range.
+  if ! grep -qE "Steps? ${NUMS}([^0-9]|\$)" "$skill"; then
+    echo "  STALE: ${comp#"$SKILLS_DIR"/} says '$REF' but 'Step(s) ${NUMS}' not found in SKILL.md"
+    D_FAIL=$((D_FAIL + 1))
+  fi
+done < <(find "$SKILLS_DIR" -mindepth 2 -name '*.md' ! -name 'SKILL.md')
+if [ "$D_FAIL" -eq 0 ]; then test_pass; else test_fail "$D_FAIL stale referenced_at pointer(s)"; fi
+
 echo ""
 test_summary "companion-validation"

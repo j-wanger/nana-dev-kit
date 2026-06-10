@@ -25,8 +25,19 @@ command -v jq >/dev/null 2>&1 || { echo "[nana:tests] jq not found, hook skipped
 
 INPUT=$(cat)
 
+# Session tool activity: prefer the legacy/fixture .tool_uses array when present; real Stop
+# events carry transcript_path (NOT tool_uses), so fall back to scanning the transcript JSONL
+# for tool_use inputs. Without this fallback the hook only ever acted on fabricated payloads.
+TOOL_ACTIVITY=$(echo "$INPUT" | jq -r '[.tool_uses[]?.input | (.file_path // .command // "")] | join("\n")' 2>/dev/null || echo "")
+if [ -z "$TOOL_ACTIVITY" ]; then
+  TRANSCRIPT=$(echo "$INPUT" | jq -r '.transcript_path // empty' 2>/dev/null || echo "")
+  if [ -n "$TRANSCRIPT" ] && [ -f "$TRANSCRIPT" ]; then
+    TOOL_ACTIVITY=$(jq -r 'select(.type=="assistant") | .message.content[]? | select(.type=="tool_use") | .input | (.file_path // .command // "")' "$TRANSCRIPT" 2>/dev/null || echo "")
+  fi
+fi
+
 # Check if any Python files were modified in this session
-HAS_PY_CHANGES=$(echo "$INPUT" | jq -r '[.tool_uses[].input | (.file_path // .command // "")] | any(contains(".py"))' 2>/dev/null || echo "false")
+HAS_PY_CHANGES=$(printf '%s' "$TOOL_ACTIVITY" | grep -q '\.py' && echo true || echo false)
 
 # If no Python files were touched, allow stop
 if [ "$HAS_PY_CHANGES" != "true" ]; then
@@ -35,7 +46,7 @@ if [ "$HAS_PY_CHANGES" != "true" ]; then
 fi
 
 # Check if pytest was run at any point
-PYTEST_RAN=$(echo "$INPUT" | jq -r '[.tool_uses[].input.command // ""] | any(contains("pytest"))' 2>/dev/null || echo "false")
+PYTEST_RAN=$(printf '%s' "$TOOL_ACTIVITY" | grep -q 'pytest' && echo true || echo false)
 
 if [ "$PYTEST_RAN" != "true" ]; then
   log_firing block tests-not-run || true

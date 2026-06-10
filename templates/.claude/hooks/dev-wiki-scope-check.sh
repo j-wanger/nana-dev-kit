@@ -28,8 +28,12 @@ ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
 command -v jq >/dev/null 2>&1 || { echo "[nana:scope-check] jq not found, hook skipped" >&2; exit 0; }
 
 INPUT=$(cat)
-FILE_PATH=$(echo "$INPUT" | jq -r '.input.file_path // empty' 2>/dev/null || echo "")
+FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // .input.file_path // empty' 2>/dev/null || echo "")
 [ -z "$FILE_PATH" ] && exit 0
+
+# Normalize to ABSOLUTE (Phase 82): the allowlist and the glob matcher below are written against
+# $ROOT-prefixed absolute paths, but events may carry project-relative paths — absolutize those.
+[[ "$FILE_PATH" != /* ]] && FILE_PATH="$ROOT/$FILE_PATH"
 
 # Always allow dev-wiki state, project rules, and knowledge wiki paths
 case "$FILE_PATH" in

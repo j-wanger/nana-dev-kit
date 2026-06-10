@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 81</title>
+<title>Delivery Report: Phase 82</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,58 +21,90 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 81 &mdash; Phase 81</h1>
+<h1>Delivery Report: Phase 82 &mdash; Phase 82</h1>
 
 <div class="summary">
   <div class="card"><div class="num">4/4</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">11</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">40</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (51 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">52/52</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+111</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-58</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">1</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">13:11</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+977</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-461</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">4</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">15:40</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>[M] T1 Append-only assumption-ledger schema + file (seeded with Phase-80's A1-A4 verdicts as the first conformant ent...</td></tr>
-<tr><td>&#x2705;</td><td>[L] T2 dev-plan assumption-gate.md companion (naive surfacer + positions-ARE-the-gate, REPLACING approach-approval) +...</td></tr>
-<tr><td>&#x2705;</td><td>[M] T3 dev-debrief revisit-status forcing-function + finalization enforcement (NO new hook). [DONE 2026-06-09: added ...</td></tr>
-<tr><td>&#x2705;</td><td>[S] T4 (LAST) Single-schema-source consistency assertion + firing-coverage of the OUT-OF-DRIFT-SCOPE files + README t...</td></tr>
+<tr><td>&#x2705;</td><td>[M] T1: Baseline + instrument controls — record make test / make eval / check-install-drift.sh baseline; seed one syn...</td></tr>
+<tr><td>&#x2705;</td><td>[M] T2: Audit fan-out (ultracode Workflow) — 8 parallel READ-ONLY candidate-generator agents (wiring/firing/companion...</td></tr>
+<tr><td>&#x2705;</td><td>[L] T3: Orchestrator verification + mid-phase report + serialized fixes — orchestrator executes every verdict command...</td></tr>
+<tr><td>&#x2705;</td><td>[M] T4: Matrix close-out + deferred filings + exit-criteria run — finalize verification-matrix.md (every area ≥1 row,...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Assumption-Approval Gate (Phase 81)</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>QA &amp; Verification Sweep (ultracode)</td><td>high</td></tr>
+<tr><td>Drift Checker Compares Installed Presence, Not Scope Tags</td><td>high</td></tr>
+<tr><td>Hook Event-Shape Normalization</td><td>high</td></tr>
+<tr><td>Assumption-Approval Gate (Phase 81)</td><td>high</td></tr>
 </table>
 
 <h2>Files Changed</h2>
 <ul>
+<li><code>.claude/rules/active-knowledge.md</code></li>
 <li><code>.claude/rules/active-phase.md</code></li>
+<li><code>.claude/rules/working-knowledge.md</code></li>
 <li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
+<li><code>.dev-wiki/articles/phases/phase-81-assumption-approval-gate.md</code></li>
+<li><code>.dev-wiki/assumption-ledger.md</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
 <li><code>Makefile</code></li>
 <li><code>README.md</code></li>
-<li><code>templates/.claude/skills/dev-debrief/SKILL.md</code></li>
-<li><code>templates/.claude/skills/dev-debrief/debrief-finalization.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/SKILL.md</code></li>
+<li><code>docs/report.html</code></li>
+<li><code>docs/workflow.html</code></li>
+<li><code>install.sh</code></li>
+<li><code>scripts/check-install-drift.sh</code></li>
+<li><code>scripts/register-settings.py</code></li>
+<li><code>templates/.claude/hooks/block-dangerous-bash.sh</code></li>
+<li><code>templates/.claude/hooks/check-tests-were-run.sh</code></li>
+<li><code>templates/.claude/hooks/dev-wiki-scope-check.sh</code></li>
+<li><code>templates/.claude/hooks/enforce-memory.sh</code></li>
+<li><code>templates/.claude/hooks/enforce-spec.sh</code></li>
+<li><code>templates/.claude/hooks/py-review-stop.sh</code></li>
+<li><code>templates/.claude/hooks/session-start.sh</code></li>
+<li><code>templates/.claude/skills/MANIFEST</code></li>
+<li><code>templates/.claude/skills/dev-debrief/delivery-flow.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/executor-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-debrief/retro-check.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/artifact-writer-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/research-pause-spec.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/state-loader-prompt.md</code></li>
+<li><code>templates/.claude/skills/dev-scan/file-prompt.md</code></li>
+<li><code>templates/.claude/skills/wiki-bootstrap/research-agent-prompt.md</code></li>
+<li><code>templates/.claude/skills/wiki-health/empirical-anchor-spec.md</code></li>
+<li><code>templates/AGENTS.md</code></li>
+<li><code>tests/test_companions.sh</code></li>
+<li><code>tests/test_enforce.sh</code></li>
+<li><code>tests/test_install.sh</code></li>
+<li><code>tests/test_long_cadence_hooks.sh</code></li>
+<li><code>tests/test_tooluse_hooks.sh</code></li>
 
 
 </ul>
 
 <h2>Test Results</h2>
 <p><span class="status" style="background:#2d7d2d">PASS</span> 51 passed, 1 failed</p>
-<pre>  schema source: no divergent '## Ledger schema' HEADING in any skill companion OK
+<pre>  generate-workflow.py: exits 0 and writes docs/workflow.html with HTML content OK
 
-test_assumption_ledger: 22 run, 22 passed, 0 failed
+scripts-smoke: 3 run, 3 passed, 0 failed
 
 All tests passed.</pre>
 
@@ -81,7 +113,7 @@ All tests passed.</pre>
 <pre>Score: 52/52 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-06-09 13:11:28 by generate-delivery-report.py
+  Generated 2026-06-09 15:40:16 by generate-delivery-report.py
 </div>
 </body>
 </html>

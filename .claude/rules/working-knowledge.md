@@ -195,3 +195,9 @@
   source: [[wiki:hook-exit-codes]] | activated: 2026-05-22
 - [uses: 3] Enforcement hooks (enforce-spec.sh, enforce-loop.sh, detect-loop.sh) install globally to ~/.claude/hooks/; check CWD .claude/enforce marker (fail-open); install.sh JSON merges hooks into settings.json
   source: [[decision:global-hooks-project-opt-in]] | activated: 2026-05-22
+- [uses: 1] Orchestrator-only evidence standard (Ph82 QA sweep): in-kit, NO subagent prose or transcript is verdict evidence (the always-loaded working-knowledge leak) — subagents are READ-ONLY candidate-generators; every clean AND defect-found verdict is a deterministic command the orchestrator executes ITSELF. Controls-first: a checker vouching for any clean verdict must FIRST catch a seeded synthetic defect in mktemp -d scratch (clean-on-seed = instrument-dead for its area). Zero confirmed defects is a VALID success — the deliverable is the verification matrix.
+  source: [[decision:qa-verification-sweep]] | activated: 2026-06-09
+- [uses: 1] Registered+present+valid ≠ working: 4 silent breakages lasted 8-33 phases on structural-only checks — verify firing by piping a real event and asserting exit 2 / the log row, in a clean env (mktemp -d, never live state); sandbox-first for hook fixes, assert allow AND block paths BEFORE touching live copies (Ph82: the freshly-fixed enforce-spec gate self-locked the orchestrator mid-fix — the constraint earned its keep).
+  source: [[HEU-012]] | activated: 2026-06-09
+- [uses: 1] Phase-80 leak inversion: the in-kit always-loaded working-knowledge leak HELPS candidate recall (wanted at fan-out) but is FATAL for verification — verdicts must assert against the filesystem/runtime, never the always-loaded docs; frozen apparatus (eval/amplifier/**, eval/assumption-screen/**) and the assumption-ledger stay READ-ONLY in audits (defects filed, not fixed).
+  source: [[decision:assumption-surfacer-completeness-screen]] | activated: 2026-06-09

@@ -1,6 +1,6 @@
 # Nana Dev Kit
 
-End-to-end development harness for Claude Code. Installs 22 skills, 11 hooks, identity rules, and a persistent memory server. Covers the full lifecycle: scaffold → spec → plan → execute → debrief.
+End-to-end development harness for Claude Code. Installs 25 skills, 18 hooks (17 project-scoped + 1 global), identity rules, and a persistent memory server. Covers the full lifecycle: scaffold → spec → plan → execute → debrief.
 
 ## Requirements
 
@@ -30,8 +30,9 @@ Then in any project:
 | `--core-only` | Identity rules + memory server only |
 | `--no-python` | Everything except Python-specific skills (py-init, py-lint, py-test, py-review) |
 | `--no-typescript` | Everything except `/ts-init` |
-| `--project-local` | Per-project hooks (audit-log, auto-ruff-format, block-dangerous-bash, check-tests-were-run, scan-secrets, session-start) into `./.claude/hooks/`. No global writes. |
+| `--project-local` | All 17 project-scoped hooks from modules.json into `./.claude/hooks/`. No global writes. |
 | `--dry-run` | Preview what would be installed |
+| `--status` | Show runtime inventory (skills, hooks, rules, memory venv, enforcement markers) |
 
 ## The 7 Layers
 
@@ -77,7 +78,7 @@ For memory maintenance, use `/memory-consolidate` to identify and merge duplicat
 make eval    # runs 52 scenarios, binary scoring, requires jq
 ```
 
-Four categories: hook fidelity (34), skill artifact validation (8), lifecycle compliance (6), context injection (4). Separate from `make test` — eval benchmarks the harness, tests verify the kit.
+Four categories: hook fidelity (34), skill artifact validation (6), lifecycle compliance (6), context injection (6). Separate from `make test` — eval benchmarks the harness, tests verify the kit.
 
 ## Memory Benchmark
 
@@ -92,7 +93,7 @@ Turn-level indexing (each conversation turn as a separate entry) produces high-q
 
 ## Enforcement
 
-Enforcement hooks install globally and activate per-project via a marker file:
+Enforcement hooks install per-project (via `--project-local` or `/py-init`/`/ts-init` scaffolding) and activate via a marker file:
 
 ```bash
 touch .claude/enforce    # enable in current project
@@ -111,7 +112,7 @@ Re-run `~/nana-dev-kit/install.sh` to update. Existing files are overwritten; `n
 ## Testing
 
 ```bash
-make test    # ~445 tests across 20 scripts
+make test    # ~480 tests across 22 scripts
 make eval    # 52 eval scenarios (requires jq)
 make report  # package inventory at docs/report.html
 ```

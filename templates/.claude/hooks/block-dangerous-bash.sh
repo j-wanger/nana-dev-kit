@@ -9,7 +9,7 @@ cd "${CLAUDE_PROJECT_DIR:-.}" 2>/dev/null || true  # Phase 79: resolve project-r
 command -v jq >/dev/null 2>&1 || { echo "[nana:block] jq not found, hook skipped" >&2; exit 0; }
 
 INPUT=$(cat)
-COMMAND=$(echo "$INPUT" | jq -r '.input.command // empty' 2>/dev/null || echo "")
+COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // .input.command // empty' 2>/dev/null || echo "")
 
 # Block rm -rf with dangerous targets
 if echo "$COMMAND" | grep -qE 'rm\s+-[a-zA-Z]*r[a-zA-Z]*f.*(/|~|\$HOME|\.\.)'; then

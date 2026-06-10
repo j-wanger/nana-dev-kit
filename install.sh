@@ -7,9 +7,8 @@
 #   --core-only      Identity rules + spec + memory server only
 #   --no-python      Skip py-init skill
 #   --no-typescript  Skip ts-init skill
-#   --project-local  Install per-project hooks (audit-log, auto-ruff-format,
-#                    block-dangerous-bash, check-tests-were-run, scan-secrets,
-#                    session-start) into $PWD/.claude/hooks/. No global writes.
+#   --project-local  Install ALL project-scoped hooks from modules.json (17)
+#                    into $PWD/.claude/hooks/. No global writes.
 #   --dry-run        Print actions without copying
 
 set -euo pipefail
@@ -249,8 +248,12 @@ if [ "$INSTALL_CORE" = true ]; then
       "$VENV_PYTHON" -m pip install --quiet -r ~/.claude/memory_server/requirements.txt 2>/dev/null || true
     fi
 
+    # MCP cwd comes from modules.json (the declared single source of truth) — it was
+    # previously hardcoded here, making the manifest's mcp block dead config (Phase 82).
+    MCP_CWD=$(jq -r 'first(.modules[] | select(.mcp != null) | .mcp.cwd)' "$SCRIPT_DIR/modules.json" 2>/dev/null)
     python3 "$REGISTER_SCRIPT" mcp ~/.claude/settings.json \
-      --python "$VENV_DIR/bin/python3" --cwd ~/.claude
+      --python "$VENV_DIR/bin/python3" --cwd "${MCP_CWD:-~/.claude}" \
+      --modules-json "$SCRIPT_DIR/modules.json"
 
     if (cd ~/.claude && "$VENV_DIR/bin/python3" -c "import memory_server" 2>/dev/null); then
       echo "  MCP memory server: verified"
@@ -325,7 +328,7 @@ if ! $DRY_RUN; then
   [ "$INSTALL_TYPESCRIPT" = true ] && echo "  ~/.claude/skills/ts-init/           — /ts-init TypeScript scaffolding"
   [ "$INSTALL_DEVWIKI" = true ] && echo "  ~/.claude/skills/dev-*/             — dev-wiki lifecycle (6 skills)"
   [ "$INSTALL_DEVWIKI" = true ] && echo "  ~/.claude/hooks/                    — global session hooks (lifecycle + enforcement hooks install per-project via /py-init or --project-local)"
-  [ "$INSTALL_KNOWLEDGE" = true ] && echo "  ~/.claude/skills/wiki-*/            — knowledge-wiki pipeline (11 skills)"
+  [ "$INSTALL_KNOWLEDGE" = true ] && echo "  ~/.claude/skills/wiki-*/            — knowledge-wiki pipeline (10 skills)"
   echo ""
   echo "Getting started (open a project, then run one of these):"
   echo "  /nana-init    — bootstrap full Nana experience (recommended)"

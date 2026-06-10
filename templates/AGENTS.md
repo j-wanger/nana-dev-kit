@@ -60,9 +60,9 @@
 
 ## Where to Look
 
-- Architecture: `docs/architecture.md`
-- Testing patterns: `docs/testing.md`
-- Security checklist: `docs/security.md`
+- Project state and phase history: `.dev-wiki/_CURRENT_STATE.md`, `.dev-wiki/_ARCHITECTURE.md`
+- Testing patterns: `tests/` and `pyproject.toml` tool config
+- Conventions and rules: `.claude/rules/`
 
 ## Pre-commit sequence
 

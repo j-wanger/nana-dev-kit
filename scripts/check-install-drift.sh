@@ -13,11 +13,12 @@
 # hermetic tests — NEVER touch the real ~/.claude in tests).
 #
 # Comparison set (from modules.json, the single source of truth): every file under each installed
-# skill dir + global-scope hook scripts + the managed rules directory. Assumes a full (--all)
-# install (the maintainer's case): a skill dir absent from the installed root is treated as a
-# not-installed module and skipped, not as drift. NOTE: only scope:global hooks are compared
-# (just context-size-check.sh); project-scoped hooks like session-start.sh install per-project
-# (via /py-init or --project-local), NOT to ~/.claude, so their drift is out of this set by design.
+# skill dir + global-scope hook scripts + ANY kit-shipped hook script already present in the
+# installed root (Phase 82: pre-Phase-79 global installs left project-scoped hooks live in
+# ~/.claude — a present copy is running code, so its drift is compared regardless of scope tag;
+# the checker never ADDS files, refresh stays install.sh's job) + the managed rules directory.
+# Assumes a full (--all) install (the maintainer's case): a skill dir absent from the installed
+# root is treated as a not-installed module and skipped, not as drift.
 #
 # FAIL-OPEN: missing prerequisites or files never crash — the worst case is "say nothing".
 
@@ -91,6 +92,20 @@ while IFS= read -r h; do
   [ -f "$TEMPLATES/hooks/$h" ] || continue
   REL_FILES+=("hooks/$h")
 done < <(jq -r '.hooks[] | select(.scope == "global") | .script' "$MODULES_JSON" 2>/dev/null)
+
+# 2b. Installed hook scripts (Phase 82): any hook PRESENT in the installed root that the kit also
+# ships is LIVE CODE there regardless of its current scope tag — pre-Phase-79 global installs left
+# project-scoped hooks registered in ~/.claude/settings.json, and those copies kept RUNNING while
+# the scope:global filter above made their drift invisible (4 stale registered hooks found live).
+# Compare every such file; never ADD files to the installed root — refresh is install.sh's job.
+in_rel_files() { local r="$1" x; for x in "${REL_FILES[@]}"; do [ "$x" = "$r" ] && return 0; done; return 1; }
+if [ -d "$INSTALLED_ROOT/hooks" ]; then
+  while IFS= read -r f; do
+    h=$(basename "$f")
+    [ -f "$TEMPLATES/hooks/$h" ] || continue   # user-owned / non-kit hook → not ours to compare
+    in_rel_files "hooks/$h" || REL_FILES+=("hooks/$h")
+  done < <(find "$INSTALLED_ROOT/hooks" -maxdepth 1 -type f -name '*.sh' 2>/dev/null)
+fi
 
 # 3. Managed rules directory. The glob picks up template-only files (nana-personal, py-session-state);
 #    the exclusion allow-list removes them — that is why the list earns its complexity.

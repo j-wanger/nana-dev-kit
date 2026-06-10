@@ -36,11 +36,19 @@ fi
 command -v jq >/dev/null 2>&1 || { echo "[nana:enforce-spec] jq not found, hook skipped" >&2; exit 0; }
 
 INPUT=$(cat)
-FILE_PATH=$(echo "$INPUT" | jq -r '.input.file_path // empty' 2>/dev/null || echo "")
+FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // .input.file_path // empty' 2>/dev/null || echo "")
 
 if [ -z "$FILE_PATH" ]; then
   exit 0
 fi
+
+# --- Normalize to a project-relative path (Phase 82): current events carry ABSOLUTE file_path,
+# which silently bypassed every relative allowlist pattern below. Outside-project writes are not
+# this project's gate to enforce - allow and exit.
+FILE_PATH="${FILE_PATH#"$PWD"/}"
+case "$FILE_PATH" in
+  /*) exit 0 ;;
+esac
 
 # --- Path allowlist: meta/lifecycle/test/docs are always allowed ---
 case "$FILE_PATH" in
@@ -62,15 +70,18 @@ fi
 if [ -f "$ACTIVE_PHASE" ]; then
   PHASE_LINE=$(grep -m1 '^Phase:' "$ACTIVE_PHASE" 2>/dev/null || true)
   if [ -n "$PHASE_LINE" ]; then
-    SLUG=$(echo "$PHASE_LINE" | sed 's/^Phase: *[0-9]* *- *//' | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | sed 's/[^a-z0-9-]//g')
+    # Phase 82: match the spec by phase NUMBER glob, not by reconstructing the slug - the old
+    # sed assumed an ASCII "- " separator and a bare phase name, so an em-dash or any status
+    # suffix in active-phase.md broke the lookup and blocked despite a valid approved spec.
     PHASE_NUM=$(echo "$PHASE_LINE" | grep -oE '[0-9]+' | head -1)
-    SPEC_FILE="specs/phase-${PHASE_NUM}-${SLUG}.md"
-    if [ -f "$SPEC_FILE" ]; then
-      if grep -q 'nana:approved' "$SPEC_FILE" 2>/dev/null || grep -qE '^\- \[ \] `.+`' "$SPEC_FILE" 2>/dev/null; then
-        log_firing "allow" "spec-valid"
-        exit 0
+    for SPEC_FILE in "specs/phase-${PHASE_NUM}-"*.md; do
+      if [ -f "$SPEC_FILE" ]; then
+        if grep -q 'nana:approved' "$SPEC_FILE" 2>/dev/null || grep -qE '^\- \[ \] `.+`' "$SPEC_FILE" 2>/dev/null; then
+          log_firing "allow" "spec-valid"
+          exit 0
+        fi
       fi
-    fi
+    done
   fi
 fi
 

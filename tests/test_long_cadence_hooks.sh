@@ -122,4 +122,38 @@ if [ "$EC" = "0" ] && ! grep -q 'nana:review' "$T/.err"; then
   test_pass; else test_fail "loop guard should exit 0 silent (ec=$EC err=$(tr '\n' '|' < "$T/.err"))"; fi
 teardown "$T"
 
+# ---- Phase 82: REAL Stop-event shape (transcript_path, no tool_uses) ----
+# Stop events never carried .tool_uses — the hooks only ever acted on fabricated fixtures.
+# These pipe the real shape: a transcript JSONL the hook must scan for tool_use inputs.
+
+make_transcript() {  # $1 = dir; writes transcript.jsonl WITHOUT pytest
+  printf '%s\n' \
+    '{"type":"user","message":{"content":"go"}}' \
+    '{"type":"assistant","message":{"content":[{"type":"tool_use","name":"Edit","input":{"file_path":"src/mod.py"}}]}}' \
+    > "$1/transcript.jsonl"
+}
+
+test_start "check-tests: REAL shape — py edit in transcript, no pytest -> block (exit 2)"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude/rules"; printf 'Phase: 99 - x\n' > "$T/.claude/rules/active-phase.md"
+make_transcript "$T"
+EC=$(run_hook check-tests-were-run.sh "$T" "{\"stop_hook_active\":false,\"transcript_path\":\"$T/transcript.jsonl\"}")
+if [ "$EC" = "2" ]; then test_pass; else test_fail "real Stop shape should block (ec=$EC)"; fi
+teardown "$T"
+
+test_start "check-tests: REAL shape — pytest in transcript -> allow (exit 0)"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude/rules"; printf 'Phase: 99 - x\n' > "$T/.claude/rules/active-phase.md"
+make_transcript "$T"
+printf '%s\n' '{"type":"assistant","message":{"content":[{"type":"tool_use","name":"Bash","input":{"command":"uv run pytest -q"}}]}}' >> "$T/transcript.jsonl"
+EC=$(run_hook check-tests-were-run.sh "$T" "{\"stop_hook_active\":false,\"transcript_path\":\"$T/transcript.jsonl\"}")
+if [ "$EC" = "0" ]; then test_pass; else test_fail "pytest in transcript should allow (ec=$EC)"; fi
+teardown "$T"
+
+test_start "py-review: REAL shape — py edit in transcript -> review requested (exit 2)"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude/rules"; printf 'Phase: 99 - x\n' > "$T/.claude/rules/active-phase.md"
+make_transcript "$T"
+EC=$(run_hook py-review-stop.sh "$T" "{\"stop_hook_active\":false,\"transcript_path\":\"$T/transcript.jsonl\"}")
+if [ "$EC" = "2" ] && grep -q 'nana:review' "$T/.err"; then
+  test_pass; else test_fail "real Stop shape should request review (ec=$EC)"; fi
+teardown "$T"
+
 test_summary "long-cadence-hooks"

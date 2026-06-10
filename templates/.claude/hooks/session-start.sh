@@ -92,6 +92,14 @@ if [ -f "$KIT_PATH_MARKER" ]; then
   fi
 fi
 
+# --- Enforcement-marker advisory (Phase 82) ---
+# The enforce-* hooks exit silently when no marker exists, so a deleted/never-created marker
+# disables the whole enforcement layer with zero signal (4th cascade-class instance: the gap
+# went dark 2026-05-25→06-09). Gated on .dev-wiki (a lifecycle project is expected enforced).
+if [ -d ".dev-wiki" ] && [ ! -f ".claude/enforce" ] && [ ! -f "$HOME/.claude/enforce" ]; then
+  echo "[nana:enforce] No enforcement marker (.claude/enforce or ~/.claude/enforce) — enforce-spec/enforce-loop are dormant. touch .claude/enforce to enable."
+fi
+
 # --- Stale post-commit sidecar ---
 if [ -f ".dev-wiki/.pending-commit" ]; then
   echo "[nana:pending] Unprocessed commit detected. Run task matching."

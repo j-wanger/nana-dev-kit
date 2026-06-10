@@ -1,6 +1,6 @@
 ---
 parent: dev-scan
-referenced_at: "Step 20"
+referenced_at: "Step 6"
 ---
 
 # File Article Synthesis Prompt

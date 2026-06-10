@@ -7,7 +7,7 @@ parents: []
 created: 2026-06-09
 updated: 2026-06-09
 source: plan
-status: active
+status: completed
 scope: ["scripts/check-assumption-ledger.sh", ".dev-wiki/assumption-ledger.md", "templates/.claude/skills/dev-plan/**", "templates/.claude/skills/dev-debrief/**", "tests/test_assumption_ledger.sh", "Makefile"]
 entry_criteria: "Phase 80 complete/accepted (^PROGRAM-VERDICT INSTRUMENT-DEAD; the scope-anchored surfacer's only edge was a working-knowledge leak; the clean signal is DEGENERATE — a naive cost-sorted surfacer recovers load-bearing assumptions by reasoning). The screen's FORWARD recommendation is exactly this phase: ship the simplest gate."
 exit_criteria: "scripts/check-assumption-ledger.sh --selftest exits 0 (NO LLM, both directions); make test green with a new tests/test_assumption_ledger.sh asserting the firing behaviour (flags a blank-revisit/no-positions/non-monotonic/schema-missing entry, passes a conformant one); dev-plan wires the gate companion (positions REPLACE approach-approval) within the 350-line cap; the gate companion defines accept/reject/don't-know + all-accept warn+track+restate + append; dev-debrief wires the revisit forcing-function within cap; ONE documented ledger-schema source referenced by both skills + the check; a frozen with/without example artifact exists; make eval shows Score: 52/52 (no new scenario); a decision article records the build + the efficacy-not-claimed disclaimer."

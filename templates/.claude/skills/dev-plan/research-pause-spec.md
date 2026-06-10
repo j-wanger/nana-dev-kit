@@ -1,6 +1,6 @@
 ---
 parent: dev-plan
-referenced_at: "Step 0"
+referenced_at: "Pre-check 0 (resume)"
 ---
 
 # Research Pause Specification

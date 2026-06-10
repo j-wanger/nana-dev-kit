@@ -1,6 +1,6 @@
 ---
 parent: dev-debrief
-referenced_at: "Step 2"
+referenced_at: "After executor returns (delivery gate)"
 ---
 
 # Delivery Flow Protocol

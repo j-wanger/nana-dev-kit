@@ -1,0 +1,238 @@
+# Phase 82 T3 — orchestrator-executed repro runs (2026-06-09T14:47:13)
+
+=== wiring-manifest-missing-phase81-companions (sev:medium) exit:1 0.0s
+$ cd /Users/jwang/nana-dev-kit && grep -q 'dev-plan/assumption-gate.md' templates/.claude/skills/MANIFEST && grep -q 'dev-plan/assumption-gate-example.md' templates/.claude/skills/MANIFEST
+
+
+=== wiring-manifest-md5-checksums-stale (sev:medium) exit:1 0.0s
+$ cd /Users/jwang/nana-dev-kit && [ "$(grep 'skills/dev-plan/SKILL.md$' templates/.claude/skills/MANIFEST | cut -d' ' -f1)" = "$(/sbin/md5sum templates/.claude/skills/dev-plan/SKILL.md | cut -d' ' -f1)" ]
+
+
+=== wiring-modules-json-mcp-block-dead-config (sev:low) exit:1 0.0s
+$ cd /Users/jwang/nana-dev-kit && grep -q '\.mcp' install.sh scripts/register-settings.py
+
+
+=== wiring-install-sh-header-stale-project-local-hook-list (sev:low) exit:1 0.0s
+$ cd /Users/jwang/nana-dev-kit && bash -c '! { h=$(sed -n "1,14p" install.sh); echo "$h" | grep -q "audit-log" && ! echo "$h" | grep -q "enforce-spec"; }'
+
+
+=== wiring-install-sh-summary-wiki-skill-count-stale (sev:low) exit:1 0.0s
+$ cd /Users/jwang/nana-dev-kit && bash -c 'n=$(jq -r ".modules[]|select(.name==\"knowledge-wiki\").skills|length" modules.json); grep -q "($n skills)" install.sh'
+
+
+=== firing-enforce-spec-legacy-input-field-dormant (sev:high) exit:1 0.0s
+$ T=$(mktemp -d) && mkdir -p "$T/.dev-wiki" "$T/.claude" && touch "$T/.claude/enforce" && cd "$T" && printf '{"tool_name":"Write","tool_input":{"file_path":"src/app.py"}}' | bash /Users/jwang/nana-dev-kit/templates/.claude/hooks/enforce-spec.sh 2>/dev/null; rc=$?; cd /; rm -rf "$T"; test "$rc" -eq 2
+
+
+=== firing-block-dangerous-bash-legacy-input-field-dormant (sev:high) exit:1 0.0s
+$ printf '{"tool_name":"Bash","tool_input":{"command":"rm -rf /"}}' | bash /Users/jwang/nana-dev-kit/templates/.claude/hooks/block-dangerous-bash.sh 2>/dev/null; test $? -eq 2
+
+
+=== firing-check-tests-were-run-phantom-tool-uses (sev:high) exit:1 0.0s
+$ cd /tmp && r=$(printf '{"session_id":"s","transcript_path":"/tmp/t.jsonl","hook_event_name":"Stop","stop_hook_active":false}' | bash /Users/jwang/nana-dev-kit/templates/.claude/hooks/check-tests-were-run.sh >/dev/null 2>&1; echo $?) && f=$(printf '{"tool_uses":[{"input":{"file_path":"src/x.py"}}]}' | bash /Users/jwang/nana-dev-kit/templates/.claude/hooks/check-tests-were-run.sh >/dev/null 2>&1; echo $?) && echo "documented-stop-shape=$r fabricated-tool_uses=$f" && { test "$f" -eq 0 || test "$r" -eq 2; }
+documented-stop-shape=0 fabricated-tool_uses=2
+
+=== firing-py-review-stop-phantom-tool-uses (sev:high) exit:1 0.0s
+$ cd /tmp && r=$(printf '{"session_id":"s","transcript_path":"/tmp/t.jsonl","hook_event_name":"Stop","stop_hook_active":false}' | bash /Users/jwang/nana-dev-kit/templates/.claude/hooks/py-review-stop.sh >/dev/null 2>&1; echo $?) && f=$(printf '{"stop_hook_active":false,"tool_uses":[{"input":{"file_path":"src/x.py"}}]}' | bash /Users/jwang/nana-dev-kit/templates/.claude/hooks/py-review-stop.sh >/dev/null 2>&1; echo $?) && echo "documented-stop-shape=$r fabricated-tool_uses=$f" && { test "$f" -eq 0 || test "$r" -eq 2; }
+documented-stop-shape=0 fabricated-tool_uses=2
+
+=== firing-enforce-memory-legacy-input-field-dormant (sev:medium) exit:1 0.0s
+$ T=$(mktemp -d) && mkdir -p "$T/.dev-wiki" "$T/.claude" && touch "$T/.claude/enforce-memory" && cd "$T" && printf '{"tool_name":"Write","tool_input":{"file_path":"src/app.py"}}' | bash /Users/jwang/nana-dev-kit/templates/.claude/hooks/enforce-memory.sh 2>/dev/null; rc=$?; cd /; rm -rf "$T"; test "$rc" -eq 2
+
+
+=== firing-dev-wiki-scope-check-legacy-input-field-dormant (sev:medium) exit:1 0.0s
+$ T=$(mktemp -d) && mkdir -p "$T/.dev-wiki" && printf -- '- [ ] T1 task | scope: `src/**` | success: `true`\n' > "$T/.dev-wiki/tasks.md" && cd "$T" && OUT=$(printf '{"tool_name":"Write","tool_input":{"file_path":"%s/docs/x.py"}}' "$T" | bash /Users/jwang/nana-dev-kit/templates/.claude/hooks/dev-wiki-scope-check.sh); rc=$?; cd /; rm -rf "$T"; echo "out=[$OUT]"; test -n "$OUT"
+out=[]
+
+=== firing-post-commit-toplevel-exit-code-dormant (sev:medium) exit:1 0.1s
+$ T=$(mktemp -d) && mkdir -p "$T/h/.claude" && touch "$T/h/.claude/enforce" && cd "$T" && git init -q && git -c user.email=a@b.c -c user.name=t commit -q --allow-empty -m test && mkdir .dev-wiki && printf '{"tool_name":"Bash","tool_input":{"command":"git commit -m test"},"tool_response":{"stdout":"done","stderr":""}}' | HOME="$T/h" bash /Users/jwang/nana-dev-kit/templates/.claude/hooks/post-commit.sh >/dev/null 2>&1; test -f "$T/.dev-wiki/.pending-commit"; rc=$?; cd /; rm -rf "$T"; test "$rc" -eq 0
+
+
+=== firing-detect-loop-toplevel-exit-code-dormant (sev:low) exit:1 0.0s
+$ T=$(mktemp -d) && mkdir -p "$T/h/.claude" "$T/.claude" && touch "$T/h/.claude/enforce" && cd "$T" && OUT=$(for i in 1 2 3; do printf '{"tool_name":"Bash","tool_input":{"command":"badcmd"},"tool_response":{"stdout":"","stderr":"boom"}}' | HOME="$T/h" bash /Users/jwang/nana-dev-kit/templates/.claude/hooks/detect-loop.sh; done); cd /; rm -rf "$T"; echo "out=[$OUT]"; test -n "$OUT"
+out=[]
+
+=== firing-post-commit-detect-loop-home-only-marker (sev:low) exit:1 0.1s
+$ T=$(mktemp -d) && mkdir -p "$T/h/.claude" "$T/.claude" "$T/.dev-wiki" && touch "$T/.claude/enforce" && cd "$T" && git init -q && git -c user.email=a@b.c -c user.name=t commit -q --allow-empty -m test && printf '{"tool_input":{"command":"git commit -m test"},"exit_code":0}' | HOME="$T/h" bash /Users/jwang/nana-dev-kit/templates/.claude/hooks/post-commit.sh >/dev/null 2>&1; test -f "$T/.dev-wiki/.pending-commit"; rc=$?; cd /; rm -rf "$T"; test "$rc" -eq 0
+
+
+=== firing-hook-harness-claude-project-dir-sandbox-escape (sev:medium) exit:1 0.0s
+$ test "$(grep -c CLAUDE_PROJECT_DIR /Users/jwang/nana-dev-kit/scripts/eval-runner.sh)" -gt 0
+
+
+=== companions-companion-orphan-stale-queue-spec (sev:low) exit:1 0.0s
+$ grep -rn "stale-queue-spec" /Users/jwang/nana-dev-kit/templates /Users/jwang/nana-dev-kit/scripts /Users/jwang/nana-dev-kit/tests /Users/jwang/nana-dev-kit/install.sh /Users/jwang/nana-dev-kit/Makefile /Users/jwang/nana-dev-kit/modules.json 2>/dev/null | grep -v "skills/dev-wiki/stale-queue-spec.md"
+
+
+=== companions-companion-orphan-registry-schema (sev:low) exit:1 0.0s
+$ grep -rn "registry-schema" /Users/jwang/nana-dev-kit/templates /Users/jwang/nana-dev-kit/scripts /Users/jwang/nana-dev-kit/tests /Users/jwang/nana-dev-kit/install.sh /Users/jwang/nana-dev-kit/Makefile /Users/jwang/nana-dev-kit/modules.json 2>/dev/null | grep -v "skills/knowledge-wiki/registry-schema.md"
+
+
+=== companions-companion-orphan-session-context (sev:low) exit:1 0.0s
+$ grep -rn "session-context" /Users/jwang/nana-dev-kit/templates /Users/jwang/nana-dev-kit/scripts /Users/jwang/nana-dev-kit/tests /Users/jwang/nana-dev-kit/install.sh /Users/jwang/nana-dev-kit/Makefile /Users/jwang/nana-dev-kit/modules.json 2>/dev/null | grep -v "skills/knowledge-wiki/session-context.md"
+
+
+=== companions-stale-refat-file-prompt-step20 (sev:low) exit:1 0.0s
+$ sh -c 'grep -q "referenced_at: \"Step 20\"" /Users/jwang/nana-dev-kit/templates/.claude/skills/dev-scan/file-prompt.md || exit 0; grep -qE "^#+.*Step 20" /Users/jwang/nana-dev-kit/templates/.claude/skills/dev-scan/SKILL.md'
+
+
+=== companions-stale-refat-empirical-anchor-step15 (sev:low) exit:1 0.0s
+$ sh -c 'grep -q "referenced_at: \"Step 15\"" /Users/jwang/nana-dev-kit/templates/.claude/skills/wiki-health/empirical-anchor-spec.md || exit 0; grep -qE "^#+.*Step 15" /Users/jwang/nana-dev-kit/templates/.claude/skills/wiki-health/SKILL.md'
+
+
+=== companions-stale-refat-retro-check-step0 (sev:low) exit:1 0.0s
+$ sh -c 'grep -q "referenced_at: \"Step 0\"" /Users/jwang/nana-dev-kit/templates/.claude/skills/dev-debrief/retro-check.md || exit 0; grep -qE "^#+.*Step 0:" /Users/jwang/nana-dev-kit/templates/.claude/skills/dev-debrief/SKILL.md'
+
+
+=== companions-stale-refat-artifact-writer-step13 (sev:low) exit:1 0.0s
+$ sh -c 'grep -q "referenced_at: \"Step 13\"" /Users/jwang/nana-dev-kit/templates/.claude/skills/dev-plan/artifact-writer-prompt.md || exit 0; awk "/^### Step 13:/,/^### Step 14:/" /Users/jwang/nana-dev-kit/templates/.claude/skills/dev-plan/SKILL.md | grep -q artifact-writer-prompt'
+
+
+=== companions-stale-refat-delivery-flow-step2 (sev:low) exit:1 0.0s
+$ sh -c 'grep -q "referenced_at: \"Step 2\"" /Users/jwang/nana-dev-kit/templates/.claude/skills/dev-debrief/delivery-flow.md || exit 0; awk "/^### Step 2:/,/^### Step 3:/" /Users/jwang/nana-dev-kit/templates/.claude/skills/dev-debrief/SKILL.md | grep -q delivery-flow'
+
+
+=== companions-stale-refat-executor-prompt-step8 (sev:low) exit:1 0.0s
+$ sh -c 'grep -q "referenced_at: \"Step 8\"" /Users/jwang/nana-dev-kit/templates/.claude/skills/dev-debrief/executor-prompt.md || exit 0; awk "/^### Step 8:/,/^### Step 9:/" /Users/jwang/nana-dev-kit/templates/.claude/skills/dev-debrief/SKILL.md | grep -q executor-prompt'
+
+
+=== companions-stale-refat-state-loader-step3 (sev:low) exit:1 0.0s
+$ sh -c 'grep -q "referenced_at: \"Step 3\"" /Users/jwang/nana-dev-kit/templates/.claude/skills/dev-plan/state-loader-prompt.md || exit 0; awk "/^### Step 3:/,/^### Step 4:/" /Users/jwang/nana-dev-kit/templates/.claude/skills/dev-plan/SKILL.md | grep -q state-loader-prompt'
+
+
+=== companions-stale-refat-research-agent-step3 (sev:low) exit:1 0.0s
+$ sh -c 'grep -q "referenced_at: \"Step 3\"" /Users/jwang/nana-dev-kit/templates/.claude/skills/wiki-bootstrap/research-agent-prompt.md || exit 0; awk "/^### Step 3:/,/^### Step 4:/" /Users/jwang/nana-dev-kit/templates/.claude/skills/wiki-bootstrap/SKILL.md | grep -q research-agent-prompt'
+
+
+=== companions-test-companions-no-refat-orphan-coverage (sev:low) exit:1 0.0s
+$ grep -q "referenced_at" /Users/jwang/nana-dev-kit/tests/test_companions.sh
+
+
+=== schema-project-local-hook-list-stale-docs (sev:medium) exit:1 0.0s
+$ bash -c 'cd /Users/jwang/nana-dev-kit; ok=0; row="$(grep -- "--project-local" README.md | head -1) $(sed -n "10,12p" install.sh)"; for s in $(jq -r ".hooks[] | select(.scope==\"project\") | .script" modules.json); do case "$row" in *"${s%.sh}"*) ;; *) echo "stale doc: $s installed by --project-local but absent from README row and install.sh header"; ok=1;; esac; done; exit $ok'
+stale doc: enforce-spec.sh installed by --project-local but absent from README row and install.sh header
+stale doc: enforce-memory.sh installed by --project-local but absent from README row and install.sh header
+stale doc: dev-wiki-scope-check.sh installed by --project-local but absent from README row and install.sh header
+stale doc: stale-queue.sh installed by --project-local but absent from README row and install.sh header
+stale doc: detect-loop.sh installed by --project-local but absent from README row and install.sh header
+stale doc: post-commit.sh installed by --project-local but absent f
+
+=== schema-readme-eval-category-counts-stale (sev:low) exit:1 0.2s
+$ bash -c 'cd /Users/jwang/nana-dev-kit; c() { find eval/corpus -name "*.json" -exec jq -r .category {} \; | grep -c "^$1$"; }; grep -q "skill artifact validation ($(c skill))" README.md && grep -q "context injection ($(c context))" README.md'
+
+
+=== schema-wk-prune-cites-absent-spec-precedence-rule (sev:low) exit:1 0.0s
+$ bash -c 'cd /Users/jwang/nana-dev-kit; ! grep -q "cap precedence" templates/.claude/hooks/session-start.d/wk-prune.sh || grep -qi "precedence" templates/.claude/skills/dev-wiki/working-knowledge-spec.md'
+
+
+=== drift-stale-global-hooks-invisible-to-drift-check (sev:high) exit:1 0.3s
+$ bash -c 'jq -r ".hooks | to_entries[] | .value[] | .hooks[]?.command" "$HOME/.claude/settings.json" | grep -q "hooks/enforce-spec.sh" && ! cmp -s "$HOME/.claude/hooks/enforce-spec.sh" /Users/jwang/nana-dev-kit/templates/.claude/hooks/enforce-spec.sh && [ "$(bash /Users/jwang/nana-dev-kit/scripts/check-install-drift.sh --count)" = "0" ] && exit 1; exit 0'
+
+
+=== drift-rescoped-hooks-missing-from-ghost-cleanup (sev:high) exit:1 0.0s
+$ bash -c 's=$(jq -r ".hooks[] | select(.script==\"enforce-spec.sh\") | .scope" /Users/jwang/nana-dev-kit/modules.json); g=$(jq -r ".ghost_cleanup | index(\"enforce-spec\")" /Users/jwang/nana-dev-kit/modules.json); if [ "$s" = "project" ] && [ -f "$HOME/.claude/hooks/enforce-spec.sh" ] && [ "$g" = "null" ]; then exit 1; fi; exit 0'
+
+
+=== drift-session-start-foreign-lineage-globally-registered (sev:medium) exit:1 0.3s
+$ bash -c 'for c in $(git -C /Users/jwang/nana-dev-kit log --format=%H --all -- templates/.claude/hooks/session-start.sh); do git -C /Users/jwang/nana-dev-kit show "${c}:templates/.claude/hooks/session-start.sh" 2>/dev/null | cmp -s - "$HOME/.claude/hooks/session-start.sh" && exit 0; done; jq -r ".hooks | to_entries[] | .value[] | .hooks[]?.command" "$HOME/.claude/settings.json" | grep -q "session-start.sh" && exit 1; exit 0'
+
+
+=== drift-installed-only-skill-residue-invisible (sev:low) exit:1 0.3s
+$ bash -c '[ -f "$HOME/.claude/skills/dev-plan/heuristic-matcher.md" ] && [ ! -f /Users/jwang/nana-dev-kit/templates/.claude/skills/dev-plan/heuristic-matcher.md ] && [ "$(bash /Users/jwang/nana-dev-kit/scripts/check-install-drift.sh --count)" = "0" ] && exit 1; exit 0'
+
+
+=== drift-memory-server-omission-undocumented (sev:low) exit:1 0.0s
+$ bash -c 'grep -q "memory_server" /Users/jwang/nana-dev-kit/install.sh && ! grep -q "memory_server" /Users/jwang/nana-dev-kit/scripts/check-install-drift.sh && exit 1; exit 0'
+
+
+=== drift-dead-settings-json-exclude-entry (sev:low) exit:1 0.0s
+$ bash -c 'bash /Users/jwang/nana-dev-kit/scripts/check-install-drift.sh --excludes | grep -qx "settings.json" && ! grep "REL_FILES+=" /Users/jwang/nana-dev-kit/scripts/check-install-drift.sh | grep -qv -e "skills/" -e "hooks/" -e "rules/" && exit 1; exit 0'
+
+
+=== coverage-delivery-report-script-structural-only (sev:medium) exit:1 0.0s
+$ grep -rEn '(python3|bash|run).*generate-delivery-report' /Users/jwang/nana-dev-kit/tests/
+
+
+=== coverage-eval-runner-untested-no-negative-control (sev:medium) exit:1 0.0s
+$ grep -rln 'eval-runner' /Users/jwang/nana-dev-kit/tests/
+
+
+=== coverage-generate-report-script-untested (sev:low) exit:1 0.0s
+$ grep -rln 'generate-report.py' /Users/jwang/nana-dev-kit/tests/
+
+
+=== coverage-generate-workflow-script-untested (sev:low) exit:1 0.0s
+$ grep -rln 'generate-workflow' /Users/jwang/nana-dev-kit/tests/
+
+
+=== coverage-harness-audit-script-untested-unwired (sev:low) exit:1 0.0s
+$ grep -rln 'harness-audit' /Users/jwang/nana-dev-kit/tests/ /Users/jwang/nana-dev-kit/Makefile /Users/jwang/nana-dev-kit/modules.json /Users/jwang/nana-dev-kit/templates/
+
+
+=== docs-readme-headline-skill-hook-counts (sev:low) exit:1 0.0s
+$ cd /Users/jwang/nana-dev-kit && [ "$(grep -m1 -oE 'Installs [0-9]+ skills' README.md)" = "Installs $(ls -d templates/.claude/skills/*/ | wc -l | tr -d ' ') skills" ]
+
+
+=== docs-readme-enforcement-installs-globally (sev:high) exit:1 0.0s
+$ cd /Users/jwang/nana-dev-kit && { ! grep -q 'Enforcement hooks install globally' README.md || jq -e '[.hooks[] | select(.script|test("^(enforce|detect)")) | select(.scope=="global")] | length > 0' modules.json >/dev/null; }
+
+
+=== docs-readme-project-local-six-hooks (sev:medium) exit:1 0.0s
+$ cd /Users/jwang/nana-dev-kit && { ! grep -q 'audit-log, auto-ruff-format, block-dangerous-bash, check-tests-were-run, scan-secrets, session-start' README.md || [ "$(jq '[.hooks[]|select(.scope=="project")]|length' modules.json)" -eq 6 ]; }
+
+
+=== docs-readme-eval-category-breakdown (sev:low) exit:1 0.0s
+$ cd /Users/jwang/nana-dev-kit && { ! grep -q 'skill artifact validation (8), lifecycle compliance (6), context injection (4)' README.md || { [ "$(ls eval/corpus | grep -c '^skill-')" -eq 8 ] && [ "$(ls eval/corpus | grep -c '^context-')" -eq 4 ]; }; }
+
+
+=== docs-manifest-md5-inventory-stale (sev:low) exit:1 0.0s
+$ cd /Users/jwang/nana-dev-kit && { ! test -f templates/.claude/skills/dev-plan/assumption-gate.md || grep -q 'dev-plan/assumption-gate.md' templates/.claude/skills/MANIFEST; }
+
+
+=== docs-architecture-26-dirs-phantom-wiki-consolidate (sev:low) exit:1 0.0s
+$ cd /Users/jwang/nana-dev-kit && { ! grep -q 'wiki-{absorb,add,bootstrap,consolidate' .dev-wiki/_ARCHITECTURE.md || test -d templates/.claude/skills/wiki-consolidate; }
+
+
+=== docs-architecture-hook-counts-triple-drift (sev:low) exit:1 0.0s
+$ cd /Users/jwang/nana-dev-kit && { ! grep -q '17 files + session-start.d/ with 2 modules' .dev-wiki/_ARCHITECTURE.md || { [ "$(ls templates/.claude/hooks/*.sh | wc -l | tr -d ' ')" -eq 17 ] && [ "$(ls templates/.claude/hooks/session-start.d/*.sh | wc -l | tr -d ' ')" -eq 2 ]; }; }
+
+
+=== docs-architecture-eval-50-vs-52 (sev:low) exit:1 0.0s
+$ cd /Users/jwang/nana-dev-kit && { ! grep -q '50 scenarios in 4 categories' .dev-wiki/_ARCHITECTURE.md || [ "$(ls eval/corpus | wc -l | tr -d ' ')" -eq 50 ]; }
+
+
+=== docs-agents-template-where-to-look-404 (sev:medium) exit:1 0.0s
+$ cd /Users/jwang/nana-dev-kit && { ! grep -q 'docs/architecture.md' templates/AGENTS.md || test -e templates/docs/architecture.md || grep -rq 'docs/architecture' templates/.claude/skills/py-init/; }
+
+
+=== docs-readme-status-flag-undocumented (sev:low) exit:1 0.0s
+$ cd /Users/jwang/nana-dev-kit && { ! grep -q -- '--status' install.sh || grep -q -- '--status' README.md; }
+
+
+=== usage-stale-global-hooks-installed (sev:high) exit:1 0.0s
+$ diff -q /Users/jwang/.claude/hooks/session-start.sh /Users/jwang/nana-dev-kit/templates/.claude/hooks/session-start.sh
+Files /Users/jwang/.claude/hooks/session-start.sh and /Users/jwang/nana-dev-kit/templates/.claude/hooks/session-start.sh differ
+
+=== usage-drift-checker-blind-to-registered-hooks (sev:medium) exit:1 0.3s
+$ sh -c 'test "$(/Users/jwang/nana-dev-kit/scripts/check-install-drift.sh --count)" != "0" || diff -q /Users/jwang/.claude/hooks/enforce-loop.sh /Users/jwang/nana-dev-kit/templates/.claude/hooks/enforce-loop.sh'
+Files /Users/jwang/.claude/hooks/enforce-loop.sh and /Users/jwang/nana-dev-kit/templates/.claude/hooks/enforce-loop.sh differ
+
+=== usage-session-start-ts-stale-in-kit (sev:medium) exit:1 0.0s
+$ test "$(stat -f %Sm -t %F /Users/jwang/.claude/.session-start-ts)" = "$(stat -f %Sm -t %F /Users/jwang/nana-dev-kit/.dev-wiki/.session-end)"
+
+
+=== usage-audit-log-model-field-always-unknown (sev:medium) exit:1 0.0s
+$ jq -r '.model' /Users/jwang/edge-screener/.nana/audit.jsonl | grep -qvx unknown
+
+
+=== usage-enforce-memory-zero-lifetime-firings (sev:low) exit:1 0.0s
+$ grep -q '"hook":"enforce-memory"' /Users/jwang/nana-dev-kit/.dev-wiki/enforcement.log /Users/jwang/edge-screener/.dev-wiki/enforcement.log
+
+
+=== usage-memory-reinforcement-machinery-unused (sev:low) exit:1 0.0s
+$ test "$(sqlite3 'file:/Users/jwang/nana-dev-kit/.memory/memory.db?mode=ro' 'SELECT (SELECT COUNT(*) FROM reinforcements)+(SELECT COUNT(*) FROM memories WHERE strength>1)')" -ne 0
+
+
+=== usage-memory-mcp-unused-in-consuming-project (sev:low) exit:1 0.0s
+$ test -f /Users/jwang/edge-screener/.memory/memory.db
+

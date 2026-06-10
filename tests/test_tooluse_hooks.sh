@@ -116,4 +116,46 @@ if [ "$EC" = "0" ] && ! grep -q 'nana:context' "$T/.err" && [ ! -f "$T/.claude/.
   test_pass; else test_fail "warned on a small transcript (ec=$EC)"; fi
 teardown "$T"
 
+# ---- Phase 82: current event shape (.tool_input.command) for block-dangerous-bash ----
+# The hook parsed only legacy .input.command, so a .tool_input-only event carrying `rm -rf /`
+# was silently allowed (the dangerous-command blocker was not blocking).
+test_start "block-dangerous-bash: current shape (.tool_input) blocks rm -rf /"
+T=$(mktemp -d)
+EC=$(run_hook block-dangerous-bash.sh "$T" '{"tool_input":{"command":"rm -rf /"}}')
+if [ "$EC" = "2" ]; then test_pass; else test_fail "tool_input shape must block (ec=$EC)"; fi
+teardown "$T"
+
+test_start "block-dangerous-bash: current shape (.tool_input) allows safe commands"
+T=$(mktemp -d)
+EC=$(run_hook block-dangerous-bash.sh "$T" '{"tool_input":{"command":"ls -la"}}')
+if [ "$EC" = "0" ]; then test_pass; else test_fail "safe command must pass (ec=$EC)"; fi
+teardown "$T"
+
+# ---- Phase 82 (reviewer gap-close): pipe tests for the two hooks whose field/path fixes
+# had only grep-source or session-sandbox evidence: dev-wiki-scope-check + enforce-memory.
+
+test_start "scope-check: .tool_input + ABSOLUTE in-scope path -> silent allow (no false advisory)"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude/rules"; printf 'Phase: 99 - x\n' > "$T/.claude/rules/active-phase.md"
+printf -- '- [ ] T1 x | scope: `src/**` | success: `true`\n' > "$T/.dev-wiki/tasks.md"
+EC=$(run_hook dev-wiki-scope-check.sh "$T" "{\"tool_input\":{\"file_path\":\"$T/src/mod.py\"}}")
+if [ "$EC" = "0" ] && ! grep -q 'scope-check' "$T/.err" && ! grep -q 'scope-check' "$T/.out"; then
+  test_pass; else test_fail "absolute in-scope path should be silent (ec=$EC out=$(cat "$T/.out" "$T/.err" | tr '\n' '|'))"; fi
+teardown "$T"
+
+test_start "scope-check: .tool_input + ABSOLUTE out-of-scope path -> advisory"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude/rules"; printf 'Phase: 99 - x\n' > "$T/.claude/rules/active-phase.md"
+printf -- '- [ ] T1 x | scope: `src/**` | success: `true`\n' > "$T/.dev-wiki/tasks.md"
+EC=$(run_hook dev-wiki-scope-check.sh "$T" "{\"tool_input\":{\"file_path\":\"$T/docs/x.py\"}}")
+if [ "$EC" = "0" ] && grep -q 'outside active task scope' "$T/.out" 2>/dev/null || grep -q 'outside active task scope' "$T/.err" 2>/dev/null; then
+  test_pass; else test_fail "absolute out-of-scope path should advise (ec=$EC)"; fi
+teardown "$T"
+
+test_start "enforce-memory: .tool_input ABSOLUTE src write blocks identically to relative legacy shape"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude"; touch "$T/.claude/enforce-memory"
+A=$(run_hook enforce-memory.sh "$T" "{\"tool_input\":{\"file_path\":\"$T/src/app.py\"}}")
+B=$(run_hook enforce-memory.sh "$T" '{"input":{"file_path":"src/app.py"}}')
+if [ "$A" = "$B" ] && [ "$A" = "2" ]; then
+  test_pass; else test_fail "shape/path parity broken (tool_input-abs=$A input-rel=$B, want 2=2)"; fi
+teardown "$T"
+
 test_summary "tooluse-hooks"

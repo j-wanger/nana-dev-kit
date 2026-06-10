@@ -41,11 +41,18 @@ fi
 command -v jq >/dev/null 2>&1 || { echo "[nana:enforce-memory] jq not found, hook skipped" >&2; exit 0; }
 
 INPUT=$(cat)
-FILE_PATH=$(echo "$INPUT" | jq -r '.input.file_path // empty' 2>/dev/null || echo "")
+FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // .input.file_path // empty' 2>/dev/null || echo "")
 
 if [ -z "$FILE_PATH" ]; then
   exit 0
 fi
+
+# Normalize to project-relative (Phase 82): absolute event paths bypassed the relative patterns
+# below; outside-project writes are not this project's gate to enforce.
+FILE_PATH="${FILE_PATH#"$PWD"/}"
+case "$FILE_PATH" in
+  /*) exit 0 ;;
+esac
 
 # --- Path allowlist: meta/lifecycle/test/docs are always allowed ---
 case "$FILE_PATH" in
