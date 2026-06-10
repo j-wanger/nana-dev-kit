@@ -21,3 +21,4 @@ benchmark/.venv/
 .claude/settings.json
 .claude/hooks/
 .claude/.loop-state
+wiki/.wiki-resolved
