@@ -8,7 +8,7 @@ created: 2026-06-09
 updated: 2026-06-09
 source: plan
 status: active
-scope: ["templates/.claude/hooks/enforce-memory.sh", "templates/.claude/hooks/audit-log.sh", "memory_server/*", "scripts/harness-audit.sh", "templates/.claude/skills/dev-wiki/stale-queue-spec.md", "templates/.claude/skills/knowledge-wiki/registry-schema.md", "templates/.claude/skills/knowledge-wiki/session-context.md", "tests/test_companions.sh", "modules.json", "templates/.claude/settings.json", "templates/.claude/skills/MANIFEST", "eval/prune-on-value/*", "README.md"]
+scope: ["templates/.claude/hooks/enforce-memory.sh", "templates/.claude/hooks/audit-log.sh", "memory_server/*", "scripts/harness-audit.sh", "templates/.claude/skills/dev-wiki/stale-queue-spec.md", "templates/.claude/skills/knowledge-wiki/registry-schema.md", "templates/.claude/skills/knowledge-wiki/session-context.md", "tests/test_companions.sh", "modules.json", "templates/.claude/settings.json", "templates/.claude/skills/MANIFEST", "eval/prune-on-value/*", "README.md", "Makefile", "tests/test_audit_log.sh", "tests/test_scripts_smoke.sh"]
 entry_criteria: "Phase 82 delivery accepted; usage-evidence list filed in _CURRENT_STATE.md Blockers; spec specs/phase-83-prune-on-value-subtraction.md nana:approved"
 exit_criteria: "10 machine-checkable criteria in specs/phase-83-prune-on-value-subtraction.md (verdict table with 6 closed-enum rows, zero-classification on every cut/disable, liveness-grep.log committed, make test + make eval green, drift 0, settings template clean, one DEREG line + one 'Phase 83 cut:' commit per executed cut/disable)"
 ---
