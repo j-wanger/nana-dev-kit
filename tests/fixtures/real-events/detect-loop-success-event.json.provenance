@@ -1,0 +1,5 @@
+source: live capture via temporarily instrumented runtime hook ~/.claude/hooks/detect-loop.sh (PostToolUse Bash, ghost global registration), nana-dev-kit Claude Code session
+date: 2026-06-09
+command: successful `ls` inspection command, exit 0
+integrity: byte-for-byte unmodified capture (event-1781063888-64804)
+note: companion probe evidence — failing commands (exit 7, exit 1) produced NO PostToolUse event at all; see eval/hook-hygiene/capture-diagnosis.md

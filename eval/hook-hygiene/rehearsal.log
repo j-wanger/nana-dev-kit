@@ -1,0 +1,33 @@
+# Phase 84 T4a rehearsal — 2026-06-10T04:13:08Z
+backup-created: /Users/jwang/.claude/settings.json.phase84-backup-20260610T001308 (cmp-verified identical)
+restore-exercised: cp /Users/jwang/.claude/settings.json.phase84-backup-20260610T001308 <target> recovered a corrupted sandbox copy byte-identical
+extraction-filter: jq -r '.hooks | to_entries[] | .value[].hooks[]?.command // empty' ~/.claude/settings.json | grep -oE '[a-z0-9-]+\.sh' | sort -u   # basename-normalized (live forms are mixed: bash ~/... and absolute)
+surgery-filter: def ghost: ["session-start.sh","session-stop.sh","enforce-loop.sh","pre-compact.sh","post-compact.sh","stale-queue.sh","detect-loop.sh","post-commit.sh","enforce-spec.sh","enforce-memory.sh","dev-wiki-scope-check.sh"]; .hooks |= ( to_entries   | map(.value |= ( map(.hooks |= map(select((.command // "") as $c | (ghost | any(. as $g | $c | endswith($g))) | not))) | map(select((.hooks | length) > 0)) ))   | map(select((.value | length) > 0))   | from_entries ) 
+rehearsal-assertions:
+  removed-entries: 11 (expect 11)
+  empty-matcher-groups-after: 0 (expect 0)
+  empty-event-keys-after: 0 (expect 0)
+  context-size-check-intact: 1 (expect 1)
+  non-hooks-keys-unchanged: yes (expect yes)
+  valid-json-after: yes (expect yes)
+surgery-rehearsal: PASS (sandbox only — live file untouched)
+remediation-rehearsal stock-screener: post-merge ghost-set coverage 11/11, prior audit-log preserved=1 (sandbox copy)
+remediation-rehearsal ai-game: post-merge ghost-set coverage 11/11, prior audit-log preserved=1 (sandbox copy)
+remediation-rehearsal fate: post-merge ghost-set coverage 11/11, prior audit-log preserved=1 (sandbox copy)
+checkpoint-decision: approve  # full remediate-then-deregister package, maintainer 2026-06-10 (AskUserQuestion at T4a)
+remediated nana-dev-kit: registered 11/11, copies current 11/11, null-entries 0
+remediated stock-screener: registered 11/11, copies current 11/11, null-entries 0
+remediated ai-game: registered 11/11, copies current 11/11, null-entries 0
+remediated edge-analyst: registered 11/11, copies current 11/11, null-entries 0
+remediated edge-screener: registered 11/11, copies current 11/11, null-entries 0
+remediated fate: registered 11/11, copies current 11/11, null-entries 0
+remediation: COMPLETE (6 roots, copies synced incl. session-start.d, registrations merged)
+runtime-copy-sync: ~/.claude/hooks post-commit.sh refreshed, 11/11 current
+surgery-executed: 11 ghost entries removed from live ~/.claude/settings.json (removed=11, empty-groups=0, empty-events=0, csc-intact=1, non-hook-keys-unchanged=yes)
+survivor-smoke: context-size-check registered + warns on 6MB transcript + silent on small (allow AND block paths)
+end-state: live kit-owned global registrations == modules.json scope:global set (check-matrix PASS)
+fresh-session-verification (maintainer, in any NEW Claude Code session in any consuming root):
+  jq -r '.hooks | to_entries[] | .value[].hooks[]?.command // empty' ~/.claude/settings.json | grep -oE '[a-z0-9-]+\.sh' | sort -u   # expect exactly: context-size-check.sh
+  # and confirm SessionStart loads dev-wiki state with NO startup/resume hook errors
+remediation-refinement (post-T4b): kit repo's own project-local settings trimmed of the 2 Python-workflow Stop hooks (check-tests-were-run.sh, py-review-stop.sh) — nana-dev-kit is a bash/markdown kit (make test, no pyproject); they misfired at Stop. The 11-ghost set + language-agnostic hooks remain. Reversible via register-settings.py.
+post-T4b incident + fix (2026-06-10): fresh hook copies inherited NON-EXECUTABLE modes — the platform direct-execs ${CLAUDE_PROJECT_DIR}/.claude/hooks/X.sh, so 644 copies failed exit-126 Permission denied (user-visible PostToolUse/Stop hook errors in the kit repo). Root causes: (a) Write-tool rewrite of post-commit.sh created mode 644; (b) 10 template hooks were LATENTLY tracked 100644 in git since addition — masked historically by bash-prefix ghost registrations and cp-onto-existing-755 preserving destination mode; T4b's fresh copies in new locations exposed it. Fix: chmod +x on templates (git records 100755 at commit) + all 6 roots + ~/.claude/hooks incl. session-start.d; verified by direct-exec firing (post-commit marker written, session-stop rc=0); permanent guard added to test_templates.sh (179th test). Coverage-matrix lesson #3: currency needs MODE cells, not just md5 (md5 already missed dir-absence; now also missed exec-bit).

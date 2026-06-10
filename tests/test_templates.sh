@@ -966,4 +966,12 @@ else
   test_fail "run-eval.py missing --selective mode"
 fi
 
+# ---- Phase 84: every template hook must be executable (the platform direct-execs
+# ---- ${CLAUDE_PROJECT_DIR}/.claude/hooks/X.sh; a 644 hook fails exit-126 Permission denied;
+# ---- 10 hooks were latently tracked 100644, masked by bash-prefix ghosts + mode-preserving cp)
+test_start "all template hooks carry the execute bit (direct-exec contract)"
+NONEXEC=$(find "$PROJECT_ROOT/templates/.claude/hooks" -name '*.sh' ! -perm -u+x 2>/dev/null)
+if [ -z "$NONEXEC" ]; then test_pass; else test_fail "non-executable hooks: $NONEXEC"; fi
+
 test_summary "test_templates"
+

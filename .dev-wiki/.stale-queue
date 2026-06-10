@@ -198,3 +198,9 @@ eval/amplifier/skill-screen/runs/ctrl-negative/5.py
 eval/amplifier/skill-screen/runs/ctrl-negative/2.py
 eval/amplifier/skill-screen/runs/ctrl-recoverable/2.py
 eval/amplifier/skill-screen/runs/ctrl-recoverable/3.py
+[pruned 2026-06-10] - [uses: 1] enforce-spec.sh uses OR logic: `<!-- nana:approved -->` HTML comment marker OR exit-criteria presence. Backward compat for ~20 existing marker-less specs. New specs get marker via /spec Step 6. Both enforcement hooks write JSONL to .dev-wiki/enforcement.log with tail -n 500 truncation.
+[pruned 2026-06-10]   source: [[decision:spec-provenance-html-comment]] + [[journal:2026-05-23-phase-29-grade-push-complete]] | activated: 2026-05-23
+[pruned 2026-06-10] - [uses: 1] dev-plan SKILL.md at 330/350 lines after Step 3 extraction to scope-exploration-spec.md companion. Next feature addition needs another extraction or ceiling raise. Companion pattern: 2-line Read pointer replaces inline content, cp -r auto-distributes.
+[pruned 2026-06-10]   source: [[decision:dev-plan-scope-extraction]] | activated: 2026-05-23
+[pruned 2026-06-10] - [uses: 1] /nana skill (37 lines) reads MANIFEST via kit path marker (~/.claude/.nana-dev-kit-path), parses description comments, groups by module. /memory-consolidate (45 lines) uses Claude MCP tools for memory dedup.
+[pruned 2026-06-10]   source: [[journal:2026-05-23-phase-29-grade-push-complete]] | activated: 2026-05-23

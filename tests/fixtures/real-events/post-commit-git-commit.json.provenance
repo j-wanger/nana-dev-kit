@@ -1,0 +1,4 @@
+source: live capture via temporarily instrumented runtime hook ~/.claude/hooks/detect-loop.sh (PostToolUse Bash, ghost global registration), nana-dev-kit Claude Code session
+date: 2026-06-09
+command: sandboxed `git init && git commit` probe (mktemp -d), exit 0
+integrity: byte-for-byte unmodified capture (event-1781063881-64772)

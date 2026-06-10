@@ -55,7 +55,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <body>
 
 <h1>Nana Dev Kit &mdash; Workflow Breakdown</h1>
-<p class="subtitle">7-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-06-09 22:43</p>
+<p class="subtitle">7-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-06-10 07:43</p>
 
 <div class="toc">
 <h3>Contents</h3>
@@ -414,7 +414,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/hooks/enforce-loop.sh</code></td><td>115</td><td>Stop: checks deliverables + debrief status (global)</td></tr>
 <tr><td><code>.claude/hooks/enforce-memory.sh</code></td><td>72</td><td></td></tr>
 <tr><td><code>.claude/hooks/enforce-spec.sh</code></td><td>90</td><td>PreToolUse: blocks writes without approved spec (global)</td></tr>
-<tr><td><code>.claude/hooks/post-commit.sh</code></td><td>61</td><td>PostToolUse: detects git commits, writes .pending-commit</td></tr>
+<tr><td><code>.claude/hooks/post-commit.sh</code></td><td>80</td><td>PostToolUse: detects git commits, writes .pending-commit</td></tr>
 <tr><td><code>.claude/hooks/post-compact.sh</code></td><td>19</td><td></td></tr>
 <tr><td><code>.claude/hooks/pre-compact.sh</code></td><td>51</td><td>PreCompact: injects dev-wiki state before context compaction</td></tr>
 <tr><td><code>.claude/hooks/py-review-stop.sh</code></td><td>66</td><td>Stop: 6-point review prompt, gated on Python changes (loop-safe)</td></tr>
@@ -626,10 +626,13 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>test_cognitive_readiness.sh</code></td><td>2 assertions, 50 lines</td></tr>
 <tr><td><code>test_companions.sh</code></td><td>0 assertions, 139 lines</td></tr>
 <tr><td><code>test_enforce.sh</code></td><td>13 assertions, 172 lines</td></tr>
+<tr><td><code>test_eval_hermeticity.sh</code></td><td>0 assertions, 104 lines</td></tr>
 <tr><td><code>test_firing_log.sh</code></td><td>2 assertions, 172 lines</td></tr>
+<tr><td><code>test_fixture_provenance.sh</code></td><td>0 assertions, 72 lines</td></tr>
 <tr><td><code>test_harden.sh</code></td><td>0 assertions, 355 lines</td></tr>
 <tr><td><code>test_hook_firing_coverage.sh</code></td><td>0 assertions, 168 lines</td></tr>
 <tr><td><code>test_install.sh</code></td><td>66 assertions, 846 lines</td></tr>
+<tr><td><code>test_lifecycle_hooks_firing.sh</code></td><td>0 assertions, 166 lines</td></tr>
 <tr><td><code>test_long_cadence_hooks.sh</code></td><td>0 assertions, 159 lines</td></tr>
 <tr><td><code>test_manifest_freshness.sh</code></td><td>0 assertions, 49 lines</td></tr>
 <tr><td><code>test_memory.sh</code></td><td>11 assertions, 293 lines</td></tr>
@@ -639,11 +642,11 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>test_signal_richness_probe.sh</code></td><td>1 assertions, 126 lines</td></tr>
 <tr><td><code>test_step_numbering.sh</code></td><td>1 assertions, 38 lines</td></tr>
 <tr><td><code>test_sync_rules.sh</code></td><td>15 assertions, 100 lines</td></tr>
-<tr><td><code>test_templates.sh</code></td><td>100 assertions, 969 lines</td></tr>
-<tr><td><code>test_tooluse_hooks.sh</code></td><td>0 assertions, 161 lines</td></tr>
+<tr><td><code>test_templates.sh</code></td><td>100 assertions, 977 lines</td></tr>
+<tr><td><code>test_tooluse_hooks.sh</code></td><td>0 assertions, 164 lines</td></tr>
 <tr><td><code>test_working_knowledge_curation.sh</code></td><td>0 assertions, 343 lines</td></tr>
 </table>
-<p style="margin-top:0.5rem;font-size:0.85rem">Total: <strong>244 assertions</strong> across 22 test scripts. Run with <code>make test</code>.</p>
+<p style="margin-top:0.5rem;font-size:0.85rem">Total: <strong>244 assertions</strong> across 25 test scripts. Run with <code>make test</code>.</p>
 <p style="font-size:0.85rem">Edge cases covered: missing source files, unwritable directories, MCP registration (no file / partial / complete), venv fallback, idempotency (diff between runs).</p>
 </div>
 
@@ -845,7 +848,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 </pre>
 
 <footer>
-  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-06-09 22:43<br>
+  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-06-10 07:43<br>
   <code>scripts/generate-workflow.py</code> &mdash; run <code>make workflow</code> to regenerate
 </footer>
 

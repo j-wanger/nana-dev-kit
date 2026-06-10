@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 83</title>
+<title>Delivery Report: Phase 84</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,59 +21,79 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 83 &mdash; Phase 83</h1>
+<h1>Delivery Report: Phase 84 &mdash; Phase 84</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">5/5</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">7</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">6/6</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">31</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (51 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">52/52</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+60</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-47</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">5</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">22:43</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+209</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-111</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">0</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">07:43</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>T1 Installed-surface discovery + removal sets + verdict-table skeleton + liveness grep: test (RED) write eval/prune-o...</td></tr>
-<tr><td>&#x2705;</td><td>T2 Per-candidate arming runs (couldnt-fire vs didnt-fire): test (RED) extend check-artifacts.sh to assert arming-runs...</td></tr>
-<tr><td>&#x2705;</td><td>T3 Mid-phase checkpoint (unconditional, BEFORE any cut): present the full verdict table (candidate, evidence citation...</td></tr>
-<tr><td>&#x2705;</td><td>T4 Execute approved verdicts serially (one commit per candidate): test (RED) for each approved cut/disable, commit a ...</td></tr>
-<tr><td>&#x2705;</td><td>T5 Close-out + full exit-criteria run + residue filings: test (RED) write eval/prune-on-value/run-exit-criteria.sh ag...</td></tr>
+<tr><td>&#x2705;</td><td>T1 Hermetic instrument: test write tests/test_eval_hermeticity.sh — sandboxed hook run with CLAUDE_PROJECT_DIR pointi...</td></tr>
+<tr><td>&#x2705;</td><td>T2 Real-event capture + branch verdict: test write tests/test_fixture_provenance.sh asserting (a) tests/fixtures/real...</td></tr>
+<tr><td>&#x2705;</td><td>T3 Hook fixes (per T2 branch, with upstream off-ramp): test write tests/test_lifecycle_hooks_firing.sh using the real...</td></tr>
+<tr><td>&#x2705;</td><td>T4a Coverage matrix + rehearsal + HARD checkpoint: test write eval/hook-hygiene/check-matrix.sh asserting coverage-ma...</td></tr>
+<tr><td>&#x2705;</td><td>T4b Checkpoint-gated execution OR exceptions filing: test extend check-matrix.sh with an end-state assertion — basena...</td></tr>
+<tr><td>&#x2705;</td><td>T5 Close-out: test write eval/hook-hygiene/run-exit-criteria.sh skeleton with the spec's 10 criteria as numbered chec...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Prune-on-Value Subtraction</td><td>high</td></tr>
-<tr><td>QA &amp; Verification Sweep (ultracode)</td><td>high</td></tr>
-<tr><td>Drift Checker Compares Installed Presence, Not Scope Tags</td><td>high</td></tr>
-<tr><td>Hook Event-Shape Normalization</td><td>high</td></tr>
-<tr><td>Assumption-Approval Gate (Phase 81)</td><td>high</td></tr>
-</table>
+<p>No new decisions this phase.</p>
 
 <h2>Files Changed</h2>
 <ul>
+<li><code>.claude/rules/active-knowledge.md</code></li>
+<li><code>.claude/rules/active-phase.md</code></li>
+<li><code>.claude/rules/working-knowledge.md</code></li>
+<li><code>.dev-wiki/.stale-queue</code></li>
+<li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
-<li><code>.dev-wiki/articles/decisions/prune-on-value-subtraction.md</code></li>
 <li><code>.dev-wiki/assumption-ledger.md</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
+<li><code>.dev-wiki/tasks.md</code></li>
+<li><code>.gitignore</code></li>
+<li><code>Makefile</code></li>
+<li><code>README.md</code></li>
 <li><code>docs/report.html</code></li>
 <li><code>docs/workflow.html</code></li>
+<li><code>eval/corpus/hook-post-commit-detected/scenario.json</code></li>
+<li><code>eval/corpus/lifecycle-full-phase-cycle/scenario.json</code></li>
+<li><code>scripts/eval-runner.sh</code></li>
+<li><code>templates/.claude/hooks/context-size-check.sh</code></li>
+<li><code>templates/.claude/hooks/dev-wiki-scope-check.sh</code></li>
+<li><code>templates/.claude/hooks/enforce-memory.sh</code></li>
+<li><code>templates/.claude/hooks/post-commit.sh</code></li>
+<li><code>templates/.claude/hooks/post-compact.sh</code></li>
+<li><code>templates/.claude/hooks/pre-compact.sh</code></li>
+<li><code>templates/.claude/hooks/session-start.d/cognitive-readiness.sh</code></li>
+<li><code>templates/.claude/hooks/session-start.d/memory-nudge.sh</code></li>
+<li><code>templates/.claude/hooks/session-start.d/wk-prune.sh</code></li>
+<li><code>templates/.claude/hooks/session-stop.sh</code></li>
+<li><code>templates/.claude/hooks/stale-queue.sh</code></li>
+<li><code>tests/test_templates.sh</code></li>
+<li><code>tests/test_tooluse_hooks.sh</code></li>
 
 
 </ul>
 
 <h2>Test Results</h2>
 <p><span class="status" style="background:#2d7d2d">PASS</span> 51 passed, 1 failed</p>
-<pre>  harness-audit: runs and emits USED/LATENT/UNCERTAIN utilization lines OK
+<pre>  detect-loop: legacy 3-failure path still warns (non-regression) OK
 
-scripts-smoke: 4 run, 4 passed, 0 failed
+lifecycle-hooks-firing: 16 run, 16 passed, 0 failed
 
 All tests passed.</pre>
 
@@ -82,7 +102,7 @@ All tests passed.</pre>
 <pre>Score: 52/52 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-06-09 22:43:20 by generate-delivery-report.py
+  Generated 2026-06-10 07:43:09 by generate-delivery-report.py
 </div>
 </body>
 </html>

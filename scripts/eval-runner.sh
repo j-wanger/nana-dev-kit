@@ -75,8 +75,10 @@ run_hook() {
   stderr_file=$(mktemp)
   TMPDIRS+=("$stderr_file")
 
+  # CLAUDE_PROJECT_DIR must point INSIDE the sandbox: hooks open with `cd "${CLAUDE_PROJECT_DIR:-.}"`,
+  # so an inherited value would let them escape the sandbox into the caller's live project.
   local actual_exit=0
-  HOOK_STDOUT=$(cd "$work_dir" && printf '%s' "$input_data" | HOME="$eval_home" bash "$hook_script" 2>"$stderr_file") || actual_exit=$?
+  HOOK_STDOUT=$(cd "$work_dir" && printf '%s' "$input_data" | HOME="$eval_home" CLAUDE_PROJECT_DIR="$work_dir" bash "$hook_script" 2>"$stderr_file") || actual_exit=$?
   HOOK_STDERR=$(cat "$stderr_file" 2>/dev/null || true)
   HOOK_EXIT=$actual_exit
 }
@@ -208,6 +210,16 @@ for manifest in "${SCENARIOS[@]}"; do
     lifecycle)
       stage_files "$manifest" "$SCENARIO_DIR" "$WORK_DIR" '.setup.cwd_files'
       stage_files "$manifest" "$SCENARIO_DIR" "$EVAL_HOME" '.setup.home_files'
+
+      # Git init if requested (same semantics as the hook category)
+      INIT_GIT=$(jq -r '.setup.init_git // empty' "$manifest" 2>/dev/null || true)
+      if [ -n "$INIT_GIT" ]; then
+        git -C "$WORK_DIR" init -q 2>/dev/null
+        git -C "$WORK_DIR" add . 2>/dev/null
+        GIT_MSG="$INIT_GIT"
+        [ "$GIT_MSG" = "true" ] && GIT_MSG="eval init"
+        git -C "$WORK_DIR" -c user.email="eval@test" -c user.name="eval" commit -q -m "$GIT_MSG" 2>/dev/null || true
+      fi
 
       STEPS=$(jq '.steps | length' "$manifest")
 

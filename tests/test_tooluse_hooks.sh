@@ -90,6 +90,9 @@ teardown "$T"
 # ---- post-commit.sh (PostToolUse Bash): writes .pending-commit on a successful commit (opt-in) ----
 test_start "post-commit: writes .dev-wiki/.pending-commit + trigger on a successful git commit"
 T=$(mktemp -d); mkdir -p "$T/.claude" "$T/.dev-wiki"; touch "$T/.claude/enforce"
+# Phase 84: the hook now confirms the commit against git state (a "successful commit" event in
+# a repo with no commit was a false fire writing hash "unknown") — fixture holds a real commit.
+git -C "$T" init -q && git -C "$T" -c user.email=a@b.c -c user.name=t commit -q --allow-empty -m test
 EC=$(run_hook post-commit.sh "$T" '{"tool_input":{"command":"git commit -m test"},"exit_code":0}')
 if [ "$EC" = "0" ] && [ -f "$T/.dev-wiki/.pending-commit" ] && grep -q 'dev-wiki:post-commit' "$T/.out"; then
   test_pass; else test_fail "no .pending-commit / trigger (ec=$EC out=$(cat "$T/.out"))"; fi

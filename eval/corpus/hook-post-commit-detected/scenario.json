@@ -9,11 +9,14 @@
     },
     "home_files": {
       ".claude/enforce": "enforce-marker"
-    }
+    },
+    "init_git": true
   },
   "input": "{\"tool_name\": \"Bash\", \"tool_input\": {\"command\": \"git commit -m \\\"add feature\\\"\"}, \"stdout\": \"\", \"stderr\": \"\", \"exit_code\": 0}",
   "expected": {
     "exit_code": 0,
-    "stdout_contains": ["dev-wiki:post-commit"]
+    "stdout_contains": [
+      "dev-wiki:post-commit"
+    ]
   }
 }

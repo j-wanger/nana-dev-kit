@@ -17,3 +17,7 @@ benchmark/.venv/
 .claude/.memory-consulted
 .claude/scheduled_tasks.lock
 .memory/*.db*
+# Phase 84: the kit repo is its own consuming project — local hook wiring is installed state, not source
+.claude/settings.json
+.claude/hooks/
+.claude/.loop-state
