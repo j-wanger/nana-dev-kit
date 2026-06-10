@@ -40,7 +40,12 @@ SKILL_CLASS = {
     "dev-debrief": "debrief-capture",
 }
 OTHER = "implementation-other"
-SUBAGENT_RE = re.compile(r"subagent_tokens>(\d+)")
+# Two marker forms: sync dispatch tool_results use "subagent_tokens: N";
+# background task-notifications use "<subagent_tokens>N<". Background values also
+# appear in queue-operation entries (no .message) — those are skipped, so each
+# background dispatch is counted exactly once via its user-string notification.
+SUBAGENT_RE = re.compile(r"subagent_tokens[>:]\s*(\d+)")
+NOTIF_DESC_RE = re.compile(r'Agent \\?"([^"\\]+)')
 
 
 def parse_ts(s):
@@ -115,10 +120,12 @@ def main(paths):
                                 cls = classify_dispatch(label)
                                 if cls:
                                     row(cls)["dispatches"] += 1
-                                    dispatch_step[block.get("id", "")] = cls
                                     current = cls
                                 else:
                                     current = OTHER
+                                # record ALL dispatches (unclassified -> OTHER) so
+                                # their sync subagent costs conserve, not vanish
+                                dispatch_step[block.get("id", "")] = cls or OTHER
                         elif block.get("type") == "tool_result":
                             # subagent token recovery, attributed to dispatching step
                             tuid = block.get("tool_use_id", "")
@@ -127,6 +134,16 @@ def main(paths):
                                 m = SUBAGENT_RE.search(text)
                                 if m:
                                     row(dispatch_step.pop(tuid))["subagent_out"] += int(m.group(1))
+
+                # Background-dispatch notifications: user entries with STRING content
+                # carrying the XML marker; attribute via the notification's agent
+                # description (same label keywords as dispatch classification).
+                if isinstance(content, str) and "subagent_tokens>" in content:
+                    m = SUBAGENT_RE.search(content)
+                    if m:
+                        dm = NOTIF_DESC_RE.search(content)
+                        ncls = classify_dispatch(dm.group(1)) if dm else None
+                        row(ncls or OTHER)["subagent_out"] += int(m.group(1))
 
                 r = row(current)
                 usage = msg.get("usage") or {}

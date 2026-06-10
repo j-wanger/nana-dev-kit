@@ -47,6 +47,14 @@ check "step classes" "$PIN_STEP_CLASSES" "$ACTUAL_CLASSES"
 # 4. Interruptions
 check "interruptions (AskUserQuestion)"  "$PIN_INTERRUPTIONS" "$(sum_col 9)"
 
+# 4b. Subagent cost recovery (hand-paired 2026-06-10: sync colon-form via tool_use_id,
+# background XML-form via notification desc; wiki-add's 42363 -> implementation-other)
+PIN_SUBAGENT_TOTAL=906965   # 51447+63511+63697+50470+42363 sync + 129932+153848+143040+208657 background
+PIN_SUBAGENT_OTHER=42363    # wiki-add (non-ceremony)
+check "subagent tokens total"            "$PIN_SUBAGENT_TOTAL" "$(sum_col 11)"
+SUB_OTHER=$(echo "$OUT" | awk -F'\t' '$1 == "implementation-other" {print $11}')
+check "subagent tokens excluded (wiki-add)" "$PIN_SUBAGENT_OTHER" "$SUB_OTHER"
+
 # 5. Wall-clock sanity: total > 0 and <= session span
 WALL=$(sum_col 8)
 if [ "$WALL" -gt 0 ] && [ "$WALL" -le "$PIN_MAX_WALLCLOCK" ]; then note "PASS: wall-clock ($WALL s within (0, $PIN_MAX_WALLCLOCK])"; else note "FAIL: wall-clock $WALL outside (0, $PIN_MAX_WALLCLOCK]"; FAIL=1; fi
