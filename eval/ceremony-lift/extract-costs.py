@@ -71,8 +71,9 @@ def new_row():
             "dispatches": 0, "subagent_out": 0}
 
 
-def main(paths):
+def main(paths, manifest=False):
     rows = {}
+    dispatches = []  # (file, timestamp, label, class) when manifest mode
 
     def row(cls):
         if cls not in rows:
@@ -118,6 +119,11 @@ def main(paths):
                             elif name in ("Agent", "Task"):
                                 label = inp.get("description") or ""
                                 cls = classify_dispatch(label)
+                                if manifest:
+                                    dispatches.append(
+                                        (path.split("/")[-1],
+                                         entry.get("timestamp") or "",
+                                         label, cls or "non-ceremony"))
                                 if cls:
                                     row(cls)["dispatches"] += 1
                                     current = cls
@@ -164,6 +170,12 @@ def main(paths):
                         r["wall"] += (ts - prev_ts).total_seconds()
                         prev_ts = ts
 
+    if manifest:
+        print("session\ttimestamp\tlabel\tclass")
+        for d in dispatches:
+            print("\t".join(d))
+        return 0
+
     print("step\tmsgs\tin\tcw\tcr\tout\tcache_adj\twall_s\tinterrupts\tdispatches\tsubagent_out")
     for cls in sorted(rows):
         r = rows[cls]
@@ -175,7 +187,10 @@ def main(paths):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("usage: extract-costs.py <session.jsonl> [...]", file=sys.stderr)
+    args = sys.argv[1:]
+    manifest = "--manifest" in args
+    args = [a for a in args if a != "--manifest"]
+    if not args:
+        print("usage: extract-costs.py [--manifest] <session.jsonl> [...]", file=sys.stderr)
         sys.exit(2)
-    sys.exit(main(sys.argv[1:]))
+    sys.exit(main(args, manifest=manifest))
