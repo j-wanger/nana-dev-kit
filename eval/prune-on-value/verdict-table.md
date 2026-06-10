@@ -1,8 +1,8 @@
 # Phase 83 — Prune-on-Value Verdict Table
 
 Evidence: eval/qa-sweep/verification-matrix.md rows L93-96 + L54-56/L79 + repro-runs.log + this dir's
-liveness-grep.log / arming-runs.log. Verdict enum: keep | cut | harden | disable-at-boundary.
-zero-class enum: couldnt-fire | didnt-fire (filled by T2 arming; couldnt-fire rows are DEFECT findings —
+liveness-grep.log / arming-runs.log. Verdict enum: keep / cut / harden / disable-at-boundary.
+zero-class enum: couldnt-fire / didnt-fire (filled by T2 arming; couldnt-fire rows are DEFECT findings —
 presented at the T3 checkpoint with no cut offered, maintainer may override).
 Proposed verdicts are evidence-forced drafts pending the T3 checkpoint; final cells reflect approved verdicts.
 
@@ -37,3 +37,21 @@ Presented 2026-06-09 via AskUserQuestion, BEFORE any cut. couldnt-fire rows pres
 - audit-log-model-field: override 2026-06-09 — cut the field now (S, field-level; audit-log itself stays per [[audit-log-disposition]])
 - orphan-companions: approved 2026-06-09 — cut (3 files + ORPHAN_EXEMPT entries + 3 MANIFEST checksums; installed copies removed too)
 - harness-audit: override 2026-06-09 — harden: wire it in (keep + register + functional test) instead of cut
+
+## Close-out (2026-06-09)
+
+| area | command | evidence | verdict |
+|---|---|---|---|
+| exit criteria | bash eval/prune-on-value/run-exit-criteria.sh | 10/10 PASS | clean |
+| test suite | make test | All tests passed (22 scripts; companions Direction C now stricter — exemption list emptied) | clean |
+| eval corpus | make eval | 52/52 (denominator UNCHANGED — enforce-memory kept, its 3 scenarios live) | clean |
+| install drift | bash scripts/check-install-drift.sh | exit 0 (installed copies refreshed with the model-field cut) | clean |
+| settings template | bash tests/test_settings_template.sh | green (modules.json untouched — no hook was cut) | clean |
+
+Outcome: 6 verdicts — 2 cuts executed (audit-log-model-field, orphan-companions: -200 repo lines,
+21 installed files cleaned/refreshed across 6 roots), 2 keeps (enforce-memory: couldnt-fire, now live;
+memory-mcp-scaffold: no per-project surface), 2 hardens IMPLEMENTED via checkpoint override
+(fastembed installed → cosine reinforcement live; harness-audit wired as `make audit` + functional smoke).
+4 of 6 Phase-82 "dead-weight" zeros were measurement artifacts (couldnt-fire / no-surface), not absent
+demand — the couldnt-fire-vs-didnt-fire gate earned its keep. Zero cuts would also have been valid;
+two were evidence-forced.
