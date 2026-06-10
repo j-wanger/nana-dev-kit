@@ -18,7 +18,7 @@ c2() { ! grep -E "^\| ($CANDS) " "$TABLE" | grep -vE '\| (keep|cut|harden|disabl
 c3() { ! grep -E "^\| ($CANDS) " "$TABLE" | grep -E '\| (cut|disable-at-boundary) \|' | grep -vE 'couldnt-fire|didnt-fire' | grep -q .; }
 c4() { [ -f "$LOG" ] && head -5 "$LOG" | grep -q edge-screener; }
 c5() { make test 2>&1 | grep -q 'All tests passed'; }
-c6() { make eval 2>&1 | tail -5 | grep -qE '52/52|[0-9]+/[0-9]+'; }
+c6() { local s; s=$(make eval 2>&1 | grep -oE 'Score: [0-9]+/[0-9]+' | tail -1 | grep -oE '[0-9]+/[0-9]+'); [ -n "$s" ] && { [ "${s%/*}" = "${s#*/}" ] || grep -q 'denominator' "$TABLE"; }; }
 c7() { bash scripts/check-install-drift.sh; }
 c8() { bash tests/test_settings_template.sh; }
 c9() { [ "$(grep -c '^DEREG .*: absent$' "$LOG")" -ge "$(grep -cE "^\| ($CANDS) .*\| (cut|disable-at-boundary) \|" "$TABLE")" ]; }

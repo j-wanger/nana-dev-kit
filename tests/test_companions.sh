@@ -95,12 +95,12 @@ fi
 
 # ---- Direction C (Phase 82): orphan companions — every companion must be referenced ----
 # 8 stale referenced_at values and 3 orphan files accumulated invisibly while Directions A/B
-# passed. Pinned exemption allow-list (the 3 known orphans, filed as subtraction-review
-# candidates in Phase 82) keeps this green today while catching any NEW orphan.
+# passed. The 3 known orphans were cut in Phase 83 (prune-on-value), so the exemption
+# allow-list is EMPTY: any orphan companion is now a failure.
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 ORPHAN_EXEMPT=""  # Phase 83: the 3 pinned orphans were cut — any orphan is now a failure
 
-test_start "Direction C: no NEW orphan companions (pinned 3-entry exemption)"
+test_start "Direction C: no orphan companions (exemption list empty)"
 C_FAIL=0
 while IFS= read -r comp; do
   rel="${comp#"$SKILLS_DIR"/}"

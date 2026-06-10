@@ -49,7 +49,7 @@ Presented 2026-06-09 via AskUserQuestion, BEFORE any cut. couldnt-fire rows pres
 | settings template | bash tests/test_settings_template.sh | green (modules.json untouched — no hook was cut) | clean |
 
 Outcome: 6 verdicts — 2 cuts executed (audit-log-model-field, orphan-companions: -200 repo lines,
-21 installed files cleaned/refreshed across 6 roots), 2 keeps (enforce-memory: couldnt-fire, now live;
+23 installed-surface assertions: 5 project audit-log copies refreshed + 18 orphan files removed across 6 roots), 2 keeps (enforce-memory: couldnt-fire, now live;
 memory-mcp-scaffold: no per-project surface), 2 hardens IMPLEMENTED via checkpoint override
 (fastembed installed → cosine reinforcement live; harness-audit wired as `make audit` + functional smoke).
 4 of 6 Phase-82 "dead-weight" zeros were measurement artifacts (couldnt-fire / no-surface), not absent
