@@ -47,6 +47,15 @@ if [ -f re-execution-log.md ]; then
   [ "$missing" = "1" ] && FAIL=1
 fi
 
+# CLASS-COUNTS line must match recomputed per-class row counts (silent-demotion guard)
+RECOMPUTED=$(grep -E '^\| d[0-9]+ \|' "$T" | awk -F'|' '{c=$7; gsub(/ /,"",c); n[c]++} END {for (k in n) print k "=" n[k]}' | sort | tr '\n' ' ' | sed 's/ $//')
+DECLARED=$(grep -E '^CLASS-COUNTS: ' "$T" | sed 's/^CLASS-COUNTS: //' | tr ' ' '\n' | sort | tr '\n' ' ' | sed 's/ $//')
+if [ "$RECOMPUTED" = "$DECLARED" ]; then
+  echo "  PASS: CLASS-COUNTS matches recomputed row counts ($DECLARED)"
+else
+  echo "  FAIL: CLASS-COUNTS mismatch declared='$DECLARED' recomputed='$RECOMPUTED'"; FAIL=1
+fi
+
 # caveat cell (last column) non-empty on every row
 badcaveat=$(grep -E '^\| d[0-9]+ \|' "$T" | awk -F'|' '{c=$(NF-1); gsub(/ /,"",c); if (c=="") n++} END {print n+0}')
 if [ "$badcaveat" = "0" ]; then

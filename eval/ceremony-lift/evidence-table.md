@@ -7,7 +7,7 @@ downgrade rule. Candidates sourced from agent prose are NOT verdict evidence.
 |---|---|---|---|---|---|---|---|
 | d1 | 4548dee3-a069-4a70-a7fa-a801b78727a2.jsonl | 2026-06-10 | spec-generation | Adversarial constraint generation | zero-catch | - | agent-counterfactual residual applies |
 | d2 | 4548dee3-a069-4a70-a7fa-a801b78727a2.jsonl | 2026-06-10 | spec-generation | Spec semantic review (Tier 1) | zero-catch | - | agent-counterfactual residual applies |
-| d3 | 4548dee3-a069-4a70-a7fa-a801b78727a2.jsonl | 2026-06-10 | dev-plan-orchestration | Dev-plan state loader | outcome-grade-admitted | re-execution-log.md#r-ph84-a1-bit | bit-record basis, not gate-counterfactual; gateless-agent counterfactual unmeasured |
+| d3 | 4548dee3-a069-4a70-a7fa-a801b78727a2.jsonl | 2026-06-10 | dev-plan-orchestration | Dev-plan state loader | ambiguous-downgrade | re-execution-log.md#r-ph84-a1-bit | ledger-bit record (deterministic, append-only ledger; grep-verified) but OUTSIDE the registered outcome-grade taxonomy - no gate counterfactual against a pre-fix state; pinned downgrade applied at review-gate correction |
 | d4 | 4548dee3-a069-4a70-a7fa-a801b78727a2.jsonl | 2026-06-10 | approach-reviewer | Approach review (Step 12) | zero-catch | - | agent-counterfactual residual applies |
 | d5 | 4548dee3-a069-4a70-a7fa-a801b78727a2.jsonl | 2026-06-10 | plan-reviewer | Plan review (Step 14) | zero-catch | - | agent-counterfactual residual applies |
 | d6 | 4548dee3-a069-4a70-a7fa-a801b78727a2.jsonl | 2026-06-10 | plan-reviewer | Plan re-review (revised tasks) | zero-catch | - | agent-counterfactual residual applies |
@@ -22,7 +22,7 @@ downgrade rule. Candidates sourced from agent prose are NOT verdict evidence.
 | d15 | 5d38a103-3aab-4054-8d74-f8aa2ff52fe8.jsonl | 2026-05-31 | debrief-capture | Dev-wiki debrief executor | consumption-grade-capped | - | re-presentation class: cannot support keep; [uses:N] seeded at 1, increment discipline unknown |
 | d16 | 74a6533b-66aa-426d-9da0-b2a6d22a0197.jsonl | 2026-06-10 | spec-generation | Adversarial spec constraints | zero-catch | - | agent-counterfactual residual applies |
 | d17 | 74a6533b-66aa-426d-9da0-b2a6d22a0197.jsonl | 2026-06-10 | spec-generation | Spec semantic review Tier 1 | zero-catch | - | agent-counterfactual residual applies |
-| d18 | 74a6533b-66aa-426d-9da0-b2a6d22a0197.jsonl | 2026-06-10 | dev-plan-orchestration | Dev-plan state loader | outcome-grade-admitted | re-execution-log.md#r-ph85-a2-bit | bit-record basis, not gate-counterfactual; gateless-agent counterfactual unmeasured |
+| d18 | 74a6533b-66aa-426d-9da0-b2a6d22a0197.jsonl | 2026-06-10 | dev-plan-orchestration | Dev-plan state loader | ambiguous-downgrade | re-execution-log.md#r-ph85-a2-bit | ledger-bit record (deterministic, append-only ledger; grep-verified) but OUTSIDE the registered outcome-grade taxonomy - no gate counterfactual against a pre-fix state; pinned downgrade applied at review-gate correction |
 | d19 | 74a6533b-66aa-426d-9da0-b2a6d22a0197.jsonl | 2026-06-10 | approach-reviewer | Approach review Phase 85 | zero-catch | - | agent-counterfactual residual applies |
 | d20 | 74a6533b-66aa-426d-9da0-b2a6d22a0197.jsonl | 2026-06-10 | plan-reviewer | Plan review Phase 85 tasks | ambiguous-downgrade | - | pre-fix unrecoverable (folded before commit); pinned downgrade; candidate: checkpoint-discipline findings (Ph85) |
 | d21 | 74a6533b-66aa-426d-9da0-b2a6d22a0197.jsonl | 2026-06-10 | dev-plan-orchestration | Dev-plan artifact writer | zero-catch | - | agent-counterfactual residual applies |
@@ -30,12 +30,12 @@ downgrade rule. Candidates sourced from agent prose are NOT verdict evidence.
 | d23 | 74a6533b-66aa-426d-9da0-b2a6d22a0197.jsonl | 2026-06-10 | debrief-capture | Dev-wiki debrief executor | consumption-grade-capped | - | re-presentation class: cannot support keep; [uses:N] seeded at 1, increment discipline unknown |
 | d24 | 7c3c3cfb-2740-451f-ab60-4a1fbbd20a18.jsonl | 2026-06-09 | spec-generation | Adversarial constraint generation | ambiguous-downgrade | - | pre-fix unrecoverable (folded before commit); pinned downgrade; candidate: >10-defects STOP threshold fired (Ph82) |
 | d25 | 7c3c3cfb-2740-451f-ab60-4a1fbbd20a18.jsonl | 2026-06-09 | spec-generation | Tier 1 spec review | zero-catch | - | agent-counterfactual residual applies |
-| d26 | 7c3c3cfb-2740-451f-ab60-4a1fbbd20a18.jsonl | 2026-06-09 | dev-plan-orchestration | Dev-plan artifact writer | outcome-grade-admitted | re-execution-log.md#r-ph82-a1-bit | bit-record basis, not gate-counterfactual; gateless-agent counterfactual unmeasured |
+| d26 | 7c3c3cfb-2740-451f-ab60-4a1fbbd20a18.jsonl | 2026-06-09 | dev-plan-orchestration | Dev-plan artifact writer | ambiguous-downgrade | re-execution-log.md#r-ph82-a1-bit | ledger-bit record (deterministic, append-only ledger; grep-verified) but OUTSIDE the registered outcome-grade taxonomy - no gate counterfactual against a pre-fix state; pinned downgrade applied at review-gate correction |
 | d27 | 7c3c3cfb-2740-451f-ab60-4a1fbbd20a18.jsonl | 2026-06-09 | debrief-capture | Dev-wiki debrief executor | consumption-grade-capped | - | re-presentation class: cannot support keep; [uses:N] seeded at 1, increment discipline unknown |
 | d28 | a3ded0d7-0242-4390-815b-7c0c5f187e22.jsonl | 2026-06-04 | spec-generation | Adversarial review of screen design | ambiguous-downgrade | - | pre-fix unrecoverable (folded before commit); pinned downgrade; candidate: C1-C4 folded pre-pre-reg (Ph78) |
 | d29 | b9587f39-7dbc-425e-a8b6-362a81c96a28.jsonl | 2026-06-10 | spec-generation | Adversarial constraint generation | zero-catch | - | agent-counterfactual residual applies |
 | d30 | b9587f39-7dbc-425e-a8b6-362a81c96a28.jsonl | 2026-06-10 | spec-generation | Tier 1 spec semantic review | zero-catch | - | agent-counterfactual residual applies |
-| d31 | b9587f39-7dbc-425e-a8b6-362a81c96a28.jsonl | 2026-06-10 | dev-plan-orchestration | Dev-plan state loader | outcome-grade-admitted | re-execution-log.md#r-ph83-a2-bit | bit-record basis, not gate-counterfactual; gateless-agent counterfactual unmeasured |
+| d31 | b9587f39-7dbc-425e-a8b6-362a81c96a28.jsonl | 2026-06-10 | dev-plan-orchestration | Dev-plan state loader | ambiguous-downgrade | re-execution-log.md#r-ph83-a2-bit | ledger-bit record (deterministic, append-only ledger; grep-verified) but OUTSIDE the registered outcome-grade taxonomy - no gate counterfactual against a pre-fix state; pinned downgrade applied at review-gate correction |
 | d32 | b9587f39-7dbc-425e-a8b6-362a81c96a28.jsonl | 2026-06-10 | approach-reviewer | Approach review Phase 83 | zero-catch | - | agent-counterfactual residual applies |
 | d33 | b9587f39-7dbc-425e-a8b6-362a81c96a28.jsonl | 2026-06-10 | plan-reviewer | Plan review Phase 83 tasks | zero-catch | - | agent-counterfactual residual applies |
 | d34 | b9587f39-7dbc-425e-a8b6-362a81c96a28.jsonl | 2026-06-10 | dev-plan-orchestration | Dev-plan artifact writer | zero-catch | - | agent-counterfactual residual applies |
@@ -63,5 +63,11 @@ downgrade rule. Candidates sourced from agent prose are NOT verdict evidence.
 - Consumption rows: working-knowledge counters cannot distinguish seeding from
   retrieval; citation trails exist in decision articles but were not
   independently re-executed this phase.
+- A2 STOP FIRED (review-gate correction): 10 of 11 outcome-candidate rows are
+  downgraded (5 folded-pre-commit unrecoverable, 1 recoverable-not-reexecuted,
+  4 ledger-bit outside-taxonomy) — above the pre-registered >50% threshold.
+  Stage-1 outcome evidence is ambiguous-by-construction for all steps except
+  the single fully re-executed Ph85 review-gate catch; re-presented to the
+  maintainer at the corrected checkpoint per the spec's STOP clause.
 
-CLASS-COUNTS: ambiguous-downgrade=6 consumption-grade-capped=8 outcome-grade-admitted=5 zero-catch=25
+CLASS-COUNTS: ambiguous-downgrade=10 consumption-grade-capped=8 outcome-grade-admitted=1 zero-catch=25

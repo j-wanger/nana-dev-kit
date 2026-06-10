@@ -30,15 +30,6 @@ c1() {
     grep -q "$s" pre-registration.md || return 1
   done
 }
-c2() {
-  local pr ev
-  pr=$(git log --diff-filter=A --format=%H -1 -- eval/ceremony-lift/pre-registration.md)
-  ev=$(git log --diff-filter=A --format=%H -1 -- eval/ceremony-lift/evidence-table.md)
-  [ -n "$pr" ] && [ -n "$ev" ] || return 1
-  git merge-base --is-ancestor "$pr" "$ev" || return 1
-  git diff --quiet "$pr" "$ev" -- eval/ceremony-lift/pre-registration.md
-}
-
 run_c 1 "pre-registration sections present"            no  c1
 run_c 2 "pre-reg strictly precedes evidence, byte-frozen" na bash -c 'cd ../.. && pr=$(git log --diff-filter=A --format=%H -1 -- eval/ceremony-lift/pre-registration.md); ev=$(git log --diff-filter=A --format=%H -1 -- eval/ceremony-lift/evidence-table.md); [ -n "$pr" ] && [ -n "$ev" ] && git merge-base --is-ancestor "$pr" "$ev" && git diff --quiet "$pr" "$ev" -- eval/ceremony-lift/pre-registration.md'
 run_c 3 "cost-extractor positive control"              no  bash ./test-cost-extractor-control.sh

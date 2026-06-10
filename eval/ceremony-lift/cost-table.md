@@ -1,6 +1,6 @@
 # Ceremony Cost Table — Phases 76–85 (frozen corpus)
 
-Sessions: 12; phases = 10; extractor: extract-costs.py (control 11/11). Raw = in+cw+cr+out summed; cache-adjusted = in*1.0 + cw*1.25 + cr*0.1 + out*5.0 (input-token-equivalents).
+Sessions: 12; phases = 10; extractor: extract-costs.py (control: test-cost-extractor-control.sh, all checks). Raw = in+cw+cr+out summed; cache-adjusted = in*1.0 + cw*1.25 + cr*0.1 + out*5.0 (input-token-equivalents). KNOWN CAVEATS: materiality computed on pooled corpus share, not the registered per-phase median (verdict-neutral for the one immaterial step at 0.8%); interruptions count AskUserQuestion only (blocking permission prompts not recoverable from transcripts); session selection by first-timestamp may exclude phase-spanning sessions (PLAN-split not implemented) - same basis as the manifest under-enumeration caveat.
 
 | step | msgs | in | cache_write | cache_read | out | raw | cache_adj | wall_s | interrupts | dispatches | subagent_out | %adj | %wall |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|

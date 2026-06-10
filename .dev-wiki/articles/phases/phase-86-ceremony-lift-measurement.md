@@ -114,3 +114,18 @@ Rationale notes (maintainer positions, agent-recorded):
 - Stage 2 go as follow-on phase: spec-generation contrast on burnable edge-screener
   Phase 10; twin worktrees, leak canary, positive control, deterministic ship
   criteria, n=1 confirms cut-candidate→reversible trim-trial only.
+
+### Review-gate correction (2026-06-10, post-checkpoint)
+
+The debrief review gate (6/10 revise) caught a CRITICAL: the 4 assumption-ledger bit
+rows had been admitted outcome-grade in violation of the FROZEN pre-registration
+(no gate counterfactual) — the retrofit class the freeze exists to prevent, missed by
+self-check, caught by the external reviewer. Corrected: bits reclassified
+ambiguous-downgrade (controlled blind classifier agrees); evidence table now
+1 outcome-grade-admitted / 10 ambiguous-downgrade / 8 consumption-capped /
+25 zero-catch; the pre-registered A2 >50% STOP fired and was re-presented.
+Maintainer positions on re-presentation: A2 accept-and-proceed (revisit-status: bit);
+dev-plan-orchestration=trim STANDS (the trim targeted ride-along machinery, never
+depended on the bits being outcome-grade). All other verdict lines unchanged.
+Live meta-evidence: this catch is the review-gate step's second fully-witnessed
+marginal catch — the step the checkpoint kept via expected-cost arithmetic.

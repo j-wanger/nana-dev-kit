@@ -27,14 +27,18 @@ def classify(row, base="."):
     kind = row.get("kind", "")
     if kind == "outcome-candidate":
         re_exec = row.get("reexec") or {}
-        if not re_exec.get("recoverable"):
+        if not re_exec.get("recoverable") or not re_exec.get("cmd"):
+            # missing command must never mint a gate verdict
             return "ambiguous-downgrade"
         # reexec.dir resolves relative to the candidate row's own location
         cwd = os.path.normpath(os.path.join(base, re_exec.get("dir") or "."))
-        proc = subprocess.run(
-            re_exec.get("cmd", "false"), shell=True,
-            cwd=cwd,
-            capture_output=True, timeout=300)
+        try:
+            proc = subprocess.run(
+                re_exec["cmd"], shell=True,
+                cwd=cwd,
+                capture_output=True, timeout=300)
+        except subprocess.TimeoutExpired:
+            return "ambiguous-downgrade"
         return "outcome-grade-admitted" if proc.returncode == 0 else "rejected-gate-covered"
     if kind == "consumption-candidate":
         c = row.get("consumption") or {}

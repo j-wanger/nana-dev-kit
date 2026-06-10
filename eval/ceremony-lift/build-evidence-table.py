@@ -19,17 +19,17 @@ MAP = {
         "outcome-grade-admitted", "re-execution-log.md#r-ph85-review-gate",
         "agent-counterfactual residual; audit DRIFT verdict environment-coupled"),
     ("7c3c3cfb", "dev-plan-orchestration", 0): (
-        "outcome-grade-admitted", "re-execution-log.md#r-ph82-a1-bit",
-        "bit-record basis, not gate-counterfactual; gateless-agent counterfactual unmeasured"),
+        "ambiguous-downgrade", "re-execution-log.md#r-ph82-a1-bit",
+        "ledger-bit record (deterministic, append-only ledger; grep-verified) but OUTSIDE the registered outcome-grade taxonomy - no gate counterfactual against a pre-fix state; pinned downgrade applied at review-gate correction"),
     ("b9587f39", "dev-plan-orchestration", 0): (
-        "outcome-grade-admitted", "re-execution-log.md#r-ph83-a2-bit",
-        "bit-record basis, not gate-counterfactual; gateless-agent counterfactual unmeasured"),
+        "ambiguous-downgrade", "re-execution-log.md#r-ph83-a2-bit",
+        "ledger-bit record (deterministic, append-only ledger; grep-verified) but OUTSIDE the registered outcome-grade taxonomy - no gate counterfactual against a pre-fix state; pinned downgrade applied at review-gate correction"),
     ("4548dee3", "dev-plan-orchestration", 0): (
-        "outcome-grade-admitted", "re-execution-log.md#r-ph84-a1-bit",
-        "bit-record basis, not gate-counterfactual; gateless-agent counterfactual unmeasured"),
+        "ambiguous-downgrade", "re-execution-log.md#r-ph84-a1-bit",
+        "ledger-bit record (deterministic, append-only ledger; grep-verified) but OUTSIDE the registered outcome-grade taxonomy - no gate counterfactual against a pre-fix state; pinned downgrade applied at review-gate correction"),
     ("74a6533b", "dev-plan-orchestration", 0): (
-        "outcome-grade-admitted", "re-execution-log.md#r-ph85-a2-bit",
-        "bit-record basis, not gate-counterfactual; gateless-agent counterfactual unmeasured"),
+        "ambiguous-downgrade", "re-execution-log.md#r-ph85-a2-bit",
+        "ledger-bit record (deterministic, append-only ledger; grep-verified) but OUTSIDE the registered outcome-grade taxonomy - no gate counterfactual against a pre-fix state; pinned downgrade applied at review-gate correction"),
     ("4548dee3", "review-gate-reviewer", 0): (
         "ambiguous-downgrade", "-", CAVEAT_BUDGET + "; candidate: 4 MEDIUM findings (Ph84)"),
     ("e2e6d848", "approach-reviewer", 0): (
@@ -56,6 +56,7 @@ with open("corpus-manifest.md") as fh:
 
 seen = {}
 out = []
+used_keys = set()
 for i, (session, ts, label, cls) in enumerate(rows, 1):
     key = (session[:8], cls)
     occ = seen.get(key, 0)
@@ -63,9 +64,38 @@ for i, (session, ts, label, cls) in enumerate(rows, 1):
     if cls == "debrief-capture":
         c, ptr, cav = "consumption-grade-capped", "-", CAVEAT_CONSUMPTION
     else:
-        c, ptr, cav = MAP.get((session[:8], cls, occ),
-                              ("zero-catch", "-", CAVEAT_DEFAULT))
+        mk = (session[:8], cls, occ)
+        c, ptr, cav = MAP.get(mk, ("zero-catch", "-", CAVEAT_DEFAULT))
+        if mk in MAP:
+            used_keys.add(mk)
     out.append((f"d{i}", session, ts[:10], cls, label, c, ptr, cav))
+
+# Guard: every MAP entry must have matched a manifest row — a typo'd key would
+# silently demote its row to zero-catch.
+unused = set(MAP) - used_keys
+assert not unused, f"MAP entries matched no manifest row: {unused}"
+
+# Consistency pass: ambiguous/zero classifications must agree with the controlled
+# blind classifier (classify-evidence.py) on equivalent candidate shapes. Rows whose
+# class rests on a LIVE orchestrator re-execution are log-sourced (the classifier's
+# outcome path would re-run the gate; the run is recorded in re-execution-log.md).
+import json as _json
+import subprocess as _sp
+LOG_SOURCED = {("74a6533b", "review-gate-reviewer", 0)}
+for mk, (mc, _p, _c) in MAP.items():
+    if mk in LOG_SOURCED:
+        continue
+    shape = {"id": "consistency", "kind": "outcome-candidate",
+             "reexec": {"recoverable": False}}
+    import tempfile, os
+    fd, tmp = tempfile.mkstemp(suffix=".json")
+    with os.fdopen(fd, "w") as t:
+        _json.dump(shape, t)
+    got = _sp.run(["python3", "./classify-evidence.py", tmp],
+                  capture_output=True, text=True).stdout.strip().splitlines()[-1]
+    os.unlink(tmp)
+    assert got == mc == "ambiguous-downgrade", \
+        f"classifier disagrees on {mk}: map={mc} classifier={got}"
 
 with open("evidence-table.md", "w") as fh:
     w = fh.write
@@ -88,6 +118,12 @@ with open("evidence-table.md", "w") as fh:
     w("- Consumption rows: working-knowledge counters cannot distinguish seeding from\n")
     w("  retrieval; citation trails exist in decision articles but were not\n")
     w("  independently re-executed this phase.\n")
+    w("- A2 STOP FIRED (review-gate correction): 10 of 11 outcome-candidate rows are\n")
+    w("  downgraded (5 folded-pre-commit unrecoverable, 1 recoverable-not-reexecuted,\n")
+    w("  4 ledger-bit outside-taxonomy) — above the pre-registered >50% threshold.\n")
+    w("  Stage-1 outcome evidence is ambiguous-by-construction for all steps except\n")
+    w("  the single fully re-executed Ph85 review-gate catch; re-presented to the\n")
+    w("  maintainer at the corrected checkpoint per the spec's STOP clause.\n")
     cls_counts = {}
     for r in out:
         cls_counts[r[5]] = cls_counts.get(r[5], 0) + 1

@@ -32,8 +32,8 @@ don't-know → utilization area added), feeding Phase-83's prune evidence.
 | grep -cE 'revisit-status: bit'` → 1; A5 row text records "REVISES A1: eight areas —
 adding a deterministic usage/utilization audit". Ledger schema validates
 (check-assumption-ledger.sh --schema exit 0; append-only).
-**Verdict input:** deterministic ledger record of a gate-surfaced, outcome-changing
-discovery → outcome-grade-admitted.
+**Verdict input:** deterministic ledger record — CORRECTED at review-gate: outside
+the registered outcome-grade taxonomy (no gate counterfactual) → ambiguous-downgrade.
 **Caveats:** bit-record verification, not a gate-counterfactual — no downstream
 deterministic gate could surface a missing measurement axis; whether a gateless agent
 would have found it is unmeasured.
@@ -46,7 +46,7 @@ gate forced converted would-be wrong cuts into keeps/hardens.
 **Verification:** Phase-83 ledger block: `- A2 | cost: high | position: accept |
 revisit-status: bit | "The Phase-82 usage…"` (grep verified); keep/harden verdicts
 recorded in the Phase-83 decision article + eval/prune artifacts.
-**Verdict input:** outcome-grade-admitted (same bit-record basis as r-ph82-a1-bit).
+**Verdict input:** ambiguous-downgrade (CORRECTED at review-gate — bit-record basis is outside the registered outcome-grade taxonomy).
 **Caveats:** as r-ph82-a1-bit.
 
 ### r-ph84-a1-bit
@@ -56,7 +56,7 @@ PROVED WRONG by live event capture (no exit-code field; no event on failure) —
 forced the upstream-filing branch mid-phase.
 **Verification:** Phase-84 ledger block: `- A1 | … | revisit-status: bit | "A
 success/failure …"` (grep verified).
-**Verdict input:** outcome-grade-admitted (bit-record basis).
+**Verdict input:** ambiguous-downgrade (CORRECTED at review-gate — bit-record basis is outside the registered outcome-grade taxonomy).
 **Caveats:** as r-ph82-a1-bit.
 
 ### r-ph85-a2-bit
@@ -66,5 +66,17 @@ mandatory empirical verification; DRQ-1 probes revealed string-keyed dedupe (the
 accepted model was partially wrong), reshaping the migration design.
 **Verification:** Phase-85 ledger block: `- A2 | … | revisit-status: bit |
 "Duplicate hook …"` (grep verified); eval/install-gap/drq1-verification.md exists.
-**Verdict input:** outcome-grade-admitted (bit-record basis).
+**Verdict input:** ambiguous-downgrade (CORRECTED at review-gate — bit-record basis is outside the registered outcome-grade taxonomy).
 **Caveats:** as r-ph82-a1-bit.
+
+## Correction (review gate, 2026-06-10)
+
+The four ledger-bit entries above were initially classified outcome-grade-admitted.
+The Phase-86 review gate (6/10 revise, CRITICAL) correctly found this widened the
+FROZEN pre-registration's outcome-grade definition at tabulation time — bit records
+are deterministic and append-only but carry NO gate counterfactual against a pre-fix
+state. The controlled blind classifier agrees (bit-shaped rows → ambiguous-downgrade).
+All four reclassified per the pinned downgrade rule; the verification greps above
+remain valid as AMBIGUOUS-row documentation. Consequence: the pre-registered A2
+STOP condition (>50% of outcome-candidate rows downgraded) FIRES on the corrected
+counts — re-presented to the maintainer at the corrected checkpoint.
