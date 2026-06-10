@@ -1,0 +1,39 @@
+# Phase 83 liveness grep — removal-set-exclusion semantics: alive = LIVE reference outside the
+# candidate's removal set; HISTORICAL dev-wiki/journal/spec records do NOT count (never rewritten).
+ROOTS: /Users/jwang/nana-dev-kit (repo)
+ROOTS: /Users/jwang/.claude (global install; kit-path marker -> /Users/jwang/nana-dev-kit)
+ROOTS: /Users/jwang/edge-screener
+ROOTS: /Users/jwang/ab-test/stock-screener (discovered by A6 scan)
+ROOTS: /Users/jwang/edge-analyst (discovered by A6 scan)
+ROOTS: /Users/jwang/fate (discovered by A6 scan)
+ROOTS: /Users/jwang/ai-game (discovered by A6 scan)
+DISCOVERY: kit-marker scan 2026-06-09 — ~/.claude/.nana-dev-kit-path; find ~ (maxdepth 4, Library/.Trash/node_modules/.venv/.cache pruned) for */.claude/hooks + .nana dirs; shell profiles (.zshrc/.zprofile/.zshenv/.bashrc/.bash_profile/.profile) grepped for CLAUDE_MODEL|claude/enforce: NONE.
+DISCOVERY-DELTA: A3-assumed roots (repo, ~/.claude, edge-screener) MISSED 4 installs: ab-test/stock-screener, edge-analyst, fate, ai-game. A3 reject vindicated.
+
+== enforce-memory ==
+INSTALLED: hookfile in all 6 installed roots; REGISTERED in ~/.claude/settings.json + edge-screener + edge-analyst; NOT registered in stock-screener/fate/ai-game.
+MARKER: ~/.claude/enforce-memory EXISTS (created 2026-05-28 same second as ~/.claude/enforce; modified 2026-06-09 15:14 — Phase-82 test activity; provenance hazard noted). modules.json L39 DECLARES it as a shipped marker -> install.sh creates it. "Opt-in never opted into" is FALSE: shipped-armed.
+LIVE-REFS-OUTSIDE-REMOVAL-SET: none (eval scenarios, tests, modules.json, MANIFEST, README are removal-set members).
+HISTORICAL: dev-wiki decisions/journals, specs, working-knowledge entries — not liveness.
+
+== memory-reinforcement ==
+LIVE-REFS-OUTSIDE-MEMORY-SERVER: templates/.claude/skills/dev-plan/memory-bridge.md (doc), tests/test_memory.sh (test) — removal-set members if ever cut; vendored code otherwise untouched.
+LIVE-PATH: ~/.claude/memory_server/.venv has NO fastembed (verified 2026-06-09); sqlite_vec present. storage.py reinforces only at cosine >0.90 (embeddings required); word-overlap fallback warns only; exact-dup reinforce reachable.
+
+== memory-mcp-scaffold ==
+SHIPPING-SURFACE: memory ships GLOBALLY only (install.sh core: memory_server + venv + MCP registration in ~/.claude/settings.json). py-init/ts-init ship NOTHING memory-specific; no per-project memory hook/nudge exists in templates (enforce-memory.sh is candidate 1's surface, scope:project via modules.json L53).
+CONSUMING-PROJECT USE: zero .memory/ DBs in ALL 5 consuming projects (edge-screener, stock-screener, edge-analyst, fate, ai-game).
+DEREG-ARTIFACT: NONE EXISTS — there is no per-project memory surface to deregister; the global layer's value is the A5 deferred Blocker (must-revisit), out of candidate 3's scope.
+
+== audit-log-model-field ==
+PLUMBING: audit-log.sh L19 MODEL="${CLAUDE_MODEL:-unknown}"; L24-25 jq --arg model. No consumer of .model anywhere; CLAUDE_MODEL exported by NOTHING on this machine (shell profiles clean; Claude Code does not set it).
+LIVE-REFS-OUTSIDE-REMOVAL-SET: none.
+
+== orphan-companions ==
+stale-queue-spec.md / registry-schema.md / session-context.md: ZERO live refs in templates/ scripts/ install.sh modules.json Makefile README outside the removal set (test_companions.sh ORPHAN_EXEMPT L101 + 3 MANIFEST checksum lines).
+HISTORICAL: dev-wiki records only.
+
+== harness-audit ==
+LIVE-REFS-OUTSIDE-REMOVAL-SET: none in repo (only self, current-phase artifacts, tests/test_scripts_smoke.sh entry = removal-set member).
+OUT-OF-BOUNDARY (filed, not edited): user-owned ~/.claude/rules/dev-wiki-hooks.md references "/dev-harness H6" (stale either way — no such skill exists).
+HISTORICAL: 2 spec refs, dev-wiki records.

@@ -1,20 +1,20 @@
 # Active Phase Context
 
-Phase: 82 — QA & Verification Sweep (ultracode)
-Status: READY FOR COMPLETION (4/4 tasks [x], 10/10 spec exit criteria via run-exit-criteria.sh, make test
-green 22 scripts ~480 assertions, make eval 52/52, drift 0 EXTENDED, ledger revisit clean, reviewer 9/10
-ACCEPT findings fixed inline) — delivery gate PENDING.
+Phase: 83 — Prune-on-Value Subtraction
+Objective: evidence-first, verdict-gated, serialized subtraction over the 6 Phase-82-evidenced
+dead-weight candidates (enforce-memory; memory-reinforcement; memory-mcp-scaffold; audit-log-model-field;
+orphan-companions; harness-audit) — verdict table BEFORE any cut.
 
-Objective: coverage-defined 8-area QA sweep under orchestrator-only evidence + controls-first staging.
-58 candidates → 35 fixed / 20 deferred-with-filings / 3 orphans; the pre-registered >10-defects STOP fired,
-Jake re-scoped (all 4 clusters). HEADLINES: enforcement layer restored from 15-day dormancy
-([[hook-event-shape-normalization]]); drift pass 2b installed-presence + 11 stale ~/.claude copies
-refreshed ([[drift-compare-installed-presence]]). First END-TO-END dogfood of the Phase-81 gate (revisit:
-A1 bit, A2-A6 held). Deliverable: eval/qa-sweep/verification-matrix.md. [[qa-verification-sweep]] (high).
-
-Residual (filed as Blockers): usage/subtraction list, 4 firing candidates, ghost global registrations +
-drift residue, misc (incl. enforcement.log provenance hazard).
+Scope: eval/prune-on-value/**, modules.json, templates/.claude/**, memory_server/**,
+scripts/harness-audit.sh, tests/**, MANIFEST, README.md; spec-mandated out-of-repo: live
+~/.claude/settings.json + discovered consuming-project copies (own ghosts only).
+Constraints: verdicts evidence-forced, closed enum keep/cut/harden/disable-at-boundary;
+couldnt-fire = DEFECT never a cut; mid-phase checkpoint unconditional BEFORE any cut;
+one commit per candidate (`Phase 83 cut: <name>`); regenerated-diff ⊆ removal set;
+frozen apparatus + assumption-ledger read-only; historical records superseded never rewritten;
+zero cuts is a valid outcome.
+Exit: the spec's 10 machine-checkable criteria via eval/prune-on-value/run-exit-criteria.sh.
 Abort: if blocked >3 attempts, mark [blocked] + ask user skip/abort.
 Gates:
-- [x] Direction confirmed by user (assumption positions: A1 don't-know + A2 reject → 2 forced revisions; ledger appended, all_accept:false — approved 2026-06-09)
-- [x] Delivery accepted (post-implementation report 2026-06-09)
+- [x] Direction confirmed by user (assumption positions: A3 reject + A4/A5 don't-know → 2 revisions + 1 down-scope; ledger appended, all_accept:false — approved 2026-06-09)
+- [ ] Delivery accepted (post-implementation report)

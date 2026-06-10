@@ -201,3 +201,7 @@
   source: [[HEU-012]] | activated: 2026-06-09
 - [uses: 1] Phase-80 leak inversion: the in-kit always-loaded working-knowledge leak HELPS candidate recall (wanted at fan-out) but is FATAL for verification — verdicts must assert against the filesystem/runtime, never the always-loaded docs; frozen apparatus (eval/amplifier/**, eval/assumption-screen/**) and the assumption-ledger stay READ-ONLY in audits (defects filed, not fixed).
   source: [[decision:assumption-surfacer-completeness-screen]] | activated: 2026-06-09
+- [uses: 1] Settings registration is add/update-only — NO deregistration mechanism exists (register-settings.py merges, never removes); any component removal must itself remove installed settings entries (~/.claude + consuming projects) or ghost registrations point at deleted scripts and fail silently (fail-open). Sandbox-rehearse the jq surgery + survivor functional smoke first.
+  source: [[decision:prune-on-value-subtraction]] (Ph83) | activated: 2026-06-09
+- [uses: 1] The live ~/.claude memory install lacks fastembed: storage.py returns action=reinforce ONLY at cosine >0.90 (needs embeddings), the word-overlap fallback only WARNS — near-dup reinforcement is structurally unreachable on the live path (only byte-exact dups reinforce). Any "reinforcement never fires" reading must account for this couldnt-fire before treating it as demand evidence.
+  source: [[decision:prune-on-value-subtraction]] (Ph83) | activated: 2026-06-09

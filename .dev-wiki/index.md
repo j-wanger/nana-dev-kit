@@ -84,7 +84,8 @@
 - [[phase-79-harness-hygiene|Phase 79: Harness Hygiene]] -- completed
 - [[phase-80-assumption-surfacer-completeness-screen|Phase 80: Assumption-Surfacer Completeness Screen]] -- completed
 - [[phase-81-assumption-approval-gate|Phase 81: Assumption-Approval Gate]] -- completed
-- [[phase-82-qa-verification-sweep|Phase 82: QA & Verification Sweep (ultracode)]] -- active (READY FOR COMPLETION, delivery gate pending)
+- [[phase-82-qa-verification-sweep|Phase 82: QA & Verification Sweep (ultracode)]] -- completed
+- [[phase-83-prune-on-value-subtraction|Phase 83: Prune-on-Value Subtraction]] -- active
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -104,6 +105,7 @@
 - [[check-install-drift|scripts/check-install-drift.sh]] -- deterministic fail-open installed-copy-drift comparator (Phase 76)
 
 ### Decisions
+- [[prune-on-value-subtraction|Prune-on-Value Subtraction — evidence-first, verdict-gated, serialized subtraction over the 6 Phase-82-evidenced dead-weight candidates (enforce-memory, memory-reinforcement, memory-mcp-scaffold, audit-log-model-field, orphan-companions, harness-audit); closed-enum verdict table (keep/cut/harden/disable-at-boundary) with arming procedures BEFORE any cut; couldnt-fire vs didnt-fire zero-classification mandatory (won't-fire-when-armed = DEFECT never a cut, HEU-012); installed surface DISCOVERED via kit-marker scan (A3 reject → A6); unconditional mid-phase checkpoint; one commit per candidate with regenerated-diff ⊆ removal set + sandbox-rehearsed own-ghosts-only deregistration + survivor smoke; A5 down-scoped (kit-side memory-layer question deferred must-revisit); zero cuts a valid outcome (Phase 83)]] -- high confidence
 - [[hook-event-shape-normalization|Hook Event-Shape Normalization — canonical `.tool_input.X // .input.X // empty` parse + per-hook path normalization (relativize vs $PWD for relative-pattern hooks, absolutize vs $ROOT for absolute-design hooks; outside-project writes allowed — not the project's gate); Stop events carry transcript_path, hooks scan the transcript JSONL; em-dash-proof spec lookup by phase-number glob; proven live — the fixed enforce-spec gate blocked the orchestrator's own mid-phase edits; platform-shape canary rejected/deferred (Phase 82)]] -- high confidence
 - [[drift-compare-installed-presence|Drift Checker Compares Installed Presence, Not Scope Tags — pass 2b: any kit-shipped hook PRESENT in the installed root is compared regardless of modules.json scope tag (presence = live code; 11 pre-Phase-79 project-scoped hooks ran stale in ~/.claude under a "drift 0" report); checker never ADDS files; user-owned non-kit hooks ignored; ghost global REGISTRATIONS deferred to a maintainer call (Phase 82)]] -- high confidence
 - [[qa-verification-sweep|QA & Verification Sweep (ultracode) — coverage-defined two-stage multi-agent sweep, 8 areas (wiring/firing/companions/schema/drift/coverage/docs/usage); controls-first baseline (clean-on-seed = instrument-dead); subagents demoted to READ-ONLY candidate-generators, orchestrator-executed commands the SOLE verdict evidence (Jake's A2 reject); usage as 8th area (Jake's A1 don't-know); mid-phase findings report BEFORE any fix; pre-registered fix boundary (kit-managed + S/M + test-covered; >10 defects → STOP); deliverable = verification-matrix.md, zero confirmed defects a valid success; first live dogfood of the Phase-81 gate (Phase 82)]] -- high confidence, realized (outcome appended: 58 candidates → 35 fixed / 20 deferred / 3 orphans; reviewer 9/10 accept)
