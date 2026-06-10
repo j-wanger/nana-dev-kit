@@ -17,4 +17,4 @@ Exit: the spec's 10 machine-checkable criteria via eval/prune-on-value/run-exit-
 Abort: if blocked >3 attempts, mark [blocked] + ask user skip/abort.
 Gates:
 - [x] Direction confirmed by user (assumption positions: A3 reject + A4/A5 don't-know → 2 revisions + 1 down-scope; ledger appended, all_accept:false — approved 2026-06-09)
-- [ ] Delivery accepted (post-implementation report)
+- [x] Delivery accepted (post-implementation report 2026-06-09)
