@@ -1,0 +1,21 @@
+# Phase 89 T4 rehearsal log — detect-loop deregistration on a COPY of the ACTUAL
+# edge-screener settings.local.json (not a kit fixture), 2026-06-11, mktemp -d.
+# Filter: eval/dogfood-round/rehearsals/deregister-detect-loop.jq
+
+valid JSON: yes
+detect-loop refs after: 0
+duplicate basenames: 0
+hook commands before: 17 after: 16
+survivors intact: yes (16/16, only detect-loop removed)
+restore byte-identical: yes
+
+# Command-reproducible:
+#   T=$(mktemp -d); SL=/Users/jwang/edge-screener/.claude/settings.local.json
+#   cp "$SL" "$T/settings.local.json"; cp "$SL" "$T/backup.json"
+#   jq -f eval/dogfood-round/rehearsals/deregister-detect-loop.jq "$T/settings.local.json" > "$T/after.json"
+#   jq empty "$T/after.json"; grep -c detect-loop "$T/after.json"
+#   jq -r '.hooks | to_entries[] | .value[] | .hooks[]?.command // .command' "$T/after.json" | xargs -n1 basename | sort | uniq -d
+#   cp "$T/backup.json" "$T/settings.local.json"; cmp -s "$T/settings.local.json" "$SL"
+# First attempt's inline jq had a paren syntax error producing an EMPTY after.json that a bare
+# `jq empty` waved through — caught because the survivor-count assertion read "after: 1";
+# the filter now lives in a committed .jq file and the rehearsal asserts survivor parity.
