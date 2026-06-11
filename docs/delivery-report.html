@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 86</title>
+<title>Delivery Report: Phase 87</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,38 +21,40 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 86 &mdash; Phase 86</h1>
+<h1>Delivery Report: Phase 87 &mdash; Phase 87</h1>
 
 <div class="summary">
   <div class="card"><div class="num">8/8</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">13</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">8</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (51 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">52/52</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+181</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-104</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">5</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">19:02</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+67</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-138</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">7</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">23:38</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>Author pre-registration document (corpus window + frozen end-commit 5360486 + measurement-session exclusion + hand-co...</td></tr>
-<tr><td>&#x2705;</td><td>Build transcript cost extractor with hand-labeled positive control: hand-label one known-composition session and writ...</td></tr>
-<tr><td>&#x2705;</td><td>Generate per-step cost table over the frozen corpus window and evaluate materiality: write eval/ceremony-lift/check-c...</td></tr>
-<tr><td>&#x2705;</td><td>Seed five BLIND tabulator controls + answer key: write eval/ceremony-lift/test-tabulator-controls.sh joining tabulato...</td></tr>
-<tr><td>&#x2705;</td><td>Build the frozen corpus manifest: mechanically enumerate ALL reviewer/spec/debrief dispatches in the pre-registered w...</td></tr>
-<tr><td>&#x2705;</td><td>Tabulate evidence table with admissibility re-execution log: write eval/ceremony-lift/check-evidence-table.sh — row c...</td></tr>
-<tr><td>&#x2705;</td><td>HARD CHECKPOINT — maintainer verdicts: write eval/ceremony-lift/check-verdict-block.sh validating closed-enum per-ste...</td></tr>
-<tr><td>&#x2705;</td><td>Close-out: author eval/ceremony-lift/check-verdicts-only.sh (IS spec criterion 8: git diff --quiet 5360486..HEAD over...</td></tr>
+<tr><td>&#x2705;</td><td>Drivability spike (ledger A4 / spec A5): test — write assert-spike.sh checking a driven scratch session reached its s...</td></tr>
+<tr><td>&#x2705;</td><td>Execution-protocol addendum + A1 baseline gate: test — check-protocol.sh asserting required pinned-item sections (3 m...</td></tr>
+<tr><td>&#x2705;</td><td>Stage-2 checkers + runner, controls-first: test — seeded-negative fixtures per checker (claim-ceiling artifact WITH m...</td></tr>
+<tr><td>&#x2705;</td><td>HARD CHECKPOINT + substrate setup: present the positive-control dev-wiki seed write and the setup-branch+clone creati...</td></tr>
+<tr><td>&#x2705;</td><td>Execute arms + instrument records: arm 1 then arm 2 per pinned order, fresh sessions in respective clones, same model...</td></tr>
+<tr><td>&#x2705;</td><td>Evidence tables: orchestrator runs frozen ship triple + validity assertions identically in both clones (pinned covera...</td></tr>
+<tr><td>&#x2705;</td><td>HARD CHECKPOINT disposition: present ship + cost tables with caveat columns (bundle-attribution, canned-gates) + run-...</td></tr>
+<tr><td>&#x2705;</td><td>Close-out + conditional ship: IF the disposition-checkpoint ship decision approved, execute the gated ship of the bet...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Ceremony-step checkpoint verdicts (Phase 86)</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Stage-2 episode outcome: spec-generation=undecidable, ship arm A (Phase 87)</td><td>high</td></tr>
+<tr><td>Stage-2 episode contrast execution design (Phase 87)</td><td>high</td></tr>
+<tr><td>Ceremony-step checkpoint verdicts (Phase 86)</td><td>high</td></tr>
 <tr><td>Ceremony Lift: Tiered Screen Before Episode Experiment</td><td>high</td></tr>
 <tr><td>Install-gap fix: extra_dirs shipping + directory currency</td><td>high</td></tr>
 <tr><td>A3 disposition: keep-current for registration-dead ~/.claude copies</td><td>high</td></tr>
@@ -61,19 +63,14 @@
 
 <h2>Files Changed</h2>
 <ul>
-<li><code>.claude/rules/active-knowledge.md</code></li>
 <li><code>.claude/rules/active-phase.md</code></li>
-<li><code>.claude/rules/working-knowledge.md</code></li>
-<li><code>.dev-wiki/.stale-queue</code></li>
 <li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
+<li><code>.dev-wiki/articles/phases/phase-87-stage2-episode-contrast.md</code></li>
 <li><code>.dev-wiki/assumption-ledger.md</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
-<li><code>docs/delivery-report.html</code></li>
-<li><code>docs/report.html</code></li>
-<li><code>docs/workflow.html</code></li>
 
 
 </ul>
@@ -91,7 +88,7 @@ All tests passed.</pre>
 <pre>Score: 52/52 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-06-10 19:02:02 by generate-delivery-report.py
+  Generated 2026-06-10 23:38:58 by generate-delivery-report.py
 </div>
 </body>
 </html>

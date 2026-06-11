@@ -1,23 +1,18 @@
 # Active Phase Context
 
-Phase: 87 — Ceremony Stage-2 Episode Contrast (active, planned 2026-06-10)
-Objective: execute the FROZEN `## Stage-2 parameters` (eval/ceremony-lift/pre-registration.md,
-byte-frozen at 9ad62f0) verbatim — arm A full-ceremony vs arm B assumption-gate+hooks on
-edge-screener Phase 10, independent clones from a checkpoint-gated setup commit; episode
-evidence for the maintainer's spec-generation disposition.
-Scope: eval/ceremony-lift/stage2/** (additive); stage-1 files byte-frozen — NEVER edit
-pre-registration.md; ALL out-of-repo writes (setup branch, clones, dev-wiki seed, ship)
-HARD-checkpoint-gated, each its own ack.
-Constraints: execution-protocol addendum committed BEFORE any arm (ancestry + byte check;
-post-unblinding amendment = VOID); kit-commit embargo — component-path diff vs 6728e2f
-until both arms close; claim ceiling closed vocab (confirm-trim-trial | not-confirmed |
-undecidable | instrument-dead | void; n=1 confirms cut-candidate→reversible trim-trial
-ONLY); orchestrator-only evidence (agent prose = candidate generation; arm transcripts
-parsed programmatically only).
-Exit: 8 criteria via eval/ceremony-lift/stage2/run-exit-criteria.sh.
-Abort: canary answered correctly = VOID; neither-arm-surfaces positive control =
-INSTRUMENT-DEAD; apparatus defect post-unblinding = VOID; restoration/isolation/spike
-failures = STOP.
+Phase: 87 — Ceremony Stage-2 Episode Contrast (READY FOR COMPLETION — all 8 tasks [x], 2026-06-10)
+Objective: execute the FROZEN stage-2 parameters verbatim (arm A full-ceremony vs arm B minimal
+on edge-screener Phase 10) — DONE: disposition = spec-generation UNDECIDABLE (Phase-86
+ambiguous verdict stands, nothing minted); arm B won the tie-break but SHIP-BLOCKED
+(load-bearing golden-master modification); arm A DNF on the done-sentinel yet passed the
+frozen triple (394/94.58) → shipped to edge-screener a6effcb via the separate ship checkpoint.
+Canary CLEAN; positive control non-discriminating. Review gate 8/10 revise → both HIGHs
+fixed inline (c4bd9ff); checker tightening routed to follow-on (post-unblinding edits barred).
+Scope: eval/ceremony-lift/stage2/** (frozen); phase article verdict block; NO kit component
+modified (kit-commit embargo vs pinned base 6728e2f; pre-registration NEVER edited).
+Exit: 8/8 via eval/ceremony-lift/stage2/run-exit-criteria.sh (RUN-STATUS LIVE) — MET.
+Next: delivery gate flip → then the trim follow-on round (Phase 88 candidate) on stage-1 evidence.
+Abort: delivery rejected → STOP, re-present.
 Gates:
-- [x] Direction confirmed by user (assumption positions A1-A5 taken 2026-06-10; A4 spike-defended round 2)
-- [ ] Delivery accepted (post-implementation report)
+- [x] Direction confirmed by user (assumption positions A1-A5; A4 spike-defended round 2 — 2026-06-10)
+- [ ] Delivery accepted

@@ -39,16 +39,18 @@ Files and modules affected:
 
 ## Exit Criteria
 
-- [ ] Frozen pre-registration byte-intact; stage-1 apparatus additive-only (spec criterion 1)
-- [ ] Execution-protocol addendum's first add-commit strictly precedes results' add-commit, byte-unchanged between (criterion 2)
-- [ ] `bash eval/ceremony-lift/stage2/check-instrument.sh` (restoration, isolation probe, canary, positive control) (criterion 3)
-- [ ] `bash eval/ceremony-lift/stage2/check-ship-table.sh` (criterion 4)
-- [ ] `bash eval/ceremony-lift/stage2/check-cost-table.sh` (criterion 5)
-- [ ] `bash eval/ceremony-lift/stage2/check-claim-ceiling.sh` (criterion 6)
-- [ ] `bash eval/ceremony-lift/stage2/check-substrate-intact.sh` (criterion 7)
-- [ ] `git diff --quiet 6728e2f..HEAD -- templates/ scripts/ install.sh modules.json Makefile` (verdicts/evidence-only; kit-commit embargo) (criterion 8)
+- [x] Frozen pre-registration byte-intact; stage-1 apparatus additive-only (spec criterion 1)
+- [x] Execution-protocol addendum's first add-commit strictly precedes results' add-commit, byte-unchanged between (criterion 2)
+- [x] `bash eval/ceremony-lift/stage2/check-instrument.sh` (restoration, isolation probe, canary, positive control) (criterion 3)
+- [x] `bash eval/ceremony-lift/stage2/check-ship-table.sh` (criterion 4)
+- [x] `bash eval/ceremony-lift/stage2/check-cost-table.sh` (criterion 5)
+- [x] `bash eval/ceremony-lift/stage2/check-claim-ceiling.sh` (criterion 6)
+- [x] `bash eval/ceremony-lift/stage2/check-substrate-intact.sh` (criterion 7)
+- [x] `git diff --quiet 6728e2f..HEAD -- templates/ scripts/ install.sh modules.json Makefile` (verdicts/evidence-only; kit-commit embargo) (criterion 8)
 
-All aggregated by `bash eval/ceremony-lift/stage2/run-exit-criteria.sh`.
+All aggregated by `bash eval/ceremony-lift/stage2/run-exit-criteria.sh` — 8/8 PASS,
+RUN-STATUS LIVE (post review-gate revise round c4bd9ff: both HIGHs fixed inline,
+reviewer re-executions reproduced TRUE). READY FOR COMPLETION — delivery gate pending.
 
 ## Constraints
 

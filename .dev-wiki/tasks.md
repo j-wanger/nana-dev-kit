@@ -1,6 +1,6 @@
 # Tasks
 
-> Last updated: 2026-06-10 by /dev-debrief (Phase 86 — Ceremony Lift Measurement: 8/8 tasks [x], 8/8 exit criteria post-correction, checkpoint verdicts taken + review-gate correction absorbed; READY FOR COMPLETION, delivery gate pending)
+> Last updated: 2026-06-10 by /dev-debrief (Phase 87 — Ceremony Stage-2 Episode Contrast: 8/8 tasks [x], 8/8 exit criteria RUN-STATUS LIVE, disposition undecidable + arm A shipped a6effcb, review gate 8/10 revise → both HIGHs fixed inline c4bd9ff; READY FOR COMPLETION, delivery gate pending)
 
 <details>
 <summary>Phases 1-38 (all completed, 220+ tasks, collapsed)</summary>
