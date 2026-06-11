@@ -26,18 +26,26 @@ command -v jq >/dev/null 2>&1 || { echo "[nana:tests] jq not found, hook skipped
 INPUT=$(cat)
 
 # Session tool activity: prefer the legacy/fixture .tool_uses array when present; real Stop
-# events carry transcript_path (NOT tool_uses), so fall back to scanning the transcript JSONL
-# for tool_use inputs. Without this fallback the hook only ever acted on fabricated payloads.
+# events carry transcript_path (NOT tool_uses), so fall back to scanning the transcript JSONL.
+# Phase 88 harden (HEU-007 dual-condition, Ph85 dogfood filing): in the transcript path the
+# .py condition keys on WRITE-CLASS tools only (Write/Edit/MultiEdit/NotebookEdit) — a Read
+# of a .py file during read-only analysis is NOT "Python modified" — while the pytest
+# condition scans Bash commands. The legacy .tool_uses path keeps its original shape
+# (fixtures carry no tool names; real events never use it).
 TOOL_ACTIVITY=$(echo "$INPUT" | jq -r '[.tool_uses[]?.input | (.file_path // .command // "")] | join("\n")' 2>/dev/null || echo "")
+WRITE_ACTIVITY="$TOOL_ACTIVITY"
 if [ -z "$TOOL_ACTIVITY" ]; then
   TRANSCRIPT=$(echo "$INPUT" | jq -r '.transcript_path // empty' 2>/dev/null || echo "")
   if [ -n "$TRANSCRIPT" ] && [ -f "$TRANSCRIPT" ]; then
+    WRITE_ACTIVITY=$(jq -r 'select(.type=="assistant") | .message.content[]? | select(.type=="tool_use")
+      | select(.name == "Write" or .name == "Edit" or .name == "MultiEdit" or .name == "NotebookEdit")
+      | .input.file_path // ""' "$TRANSCRIPT" 2>/dev/null || echo "")
     TOOL_ACTIVITY=$(jq -r 'select(.type=="assistant") | .message.content[]? | select(.type=="tool_use") | .input | (.file_path // .command // "")' "$TRANSCRIPT" 2>/dev/null || echo "")
   fi
 fi
 
-# Check if any Python files were modified in this session
-HAS_PY_CHANGES=$(printf '%s' "$TOOL_ACTIVITY" | grep -q '\.py' && echo true || echo false)
+# Condition 1 (hardened): Python files MODIFIED this session — write-class activity only
+HAS_PY_CHANGES=$(printf '%s' "$WRITE_ACTIVITY" | grep -q '\.py' && echo true || echo false)
 
 # If no Python files were touched, allow stop
 if [ "$HAS_PY_CHANGES" != "true" ]; then

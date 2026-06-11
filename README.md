@@ -112,7 +112,7 @@ Re-run `~/nana-dev-kit/install.sh` to update. Existing files are overwritten; `n
 ## Testing
 
 ```bash
-make test    # ~500 tests across 26 scripts
+make test    # ~500 tests across 27 scripts
 make eval    # 52 eval scenarios (requires jq)
 make report  # package inventory at docs/report.html
 ```
