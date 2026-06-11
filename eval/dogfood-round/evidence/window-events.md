@@ -28,6 +28,10 @@ kit-side sessions: ef772719
 | 2026-06-11 | ef772719 | ak | compaction=n planning=y | y (kit-side Phase-89 planning session: full dev-plan run, spec, gate — planning decisions correct without active-knowledge re-presentation) | none |
 | 2026-06-11 | ef772719 | wk | WK-already-presents-it | n (kit-side suppression: always-loaded working-knowledge still presents pinned decisions; no removed-class entry was re-derived) | none |
 
+Close-out self-attestation: the T6 close-out session IS ef772719 (same session as the kit-side
+planning rows above — both roles covered by its rows; attested before the final checker run per
+the pinned universe).
+
 Phase-89 probative exposure: ak window 3 probative sessions (2 consuming-project + 1 kit-side),
 zero trigger events; wk window 0 probative sessions (suppression + inventory non-overlap —
 recorded honestly; the wk trigger's live surface is the removed/prospective inventory classes,

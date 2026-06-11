@@ -1,20 +1,23 @@
 # Active Phase Context
 
-Phase: 88 — Trim Follow-On Round (executed 2026-06-11; READY FOR COMPLETION, delivery gate pending)
-Objective: stage-1-authorized ceremony trims as REVERSIBLE trim-trials + gate-narrowed leftover
-dispositions + the 3 Phase-87-routed stage-2 checker tightenings — DONE: 6/6 tasks, 10/10 exit
-criteria ALL-PASS (eval/trim-round/run-exit-criteria.sh).
-Outcome: 2 trim-trials shipped (ak-ride-along d43950f, wk-seeding df3e623 — REVERT-COUPLED;
-windows through Phase 93); detect-loop CUT 75b48af (couldnt-fire upstream-PERMANENT);
-check-tests-were-run HARDENED b8bd416 (HEU-007 dual-condition); checker tightenings 6677157
-(14/14 seeded controls; Phase-87 verdicts stand); enforce-memory KEEP (A3 reconstruction
-succeeded); 2 dropped at checkpoint. Detail: [[trim-round-outcome]].
-Scope (as executed): eval/trim-round/** (new apparatus); stage-2 3-file allowlist;
-dev-plan/dev-debrief/wiki-query/dev-check skills; hooks (16); modules.json; MANIFEST;
-tests (27 scripts); eval 50/50 (denominator change explained).
-Key constraints still live: trim-trial claim ceiling (revert SHA + trigger + window + Blockers
-filing — never permanent cuts/keeps); Phase-87 verdicts never re-graded; ledger all 6 held.
-Next: delivery report → user acceptance → commit/push → flip delivery gate (D3).
+Phase: 89 — Post-Trim Dogfood & Demand-Evidence Round (planned 2026-06-11)
+Objective: pre-registered four-stage evidence round — accrue real exposure for the two Phase-88
+trim-trial observation windows and collect clean memory-layer demand evidence for the deferred
+A4/A6 round (spec specs/phase-89-dogfood-demand-evidence.md, nana:approved).
+Scope: eval/dogfood-round/** (new apparatus); edge-screener out-of-repo behind HARD checkpoint
+(re-sync + ≥3 real sessions); window-events for BOTH kit-side and consuming-project sessions;
+.dev-wiki Blockers/ledger updates.
+Key constraints: evidence-only claim ceiling — file evidence/defects, NEVER dispositions;
+pre-registration commit FIRST (T1 first-add-commit ancestry; post-hoc rule edits VOID);
+orchestrator-only deterministic classification, never session self-attestation; no kit edits —
+templates/**, modules.json, MANIFEST byte-untouched; no reverts of d43950f/df3e623/75b48af/b8bd416;
+out-of-repo writes behind the HARD checkpoint; measurement-blind archived prompts.
+Exit: the spec's 10 machine-checkable criteria via eval/dogfood-round/run-exit-criteria.sh ALL-PASS.
+Abort: blocked >3 attempts → ask user; liveness-probe failure → demand strand BLOCKED, never
+zeroed; trigger event observed → file verbatim + surface immediately.
+Standing (Phases 90-93): EVERY working session appends its window-events attestation rows
+(per-session, per-window) to eval/dogfood-round/evidence/window-events.md until the Phase-93
+trim-trial disposition — protocol in eval/dogfood-round/pre-registration.md.
 Gates:
-- [x] Direction confirmed by user (A1-A6 positions; A4+A6 rejects narrowed scope; all_accept:false — 2026-06-11)
-- [x] Delivery accepted (post-implementation report 2026-06-11)
+- [x] Direction confirmed by user (assumption positions A1-A5 all accept, A2 defended; all_accept:true — 2026-06-11)
+- [ ] Delivery accepted (post-implementation report)
