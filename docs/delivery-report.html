@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 88</title>
+<title>Delivery Report: Phase 89</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,56 +21,51 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 88 &mdash; Phase 88</h1>
+<h1>Delivery Report: Phase 89 &mdash; Phase 89</h1>
 
 <div class="summary">
   <div class="card"><div class="num">6/6</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">15</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">9</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (49 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">50/50</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+178</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-183</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">2</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">08:59</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+108</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-41</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">3</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">12:09</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>T1 Evidence re-snapshots: test seeded-fixture for the provenance filter (a synthetic log slice with known phase/ts co...</td></tr>
-<tr><td>&#x2705;</td><td>T2 Verdict table + its checker (controls-first): test check-verdict-table.sh against per-defect-class bad-row fixture...</td></tr>
-<tr><td>&#x2705;</td><td>T3 Checker tightening strand (A2 spike first): test the severability spike — scratch worktree, edit all 3 routed file...</td></tr>
-<tr><td>&#x2705;</td><td>T4 HARD checkpoint (unconditional): no RED — present the complete verdict table (all candidates, evidence, classifica...</td></tr>
-<tr><td>&#x2705;</td><td>T5 Serialized execution of approved verdicts: test per-candidate — sandbox-rehearsed revert (scratch clone, git rever...</td></tr>
-<tr><td>&#x2705;</td><td>T6 Close-out: test run-exit-criteria.sh aggregates all 10 spec criteria and reports ALL-PASS only when every line pas...</td></tr>
+<tr><td>&#x2705;</td><td>T1 Pre-registration commit FIRST: test check-preregistration.sh selftest (missing-section + non-ancestor fixtures fai...</td></tr>
+<tr><td>&#x2705;</td><td>T2 Evidence checkers: test seeded fixtures (malformed session block, stub demand row, missing header field, misplaced...</td></tr>
+<tr><td>&#x2705;</td><td>T3 Guard checkers + runner: test seeded controls (stale ctw hash, lingering detect-loop registration, templates/ touc...</td></tr>
+<tr><td>&#x2705;</td><td>T4 Probes + HARD checkpoint + edge-screener re-sync: test rehearsal on a COPY of the actual edge-screener settings.lo...</td></tr>
+<tr><td>&#x2705;</td><td>T5 Evidence sessions: test pinned-rule extraction reproducibility (RED: re-running the pinned classification commands...</td></tr>
+<tr><td>&#x2705;</td><td>T6 Close-out: test run-exit-criteria.sh ALL-PASS only on full run (RED: seeded-failure control), write memory-demand....</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Trim-round executed outcome (Phase 88)</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Dogfood &amp; Demand-Evidence Round</td><td>high</td></tr>
+<tr><td>Trim-round executed outcome (Phase 88)</td><td>high</td></tr>
 <tr><td>Trim Follow-On Round (Phase 88)</td><td>high</td></tr>
 </table>
 
 <h2>Files Changed</h2>
 <ul>
-<li><code>.claude/rules/active-knowledge.md</code></li>
 <li><code>.claude/rules/active-phase.md</code></li>
-<li><code>.claude/rules/working-knowledge.md</code></li>
 <li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
-<li><code>.dev-wiki/articles/phases/phase-88-trim-follow-on.md</code></li>
+<li><code>.dev-wiki/articles/phases/phase-89-dogfood-evidence-round.md</code></li>
 <li><code>.dev-wiki/assumption-ledger.md</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>docs/report.html</code></li>
 <li><code>docs/workflow.html</code></li>
-<li><code>eval/trim-round/verdict-table.md</code></li>
-<li><code>scripts/generate-report.py</code></li>
-<li><code>templates/.claude/skills/MANIFEST</code></li>
-<li><code>templates/.claude/skills/dev-check/SKILL.md</code></li>
 
 
 </ul>
@@ -88,7 +83,7 @@ All tests passed.</pre>
 <pre>Score: 50/50 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-06-11 08:59:16 by generate-delivery-report.py
+  Generated 2026-06-11 12:09:13 by generate-delivery-report.py
 </div>
 </body>
 </html>
