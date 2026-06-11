@@ -21,7 +21,9 @@ hook_cmds() { # $1 = project root → union (sort -u: identical strings dedupe, 
   local f
   for f in "$1/.claude/settings.json" "$1/.claude/settings.local.json"; do
     [ -f "$f" ] || continue
-    jq -r '.hooks // {} | to_entries[] | .value[]? | .hooks[]? | .command? // empty' "$f"
+    # nested {hooks:[{command}]} AND legacy flat {matcher,command} forms — same parsing
+    # model as rehearsals/deregister-detect-loop.jq, so checker and surgery tool agree
+    jq -r '.hooks // {} | to_entries[] | .value[]? | (.hooks[]?.command // .command)? // empty' "$f"
   done | sort -u
 }
 

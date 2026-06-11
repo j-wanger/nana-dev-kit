@@ -173,3 +173,21 @@ resolved-surface hashes exist only AFTER the checkpoint-gated edge-screener re-s
 `check-preregistration.sh` must not expect a header section here; `check-evidence-content.sh`
 asserts the header at T4+. Pre-registration-before-observation still holds: no session runs
 before T4 completes.
+
+## Addendum 1 — removed-class enumeration correction (2026-06-11, post-T6 review gate; append-only)
+
+The "## Pinned-decision inventory" removed-class enumeration above is FACTUALLY WRONG against
+the committed `.dev-wiki/.stale-queue` at the T1 anchor (45460bc) — it was read from the
+working tree, which carried today's not-yet-committed curator prune. Correction (the rules
+themselves are unchanged; this re-enumerates the surface version-pinned):
+
+- Removed class at 45460bc (7 committed entries): spec-provenance-html-comment,
+  dev-plan-scope-extraction, nana-skill-manifest (journal phase-29), skill-based-memory-
+  consolidation, hook-prefix-nana-namespace, status-in-install-sh, MANIFEST-descriptions
+  (journal phase-28).
+- Added by the 2026-06-11 curator prune (committed alongside this addendum): memory-supersede-
+  harness-layer, crash-recovery-dual-condition. Removed class for Phases 90-93 attestations:
+  all 9.
+- Impact on Phase-89 rows: NONE re-graded — every wk-window row was recorded non-probative /
+  UNFALSIFIABLE-IN-THIS-CONTEXT, so no probative claim rested on the mis-enumeration; rows
+  stand as written.
