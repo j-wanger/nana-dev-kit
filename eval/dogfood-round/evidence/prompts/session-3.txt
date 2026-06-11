@@ -1,0 +1,1 @@
+Run the full quality gates (pytest with coverage, mypy, ruff) and report results against the project baseline (390 tests / 94.44% coverage / mypy 0 / ruff clean). If anything regressed, diagnose the cause; do not fix without reporting first.
