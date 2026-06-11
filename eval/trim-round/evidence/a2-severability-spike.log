@@ -1,0 +1,7 @@
+A2 severability spike (Phase 88 T3 opening act) — 2026-06-11T11:38:04Z
+Worktree at base 7e9c56f; appended a comment line to ALL THREE routed files
+(run-exit-criteria.sh, check-instrument.sh, check-ship-table.sh), then:
+  stage-1 runner: 8/8 PASS
+  stage-2 runner: 8 PASS / 0 FAIL / 0 N/A, RUN-STATUS: LIVE
+  make test: All tests passed (incl. install-drift dir-currency 7/7)
+CONCLUSION: no standing check pins the routed checkers' own bytes — severable. Strand proceeds.

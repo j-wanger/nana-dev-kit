@@ -159,8 +159,6 @@
   source: [[decision:char-level-sanitizer-fts5]] | activated: 2026-05-24
 - [uses: 1] search_hybrid() uses RRF fusion (alpha=0.4, k=60); nomic-embed-text-v1.5 produces 768d vectors matching vec0 table. Turn-level hybrid RRF is winning strategy (+27.6% lift on FTS5-failure questions, no degradation). fastembed + sqlite-vec are benchmark-only deps, NOT in install.sh.
   source: [[decision:turn-level-hybrid-recommended]] + [[decision:benchmark-only-hybrid-deps]] | activated: 2026-05-24
-- [uses: 1] MANIFEST descriptions are additive comment section (# <skill-dir>: <first sentence from SKILL.md>) after existing md5+path checksums. Manually maintained -- no automation.
-  source: [[journal:2026-05-23-phase-28-dx-discoverability-complete]] | activated: 2026-05-23
 - [uses: 1] memory_forget(memory_id, superseded_by="", scope="project") for soft delete with optional supersession chain; memory_prune only targets trust='low' + strength=1 so is dead code for bridge/harvest entries (trust='medium'/'high')
   source: [[decision:memory-supersede-harness-layer]] + [[wiki:memory-mcp-api]] | activated: 2026-05-23
 - [uses: 1] Crash recovery dual condition: commits newer than _CURRENT_STATE.md mtime AND no debrief commit in recent history. Advisory only (exit 0). Guarded by test -f .dev-wiki/_CURRENT_STATE.md. Case-insensitive Debrief grep on git log.

@@ -1,18 +1,22 @@
 # Active Phase Context
 
-Phase: 87 — Ceremony Stage-2 Episode Contrast (READY FOR COMPLETION — all 8 tasks [x], 2026-06-10)
-Objective: execute the FROZEN stage-2 parameters verbatim (arm A full-ceremony vs arm B minimal
-on edge-screener Phase 10) — DONE: disposition = spec-generation UNDECIDABLE (Phase-86
-ambiguous verdict stands, nothing minted); arm B won the tie-break but SHIP-BLOCKED
-(load-bearing golden-master modification); arm A DNF on the done-sentinel yet passed the
-frozen triple (394/94.58) → shipped to edge-screener a6effcb via the separate ship checkpoint.
-Canary CLEAN; positive control non-discriminating. Review gate 8/10 revise → both HIGHs
-fixed inline (c4bd9ff); checker tightening routed to follow-on (post-unblinding edits barred).
-Scope: eval/ceremony-lift/stage2/** (frozen); phase article verdict block; NO kit component
-modified (kit-commit embargo vs pinned base 6728e2f; pre-registration NEVER edited).
-Exit: 8/8 via eval/ceremony-lift/stage2/run-exit-criteria.sh (RUN-STATUS LIVE) — MET.
-Next: delivery gate flip → then the trim follow-on round (Phase 88 candidate) on stage-1 evidence.
-Abort: delivery rejected → STOP, re-present.
+Phase: 88 — Trim Follow-On Round (active, planned 2026-06-11)
+Objective: stage-1-authorized ceremony trims as REVERSIBLE trim-trials (dev-plan ride-alongs;
+debrief working-knowledge seeding + journal prose — gate-narrowed), gate-narrowed leftover
+dispositions (enforce-memory A3 attempt+fallback, detect-loop, check-tests-were-run harden),
+and the three Phase-87-routed stage-2 checker tightenings.
+Scope: eval/trim-round/** (new apparatus); eval/ceremony-lift/stage2/ ONLY run-exit-criteria.sh
+(c2) + check-instrument.sh + check-ship-table.sh; templates/.claude/skills/dev-plan/** +
+dev-debrief/** + hooks/**; modules.json, MANIFEST, templates/.claude/settings.json, tests/**.
+Key constraints: claim ceiling — trim-trials with revert SHA + trigger + observation window +
+Blockers filing, never permanent cuts/keeps (zero cuts valid); controls-first — every checker
+catches its seeded defect before vouching; stage-2 3-file allowlist, all else cmp byte-identical;
+serialized one-commit-per-candidate with rehearsed revert + basename-normalized deregistration +
+ghost sweep; gate-narrowed scope — memory layer + bridge/harvest writers OUT (A4/A6 rejects).
+Exit: 10 machine-checkable criteria via eval/trim-round/run-exit-criteria.sh ALL-PASS.
+Abort: tightened checker passes its seed = instrument-dead STOP (ship nothing for that strand);
+frozen-apparatus break beyond the 3 routed files = STOP/file, never widen; T3 spike failure =
+STOP/file/drop strand; post-commit smoke failure = revert immediately.
 Gates:
-- [x] Direction confirmed by user (assumption positions A1-A5; A4 spike-defended round 2 — 2026-06-10)
-- [x] Delivery accepted (post-implementation report 2026-06-10)
+- [x] Direction confirmed by user (A1-A6 positions; A4+A6 rejects narrowed scope; all_accept:false — 2026-06-11)
+- [ ] Delivery accepted (post-implementation report)
