@@ -1,0 +1,82 @@
+#!/usr/bin/expect -f
+# spike-driver.exp — mechanism attempt 1: pty-drive the interactive claude CLI.
+# Env: SPIKE_SANDBOX (cwd for the session), SPIKE_LOG (verbatim response log),
+#      SPIKE_PROMPT (the gate-bearing task prompt).
+# Closed response policy (Phase 87): select the approve/proceed/default option —
+# implemented as <Enter> on the highlighted (first) option. Every send is logged
+# verbatim with a timestamp BEFORE it is sent.
+#
+# Matching notes (learned from run 1): the spawn command echo is NOT in the match
+# buffer (expect's own stdout), and the TUI inserts cursor-positioning escapes
+# BETWEEN words — only single-token patterns are reliable. The gate is detected by
+# its rendered option-row shape ("2." + short escape run + "Halt"), which cannot
+# false-positive on the transcript echo of the prompt (no numbered rows there).
+
+set timeout 240
+set sandbox $env(SPIKE_SANDBOX)
+set logf    $env(SPIKE_LOG)
+set prompt  $env(SPIKE_PROMPT)
+
+proc logresp {line} {
+    global logf
+    set fh [open $logf a]
+    puts $fh "$line | [clock format [clock seconds] -format %Y-%m-%dT%H:%M:%S%z]"
+    close $fh
+}
+
+log_file -noappend [file join [file dirname $logf] expect-session.log]
+cd $sandbox
+spawn claude --model haiku --permission-mode acceptEdits $prompt
+
+# Phase 1: answer the workspace-trust menu (matched by the single token "safety"),
+# then wait for the gate question's rendered option list ("2." ... "Halt").
+set gate_answered 0
+expect {
+    -re {safety} {
+        logresp "TRUST-RESPONSE: <Enter> (policy: default/first option 'Yes, I trust this folder')"
+        sleep 1
+        send "\r"
+        exp_continue
+    }
+    -re {2\.[^\n]{0,24}Halt} {
+        # Gate option list rendered; let it finish painting, then answer.
+        sleep 2
+        logresp "GATE-RESPONSE: <Enter> (policy: approve/proceed/default = highlighted first option 'Proceed')"
+        send "\r"
+        set gate_answered 1
+    }
+    timeout {
+        logresp "TIMEOUT: gate question never rendered"
+    }
+    eof {
+        logresp "EOF: session ended before gate question"
+    }
+}
+
+# Phase 2: wait for the session to write its stop marker, then exit cleanly.
+# CRITICAL: keep DRAINING the pty while waiting — a non-reading wait loop lets the
+# TUI spinner fill the pty buffer and blocks the claude process mid-turn (run-2
+# failure mode: frozen at "Harmonizing", no Write, no transcript flush).
+if {$gate_answered} {
+    set deadline [expr {[clock seconds] + 120}]
+    set waited 0
+    while {![file exists [file join $sandbox STOP_MARKER]] && [clock seconds] < $deadline} {
+        expect {
+            -timeout 2
+            -re {.+} {}
+            timeout {}
+        }
+        set waited [expr {120 - ($deadline - [clock seconds])}]
+    }
+    if {[file exists [file join $sandbox STOP_MARKER]]} {
+        logresp "STOP-MARKER: observed after ${waited}s"
+    } else {
+        logresp "STOP-MARKER: NOT observed within 120s"
+    }
+    sleep 2
+    send "/exit\r"
+    expect {
+        eof     {}
+        timeout {}
+    }
+}

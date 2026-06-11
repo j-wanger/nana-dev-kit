@@ -1,18 +1,23 @@
 # Active Phase Context
 
-Phase: 86 — Ceremony Lift Measurement (READY FOR COMPLETION — all 8 tasks [x], 2026-06-10)
-Objective: tiered screen of whether ceremony steps earn their cost — DONE: stage-1 evidence
-assembled (cost table: ceremony ~66% adj tokens / ~64% wall; evidence table post-correction:
-1 outcome-grade / 10 ambiguous-downgrade / 8 consumption-capped / 25 zero-catch), maintainer
-checkpoint verdicts taken (dev-plan=trim, spec=ambiguous-stage-2, approach-rev=keep,
-plan-rev=keep-by-immateriality, review-gate=underpowered-keep-direction, debrief-capture=trim;
-STAGE-2 go, routed follow-on). Review gate 6/10 revise: CRITICAL taxonomy-widening fixed,
-A2 >50%-downgrade STOP fired + accepted (ledger A2 bit); verdicts re-confirmed.
-Scope: eval/ceremony-lift/** (frozen); phase article verdict block; NO kit component modified
-(check-verdicts-only.sh vs pinned base 5360486; pre-registration byte-FROZEN — never edit).
-Exit: 8/8 via eval/ceremony-lift/run-exit-criteria.sh (post-correction re-run) — MET.
-Next: delivery gate flip → then Phase 87 stage-2 episode contrast and/or trim follow-on round.
-Abort: delivery rejected → STOP, re-present.
+Phase: 87 — Ceremony Stage-2 Episode Contrast (active, planned 2026-06-10)
+Objective: execute the FROZEN `## Stage-2 parameters` (eval/ceremony-lift/pre-registration.md,
+byte-frozen at 9ad62f0) verbatim — arm A full-ceremony vs arm B assumption-gate+hooks on
+edge-screener Phase 10, independent clones from a checkpoint-gated setup commit; episode
+evidence for the maintainer's spec-generation disposition.
+Scope: eval/ceremony-lift/stage2/** (additive); stage-1 files byte-frozen — NEVER edit
+pre-registration.md; ALL out-of-repo writes (setup branch, clones, dev-wiki seed, ship)
+HARD-checkpoint-gated, each its own ack.
+Constraints: execution-protocol addendum committed BEFORE any arm (ancestry + byte check;
+post-unblinding amendment = VOID); kit-commit embargo — component-path diff vs 6728e2f
+until both arms close; claim ceiling closed vocab (confirm-trim-trial | not-confirmed |
+undecidable | instrument-dead | void; n=1 confirms cut-candidate→reversible trim-trial
+ONLY); orchestrator-only evidence (agent prose = candidate generation; arm transcripts
+parsed programmatically only).
+Exit: 8 criteria via eval/ceremony-lift/stage2/run-exit-criteria.sh.
+Abort: canary answered correctly = VOID; neither-arm-surfaces positive control =
+INSTRUMENT-DEAD; apparatus defect post-unblinding = VOID; restoration/isolation/spike
+failures = STOP.
 Gates:
-- [x] Direction confirmed by user (assumption positions, A1 round 2 revision — 2026-06-10)
-- [x] Delivery accepted (post-implementation report 2026-06-10)
+- [x] Direction confirmed by user (assumption positions A1-A5 taken 2026-06-10; A4 spike-defended round 2)
+- [ ] Delivery accepted (post-implementation report)

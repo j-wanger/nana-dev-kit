@@ -1,0 +1,1 @@
+expect-driven interactive CLI (pty): spike-driver.exp; claude --model haiku --permission-mode acceptEdits; closed policy = <Enter> on highlighted first option; expect rc=0
