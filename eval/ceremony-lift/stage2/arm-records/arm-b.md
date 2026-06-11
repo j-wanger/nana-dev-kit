@@ -1,0 +1,9 @@
+STATUS: FINISHED
+TRANSCRIPT-DIR: /Users/jwang/.claude/projects/-Users-jwang-p87-arms-arm-b-edge-screener
+KIT-HEAD-AT-START: 6728e2f
+KIT-EMBARGO-AT-START: EMPTY
+KIT-ACTUAL-HEAD-AT-START: a845f1b
+CAP-DEADLINE-S: 14400
+WALL-S: 996
+SURFACE-MANIFEST: ALL-CLASSIFIED
+INTERACTION-LOG: arm-records/interactions-arm-b.txt

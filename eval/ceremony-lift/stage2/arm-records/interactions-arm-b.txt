@@ -1,0 +1,30 @@
+TRUST-RESPONSE: <Enter> (policy: first option) | 2026-06-10T21:08:56-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:08:59-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:09:01-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:09:40-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:10:01-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:10:07-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:10:27-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:10:34-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:10:42-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:11:03-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:11:32-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:13:23-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:14:01-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:14:27-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:14:29-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:15:10-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:17:02-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:17:30-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:17:32-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:17:34-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:19:15-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:19:21-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:19:35-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:19:45-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:19:55-0400
+GATE-RESPONSE: <Enter> (policy: highlighted first option) | 2026-06-10T21:22:01-0400
+STOP: reason=ARM_DONE wall=846s conts=0 | 2026-06-10T21:23:01-0400
+COST-RESPONSE: /cost | 2026-06-10T21:23:01-0400
+CANARY-RESPONSE: posing canary verbatim | 2026-06-10T21:23:31-0400
+SESSION-END: total=996s | 2026-06-10T21:25:31-0400

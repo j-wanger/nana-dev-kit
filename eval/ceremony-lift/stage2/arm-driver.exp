@@ -1,0 +1,86 @@
+#!/usr/bin/expect -f
+# arm-driver.exp — Phase 87 T5: drive one arm session to its ship/stop point under the
+# closed response policy (addendum ## Gate-response policy + amendment 002 stop rule).
+# Env: ARM_DIR, ARM_LOG (verbatim response log), ARM_PROMPT, CANARY ("" = none),
+#      COST_LOG, CANARY_LOG, ARM_MODEL, DEADLINE_S, MAX_CONT.
+# Every send is logged verbatim BEFORE it is sent. Pty is drained continuously
+# (spike lesson: a non-reading wait freezes the session).
+
+set armdir   $env(ARM_DIR)
+set logf     $env(ARM_LOG)
+set prompt   $env(ARM_PROMPT)
+set canary   $env(CANARY)
+set costlog  $env(COST_LOG)
+set canarylog $env(CANARY_LOG)
+set model    $env(ARM_MODEL)
+set deadline_s [expr {int($env(DEADLINE_S))}]
+set max_cont [expr {int($env(MAX_CONT))}]
+
+proc logresp {line} {
+    global logf
+    set fh [open $logf a]
+    puts $fh "$line | [clock format [clock seconds] -format %Y-%m-%dT%H:%M:%S%z]"
+    close $fh
+}
+
+set start [clock seconds]
+set deadline [expr {$start + $deadline_s}]
+set conts 0
+set idle_blocks 0
+set stop_reason ""
+
+log_file -noappend [file join [file dirname $logf] tui-capture.log]
+cd $armdir
+set timeout 30
+spawn claude --model $model --permission-mode acceptEdits $prompt
+
+while {1} {
+    if {[file exists [file join $armdir ARM_DONE]]} { set stop_reason "ARM_DONE"; break }
+    if {[clock seconds] >= $deadline}                { set stop_reason "DEADLINE"; break }
+    expect {
+        -re {safety} {
+            logresp "TRUST-RESPONSE: <Enter> (policy: first option)"
+            sleep 1; send "\r"; set idle_blocks 0
+        }
+        -re {❯[^\n]{0,30}1\.} {
+            sleep 2
+            logresp "GATE-RESPONSE: <Enter> (policy: highlighted first option)"
+            send "\r"; set idle_blocks 0
+        }
+        -re {.+} { set idle_blocks 0 }
+        timeout {
+            incr idle_blocks
+            if {$idle_blocks >= 6} {
+                if {$conts < $max_cont} {
+                    incr conts
+                    logresp "CONT-RESPONSE ($conts/$max_cont): pinned continuation string"
+                    send "Proceed with your best judgment within the stated task; no additional constraints.\r"
+                    set idle_blocks 0
+                } else {
+                    set stop_reason "CONT-BUDGET-EXHAUSTED"; break
+                }
+            }
+        }
+        eof { set stop_reason "EOF"; break }
+    }
+}
+logresp "STOP: reason=$stop_reason wall=[expr {[clock seconds] - $start}]s conts=$conts"
+
+if {$stop_reason ne "EOF"} {
+    # /cost removed per amendment 003 (dashboard, not per-session cost; swallowed focus).
+    # Cost basis = wall-clock + interruption counts from this log (A3 fallback).
+    # arm-B leak canary (post-stop, per frozen parameters)
+    if {$canary ne ""} {
+        logresp "CANARY-RESPONSE: posing canary verbatim"
+        send "$canary\r"
+        set fh [open $canarylog w]
+        set t0 [clock seconds]
+        while {[clock seconds] - $t0 < 90} {
+            expect { -re {.+} { puts -nonewline $fh $expect_out(buffer) } timeout {} }
+        }
+        close $fh
+    }
+    send "/exit\r"
+    expect { eof {} timeout {} }
+}
+logresp "SESSION-END: total=[expr {[clock seconds] - $start}]s"

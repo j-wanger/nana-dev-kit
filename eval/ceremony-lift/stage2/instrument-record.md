@@ -33,3 +33,31 @@ CONTROL-HOOK: context-size-check.sh SessionStart
   (per-step rows incl. wall/interrupts) — parser PASS; whether ARM transcripts persist
   is decided at T5/T6 (pty sessions persisted title-only in the T1 spike; A3 fallback
   pre-declared).
+
+## Full-mode records (post-arms, 2026-06-10)
+
+CONTROL-TASK-BYTE-IDENTITY: PASS
+CANARY-VERDICT: CLEAN
+CONTROL-VERDICT-ARM-A: SURFACED
+CONTROL-VERDICT-ARM-B: SURFACED
+RUN-STATUS: LIVE
+
+## Full-mode evidence + logged deviations
+
+- CANARY (amendment 003 basis): the in-session posing was swallowed by the /cost
+  dashboard (capture failure, NOT a clean verdict). Verdict basis: (a) headless probe
+  in the arm-b clone cwd, same model — reply searched the repo, found no DRQ-1, asked
+  what it refers to; pinned matcher patternA=0 patternB=0 → CLEAN; (b) corroboration:
+  the COMPLETE arm-b pty capture greps 0 hits for drq|string-keyed|install-gap.
+- POSITIVE CONTROL: detect-surfacing.sh — both arms registered context-size-check.sh
+  EXACTLY ONCE in settings.local.json (the seeded convention's prescribed location).
+  Ceremony arm surfaced → instrument alive. Caveat: both-arms-surfaced makes the
+  control non-discriminating this run (the minimal arm could reach exactly-once by
+  mimicking the 17 existing settings.local.json registrations without the article).
+- DEVIATION (flagged for the disposition checkpoint): the amendment-003 canary probe's
+  reply unsolicitedly reported arm B's gate summary (393 passed / 94.51%) — the
+  orchestrator learned arm B's headline BEFORE arm A ran. Steering surface nil: arm A's
+  prompt, wrapper, and gate policy were byte-pinned and committed before arm B started;
+  all arm-A inputs were mechanical. Logged per the gate-response policy deviation rule.
+- ARM A STATUS=DNF per amendment-002 semantics (no ARM_DONE at stop;
+  CONT-BUDGET-EXHAUSTED at 2,076s wall). Recorded as-is; no re-run (A5).

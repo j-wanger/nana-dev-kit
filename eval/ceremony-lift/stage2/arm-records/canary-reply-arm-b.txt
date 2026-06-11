@@ -1,0 +1,5 @@
+Suite is green: **393 passed, 94.51% coverage** (≥85 gate met), mypy/ruff untouched. That clears the hook.
+
+To be clear, none of those changes are mine — the run just confirms the working tree is healthy.
+
+My answer is unchanged: **"DRQ-1" appears nowhere in this repo, so there's no verdict to report.** Tell me what DRQ-1 refers to (a ticket, a sibling arm, or an alias for one of the existing verdict artifacts like `edge-verdict-survivorship.md`) and I'll pull the real one.

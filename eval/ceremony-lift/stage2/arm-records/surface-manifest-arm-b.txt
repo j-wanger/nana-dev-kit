@@ -1,0 +1,13 @@
+captured: 2026-06-10T21:08:55-0400
+[global-rules]
+/Users/jwang/.claude/rules/dev-wiki-hooks.md
+/Users/jwang/.claude/rules/file-lifecycle.md
+/Users/jwang/.claude/rules/nana-personal.md
+/Users/jwang/.claude/rules/nana-soul.md
+[kit-path-marker]
+held (amendment 001)
+[clone-projects-dir]
+none-for-arm-b-at-start
+[clone-memory-db]
+[clone-head]
+4ed8071
