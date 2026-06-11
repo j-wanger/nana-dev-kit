@@ -1,0 +1,7 @@
+# orchestrator-executed 2026-06-10T22:12:34-0400 in /Users/jwang/p87-arms/arm-a/edge-screener @ 4ed8071+worktree
+$ uv run pytest && uv run mypy && uv run ruff check .
+rc: pytest=0 mypy=0 ruff=0 gate=PASS total-cov=95%
+src/edge_screener/survivorship/reader.py           45      1     10      1    96%   41
+TOTAL                                            2491     82    496     68    95%
+======================== 394 passed in 96.69s (0:01:36) ========================
+All checks passed!
