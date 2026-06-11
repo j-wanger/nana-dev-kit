@@ -5,3 +5,7 @@ src/edge_screener/survivorship/reader.py           45      1     10      1    96
 TOTAL                                            2491     82    496     68    95%
 ======================== 394 passed in 96.69s (0:01:36) ========================
 All checks passed!
+$ git diff --shortstat 4ed8071   # pinned tie-break-2 rule, orchestrator re-executed 2026-06-10 (review-gate fix)
+6 files changed, 219 insertions(+), 61 deletions(-)
+$ uv run coverage report --precision=2   # precision-2 invocation for the ship-table coverage cell
+TOTAL                                            2491     82    496     68  94.58%

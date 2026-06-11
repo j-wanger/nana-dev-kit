@@ -34,7 +34,17 @@ Validity assertions (SPEC-ADDED, ship-blocking standing, not contest-scoring):
 Blinded protocol (sealed assignment X=arm-b Y=arm-a, unsealed after verdicts):
 - Reviewer X (arm-b diff): NO-DEFECTS-FOUND; Reviewer Y (arm-a diff): NO-DEFECTS-FOUND.
 - Reviewer-claimed-and-confirmed defects: X=0 Y=0 → tie-break 1 ties at 0-0.
-- Changed lines (code-scoped, vs setup SHA): arm-b=109, arm-a=126 → tie-break 2 favors
-  arm-b — BUT arm-b is ship-blocked by the validity assertion above, and the
+- **Tie-break 2, pinned rule** (`git diff --shortstat` vs setup SHA, orchestrator
+  re-executed, logged in cmdlogs): arm-b = 121(+)/1(−) across 4 files; arm-a =
+  219(+)/61(−) across 6 files → favors arm-b. (A code-scoped variant — src/ tests/
+  pyproject only: 109 vs 126, same direction — was reported first; that filter was NOT
+  pinned and is retained only as a disclosed supplementary metric. Review-gate catch,
+  corrected 2026-06-10.)
+- arm-b is ship-blocked by the validity assertion above regardless, and the
   golden-master modification was outside the blinded reviewers' view (binary, excluded
   from text diffs) — found and confirmed by the orchestrator's validity sweep.
+- Coverage cells trace to `uv run coverage report --precision=2` per clone (appended to
+  each cmdlog; review-gate fix): arm-b TOTAL 94.51%, arm-a TOTAL 94.58%.
+- Blinded reviewer outputs were returned as subagent final messages (verbatim:
+  "NO-DEFECTS-FOUND" both); no separate log artifact exists — disclosed limitation,
+  immaterial to the result (zero claims meant zero reproductions required).

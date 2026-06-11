@@ -58,7 +58,7 @@ All aggregated by `bash eval/ceremony-lift/stage2/run-exit-criteria.sh`.
 - Kit-commit embargo across the experiment window (prevents the full-ceremony arm
   measuring a moving target).
 - Leak canary in arm B (DRQ-1 question) — correct answer voids the run; positive
-  control must surface in the ceremony arm or the instrument is DEAD, not null.
+  control: if NEITHER arm surfaces it the instrument is DEAD, not null (pinned rule).
 - Claim ceiling embedded verbatim in every summary artifact, deterministically checked.
 - Arm transcripts parsed programmatically only — never loaded into agent context.
 
