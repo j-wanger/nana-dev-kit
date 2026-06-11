@@ -23,7 +23,7 @@ Execute the pre-registered stage-2 episode experiment frozen in
 enforcement hooks, exploratory prompt) on burnable edge-screener Phase 10, producing
 admissible episode evidence for the maintainer's disposition of the
 `spec-generation = ambiguous-stage-2` verdict. Claim ceiling: n=1 may confirm a
-cut-candidate into a REVERSIBLE trim-trial only — never mint keep or cut.
+cut-candidate into a REVERSIBLE trim-trial only — it may never mint keep or cut.
 
 ## Scope
 
@@ -92,3 +92,24 @@ gate inputs) plus addendum-pinning and the T1 drivability spike.
 **Direction gate closed 2026-06-10** (assumption positions: A1-A3 accept, A4
 accept-spike-defended round 2, A5 accept; all_accept: true). Planned 2026-06-10:
 8 tasks (M/M/M/M/L/M/M/S), decision [[stage2-episode-execution-design]] (high).
+
+## Stage-2 verdict block (T7 HARD checkpoint, 2026-06-10)
+
+Claim ceiling (verbatim): n=1 episode evidence may confirm a cut-candidate into a
+REVERSIBLE trim-trial; it may never mint keep or cut.
+
+disposition: undecidable
+
+Maintainer positions (closed vocabulary), taken on the committed ship/cost tables with
+all caveat columns presented (bundle attribution, canned gates, n=1, orchestrator-sweep
+provenance of the arm-b defect, logged deviations):
+
+- spec-generation: **undecidable** — the episode did not resolve the ambiguous-stage-2
+  verdict in either direction (tie-break favored the minimal arm; the validity sweep
+  ship-blocked it; the ceremony arm DNF'd while passing the triple). The Phase-86
+  ambiguous verdict STANDS; no trim-trial is confirmed, nothing is minted.
+- Ship decision (separate gate): **arm A's Phase-10 work ships** via edge-screener's
+  own delivery process (4 targeted tests, frozen triple green, zero validity
+  violations; DNF was a done-sentinel failure, not a quality failure). Arm B is
+  SHIP-BLOCKED (load-bearing golden-master modification, orchestrator-reproduced).
+  The seeded control registration ships with NEITHER arm (experiment apparatus).
