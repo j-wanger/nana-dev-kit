@@ -1,0 +1,11 @@
+candidate: wk-seeding (trim-trial, T4-approved) | commit: df3e623 | 2026-06-11T12:28:53Z
+revert rehearsal: scratch worktree, git revert df3e623 → revert OK, frontmatter claim restored.
+EXECUTION FINDING: the debrief's real WK writer (Step-19 carry-forward) was already removed by
+the ak-ride-along commit d43950f — the two trials are COUPLED at the revert layer: restoring
+debrief WK seeding requires reverting BOTH df3e623 and d43950f. Joint attribution acknowledged
+per the plan-review note (overlapping windows); the trial's trigger is distinguishable
+(re-derivation of a previously-pinned decision implicates wk-seeding, not ak re-presentation).
+This commit's own set: stale writes-frontmatter claim + working-knowledge-spec ownership line
+(wiki-query = sole writer). wk-prune curator untouched; existing entries decay in place.
+trial terms: trigger = re-deriving a previously-pinned decision ≥2 times; window = 5 phases
+(through Phase 93); Blockers filing at T6.

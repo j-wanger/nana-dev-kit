@@ -1,0 +1,15 @@
+candidate: detect-loop (cut, T4-approved) | commit: 75b48af | 2026-06-11T12:18:28Z
+revert rehearsal: scratch worktree at HEAD, git revert 75b48af → revert OK, hook restored,
+reverted-tree harden suite OK. Revert path verified working; revert SHA basis = 75b48af.
+removal-set verification: enforce-loop confirmed NON-consumer of .loop-state; session-start:110
+split smoke (marker cleared, zero loop-state refs); regenerated template diff = the 9-line
+registration block only; eval denominator 52→50 explained (README synced).
+fixture exception: detect-loop-success-event.json(.provenance) RETAINED — historical evidence
+backing the frozen Ph84 capture-diagnosis (test_fixture_provenance enforces the chain).
+installed own-surface: ~/.claude/hooks/detect-loop.sh orphan removed; kit project-local
+.claude/settings.json deregistered via basename-normalized jq (mktemp rehearsal with dummy
+positive control: inject→delete→absent, survivor count invariant, deterministic diff;
+backup .claude/settings.json.bak-phase88) + .claude/hooks/detect-loop.sh removed.
+post-surgery: survivor enforce-memory fires; GHOST-SWEEP PASS (150 registrations, 14 surfaces).
+consuming projects: point-in-time copies keep their local detect-loop (registrations point at
+existing local files — no ghost; filed per spec, not edited).

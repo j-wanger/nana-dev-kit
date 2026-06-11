@@ -1,0 +1,6 @@
+candidate: instrument-cmp (checker tightening, 1 of 3 in commit 6677157)
+commit: 6677157  | revert rehearsal: 2026-06-11T12:02:35Z
+rehearsal: scratch worktree at HEAD, git revert 6677157 → revert OK; frozen suite
+STAGE2-CHECKERS: ALL CONTROLS PASS; stage-2 runner 8/8. Revert path verified working.
+forward evidence: eval/trim-round/run-seeded-controls.sh 14/14 (seed caught, clean passes,
+boundaries pinned); allowlist PASS vs phase-base 7e9c56f.

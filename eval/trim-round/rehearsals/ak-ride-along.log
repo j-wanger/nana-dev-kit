@@ -1,0 +1,9 @@
+candidate: ak-ride-along (trim-trial, T4-approved) | commit: d43950f | 2026-06-11T12:26:29Z
+revert rehearsal: scratch worktree, git revert d43950f → revert OK, deleted companions restored,
+reverted-tree companions suite OK. Revert path verified working.
+removal set executed incl. the wiki-query Step 8a second writer (T1 finding); tombstones keep
+debrief step numbering stable; MANIFEST regen diff ⊆ removal set (verified pre-commit).
+trial terms: trigger = recovery/planning decision demonstrably wrong for lack of phase-pinned
+knowledge; window = 5 phases (through Phase 93); Blockers filing at T6.
+note: the live Phase-88 .claude/rules/active-knowledge.md (written pre-trim) is the FINAL
+instance — retired at this phase's debrief; nothing recreates it (8a tombstoned).

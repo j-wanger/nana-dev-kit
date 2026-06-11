@@ -1,0 +1,6 @@
+candidate: check-tests-were-run (harden, T4-approved) | commit: b8bd416 | 2026-06-11T12:21:30Z
+revert rehearsal: scratch worktree, git revert b8bd416 → revert OK, reverted-tree suite OK.
+forward evidence: RED verified pre-harden (Read-only .py → exit 2, the Ph85 false positive),
+GREEN post-harden 4/4 (Read→allow 0; Edit/Write-no-pytest→block 2; Edit+pytest→allow 0).
+Paired smoke wired into make test; full suite green; no dereg needed (in-place harden,
+registration unchanged). Installed-copy sync rides with the phase-end install refresh.
