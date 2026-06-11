@@ -79,7 +79,6 @@ Binary pass/fail per scenario. Category averages reported. Overall score is tota
 | audit-log.sh | PostToolUse | `{"tool_name":"...","input":{"file_path":"..."}}` |
 | auto-ruff-format.sh | PostToolUse | `{"tool_name":"...","input":{"file_path":"..."}}` |
 | scan-secrets.sh | PostToolUse | `{"tool_name":"...","input":{"file_path":"..."}}` |
-| detect-loop.sh | PostToolUse | `{"tool_name":"...","tool_input":{"command":"..."},"exit_code":N}` |
 | check-tests-were-run.sh | Stop | `{"tool_uses":[{"input":{"file_path":"...","command":"..."}}]}` |
 | enforce-loop.sh | Stop | `{}` |
 | session-start.sh | SessionStart | `""` |

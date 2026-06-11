@@ -44,7 +44,7 @@ Then in any project:
 | 4. Enforcement | Spec enforcement, deliverable checks, memory gating, loop detection — opt-in via markers | `enforce-spec.sh`, `enforce-loop.sh`, `enforce-memory.sh`, `detect-loop.sh` |
 | 5. Pre-commit | Commit-time guardrails (ruff, mypy, gitleaks, sync-rules) | `.pre-commit-config.yaml` |
 | 6. CI | GitHub Actions (lint, typecheck, test, security audit) | `.github/workflows/ci.yml` |
-| 7. Eval | 52-scenario harness across 4 categories (hook, skill, lifecycle, context) | `eval/corpus/`, `scripts/eval-runner.sh` |
+| 7. Eval | 50-scenario harness across 4 categories (hook, skill, lifecycle, context) | `eval/corpus/`, `scripts/eval-runner.sh` |
 
 ## Skills by Module
 
@@ -78,7 +78,7 @@ For memory maintenance, use `/memory-consolidate` to identify and merge duplicat
 make eval    # runs 52 scenarios, binary scoring, requires jq
 ```
 
-Four categories: hook fidelity (34), skill artifact validation (6), lifecycle compliance (6), context injection (6). Separate from `make test` — eval benchmarks the harness, tests verify the kit.
+Four categories: hook fidelity (32), skill artifact validation (6), lifecycle compliance (6), context injection (6). Separate from `make test` — eval benchmarks the harness, tests verify the kit.
 
 ## Memory Benchmark
 

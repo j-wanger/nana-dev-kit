@@ -135,7 +135,7 @@ LAYERS = [
     ("3. Hooks & Skills", "24 Claude Code skills + 12 lifecycle hooks across 5 event types",
      ".claude/hooks/, .claude/skills/, .claude/settings.json"),
     ("4. Enforcement", "Spec gating (PreToolUse), deliverable checks (Stop), loop detection (PostToolUse)",
-     "enforce-spec.sh, enforce-loop.sh, detect-loop.sh — installed globally by install.sh"),
+     "enforce-spec.sh, enforce-loop.sh — installed globally by install.sh"),
     ("5. Eval", "43-scenario binary-scored eval harness across hooks, skills, lifecycle, context",
      "eval/corpus/, scripts/eval-runner.sh"),
     ("6. Pre-commit", "Commit-time guardrails: ruff, mypy, gitleaks, sync-rules",

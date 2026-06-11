@@ -1,63 +1,15 @@
 #!/usr/bin/env bash
-# Tests for hardening hooks (detect-loop.sh, memory nudge, working-knowledge pruning).
+# Tests for hardening hooks (memory nudge, working-knowledge pruning; detect-loop cut Phase 88).
 
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/helpers.sh"
 
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-LOOP_HOOK="$REPO_ROOT/templates/.claude/hooks/detect-loop.sh"
 START_HOOK="$REPO_ROOT/templates/.claude/hooks/session-start.sh"
-# fires: detect-loop.sh session-start.sh memory-nudge.sh   # (coverage gate — see test_hook_firing_coverage.sh)
+# fires: session-start.sh memory-nudge.sh   # (coverage gate — see test_hook_firing_coverage.sh)
 
 ORIG_HOME="$HOME"
-
-run_loop_hook() {
-  local fixture="$1" json="$2"
-  echo "$json" | HOME="$fixture" bash -c "cd '$fixture' && bash '$LOOP_HOOK'" 2>/dev/null || true
-}
-
-BASH_JSON_FAIL='{"tool_name":"Bash","input":{"command":"make test"},"output":{"exit_code":1}}'
-BASH_JSON_DIFF='{"tool_name":"Bash","input":{"command":"other_cmd"},"output":{"exit_code":1}}'
-
-echo "=== Hardening Tests ==="
-
-# --- Loop detection tests ---
-
-test_start "loop: below threshold — no warning"
-T=$(mktemp -d) && mkdir -p "$T/.claude" && touch "$T/.claude/enforce"
-printf 'make test:1\n' > "$T/.claude/.loop-state"
-OUTPUT=$(run_loop_hook "$T" "$BASH_JSON_FAIL")
-if echo "$OUTPUT" | grep -qi 'loop'; then
-  test_fail "should not warn at 2 consecutive"
-else
-  test_pass
-fi
-rm -rf "$T"
-
-test_start "loop: at threshold — emits warning"
-T=$(mktemp -d) && mkdir -p "$T/.claude" && touch "$T/.claude/enforce"
-printf 'make test:1\nmake test:1\n' > "$T/.claude/.loop-state"
-OUTPUT=$(run_loop_hook "$T" "$BASH_JSON_FAIL")
-if echo "$OUTPUT" | grep -qi 'loop'; then
-  test_pass
-else
-  test_fail "expected loop warning at 3 consecutive"
-fi
-rm -rf "$T"
-
-test_start "loop: different command resets counter"
-T=$(mktemp -d) && mkdir -p "$T/.claude" && touch "$T/.claude/enforce"
-printf 'make test:1\nmake test:1\n' > "$T/.claude/.loop-state"
-OUTPUT=$(run_loop_hook "$T" "$BASH_JSON_DIFF")
-if echo "$OUTPUT" | grep -qi 'loop'; then
-  test_fail "different command should reset counter"
-else
-  test_pass
-fi
-rm -rf "$T"
-
-# --- Memory nudge structural checks ---
 
 test_start "memory-nudge: uses correct column name (active, not is_active)"
 NUDGE_HOOK="$REPO_ROOT/templates/.claude/hooks/session-start.d/memory-nudge.sh"

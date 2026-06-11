@@ -107,7 +107,7 @@ if [ -f ".dev-wiki/.pending-commit" ]; then
 fi
 
 # --- Clear session state ---
-rm -f .claude/.loop-state .claude/.memory-consulted
+rm -f .claude/.memory-consulted
 
 # --- Module functions ---
 check_memory_consolidation ".memory/memory.db" "$HOME/.claude/.memory-nudge-ts"

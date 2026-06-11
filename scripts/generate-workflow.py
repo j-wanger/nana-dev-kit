@@ -363,7 +363,7 @@ def generate_html():
   <td>Spec + deliverable gating</td>
   <td>PreToolUse (writes), Stop (session end), PostToolUse (failures)</td>
   <td>Blocks writes without approved spec. Checks deliverables at stop. Detects repeated failure loops. Events logged to <code>.dev-wiki/enforcement.log</code>.</td>
-  <td><code>enforce-spec.sh</code>, <code>enforce-loop.sh</code>, <code>detect-loop.sh</code> (global)</td>
+  <td><code>enforce-spec.sh</code>, <code>enforce-loop.sh</code> (global)</td>
 </tr>
 <tr>
   <td><strong>5. Eval</strong></td>
@@ -401,7 +401,6 @@ def generate_html():
   │ PostToolUse  → scan-secrets (warn on write)               │
   │ PostToolUse  → audit-log (record every change)            │
   │ PostToolUse  → post-commit (detect git commits)           │
-  │ PostToolUse  → detect-loop (warn on repeated failures)    │
   │ PreCompact   → pre-compact (inject state before compact)  │
   │ Stop         → check-tests-were-run (gate completion)     │
   │ Stop         → py-review (6-point checklist)              │
@@ -461,9 +460,6 @@ def generate_html():
          "0 = success (always)"),
         ("PostToolUse", "Bash", "post-commit.sh",
          "Detects <code>git commit</code> (not amend/fixup). Writes <code>.dev-wiki/.pending-commit</code> sidecar JSON. Emits <code>[dev-wiki:post-commit]</code>.",
-         "0 = success (advisory)"),
-        ("PostToolUse", "Bash", "detect-loop.sh",
-         "Tracks consecutive identical failed commands. Warns after 3 repeats. Pure bash, no jq.",
          "0 = success (advisory)"),
         ("PreCompact", "—", "pre-compact.sh",
          "Reads dev-wiki state and active-phase.md. Outputs structured summary injected into compacted context.",
@@ -658,7 +654,6 @@ def generate_html():
   Tool use
        │
        ├── Bash command ──→ block-dangerous-bash.sh (PreToolUse, jq)
-       │               └──→ detect-loop.sh (PostToolUse, pure bash)
        │
        ├── File write ───→ enforce-spec.sh ──────→ requires: jq (global)
        │              ├──→ auto-ruff-format.sh ──→ requires: ruff
@@ -820,7 +815,6 @@ def _template_purpose(path):
         ".claude/hooks/scan-secrets.sh": "PostToolUse: scans for hardcoded secrets",
         ".claude/hooks/audit-log.sh": "PostToolUse: JSONL audit trail of all writes",
         ".claude/hooks/post-commit.sh": "PostToolUse: detects git commits, writes .pending-commit",
-        ".claude/hooks/detect-loop.sh": "PostToolUse: warns on 3+ identical failed commands",
         ".claude/hooks/pre-compact.sh": "PreCompact: injects dev-wiki state before context compaction",
         ".claude/hooks/check-tests-were-run.sh": "Stop: gates completion on pytest execution",
         ".claude/hooks/enforce-loop.sh": "Stop: checks deliverables + debrief status (global)",

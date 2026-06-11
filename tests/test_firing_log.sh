@@ -10,7 +10,7 @@ source "$SCRIPT_DIR/helpers.sh"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 HOOKS="$REPO_ROOT/templates/.claude/hooks"
 LOG=".dev-wiki/enforcement.log"
-# fires: enforce-spec.sh enforce-loop.sh enforce-memory.sh dev-wiki-scope-check.sh detect-loop.sh check-tests-were-run.sh   # (coverage gate)
+# fires: enforce-spec.sh enforce-loop.sh enforce-memory.sh dev-wiki-scope-check.sh check-tests-were-run.sh   # (coverage gate)
 ORIG_HOME="$HOME"
 ORIG_PATH="$PATH"
 
@@ -110,7 +110,7 @@ if [ -s "$T/lib.sh" ] && [ "$BEC" = "2" ]; then
   test_pass; else test_fail "block not preserved (lib empty? $([ -s "$T/lib.sh" ] && echo no || echo yes); exit=$BEC)"; fi
 teardown "$T"
 
-# === T2: all 6 hooks emit well-formed records; the blocking hooks preserve their block under log failure ===
+# === T2: all 5 hooks emit well-formed records; the blocking hooks preserve their block under log failure ===
 # (The 3 existing loggers were retrofitted from raw-echo+tail-500 onto log_firing; enforce-memory has NO
 #  coverage in test_enforce.sh, and neither stubs a failing date — so the dual-variant proof lives here.)
 
@@ -150,20 +150,12 @@ check_block "enforce-memory" enforce-memory.sh       mk_memory     "$WRITE_OOS" 
 check_block "enforce-loop"   enforce-loop.sh         mk_loop       "{}"               ""
 check_block "check-tests"    check-tests-were-run.sh mk_checktests "$CHECKTESTS_JSON" ""
 
-# detect-loop: advisory (controlled-vocab, command NEVER logged) after 3 identical failures.
-test_start "detect-loop: 3rd repeated failure emits advisory record"
-T=$(mk_devwiki); touch "$T/.claude/enforce"
-DLJSON='{"tool_input":{"command":"badcmd"},"exit_code":1}'
-run_hook detect-loop.sh "$T" "$DLJSON" >/dev/null; run_hook detect-loop.sh "$T" "$DLJSON" >/dev/null
-EC=$(run_hook detect-loop.sh "$T" "$DLJSON"); LINE=$(tail -n1 "$T/$LOG" 2>/dev/null || echo "")
-if [ "$EC" = "0" ] && printf '%s' "$LINE" | jq -e '.hook=="detect-loop" and .action=="advisory" and .reason=="repeated-failure"' >/dev/null 2>&1; then test_pass; else test_fail "ec=$EC line=$LINE"; fi
-teardown "$T"
 
-# Static uniformity: the inline-duplicated log_firing body must be byte-identical across all 6 hooks
+# Static uniformity: the inline-duplicated log_firing body must be byte-identical across all 5 hooks
 # (modulo the --arg hook "<name>" literal). Catches copy-drift even if behavioral coverage misses a hook.
-test_start "log_firing: all 6 hook copies byte-identical (modulo hook name)"
+test_start "log_firing: all 5 hook copies byte-identical (modulo hook name)"
 NORM=""; MISMATCH=""
-for h in enforce-spec enforce-loop enforce-memory dev-wiki-scope-check detect-loop check-tests-were-run; do
+for h in enforce-spec enforce-loop enforce-memory dev-wiki-scope-check check-tests-were-run; do
   BODY=$(sed -n '/^log_firing() {/,/^}/p' "$HOOKS/$h.sh" | sed 's/--arg hook "[^"]*"/--arg hook "HOOK"/')
   if [ -z "$NORM" ]; then NORM="$BODY"; elif [ "$BODY" != "$NORM" ]; then MISMATCH="$h"; fi
 done

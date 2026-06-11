@@ -5,7 +5,7 @@
 #                     finding), so event arrival is the success signal; legacy top-level
 #                     .exit_code retained as a guard; textual prefilter + git-state recency
 #                     confirmation rejects mention-only / failed-compound false positives.
-#   detect-loop.sh  = upstream — no failure signal exists on the platform (no exit code in the
+#   (detect-loop.sh was CUT in Phase 88 — upstream-permanent: no failure signal on the platform;
 #                     event, no event on failure); hook untouched; legacy-shape path is
 #                     non-regression surface only.
 # Assertions check ARTIFACT CONTENT (.pending-commit hash/JSON, trigger text), never exit codes
@@ -63,7 +63,6 @@ fire() {
 }
 
 REAL_COMMIT_EVENT=$(cat "$FIXTURES/post-commit-git-commit.json")
-REAL_SUCCESS_EVENT=$(cat "$FIXTURES/detect-loop-success-event.json")
 
 echo "=== Phase 84 Lifecycle Hook Firing Tests ==="
 
@@ -148,19 +147,5 @@ test_start "command-less event logs signal-absence to stderr (fail-loud)"
 IFS='|' read -r P H <<< "$(sandbox project fresh)"
 fire post-commit.sh "$P" "$H" '{"tool_name":"Bash","tool_response":{"stdout":"","stderr":"","interrupted":false,"isImage":false}}'
 if [ "$EC" = "0" ] && echo "$ERR" | grep -q 'nana:post-commit'; then test_pass; else test_fail "signal absence silently swallowed (err=$ERR)"; fi
-
-# ---- detect-loop (upstream branch): real event must not crash; legacy path non-regression ----
-test_start "detect-loop: real success event exits 0 silently (no crash on real shape)"
-IFS='|' read -r P H <<< "$(sandbox home fresh)"
-fire detect-loop.sh "$P" "$H" "$REAL_SUCCESS_EVENT"
-if [ "$EC" = "0" ] && [ -z "$OUT" ]; then test_pass; else test_fail "crashed or warned on a real success event (ec=$EC out=$OUT)"; fi
-
-test_start "detect-loop: legacy 3-failure path still warns (non-regression)"
-IFS='|' read -r P H <<< "$(sandbox home none)"
-LEGACY='{"tool_input":{"command":"badcmd"},"exit_code":1}'
-fire detect-loop.sh "$P" "$H" "$LEGACY"
-fire detect-loop.sh "$P" "$H" "$LEGACY"
-fire detect-loop.sh "$P" "$H" "$LEGACY"
-if echo "$OUT" | grep -q '\[nana:loop\]'; then test_pass; else test_fail "legacy loop warning regressed (out=$OUT)"; fi
 
 test_summary "lifecycle-hooks-firing"

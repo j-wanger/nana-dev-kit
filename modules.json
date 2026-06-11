@@ -57,7 +57,6 @@
     { "event": "PostToolUse", "matcher": "Write|Edit|MultiEdit", "script": "auto-ruff-format.sh", "scope": "project" },
     { "event": "PostToolUse", "matcher": "Write|Edit|MultiEdit", "script": "audit-log.sh", "scope": "project" },
     { "event": "PostToolUse", "matcher": "Write|Edit|MultiEdit", "script": "stale-queue.sh", "scope": "project" },
-    { "event": "PostToolUse", "matcher": "Bash", "script": "detect-loop.sh", "scope": "project" },
     { "event": "PostToolUse", "matcher": "Bash", "script": "post-commit.sh", "scope": "project" },
     { "event": "Stop", "matcher": "", "script": "enforce-loop.sh", "scope": "project" },
     { "event": "Stop", "matcher": "", "script": "session-stop.sh", "scope": "project" },

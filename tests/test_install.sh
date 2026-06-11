@@ -699,7 +699,7 @@ assert 'PreToolUse' in hooks, 'missing PreToolUse'
 assert 'PostToolUse' in hooks, 'missing PostToolUse'
 assert 'Stop' in hooks, 'missing Stop'
 total = sum(len(v) for v in hooks.values())
-assert total == 17, f'expected 17 hook entries, got {total}'
+assert total == 16, f'expected 16 hook entries, got {total}'
 print('OK')
 " 2>/dev/null | grep -q OK; then
   test_pass
@@ -710,10 +710,10 @@ fi
 test_start "register-settings.py: upsert is idempotent"
 python3 "$PROJECT_ROOT/scripts/register-settings.py" hooks "$T_REG/settings.json" "$PROJECT_ROOT/modules.json" --scope project-local
 TOTAL_AFTER=$(python3 -c "import json; d=json.load(open('$T_REG/settings.json')); print(sum(len(v) for v in d['hooks'].values()))")
-if [ "$TOTAL_AFTER" = "17" ]; then
+if [ "$TOTAL_AFTER" = "16" ]; then
   test_pass
 else
-  test_fail "upsert not idempotent: expected 17, got $TOTAL_AFTER"
+  test_fail "upsert not idempotent: expected 16, got $TOTAL_AFTER"
 fi
 
 test_start "register-settings.py: ghost cleanup removes entries"
