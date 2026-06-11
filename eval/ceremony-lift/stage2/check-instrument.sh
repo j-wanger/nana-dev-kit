@@ -39,6 +39,33 @@ req "CONTROL-HOOK" ".+"
 
 if [ "$mode" = "full" ]; then
   req "CONTROL-TASK-BYTE-IDENTITY" "PASS"
+
+  # Phase-88 tightening (cmp-not-grep, routed from the Phase-87 review gate): a recorded
+  # byte-identity PASS must be RE-DERIVABLE — the record names CONTROL-TASK-ARTIFACTS, a
+  # dir holding exactly the two per-arm control-task copies, and this checker executes
+  # cmp itself (two EMPTY files are vacuous, not identical — FAIL). Grandfather pinned
+  # per instance, never globally: the Phase-87 live record (SETUP-SHA 4ed8071) and the
+  # frozen Phase-87 good-control fixture (SETUP-SHA deadbeef, controls/ — editing its
+  # suite is barred) predate artifact persistence and keep grep-only semantics; every
+  # other record is held to the cmp standard.
+  setup_sha=$(grep -E '^SETUP-SHA:' "$REC" | awk '{print $2}')
+  if [ "$setup_sha" != "4ed8071" ] && [ "$setup_sha" != "deadbeef" ]; then
+    art=$(grep -E '^CONTROL-TASK-ARTIFACTS:' "$REC" | awk '{print $2}')
+    if [ -z "${art:-}" ] || [ ! -d "$art" ]; then
+      echo "FAIL: CONTROL-TASK-ARTIFACTS missing (byte-identity not re-derivable)"; fail=1
+    else
+      set -- "$art"/*
+      if [ $# -ne 2 ] || [ ! -f "$1" ] || [ ! -f "$2" ]; then
+        echo "FAIL: CONTROL-TASK-ARTIFACTS must hold exactly 2 files"; fail=1
+      elif [ ! -s "$1" ] || [ ! -s "$2" ]; then
+        echo "FAIL: control-task artifact empty (vacuous identity)"; fail=1
+      elif ! cmp -s "$1" "$2"; then
+        echo "FAIL: control-task copies differ (cmp)"; fail=1
+      else
+        echo "PASS: control-task byte-identity re-derived (cmp)"
+      fi
+    fi
+  fi
   req "CANARY-VERDICT" "(CLEAN|CONTAMINATED)"
   req "CONTROL-VERDICT-ARM-A" "(SURFACED|NOT-SURFACED)"
   req "CONTROL-VERDICT-ARM-B" "(SURFACED|NOT-SURFACED)"

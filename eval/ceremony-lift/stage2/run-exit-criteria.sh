@@ -6,6 +6,28 @@
 # Exit 0 iff every criterion PASSes or is N/A by run-status.
 set -uo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# c2 core (Phase-88 tightening, routed from the Phase-87 review gate): the addendum's
+# first-add-commit strictly precedes the results' first-add-commit AND the addendum is
+# byte-unchanged from its add-commit THROUGH HEAD (was: through R only — a post-results
+# touch escaped). Phase-87 verdicts stand as recorded under the pre-tightening version.
+c2_check() { # <addendum-path> <results-path> — runs against the CURRENT git repo/cwd
+  local ADD="$1" RES="$2" P R
+  P=$(git log --diff-filter=A --format=%H -- "$ADD" | tail -1)
+  R=$(git log --diff-filter=A --format=%H -- "$RES" | tail -1)
+  [ -n "$P" ] && [ -n "$R" ] || return 1
+  git merge-base --is-ancestor "$P" "$R" || return 1
+  git diff --quiet "$P" HEAD -- "$ADD"
+}
+
+# --c2-only [addendum results]: run c2 standalone against the cwd's repo (fixture-testable
+# by the Phase-88 seeded controls — tests THIS function, not a copy).
+if [ "${1:-}" = "--c2-only" ]; then
+  c2_check "${2:-eval/ceremony-lift/stage2/execution-protocol.md}" \
+           "${3:-eval/ceremony-lift/stage2/results.md}"
+  exit $?
+fi
+
 ROOT="$(git -C "$DIR" rev-parse --show-toplevel)"
 cd "$ROOT"
 pass=0; failn=0; na=0; total=8
@@ -28,13 +50,9 @@ run_c() { # <n> <desc> <na-when-not-live: yes|no> <cmd...>
   fi
 }
 
-c2() { # addendum first-add-commit strictly precedes results' and is byte-unchanged between
-  local P R
-  P=$(git log --diff-filter=A --format=%H -- eval/ceremony-lift/stage2/execution-protocol.md | tail -1)
-  R=$(git log --diff-filter=A --format=%H -- eval/ceremony-lift/stage2/results.md | tail -1)
-  [ -n "$P" ] && [ -n "$R" ] || return 1
-  git merge-base --is-ancestor "$P" "$R" || return 1
-  git diff --quiet "$P" "$R" -- eval/ceremony-lift/stage2/execution-protocol.md
+c2() { # addendum precedes results and is byte-frozen from add-commit through HEAD
+  c2_check eval/ceremony-lift/stage2/execution-protocol.md \
+           eval/ceremony-lift/stage2/results.md
 }
 
 run_c 1 "stage-1 pre-registration byte-intact + stage-1 apparatus additive-only" no \

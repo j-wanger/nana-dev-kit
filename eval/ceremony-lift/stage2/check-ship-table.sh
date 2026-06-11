@@ -7,6 +7,7 @@ set -uo pipefail
 F="${1:-$(dirname "${BASH_SOURCE[0]}")/ship-table.md}"
 fail=0
 [ -f "$F" ] || { echo "FAIL: $F missing"; exit 1; }
+[ -s "$F" ] || { echo "FAIL: $F empty (must not vacuous-pass)"; exit 1; }
 
 gates=""
 for arm in arm-b arm-a; do
@@ -20,7 +21,10 @@ for arm in arm-b arm-a; do
   else
     echo "PASS: $arm row complete"
   fi
-  printf '%s' "$row" | grep -qE 'cmdlog|DNF' || { echo "FAIL: $arm row lacks a cmdlog pointer"; fail=1; }
+  # Phase-88 tightening (routed): cmdlog pointer is UNCONDITIONAL — a DNF row needs its
+  # cmdlog too (was `cmdlog|DNF`: any DNF row passed pointer-less). Phase-87's table
+  # already satisfies this (both rows carry cmdlogs post-c4bd9ff).
+  printf '%s' "$row" | grep -qE 'cmdlog' || { echo "FAIL: $arm row lacks a cmdlog pointer"; fail=1; }
   gate=$(printf '%s' "$row" | awk -F'|' '{gsub(/ /,"",$6); print $6}')
   gates="$gates $gate"
 done
