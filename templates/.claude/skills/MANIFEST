@@ -1,6 +1,6 @@
-88173c06c09b6529e27e72f7d2a4f05b  templates/.claude/skills/MANIFEST
+a1d0d2bb2a6e223e13767a77ea2c2712  templates/.claude/skills/MANIFEST
 70af58b494815f120ce795e7a292bcbb  templates/.claude/skills/dev-check/SKILL.md
-082ac1478a0c5c02921cc5ad3fa30e30  templates/.claude/skills/dev-debrief/SKILL.md
+57a9855d2312b7f64e9beabe6cd3bf40  templates/.claude/skills/dev-debrief/SKILL.md
 6e81594fd8dd03f7dd486bf1e12f4a55  templates/.claude/skills/dev-debrief/architecture-staleness-check.md
 5bd8ae271f848a5512901f4994cd6afa  templates/.claude/skills/dev-debrief/claude-md-refresh.md
 932018dcbe5f5081514daec441aadd39  templates/.claude/skills/dev-debrief/debrief-finalization.md
@@ -50,7 +50,7 @@ c9ba93116ddd0439bd1f489940ce4968  templates/.claude/skills/dev-wiki/phase-templa
 e47313199d9b8f098ea0f56827c0f671  templates/.claude/skills/dev-wiki/size-budgets.md
 3ba9520205f3f441e9ff4df7383858d6  templates/.claude/skills/dev-wiki/slugification.md
 844f10628dc8f313ab403aaf6529acf2  templates/.claude/skills/dev-wiki/state-template.md
-95c16fda6d6c4b4f9d3abd7e8028e1ba  templates/.claude/skills/dev-wiki/working-knowledge-spec.md
+41f4831dc529a8157ad1164b09ca74aa  templates/.claude/skills/dev-wiki/working-knowledge-spec.md
 62d52f32f8ae6efd237613e6d97a1dc7  templates/.claude/skills/knowledge-wiki/SKILL.md
 5afea9b552351292cc85c72269fc29c5  templates/.claude/skills/knowledge-wiki/article-conventions.md
 994f7884f7ea107996fc1d7d57ad6a26  templates/.claude/skills/knowledge-wiki/claim-spec.md

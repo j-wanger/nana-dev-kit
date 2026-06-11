@@ -8,7 +8,7 @@ referenced_at: "referenced (step unknown)"
 Specification for `.claude/rules/working-knowledge.md` — usage-tracked cross-phase knowledge.
 
 **Location:** `.claude/rules/working-knowledge.md`
-**Ownership:** Shared. `/wiki-query` (activate + increment), `/dev-debrief` (carry-forward from active-knowledge), `/dev-plan` (seeding).
+**Ownership:** `/wiki-query` (activate + increment) — the sole writer since the Phase 88 trim-trials (debrief carry-forward and dev-plan seeding removed; the session-start curator prunes; existing entries decay in place).
 
 ### Entry Format
 
