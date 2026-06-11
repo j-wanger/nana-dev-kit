@@ -17,4 +17,4 @@ filing — never permanent cuts/keeps); Phase-87 verdicts never re-graded; ledge
 Next: delivery report → user acceptance → commit/push → flip delivery gate (D3).
 Gates:
 - [x] Direction confirmed by user (A1-A6 positions; A4+A6 rejects narrowed scope; all_accept:false — 2026-06-11)
-- [ ] Delivery accepted (post-implementation report)
+- [x] Delivery accepted (post-implementation report 2026-06-11)
