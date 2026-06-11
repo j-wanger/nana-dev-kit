@@ -7,7 +7,7 @@ parents: [phase-86-ceremony-lift-measurement, phase-87-stage2-episode-contrast, 
 created: 2026-06-11
 updated: 2026-06-11
 source: plan
-status: active
+status: active # READY FOR COMPLETION — 6/6 tasks, 10/10 exit criteria ALL-PASS; delivery gate pending
 scope: ["templates/.claude/skills/dev-plan/**", "templates/.claude/skills/dev-debrief/**", "templates/.claude/hooks/enforce-memory.sh", "templates/.claude/hooks/detect-loop.sh", "templates/.claude/hooks/check-tests-were-run.sh", "modules.json", "MANIFEST", "templates/.claude/settings.json", "tests/**", "eval/trim-round/**", "eval/ceremony-lift/stage2/run-exit-criteria.sh", "eval/ceremony-lift/stage2/check-instrument.sh", "eval/ceremony-lift/stage2/check-ship-table.sh"]
 entry_criteria: "Phase 87 delivery accepted + gate flipped (7e9c56f); spec specs/phase-88-trim-follow-on.md nana:approved 2026-06-11"
 exit_criteria: "The spec's 10 machine-checkable criteria via eval/trim-round/run-exit-criteria.sh ALL-PASS"
@@ -85,23 +85,35 @@ kit's 4×-bitten failure class).
 - **A6 REJECT** (re-surfaced after A4) — bridge/harvest writer trims deferred with the
   layer; strand 2 narrowed to working-knowledge seeding + journal prose.
 
-## Exit Criteria
+## Exit Criteria (10/10 ALL-PASS, 2026-06-11)
 
-- [ ] `eval/trim-round/verdict-table.md` + `check-verdict-table.sh` (phase-base SHA header;
+- [x] `eval/trim-round/verdict-table.md` + `check-verdict-table.sh` (phase-base SHA header;
       closed-enum verdicts; trims carry revert SHA + trigger + observation window + Blockers
       filing; seeded bad-row control first)
-- [ ] `check-ghost-registrations.sh` — zero nonexistent-path settings entries on any
+- [x] `check-ghost-registrations.sh` — zero nonexistent-path settings entries on any
       discovered surface (seeded ghost control first)
-- [ ] `check-stage2-allowlist.sh` — stage-2 diff vs phase-base contains only the three routed
+- [x] `check-stage2-allowlist.sh` — stage-2 diff vs phase-base contains only the three routed
       files; everything else byte-identical via cmp
-- [ ] `run-seeded-controls.sh` — each tightened checker FAILS on its seeded defect, PASSES on
-      clean, incl. boundary cases
-- [ ] Paired smoke for the check-tests-were-run harden (block AND allow), wired into make test
-- [ ] `make test` green (incl. settings-template drift + bidirectional registration)
-- [ ] `make eval` 52/52 or explained denominator change in the verdict table
-- [ ] `grep -q 'Phase-87 verdicts stand' eval/trim-round/verdict-table.md`
-- [ ] Per-cut revert rehearsal logged under `eval/trim-round/rehearsals/`
-- [ ] `eval/trim-round/run-exit-criteria.sh` reports ALL-PASS
+- [x] `run-seeded-controls.sh` — each tightened checker FAILS on its seeded defect (14/14),
+      PASSES on clean, incl. boundary cases
+- [x] Paired smoke for the check-tests-were-run harden (block AND allow), wired into make test
+- [x] `make test` green (27 scripts, incl. settings-template drift + bidirectional registration)
+- [x] `make eval` 50/50 — denominator change 52→50 explained in the verdict table (detect-loop cut)
+- [x] `grep -q 'Phase-87 verdicts stand' eval/trim-round/verdict-table.md`
+- [x] Per-cut revert rehearsal logged under `eval/trim-round/rehearsals/`
+- [x] `eval/trim-round/run-exit-criteria.sh` reports ALL-PASS
+
+## Outcome (executed 2026-06-11 — detail: [[trim-round-outcome]])
+
+T4 decisions executed serially, one commit per candidate: 2 trim-trials SHIPPED
+(ak-ride-along d43950f; wk-seeding df3e623 — EXECUTION-CORRECTED, REVERT-COUPLED with
+d43950f; windows through Phase 93); detect-loop CUT 75b48af (couldnt-fire
+upstream-PERMANENT — impossibility, never demand); check-tests-were-run HARDENED b8bd416
+(HEU-007 dual-condition); 3 stage-2 checker tightenings 6677157 (14/14 seeded controls;
+Phase-87 verdicts stand as recorded); enforce-memory KEEP (A3 reconstruction SUCCEEDED,
+3/7 block episodes verified real follow-through); 2 DROPPED at checkpoint
+(loader-writer-heft, journal-prose). Review gate 9/10 accept, 4 MEDIUMs fixed inline.
+Ledger: all 6 assumptions held.
 
 ## Constraints
 

@@ -136,7 +136,7 @@ LAYERS = [
      ".claude/hooks/, .claude/skills/, .claude/settings.json"),
     ("4. Enforcement", "Spec gating (PreToolUse), deliverable checks (Stop), loop detection (PostToolUse)",
      "enforce-spec.sh, enforce-loop.sh — installed globally by install.sh"),
-    ("5. Eval", "43-scenario binary-scored eval harness across hooks, skills, lifecycle, context",
+    ("5. Eval", "50-scenario binary-scored eval harness across hooks, skills, lifecycle, context",
      "eval/corpus/, scripts/eval-runner.sh"),
     ("6. Pre-commit", "Commit-time guardrails: ruff, mypy, gitleaks, sync-rules",
      ".pre-commit-config.yaml"),
@@ -150,9 +150,9 @@ WORKFLOWS = [
     ("Develop", "Daily coding with Claude Code", "Session-start loads dev-wiki state, checks enforcement, detects crash recovery, clears stale sidecars. Hooks auto-format, block dangerous ops, audit, detect loops."),
     ("Lifecycle", "/dev-init → /spec → /dev-plan → implement → /dev-debrief", "Phase-based planning with spec review gate, TDD tasks, session capture. Decisions, journal, and memory harvest tracked in .dev-wiki/."),
     ("Memory", "Persistent cross-session context", "MCP server stores project decisions, conventions, corrections. FTS5 search. Memory-bridge channels: dev-plan stores, wiki-query reads, dev-debrief harvests. /memory-consolidate for maintenance."),
-    ("Enforcement", "Spec + deliverable gating", "enforce-spec.sh blocks writes without approved spec (provenance marker or exit criteria). enforce-loop.sh checks deliverables at stop. detect-loop.sh warns on repeated failures. Events logged to .dev-wiki/enforcement.log."),
+    ("Enforcement", "Spec + deliverable gating", "enforce-spec.sh blocks writes without approved spec (provenance marker or exit criteria). enforce-loop.sh checks deliverables at stop. Events logged to .dev-wiki/enforcement.log."),
     ("Sync", "make sync-rules", "Propagates AGENTS.md to CLAUDE.md, copilot-instructions.md, .cursor/rules/main.mdc, GEMINI.md."),
-    ("Test + Eval", "make test && make eval", "175+ bash tests across 6 scripts (install, sync, templates, enforce, harden). 43-scenario eval harness with binary scoring across 4 categories."),
+    ("Test + Eval", "make test && make eval", "175+ bash tests across 6 scripts (install, sync, templates, enforce, harden). 50-scenario eval harness with binary scoring across 4 categories."),
 ]
 
 

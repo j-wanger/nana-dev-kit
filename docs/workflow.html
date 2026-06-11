@@ -55,7 +55,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <body>
 
 <h1>Nana Dev Kit &mdash; Workflow Breakdown</h1>
-<p class="subtitle">7-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-06-10 23:38</p>
+<p class="subtitle">7-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-06-11 08:59</p>
 
 <div class="toc">
 <h3>Contents</h3>
@@ -205,7 +205,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
   <td>Spec + deliverable gating</td>
   <td>PreToolUse (writes), Stop (session end), PostToolUse (failures)</td>
   <td>Blocks writes without approved spec. Checks deliverables at stop. Detects repeated failure loops. Events logged to <code>.dev-wiki/enforcement.log</code>.</td>
-  <td><code>enforce-spec.sh</code>, <code>enforce-loop.sh</code>, <code>detect-loop.sh</code> (global)</td>
+  <td><code>enforce-spec.sh</code>, <code>enforce-loop.sh</code> (global)</td>
 </tr>
 <tr>
   <td><strong>5. Eval</strong></td>
@@ -243,7 +243,6 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
   │ PostToolUse  → scan-secrets (warn on write)               │
   │ PostToolUse  → audit-log (record every change)            │
   │ PostToolUse  → post-commit (detect git commits)           │
-  │ PostToolUse  → detect-loop (warn on repeated failures)    │
   │ PreCompact   → pre-compact (inject state before compact)  │
   │ Stop         → check-tests-were-run (gate completion)     │
   │ Stop         → py-review (6-point checklist)              │
@@ -330,13 +329,6 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
   <td><span style="font-size:0.82rem">0 = success (advisory)</span></td>
 </tr>
 <tr>
-  <td><code>PostToolUse</code></td>
-  <td><code>Bash</code></td>
-  <td><code>detect-loop.sh</code></td>
-  <td>Tracks consecutive identical failed commands. Warns after 3 repeats. Pure bash, no jq.</td>
-  <td><span style="font-size:0.82rem">0 = success (advisory)</span></td>
-</tr>
-<tr>
   <td><code>PreCompact</code></td>
   <td><code>—</code></td>
   <td><code>pre-compact.sh</code></td>
@@ -388,7 +380,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <h3>Layer 1: Instructions <span class="badge badge-blue">4 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
-<tr><td><code>.claude/skills/dev-init/AGENTS.md</code></td><td>55</td><td>"Use when a project has no .dev-wiki/ yet. Bootstraps phases, architecture, state, and tasks. Do NOT use for knowledge wikis (use wiki-init) or if .dev-wiki/ already exists."</td></tr>
+<tr><td><code>.claude/skills/dev-init/AGENTS.md</code></td><td>54</td><td>"Use when a project has no .dev-wiki/ yet. Bootstraps phases, architecture, state, and tasks. Do NOT use for knowledge wikis (use wiki-init) or if .dev-wiki/ already exists."</td></tr>
 <tr><td><code>.github/instructions/nana.instructions.md</code></td><td>63</td><td>Nana identity for GitHub Copilot</td></tr>
 <tr><td><code>.github/instructions/workflow.instructions.md</code></td><td>37</td><td>Workflow instructions for Copilot</td></tr>
 <tr><td><code>AGENTS.md</code></td><td>79</td><td>Single source of truth for agent instructions</td></tr>
@@ -401,15 +393,14 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/rules/nana-soul.md</code></td><td>59</td><td>Development personality and technical posture</td></tr>
 <tr><td><code>.claude/rules/py-session-state.md</code></td><td>21</td><td>Compaction-safe session state template</td></tr>
 </table>
-<h3>Layer 3: Hooks <span class="badge badge-blue">22 files</span></h3>
+<h3>Layer 3: Hooks <span class="badge badge-blue">21 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
 <tr><td><code>.claude/hooks/audit-log.sh</code></td><td>26</td><td>PostToolUse: JSONL audit trail of all writes</td></tr>
 <tr><td><code>.claude/hooks/auto-ruff-format.sh</code></td><td>18</td><td>PostToolUse: auto-formats Python with ruff</td></tr>
 <tr><td><code>.claude/hooks/block-dangerous-bash.sh</code></td><td>38</td><td>PreToolUse: blocks rm -rf, force-push, --no-verify</td></tr>
-<tr><td><code>.claude/hooks/check-tests-were-run.sh</code></td><td>58</td><td>Stop: gates completion on pytest execution</td></tr>
+<tr><td><code>.claude/hooks/check-tests-were-run.sh</code></td><td>66</td><td>Stop: gates completion on pytest execution</td></tr>
 <tr><td><code>.claude/hooks/context-size-check.sh</code></td><td>35</td><td></td></tr>
-<tr><td><code>.claude/hooks/detect-loop.sh</code></td><td>75</td><td>PostToolUse: warns on 3+ identical failed commands</td></tr>
 <tr><td><code>.claude/hooks/dev-wiki-scope-check.sh</code></td><td>77</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
 <tr><td><code>.claude/hooks/enforce-loop.sh</code></td><td>115</td><td>Stop: checks deliverables + debrief status (global)</td></tr>
 <tr><td><code>.claude/hooks/enforce-memory.sh</code></td><td>72</td><td></td></tr>
@@ -425,20 +416,19 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/hooks/session-start.sh</code></td><td>117</td><td>SessionStart: loads context, crash recovery, enforcement, [nana:kit]</td></tr>
 <tr><td><code>.claude/hooks/session-stop.sh</code></td><td>29</td><td></td></tr>
 <tr><td><code>.claude/hooks/stale-queue.sh</code></td><td>54</td><td></td></tr>
-<tr><td><code>.claude/settings.json</code></td><td>162</td><td>Hook wiring: maps lifecycle events to scripts</td></tr>
+<tr><td><code>.claude/settings.json</code></td><td>153</td><td>Hook wiring: maps lifecycle events to scripts</td></tr>
 </table>
-<h3>Layer 3: Skills <span class="badge badge-blue">119 files</span></h3>
+<h3>Layer 3: Skills <span class="badge badge-blue">117 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
-<tr><td><code>.claude/skills/MANIFEST</code></td><td>146</td><td></td></tr>
-<tr><td><code>.claude/skills/dev-check/SKILL.md</code></td><td>150</td><td>"Validate dev wiki integrity and fix drift. Run when state feels stale, after long breaks, or when drift warnings appear. Do NOT use for knowledge wiki health (use wiki-lint) or for session startup (use AGENTS.md)."</td></tr>
-<tr><td><code>.claude/skills/dev-debrief/SKILL.md</code></td><td>313</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
-<tr><td><code>.claude/skills/dev-debrief/active-knowledge-transition.md</code></td><td>24</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
+<tr><td><code>.claude/skills/MANIFEST</code></td><td>144</td><td></td></tr>
+<tr><td><code>.claude/skills/dev-check/SKILL.md</code></td><td>147</td><td>"Validate dev wiki integrity and fix drift. Run when state feels stale, after long breaks, or when drift warnings appear. Do NOT use for knowledge wiki health (use wiki-lint) or for session startup (use AGENTS.md)."</td></tr>
+<tr><td><code>.claude/skills/dev-debrief/SKILL.md</code></td><td>297</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/architecture-staleness-check.md</code></td><td>24</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/claude-md-refresh.md</code></td><td>38</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/debrief-finalization.md</code></td><td>57</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/delivery-flow.md</code></td><td>53</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
-<tr><td><code>.claude/skills/dev-debrief/executor-prompt.md</code></td><td>141</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
+<tr><td><code>.claude/skills/dev-debrief/executor-prompt.md</code></td><td>137</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/memory-harvest.md</code></td><td>68</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/quick-debrief-flow.md</code></td><td>31</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/retro-check.md</code></td><td>46</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
@@ -447,13 +437,13 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/skills/dev-init/SKILL.md</code></td><td>214</td><td>"Use when a project has no .dev-wiki/ yet. Bootstraps phases, architecture, state, and tasks. Do NOT use for knowledge wikis (use wiki-init) or if .dev-wiki/ already exists."</td></tr>
 <tr><td><code>.claude/skills/dev-init/init-scaffolding.md</code></td><td>54</td><td>"Use when a project has no .dev-wiki/ yet. Bootstraps phases, architecture, state, and tasks. Do NOT use for knowledge wikis (use wiki-init) or if .dev-wiki/ already exists."</td></tr>
 <tr><td><code>.claude/skills/dev-init/scaffold-claude-md.md</code></td><td>54</td><td>"Use when a project has no .dev-wiki/ yet. Bootstraps phases, architecture, state, and tasks. Do NOT use for knowledge wikis (use wiki-init) or if .dev-wiki/ already exists."</td></tr>
-<tr><td><code>.claude/skills/dev-init/project-CLAUDE.md</code></td><td>42</td><td>"Use when a project has no .dev-wiki/ yet. Bootstraps phases, architecture, state, and tasks. Do NOT use for knowledge wikis (use wiki-init) or if .dev-wiki/ already exists."</td></tr>
-<tr><td><code>.claude/skills/dev-plan/SKILL.md</code></td><td>312</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
+<tr><td><code>.claude/skills/dev-init/project-CLAUDE.md</code></td><td>41</td><td>"Use when a project has no .dev-wiki/ yet. Bootstraps phases, architecture, state, and tasks. Do NOT use for knowledge wikis (use wiki-init) or if .dev-wiki/ already exists."</td></tr>
+<tr><td><code>.claude/skills/dev-plan/SKILL.md</code></td><td>298</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/approach-reviewer-prompt.md</code></td><td>68</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
-<tr><td><code>.claude/skills/dev-plan/artifact-writer-prompt.md</code></td><td>108</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
+<tr><td><code>.claude/skills/dev-plan/artifact-writer-prompt.md</code></td><td>92</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/assumption-gate-example.md</code></td><td>41</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/assumption-gate.md</code></td><td>74</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
-<tr><td><code>.claude/skills/dev-plan/compaction-anchors-spec.md</code></td><td>76</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
+<tr><td><code>.claude/skills/dev-plan/compaction-anchors-spec.md</code></td><td>65</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/implementation-guide.md</code></td><td>93</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/iterative-retrieval-spec.md</code></td><td>41</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/memory-bridge.md</code></td><td>72</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
@@ -473,14 +463,13 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/skills/dev-scan/python-memory-checks.md</code></td><td>63</td><td>"Use when adopting dev-wiki on an existing project, when _ARCHITECTURE.md is shallow, or after major structural changes. Scans code structure, modules, dependencies, entry points, and design patterns. Do NOT use for ad-hoc code questions — use Grep/Read directly."</td></tr>
 <tr><td><code>.claude/skills/dev-scan/python-scan-profile.md</code></td><td>75</td><td>"Use when adopting dev-wiki on an existing project, when _ARCHITECTURE.md is shallow, or after major structural changes. Scans code structure, modules, dependencies, entry points, and design patterns. Do NOT use for ad-hoc code questions — use Grep/Read directly."</td></tr>
 <tr><td><code>.claude/skills/dev-scan/refresh-flow.md</code></td><td>22</td><td>"Use when adopting dev-wiki on an existing project, when _ARCHITECTURE.md is shallow, or after major structural changes. Scans code structure, modules, dependencies, entry points, and design patterns. Do NOT use for ad-hoc code questions — use Grep/Read directly."</td></tr>
-<tr><td><code>.claude/skills/dev-wiki/SKILL.md</code></td><td>132</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
-<tr><td><code>.claude/skills/dev-wiki/active-knowledge-spec.md</code></td><td>65</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
+<tr><td><code>.claude/skills/dev-wiki/SKILL.md</code></td><td>131</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
 <tr><td><code>.claude/skills/dev-wiki/architecture-template.md</code></td><td>61</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
 <tr><td><code>.claude/skills/dev-wiki/claude-md-lifecycle.md</code></td><td>58</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
 <tr><td><code>.claude/skills/dev-wiki/decision-template.md</code></td><td>53</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
 <tr><td><code>.claude/skills/dev-wiki/journal-templates.md</code></td><td>65</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
 <tr><td><code>.claude/skills/dev-wiki/phase-template.md</code></td><td>69</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
-<tr><td><code>.claude/skills/dev-wiki/size-budgets.md</code></td><td>24</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
+<tr><td><code>.claude/skills/dev-wiki/size-budgets.md</code></td><td>23</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
 <tr><td><code>.claude/skills/dev-wiki/slugification.md</code></td><td>62</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
 <tr><td><code>.claude/skills/dev-wiki/state-template.md</code></td><td>79</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
 <tr><td><code>.claude/skills/dev-wiki/working-knowledge-spec.md</code></td><td>52</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
@@ -540,7 +529,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/skills/wiki-init/analyst-prompt.md</code></td><td>47</td><td>"Use when starting a wiki for a project that does not have one. Interviews the user and scaffolds the wiki directory with schema.md. Do NOT use if a wiki already exists in the project — use wiki-bootstrap to seed content into an existing wiki."</td></tr>
 <tr><td><code>.claude/skills/wiki-init/reviewer-prompt.md</code></td><td>61</td><td>"Use when starting a wiki for a project that does not have one. Interviews the user and scaffolds the wiki directory with schema.md. Do NOT use if a wiki already exists in the project — use wiki-bootstrap to seed content into an existing wiki."</td></tr>
 <tr><td><code>.claude/skills/wiki-init/writer-prompt.md</code></td><td>120</td><td>"Use when starting a wiki for a project that does not have one. Interviews the user and scaffolds the wiki directory with schema.md. Do NOT use if a wiki already exists in the project — use wiki-bootstrap to seed content into an existing wiki."</td></tr>
-<tr><td><code>.claude/skills/wiki-query/SKILL.md</code></td><td>241</td><td>"Use when the user asks a domain question that the wiki may already answer. Navigates articles and synthesizes an answer. Read-only. Do NOT use for structural wiki changes (use wiki-reorg) or health audits (use wiki-health)."</td></tr>
+<tr><td><code>.claude/skills/wiki-query/SKILL.md</code></td><td>219</td><td>"Use when the user asks a domain question that the wiki may already answer. Navigates articles and synthesizes an answer. Read-only. Do NOT use for structural wiki changes (use wiki-reorg) or health audits (use wiki-health)."</td></tr>
 <tr><td><code>.claude/skills/wiki-query/analyst-prompt.md</code></td><td>75</td><td>"Use when the user asks a domain question that the wiki may already answer. Navigates articles and synthesizes an answer. Read-only. Do NOT use for structural wiki changes (use wiki-reorg) or health audits (use wiki-health)."</td></tr>
 <tr><td><code>.claude/skills/wiki-query/reviewer-prompt.md</code></td><td>81</td><td>"Use when the user asks a domain question that the wiki may already answer. Navigates articles and synthesizes an answer. Read-only. Do NOT use for structural wiki changes (use wiki-reorg) or health audits (use wiki-health)."</td></tr>
 <tr><td><code>.claude/skills/wiki-query/writer-prompt.md</code></td><td>82</td><td>"Use when the user asks a domain question that the wiki may already answer. Navigates articles and synthesizes an answer. Read-only. Do NOT use for structural wiki changes (use wiki-reorg) or health audits (use wiki-health)."</td></tr>
@@ -623,17 +612,18 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>test_amplifier_emitter.sh</code></td><td>11 assertions, 89 lines</td></tr>
 <tr><td><code>test_assumption_ledger.sh</code></td><td>20 assertions, 178 lines</td></tr>
 <tr><td><code>test_audit_log.sh</code></td><td>2 assertions, 74 lines</td></tr>
+<tr><td><code>test_check_tests_were_run.sh</code></td><td>0 assertions, 59 lines</td></tr>
 <tr><td><code>test_cognitive_readiness.sh</code></td><td>2 assertions, 50 lines</td></tr>
 <tr><td><code>test_companions.sh</code></td><td>0 assertions, 139 lines</td></tr>
 <tr><td><code>test_enforce.sh</code></td><td>13 assertions, 172 lines</td></tr>
 <tr><td><code>test_eval_hermeticity.sh</code></td><td>0 assertions, 104 lines</td></tr>
-<tr><td><code>test_firing_log.sh</code></td><td>2 assertions, 172 lines</td></tr>
+<tr><td><code>test_firing_log.sh</code></td><td>2 assertions, 164 lines</td></tr>
 <tr><td><code>test_fixture_provenance.sh</code></td><td>0 assertions, 72 lines</td></tr>
-<tr><td><code>test_harden.sh</code></td><td>0 assertions, 355 lines</td></tr>
-<tr><td><code>test_hook_firing_coverage.sh</code></td><td>0 assertions, 168 lines</td></tr>
+<tr><td><code>test_harden.sh</code></td><td>0 assertions, 307 lines</td></tr>
+<tr><td><code>test_hook_firing_coverage.sh</code></td><td>0 assertions, 169 lines</td></tr>
 <tr><td><code>test_install.sh</code></td><td>66 assertions, 896 lines</td></tr>
 <tr><td><code>test_install_drift_dircurrency.sh</code></td><td>1 assertions, 140 lines</td></tr>
-<tr><td><code>test_lifecycle_hooks_firing.sh</code></td><td>0 assertions, 166 lines</td></tr>
+<tr><td><code>test_lifecycle_hooks_firing.sh</code></td><td>0 assertions, 151 lines</td></tr>
 <tr><td><code>test_long_cadence_hooks.sh</code></td><td>0 assertions, 159 lines</td></tr>
 <tr><td><code>test_manifest_freshness.sh</code></td><td>0 assertions, 49 lines</td></tr>
 <tr><td><code>test_memory.sh</code></td><td>11 assertions, 293 lines</td></tr>
@@ -647,7 +637,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>test_tooluse_hooks.sh</code></td><td>0 assertions, 164 lines</td></tr>
 <tr><td><code>test_working_knowledge_curation.sh</code></td><td>0 assertions, 343 lines</td></tr>
 </table>
-<p style="margin-top:0.5rem;font-size:0.85rem">Total: <strong>245 assertions</strong> across 26 test scripts. Run with <code>make test</code>.</p>
+<p style="margin-top:0.5rem;font-size:0.85rem">Total: <strong>245 assertions</strong> across 27 test scripts. Run with <code>make test</code>.</p>
 <p style="font-size:0.85rem">Edge cases covered: missing source files, unwritable directories, MCP registration (no file / partial / complete), venv fallback, idempotency (diff between runs).</p>
 </div>
 
@@ -713,7 +703,6 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
   Tool use
        │
        ├── Bash command ──→ block-dangerous-bash.sh (PreToolUse, jq)
-       │               └──→ detect-loop.sh (PostToolUse, pure bash)
        │
        ├── File write ───→ enforce-spec.sh ──────→ requires: jq (global)
        │              ├──→ auto-ruff-format.sh ──→ requires: ruff
@@ -849,7 +838,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 </pre>
 
 <footer>
-  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-06-10 23:38<br>
+  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-06-11 08:59<br>
   <code>scripts/generate-workflow.py</code> &mdash; run <code>make workflow</code> to regenerate
 </footer>
 

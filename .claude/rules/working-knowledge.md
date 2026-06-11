@@ -203,3 +203,5 @@
   source: [[decision:stage2-episode-execution-design]] | activated: 2026-06-10
 - [uses: 1] SUPERSEDES the active-knowledge layer rows of [[decision:memory-architecture-classification]]: the active-knowledge anchor (dev-plan 15f-bis/ter writer, wiki-query 8a promoter, debrief Step 9/19 readers, dev-check S10) was TRIMMED in Phase 88 as a REVERSIBLE trim-trial (amplifier-null class; revert = git revert of the ak-ride-along commit; trigger + 5-phase window in eval/trim-round/verdict-table.md). active-phase.md is UNTOUCHED and remains the compaction anchor.
   source: [[decision:trim-follow-on-round]] | activated: 2026-06-11
+- [uses: 1] SUPERSEDES detect-loop mentions in the Ph84/hook-registration entries: detect-loop.sh was CUT in Phase 88 (commit 75b48af, T4-approved; couldnt-fire upstream-PERMANENT — platform delivers no Bash failure events). 16 project-scope hooks remain; eval denominator 50. Re-trigger stands: platform adds failure events → git revert 75b48af.
+  source: [[decision:trim-follow-on-round]] | activated: 2026-06-11

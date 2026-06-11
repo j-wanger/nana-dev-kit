@@ -1,7 +1,7 @@
 ---
 name: dev-check
 description: "Validate dev wiki integrity and fix drift. Run when state feels stale, after long breaks, or when drift warnings appear. Do NOT use for knowledge wiki health (use wiki-lint) or for session startup (use AGENTS.md)."
-reads: [$WIKI/_CURRENT_STATE.md, $WIKI/_ARCHITECTURE.md, $WIKI/tasks.md, $WIKI/articles/phases/*, $WIKI/index.md, $ROOT/.claude/rules/active-phase.md, $ROOT/.claude/rules/active-knowledge.md, $ROOT/.claude/rules/working-knowledge.md]
+reads: [$WIKI/_CURRENT_STATE.md, $WIKI/_ARCHITECTURE.md, $WIKI/tasks.md, $WIKI/articles/phases/*, $WIKI/index.md, $ROOT/.claude/rules/active-phase.md, $ROOT/.claude/rules/working-knowledge.md]
 writes:
   # Tier 1 — auto-apply
   - index.md

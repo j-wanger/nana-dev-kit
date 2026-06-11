@@ -40,12 +40,12 @@
 <body>
 
 <h1>Nana Dev Kit</h1>
-<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-06-10 23:38</p>
+<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-06-11 08:59</p>
 
 <div class="stats">
-  <div class="stat"><div class="num">973</div><div class="label">Files</div></div>
-  <div class="stat"><div class="num">175,030</div><div class="label">Lines of Code</div></div>
-  <div class="stat"><div class="num">523</div><div class="label">Automated Tests</div></div>
+  <div class="stat"><div class="num">988</div><div class="label">Files</div></div>
+  <div class="stat"><div class="num">175,770</div><div class="label">Lines of Code</div></div>
+  <div class="stat"><div class="num">521</div><div class="label">Automated Tests</div></div>
   <div class="stat"><div class="num">7</div><div class="label">Harness Layers</div></div>
   <div class="stat"><div class="num">v0.5.0</div><div class="label">Latest Tag</div></div>
 </div>
@@ -57,8 +57,8 @@
   <tr><td><strong>1. Instructions</strong></td><td>Agent-surface config synced to CLAUDE.md, Copilot, Cursor, Gemini</td><td><code>AGENTS.md, scripts/sync-rules.sh</code></td></tr>
   <tr><td><strong>2. Identity</strong></td><td>Development personality, technical posture, file lifecycle routing</td><td><code>.claude/rules/nana-soul.md, nana-personal.md, file-lifecycle.md</code></td></tr>
   <tr><td><strong>3. Hooks & Skills</strong></td><td>24 Claude Code skills + 12 lifecycle hooks across 5 event types</td><td><code>.claude/hooks/, .claude/skills/, .claude/settings.json</code></td></tr>
-  <tr><td><strong>4. Enforcement</strong></td><td>Spec gating (PreToolUse), deliverable checks (Stop), loop detection (PostToolUse)</td><td><code>enforce-spec.sh, enforce-loop.sh, detect-loop.sh — installed globally by install.sh</code></td></tr>
-  <tr><td><strong>5. Eval</strong></td><td>43-scenario binary-scored eval harness across hooks, skills, lifecycle, context</td><td><code>eval/corpus/, scripts/eval-runner.sh</code></td></tr>
+  <tr><td><strong>4. Enforcement</strong></td><td>Spec gating (PreToolUse), deliverable checks (Stop), loop detection (PostToolUse)</td><td><code>enforce-spec.sh, enforce-loop.sh — installed globally by install.sh</code></td></tr>
+  <tr><td><strong>5. Eval</strong></td><td>50-scenario binary-scored eval harness across hooks, skills, lifecycle, context</td><td><code>eval/corpus/, scripts/eval-runner.sh</code></td></tr>
   <tr><td><strong>6. Pre-commit</strong></td><td>Commit-time guardrails: ruff, mypy, gitleaks, sync-rules</td><td><code>.pre-commit-config.yaml</code></td></tr>
   <tr><td><strong>7. CI</strong></td><td>GitHub Actions: lint, typecheck, test, security audit</td><td><code>.github/workflows/ci.yml</code></td></tr>
 </table>
@@ -86,7 +86,7 @@
 </div>
 <div class="workflow">
   <strong>Enforcement</strong> <span class="trigger">&mdash; Spec + deliverable gating</span>
-  <p>enforce-spec.sh blocks writes without approved spec (provenance marker or exit criteria). enforce-loop.sh checks deliverables at stop. detect-loop.sh warns on repeated failures. Events logged to .dev-wiki/enforcement.log.</p>
+  <p>enforce-spec.sh blocks writes without approved spec (provenance marker or exit criteria). enforce-loop.sh checks deliverables at stop. Events logged to .dev-wiki/enforcement.log.</p>
 </div>
 <div class="workflow">
   <strong>Sync</strong> <span class="trigger">&mdash; make sync-rules</span>
@@ -94,7 +94,7 @@
 </div>
 <div class="workflow">
   <strong>Test + Eval</strong> <span class="trigger">&mdash; make test && make eval</span>
-  <p>175+ bash tests across 6 scripts (install, sync, templates, enforce, harden). 43-scenario eval harness with binary scoring across 4 categories.</p>
+  <p>175+ bash tests across 6 scripts (install, sync, templates, enforce, harden). 50-scenario eval harness with binary scoring across 4 categories.</p>
 </div>
 <h2>Memory System</h2>
 <p>Persistent cross-session memory via MCP server. Installed globally by <code>install.sh</code> in an isolated venv.</p>
@@ -134,16 +134,16 @@
 
 <h2>File Inventory</h2>
 <div class="category">
-  <h3>Core Scripts <span class="badge badge-green">12 files, 3,427 lines</span></h3>
+  <h3>Core Scripts <span class="badge badge-green">12 files, 3,422 lines</span></h3>
   <ul class="file-list">
-    <li><span>Makefile</span><span class='lines'>56</span></li>
+    <li><span>Makefile</span><span class='lines'>57</span></li>
     <li><span>install.sh</span><span class='lines'>360</span></li>
     <li><span>scripts/check-assumption-ledger.sh</span><span class='lines'>235</span></li>
     <li><span>scripts/check-install-drift.sh</span><span class='lines'>189</span></li>
     <li><span>scripts/eval-runner.sh</span><span class='lines'>345</span></li>
     <li><span>scripts/generate-delivery-report.py</span><span class='lines'>276</span></li>
     <li><span>scripts/generate-report.py</span><span class='lines'>328</span></li>
-    <li><span>scripts/generate-workflow.py</span><span class='lines'>860</span></li>
+    <li><span>scripts/generate-workflow.py</span><span class='lines'>854</span></li>
     <li><span>scripts/harness-audit.sh</span><span class='lines'>444</span></li>
     <li><span>scripts/register-settings.py</span><span class='lines'>167</span></li>
     <li><span>scripts/signal-richness-probe.sh</span><span class='lines'>96</span></li>
@@ -151,7 +151,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Test Suite <span class="badge badge-green">31 files, 5,395 lines</span></h3>
+  <h3>Test Suite <span class="badge badge-green">32 files, 5,384 lines</span></h3>
   <ul class="file-list">
     <li><span>tests/fixtures/real-events/detect-loop-success-event.json</span><span class='lines'>1</span></li>
     <li><span>tests/fixtures/real-events/detect-loop-success-event.json.provenance</span><span class='lines'>5</span></li>
@@ -161,17 +161,18 @@
     <li><span>tests/test_amplifier_emitter.sh</span><span class='lines'>89</span></li>
     <li><span>tests/test_assumption_ledger.sh</span><span class='lines'>178</span></li>
     <li><span>tests/test_audit_log.sh</span><span class='lines'>74</span></li>
+    <li><span>tests/test_check_tests_were_run.sh</span><span class='lines'>59</span></li>
     <li><span>tests/test_cognitive_readiness.sh</span><span class='lines'>50</span></li>
     <li><span>tests/test_companions.sh</span><span class='lines'>139</span></li>
     <li><span>tests/test_enforce.sh</span><span class='lines'>172</span></li>
     <li><span>tests/test_eval_hermeticity.sh</span><span class='lines'>104</span></li>
-    <li><span>tests/test_firing_log.sh</span><span class='lines'>172</span></li>
+    <li><span>tests/test_firing_log.sh</span><span class='lines'>164</span></li>
     <li><span>tests/test_fixture_provenance.sh</span><span class='lines'>72</span></li>
-    <li><span>tests/test_harden.sh</span><span class='lines'>355</span></li>
-    <li><span>tests/test_hook_firing_coverage.sh</span><span class='lines'>168</span></li>
+    <li><span>tests/test_harden.sh</span><span class='lines'>307</span></li>
+    <li><span>tests/test_hook_firing_coverage.sh</span><span class='lines'>169</span></li>
     <li><span>tests/test_install.sh</span><span class='lines'>896</span></li>
     <li><span>tests/test_install_drift_dircurrency.sh</span><span class='lines'>140</span></li>
-    <li><span>tests/test_lifecycle_hooks_firing.sh</span><span class='lines'>166</span></li>
+    <li><span>tests/test_lifecycle_hooks_firing.sh</span><span class='lines'>151</span></li>
     <li><span>tests/test_long_cadence_hooks.sh</span><span class='lines'>159</span></li>
     <li><span>tests/test_manifest_freshness.sh</span><span class='lines'>49</span></li>
     <li><span>tests/test_memory.sh</span><span class='lines'>293</span></li>
@@ -223,14 +224,13 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 3: Hooks <span class="badge badge-green">22 files, 1,633 lines</span></h3>
+  <h3>Templates — Layer 3: Hooks <span class="badge badge-green">21 files, 1,557 lines</span></h3>
   <ul class="file-list">
     <li><span>templates/.claude/hooks/audit-log.sh</span><span class='lines'>26</span></li>
     <li><span>templates/.claude/hooks/auto-ruff-format.sh</span><span class='lines'>18</span></li>
     <li><span>templates/.claude/hooks/block-dangerous-bash.sh</span><span class='lines'>38</span></li>
-    <li><span>templates/.claude/hooks/check-tests-were-run.sh</span><span class='lines'>58</span></li>
+    <li><span>templates/.claude/hooks/check-tests-were-run.sh</span><span class='lines'>66</span></li>
     <li><span>templates/.claude/hooks/context-size-check.sh</span><span class='lines'>35</span></li>
-    <li><span>templates/.claude/hooks/detect-loop.sh</span><span class='lines'>75</span></li>
     <li><span>templates/.claude/hooks/dev-wiki-scope-check.sh</span><span class='lines'>77</span></li>
     <li><span>templates/.claude/hooks/enforce-loop.sh</span><span class='lines'>115</span></li>
     <li><span>templates/.claude/hooks/enforce-memory.sh</span><span class='lines'>72</span></li>
@@ -246,21 +246,20 @@
     <li><span>templates/.claude/hooks/session-start.sh</span><span class='lines'>117</span></li>
     <li><span>templates/.claude/hooks/session-stop.sh</span><span class='lines'>29</span></li>
     <li><span>templates/.claude/hooks/stale-queue.sh</span><span class='lines'>54</span></li>
-    <li><span>templates/.claude/settings.json</span><span class='lines'>162</span></li>
+    <li><span>templates/.claude/settings.json</span><span class='lines'>153</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 3: Skills <span class="badge badge-green">120 files, 11,355 lines</span></h3>
+  <h3>Templates — Layer 3: Skills <span class="badge badge-green">118 files, 11,174 lines</span></h3>
   <ul class="file-list">
-    <li><span>templates/.claude/skills/MANIFEST</span><span class='lines'>146</span></li>
-    <li><span>templates/.claude/skills/dev-check/SKILL.md</span><span class='lines'>150</span></li>
-    <li><span>templates/.claude/skills/dev-debrief/SKILL.md</span><span class='lines'>313</span></li>
-    <li><span>templates/.claude/skills/dev-debrief/active-knowledge-transition.md</span><span class='lines'>24</span></li>
+    <li><span>templates/.claude/skills/MANIFEST</span><span class='lines'>144</span></li>
+    <li><span>templates/.claude/skills/dev-check/SKILL.md</span><span class='lines'>147</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/SKILL.md</span><span class='lines'>297</span></li>
     <li><span>templates/.claude/skills/dev-debrief/architecture-staleness-check.md</span><span class='lines'>24</span></li>
     <li><span>templates/.claude/skills/dev-debrief/claude-md-refresh.md</span><span class='lines'>38</span></li>
     <li><span>templates/.claude/skills/dev-debrief/debrief-finalization.md</span><span class='lines'>57</span></li>
     <li><span>templates/.claude/skills/dev-debrief/delivery-flow.md</span><span class='lines'>53</span></li>
-    <li><span>templates/.claude/skills/dev-debrief/executor-prompt.md</span><span class='lines'>141</span></li>
+    <li><span>templates/.claude/skills/dev-debrief/executor-prompt.md</span><span class='lines'>137</span></li>
     <li><span>templates/.claude/skills/dev-debrief/memory-harvest.md</span><span class='lines'>68</span></li>
     <li><span>templates/.claude/skills/dev-debrief/quick-debrief-flow.md</span><span class='lines'>31</span></li>
     <li><span>templates/.claude/skills/dev-debrief/retro-check.md</span><span class='lines'>46</span></li>
@@ -269,14 +268,14 @@
     <li><span>templates/.claude/skills/dev-init/SKILL.md</span><span class='lines'>214</span></li>
     <li><span>templates/.claude/skills/dev-init/init-scaffolding.md</span><span class='lines'>54</span></li>
     <li><span>templates/.claude/skills/dev-init/scaffold-claude-md.md</span><span class='lines'>54</span></li>
-    <li><span>templates/.claude/skills/dev-init/templates/AGENTS.md</span><span class='lines'>55</span></li>
-    <li><span>templates/.claude/skills/dev-init/templates/project-CLAUDE.md</span><span class='lines'>42</span></li>
-    <li><span>templates/.claude/skills/dev-plan/SKILL.md</span><span class='lines'>312</span></li>
+    <li><span>templates/.claude/skills/dev-init/templates/AGENTS.md</span><span class='lines'>54</span></li>
+    <li><span>templates/.claude/skills/dev-init/templates/project-CLAUDE.md</span><span class='lines'>41</span></li>
+    <li><span>templates/.claude/skills/dev-plan/SKILL.md</span><span class='lines'>298</span></li>
     <li><span>templates/.claude/skills/dev-plan/approach-reviewer-prompt.md</span><span class='lines'>68</span></li>
-    <li><span>templates/.claude/skills/dev-plan/artifact-writer-prompt.md</span><span class='lines'>108</span></li>
+    <li><span>templates/.claude/skills/dev-plan/artifact-writer-prompt.md</span><span class='lines'>92</span></li>
     <li><span>templates/.claude/skills/dev-plan/assumption-gate-example.md</span><span class='lines'>41</span></li>
     <li><span>templates/.claude/skills/dev-plan/assumption-gate.md</span><span class='lines'>74</span></li>
-    <li><span>templates/.claude/skills/dev-plan/compaction-anchors-spec.md</span><span class='lines'>76</span></li>
+    <li><span>templates/.claude/skills/dev-plan/compaction-anchors-spec.md</span><span class='lines'>65</span></li>
     <li><span>templates/.claude/skills/dev-plan/implementation-guide.md</span><span class='lines'>93</span></li>
     <li><span>templates/.claude/skills/dev-plan/iterative-retrieval-spec.md</span><span class='lines'>41</span></li>
     <li><span>templates/.claude/skills/dev-plan/memory-bridge.md</span><span class='lines'>72</span></li>
@@ -296,14 +295,13 @@
     <li><span>templates/.claude/skills/dev-scan/python-memory-checks.md</span><span class='lines'>63</span></li>
     <li><span>templates/.claude/skills/dev-scan/python-scan-profile.md</span><span class='lines'>75</span></li>
     <li><span>templates/.claude/skills/dev-scan/refresh-flow.md</span><span class='lines'>22</span></li>
-    <li><span>templates/.claude/skills/dev-wiki/SKILL.md</span><span class='lines'>132</span></li>
-    <li><span>templates/.claude/skills/dev-wiki/active-knowledge-spec.md</span><span class='lines'>65</span></li>
+    <li><span>templates/.claude/skills/dev-wiki/SKILL.md</span><span class='lines'>131</span></li>
     <li><span>templates/.claude/skills/dev-wiki/architecture-template.md</span><span class='lines'>61</span></li>
     <li><span>templates/.claude/skills/dev-wiki/claude-md-lifecycle.md</span><span class='lines'>58</span></li>
     <li><span>templates/.claude/skills/dev-wiki/decision-template.md</span><span class='lines'>53</span></li>
     <li><span>templates/.claude/skills/dev-wiki/journal-templates.md</span><span class='lines'>65</span></li>
     <li><span>templates/.claude/skills/dev-wiki/phase-template.md</span><span class='lines'>69</span></li>
-    <li><span>templates/.claude/skills/dev-wiki/size-budgets.md</span><span class='lines'>24</span></li>
+    <li><span>templates/.claude/skills/dev-wiki/size-budgets.md</span><span class='lines'>23</span></li>
     <li><span>templates/.claude/skills/dev-wiki/slugification.md</span><span class='lines'>62</span></li>
     <li><span>templates/.claude/skills/dev-wiki/state-template.md</span><span class='lines'>79</span></li>
     <li><span>templates/.claude/skills/dev-wiki/working-knowledge-spec.md</span><span class='lines'>52</span></li>
@@ -363,7 +361,7 @@
     <li><span>templates/.claude/skills/wiki-init/analyst-prompt.md</span><span class='lines'>47</span></li>
     <li><span>templates/.claude/skills/wiki-init/reviewer-prompt.md</span><span class='lines'>61</span></li>
     <li><span>templates/.claude/skills/wiki-init/writer-prompt.md</span><span class='lines'>120</span></li>
-    <li><span>templates/.claude/skills/wiki-query/SKILL.md</span><span class='lines'>241</span></li>
+    <li><span>templates/.claude/skills/wiki-query/SKILL.md</span><span class='lines'>219</span></li>
     <li><span>templates/.claude/skills/wiki-query/analyst-prompt.md</span><span class='lines'>75</span></li>
     <li><span>templates/.claude/skills/wiki-query/reviewer-prompt.md</span><span class='lines'>81</span></li>
     <li><span>templates/.claude/skills/wiki-query/writer-prompt.md</span><span class='lines'>82</span></li>
@@ -413,9 +411,9 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Eval Harness <span class="badge badge-green">625 files, 136,652 lines</span></h3>
+  <h3>Eval Harness <span class="badge badge-green">641 files, 137,335 lines</span></h3>
   <ul class="file-list">
-    <li><span>eval/README.md</span><span class='lines'>86</span></li>
+    <li><span>eval/README.md</span><span class='lines'>85</span></li>
     <li><span>eval/amplifier/SCHEMA-NOTES.md</span><span class='lines'>110</span></li>
     <li><span>eval/amplifier/VALID-MEASUREMENT.md</span><span class='lines'>87</span></li>
     <li><span>eval/amplifier/anchor-screen/check.sh</span><span class='lines'>162</span></li>
@@ -762,9 +760,9 @@
     <li><span>eval/ceremony-lift/stage2/arm-records/tui-capture-arm-b.log</span><span class='lines'>59092</span></li>
     <li><span>eval/ceremony-lift/stage2/check-claim-ceiling.sh</span><span class='lines'>39</span></li>
     <li><span>eval/ceremony-lift/stage2/check-cost-table.sh</span><span class='lines'>18</span></li>
-    <li><span>eval/ceremony-lift/stage2/check-instrument.sh</span><span class='lines'>71</span></li>
+    <li><span>eval/ceremony-lift/stage2/check-instrument.sh</span><span class='lines'>98</span></li>
     <li><span>eval/ceremony-lift/stage2/check-protocol.sh</span><span class='lines'>70</span></li>
-    <li><span>eval/ceremony-lift/stage2/check-ship-table.sh</span><span class='lines'>36</span></li>
+    <li><span>eval/ceremony-lift/stage2/check-ship-table.sh</span><span class='lines'>40</span></li>
     <li><span>eval/ceremony-lift/stage2/check-substrate-intact.sh</span><span class='lines'>34</span></li>
     <li><span>eval/ceremony-lift/stage2/controls/arm-bad/arm-a.md</span><span class='lines'>7</span></li>
     <li><span>eval/ceremony-lift/stage2/controls/arm-bad/arm-b.md</span><span class='lines'>7</span></li>
@@ -795,7 +793,7 @@
     <li><span>eval/ceremony-lift/stage2/execution-protocol.md</span><span class='lines'>267</span></li>
     <li><span>eval/ceremony-lift/stage2/instrument-record.md</span><span class='lines'>63</span></li>
     <li><span>eval/ceremony-lift/stage2/results.md</span><span class='lines'>41</span></li>
-    <li><span>eval/ceremony-lift/stage2/run-exit-criteria.sh</span><span class='lines'>59</span></li>
+    <li><span>eval/ceremony-lift/stage2/run-exit-criteria.sh</span><span class='lines'>77</span></li>
     <li><span>eval/ceremony-lift/stage2/ship-table.md</span><span class='lines'>50</span></li>
     <li><span>eval/ceremony-lift/stage2/spike/assert-spike.sh</span><span class='lines'>39</span></li>
     <li><span>eval/ceremony-lift/stage2/spike/drive-spike.sh</span><span class='lines'>37</span></li>
@@ -842,12 +840,6 @@
     <li><span>eval/corpus/hook-check-tests-no-py/scenario.json</span><span class='lines'>11</span></li>
     <li><span>eval/corpus/hook-check-tests-py-no-pytest/scenario.json</span><span class='lines'>12</span></li>
     <li><span>eval/corpus/hook-context-size-jq/scenario.json</span><span class='lines'>13</span></li>
-    <li><span>eval/corpus/hook-detect-loop-2-no-warn/enforce-marker</span><span class='lines'>0</span></li>
-    <li><span>eval/corpus/hook-detect-loop-2-no-warn/loop-state-1.txt</span><span class='lines'>1</span></li>
-    <li><span>eval/corpus/hook-detect-loop-2-no-warn/scenario.json</span><span class='lines'>19</span></li>
-    <li><span>eval/corpus/hook-detect-loop-3-failures/enforce-marker</span><span class='lines'>0</span></li>
-    <li><span>eval/corpus/hook-detect-loop-3-failures/loop-state-2.txt</span><span class='lines'>2</span></li>
-    <li><span>eval/corpus/hook-detect-loop-3-failures/scenario.json</span><span class='lines'>19</span></li>
     <li><span>eval/corpus/hook-enforce-loop-fail/active-phase.md</span><span class='lines'>2</span></li>
     <li><span>eval/corpus/hook-enforce-loop-fail/enforce-marker</span><span class='lines'>0</span></li>
     <li><span>eval/corpus/hook-enforce-loop-fail/keep</span><span class='lines'>0</span></li>
@@ -1036,6 +1028,28 @@
     <li><span>eval/schemas/pre-tool-use.json</span><span class='lines'>26</span></li>
     <li><span>eval/schemas/session-start.json</span><span class='lines'>7</span></li>
     <li><span>eval/schemas/stop.json</span><span class='lines'>12</span></li>
+    <li><span>eval/trim-round/check-ghost-registrations.sh</span><span class='lines'>57</span></li>
+    <li><span>eval/trim-round/check-stage2-allowlist.sh</span><span class='lines'>31</span></li>
+    <li><span>eval/trim-round/check-verdict-table.sh</span><span class='lines'>57</span></li>
+    <li><span>eval/trim-round/checker-fixtures/bad-row-missing-sha.md</span><span class='lines'>6</span></li>
+    <li><span>eval/trim-round/checker-fixtures/bad-row-missing-trigger.md</span><span class='lines'>7</span></li>
+    <li><span>eval/trim-round/checker-fixtures/bad-row-wrong-enum.md</span><span class='lines'>7</span></li>
+    <li><span>eval/trim-round/checker-fixtures/clean-table.md</span><span class='lines'>9</span></li>
+    <li><span>eval/trim-round/evidence/a2-severability-spike.log</span><span class='lines'>7</span></li>
+    <li><span>eval/trim-round/evidence/active-knowledge-readers.md</span><span class='lines'>36</span></li>
+    <li><span>eval/trim-round/evidence/enforce-memory-snapshot.md</span><span class='lines'>61</span></li>
+    <li><span>eval/trim-round/evidence/filter-enforcement-log.sh</span><span class='lines'>34</span></li>
+    <li><span>eval/trim-round/evidence/test-provenance-filter.sh</span><span class='lines'>50</span></li>
+    <li><span>eval/trim-round/rehearsals/ak-ride-along.log</span><span class='lines'>9</span></li>
+    <li><span>eval/trim-round/rehearsals/c2-through-head.log</span><span class='lines'>6</span></li>
+    <li><span>eval/trim-round/rehearsals/check-tests-were-run.log</span><span class='lines'>6</span></li>
+    <li><span>eval/trim-round/rehearsals/detect-loop.log</span><span class='lines'>15</span></li>
+    <li><span>eval/trim-round/rehearsals/instrument-cmp.log</span><span class='lines'>6</span></li>
+    <li><span>eval/trim-round/rehearsals/ship-table-dnf.log</span><span class='lines'>6</span></li>
+    <li><span>eval/trim-round/rehearsals/wk-seeding.log</span><span class='lines'>11</span></li>
+    <li><span>eval/trim-round/run-exit-criteria.sh</span><span class='lines'>63</span></li>
+    <li><span>eval/trim-round/run-seeded-controls.sh</span><span class='lines'>136</span></li>
+    <li><span>eval/trim-round/verdict-table.md</span><span class='lines'>56</span></li>
     <li><span>eval/validators/validate-decision-article.sh</span><span class='lines'>29</span></li>
     <li><span>eval/validators/validate-phase-article.sh</span><span class='lines'>30</span></li>
     <li><span>eval/validators/validate-prompt.sh</span><span class='lines'>30</span></li>
@@ -1043,7 +1057,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Specs <span class="badge badge-green">75 files, 6,960 lines</span></h3>
+  <h3>Specs <span class="badge badge-green">76 files, 7,251 lines</span></h3>
   <ul class="file-list">
     <li><span>specs/cut-heuristic-machinery-self-dialogue.md</span><span class='lines'>79</span></li>
     <li><span>specs/domain-research-in-dev-plan.md</span><span class='lines'>81</span></li>
@@ -1119,23 +1133,24 @@
     <li><span>specs/phase-85-install-gap-dogfood.md</span><span class='lines'>91</span></li>
     <li><span>specs/phase-86-ceremony-lift-measurement.md</span><span class='lines'>174</span></li>
     <li><span>specs/phase-87-stage2-episode-contrast.md</span><span class='lines'>247</span></li>
+    <li><span>specs/phase-88-trim-follow-on.md</span><span class='lines'>291</span></li>
     <li><span>specs/ts-init-design.md</span><span class='lines'>252</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Other <span class="badge badge-green">54 files, 6,109 lines</span></h3>
+  <h3>Other <span class="badge badge-green">54 files, 6,148 lines</span></h3>
   <ul class="file-list">
-    <li><span>.claude/rules/active-knowledge.md</span><span class='lines'>36</span></li>
-    <li><span>.claude/rules/active-phase.md</span><span class='lines'>18</span></li>
-    <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>205</span></li>
+    <li><span>.claude/rules/active-knowledge.md</span><span class='lines'>0</span></li>
+    <li><span>.claude/rules/active-phase.md</span><span class='lines'>20</span></li>
+    <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>207</span></li>
     <li><span>benchmark/README.md</span><span class='lines'>108</span></li>
     <li><span>benchmark/longmemeval.py</span><span class='lines'>302</span></li>
-    <li><span>docs/delivery-report.html</span><span class='lines'>97</span></li>
+    <li><span>docs/delivery-report.html</span><span class='lines'>94</span></li>
     <li><span>docs/memory-knowledge-architecture.md</span><span class='lines'>611</span></li>
     <li><span>docs/nanaclaw-architecture.md</span><span class='lines'>722</span></li>
-    <li><span>docs/report.html</span><span class='lines'>1145</span></li>
-    <li><span>docs/workflow.html</span><span class='lines'>857</span></li>
-    <li><span>modules.json</span><span class='lines'>74</span></li>
+    <li><span>docs/report.html</span><span class='lines'>1231</span></li>
+    <li><span>docs/workflow.html</span><span class='lines'>846</span></li>
+    <li><span>modules.json</span><span class='lines'>73</span></li>
     <li><span>patches/nanaclaw-sanitize-fts.patch</span><span class='lines'>23</span></li>
     <li><span>quarantine/README.md</span><span class='lines'>6</span></li>
     <li><span>quarantine/wiki-consolidate/SKILL.md</span><span class='lines'>123</span></li>
@@ -1202,11 +1217,11 @@
 </table>
 
 <h2>Recent Git History</h2>
-<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">c4bd9ff Phase 87 review-gate revise round (8/10): both HIGHs closed against the already-pinned rules — tie-break-2 corrected to the PINNED plain shortstat (orchestrator re-executed + cmdlog-logged: arm-b 121+/1- vs arm-a 219+/61-, same direction as the disclosed unpinned code-scoped variant; immaterial to disposition), precision-2 coverage invocations appended to both cmdlogs (94.51/94.58 re-derivable from record alone); MEDIUM record fixes: wall-clock dual-basis stated, cost-table editorializing line replaced with the evidence rows, phase-article control-rule paraphrase aligned to pinned NEITHER-arm semantics. Checker-tightening suggestions (c2 single-touch-through-HEAD, instrument cmp-not-grep, ship-table DNF-grep hole) routed to follow-on — apparatus edits post-unblinding are barred by the amendment rule. All checkers + 8/8 runner re-PASS
-8307a15 Phase 87 T8: close-out — ship executed (arm A's 4 tests -> edge-screener a6effcb, 394 passed / 94.58% / mypy+ruff clean; arm B ship-blocked; control registration shipped with neither), substrate record SHIP-AUTHORIZED + embargo EMPTY at both arm starts and close, kit-path marker restored (amendment 001 closed), ceiling sweep clean on summary artifacts (evidence records violation-free; sentence required of summaries only), run-exit-criteria.sh 8/8 PASS RUN-STATUS=LIVE; this phase's sessions provenance-excluded from future ceremony-measurement corpora
-a7bbbde Phase 87 T7: HARD checkpoint — maintainer disposition recorded: spec-generation=undecidable (Phase-86 ambiguous verdict stands; nothing minted, no trim-trial confirmed); ship decision: arm A's Phase-10 work ships via edge-screener's own delivery process, arm B ship-blocked, control registration ships with neither. check-claim-ceiling --verdict-block PASS (one planning-prose ceiling paraphrase normalized to the canonical sentence — the checker's exact-line removal is strict by design)
-78493c8 Phase 87 T6: evidence tables committed — both arms PASS the frozen triple (B: 393/94.51 FINISHED 996s; A: 394/94.58 DNF 2106s); blinded tie-break 0-0 reviewer defects, changed-lines favors B; BUT B is SHIP-BLOCKED by the validity sweep: its modified golden-master fixture is load-bearing (restore-baseline -> golden-master drift failure, orchestrator-reproduced both directions, outside the blinded reviewers' binary-excluded view); A uniquely improved reader.py rows (6->2 missing artifacts) with zero validity violations. Cost: A = 2.1x B wall-clock; tokens NOT-EXTRACTABLE (A3 fallback). results.md embeds the claim ceiling verbatim; check-ship-table + check-cost-table + check-claim-ceiling all PASS
-2c0a2b2 Phase 87 T5: arms executed — arm B (minimal) FINISHED 996s wall / 0 continuations / ARM_DONE written; arm A (full ceremony) DNF at 2,076s (CONT-BUDGET-EXHAUSTED, 15 gates answered, no ARM_DONE — recorded as-is per amendment-002 semantics, no re-run per A5). check-instrument.sh FULL 29/29 PASS: canary CLEAN (amendment-003 basis: headless same-environment probe matcher-negative + complete pty capture greps 0 DRQ hits), positive control BOTH arms SURFACED (exactly-once registration; ceremony arm satisfied the frozen requirement; both-surfaced = non-discriminating caveat), task-statement byte-identity PASS, manifests ALL-CLASSIFIED, RUN-STATUS LIVE. Deviation logged for T7: canary probe unsolicitedly leaked arm-B gate summary to orchestrator pre-arm-A (steering surface nil — all arm-A inputs byte-pinned before arm B ran)</pre>
+<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">6f6b9a3 Phase 88 T5/T6 close-out: exit-criteria runner ALL-PASS 10/10 (eval/trim-round/run-exit-criteria.sh; seeded-failure + skip-slow controls verified — partial runs cannot print ALL-PASS); verdict table rows flipped to executed with per-row rehearsal logs (revert SHAs: checkers 6677157, detect-loop 75b48af, harden b8bd416, ak-ride-along d43950f, wk-seeding df3e623); Blockers filings: 2 trim-trials (re-trigger = Phase-93 debrief disposition; ak/wk revert-coupling recorded), A4/A6 memory-layer + bridge deferral, enforce-memory resume-artifact harden candidate; Phase-84 detect-loop filing updated RESOLVED-BY-CUT with re-trigger standing; baseline pin: these commits = the new harness baseline for future ceremony measurement, eval denominator 52→50 explained; tasks 6/6 [x]
+df3e623 Phase 88 trim-trial: wk-seeding (verdict-table row approved at T4 checkpoint) — debrief-side working-knowledge seeding removed as a REVERSIBLE trim-trial (Ph86 debrief-capture=trim: ~10k always-loaded tokens/session, consumption evidence capped for the re-presentation class). EXECUTION FINDING recorded: the debrief's actual WK writer was the Step-19 active-knowledge carry-forward, already removed at d43950f (the planning-time 'Step 15g WK-seeding block' was a loader misattribution — no such block exists); this commit removes the residual surfaces: the stale writes-frontmatter claim + the working-knowledge-spec ownership line (wiki-query is now the sole writer). wk-prune curator UNTOUCHED; existing entries decay in place (decaying-static cache); superseded-entry exception retained for trim-method compliance. Trigger: re-deriving a previously-pinned decision ≥2 times in the window; window through Phase 93
+d43950f Phase 88 trim-trial: ak-ride-along (verdict-table row approved at T4 checkpoint) — the active-knowledge re-presentation machinery removed as a REVERSIBLE trim-trial (amplifier-null class, 5 nulls Ph70/71/77/78/80; Ph86 dev-plan-orchestration=trim verdict). Removal set: dev-plan 15f-bis+15f-ter writer steps + artifact-writer §7-8 + writes-frontmatter; wiki-query Step 8a SECOND WRITER (T1 finding — would resurrect the file) tombstoned; debrief Step 9 activation-quality + Step 19 transition tombstoned (numbering stable for cross-refs) + executor §12; companions DELETED: active-knowledge-transition.md, active-knowledge-spec.md; doc/spec cleanup: dev-check S10, size-budgets row, compaction-anchors-spec §2 + rows, dev-wiki SKILL lines, dev-init templates (AGENTS renumbered). MANIFEST regenerated — diff ⊆ removal set verified. active-phase.md anchor UNTOUCHED. Revert trigger: a recovery/planning decision demonstrably wrong for lack of phase-pinned knowledge; window through Phase 93; WK superseded entry added (never rewrites). make test ALL green (27 scripts incl. companions bidirectional)
+b8bd416 Phase 88 harden: check-tests-were-run (verdict-table row approved at T4 checkpoint) — HEU-007 dual-condition: the .py condition keys on WRITE-CLASS tools (Write/Edit/MultiEdit/NotebookEdit) in the transcript path, killing the Ph85 dogfood false-positive class (Read of .py during read-only analysis tripped 3 Stop cycles + a pointless full-suite re-run) without raising false negatives (Write/Edit blocks retained, pytest condition unchanged, legacy .tool_uses fixture path untouched — real events never use it). Paired smoke tests/test_check_tests_were_run.sh wired into make test (RED verified against the pre-harden hook: Read case blocked; 4/4 post-harden), 27 scripts (README synced)
+75b48af Phase 88 cut: detect-loop (verdict-table row approved at T4 checkpoint) — couldnt-fire upstream-PERMANENT: platform delivers no exit-code field and no event for failing Bash (Ph84 filing), the consecutive-failure counter is structurally unimplementable hook-side; cut argued on impossibility, never demand; re-trigger = platform adds failure events. Removal set executed: hook script + modules.json entry + make template regen (diff = the 9-line registration block only); session-start.sh:110 SPLIT (.loop-state clear removed, .memory-consulted clear kept — enforce-loop verified non-consumer); 2 eval scenarios (denominator 52→50 explained, README counts synced); test surfaces updated (firing-log advisory test + 6→5 uniformity, lifecycle detect-loop branch, harden loop tests, install count 17→16, coverage floor 21→20); detect-loop-success-event fixture pair RETAINED as historical evidence backing the frozen Ph84 capture-diagnosis (provenance chain intact). Survivor smokes: enforce-memory block=2/allow=0, session-start clean + marker-clear preserved; make test ALL green; make eval 50/50</pre>
 
 <footer>
   Generated by <code>scripts/generate-report.py</code> &mdash; run <code>make report</code> to regenerate
