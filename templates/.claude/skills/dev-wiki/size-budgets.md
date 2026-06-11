@@ -19,6 +19,5 @@ Shared reference for all dev-wiki skills that write articles and living document
 | File article | 30-60 lines | 80 lines | Drop Key Logic, cap Exports to 10, cap Dependents to 10 |
 | Module article | 20-40 lines | 60 lines | Cap Files to 15 with "...and N more", trim Dependencies |
 | `active-phase.md` | 10-15 lines | 20 lines | Trim to essential constraints only |
-| `active-knowledge.md` | 30 lines | 40 lines | Re-distill if >30, hard-fail if >40 |
 | `working-knowledge.md` | 100 entries | 210 lines | LRU eviction at entry cap, 7-day decay |
 | `schema.md` | 30-50 lines | 80 lines | Condense conventions |

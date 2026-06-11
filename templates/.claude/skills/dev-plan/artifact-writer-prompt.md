@@ -20,8 +20,6 @@ The orchestrator provides:
 - **APPROACH**: The approved approach description
 - **DECISIONS**: List of decisions made during planning (title, rationale, alternatives considered)
 - **TASKS**: The approved task list (each with description, scope, success criterion, and optionally TDD cycle + size)
-- **WIKI_KNOWLEDGE**: Key insights from cross-wiki retrieval (for active-knowledge distillation)
-- **KNOWLEDGE_GAPS**: Unfilled gaps from retrieval
 
 Variables: `$WIKI` = `$ROOT/.dev-wiki`.
 
@@ -62,19 +60,7 @@ Set `status: active`, `updated: $DATE`. If creating new, read `~/.claude/skills/
 
 Ensure `$ROOT/.claude/rules/` exists. Write `$ROOT/.claude/rules/active-phase.md`: Phase, Objective, Scope (file globs), Key constraints, Exit criteria, Abort rule. 10-15 lines, 20 line hard cap.
 
-### 7. Write active-knowledge.md (Step 15f-bis) *(Ceremony: lite → skip)*
-
-Read `~/.claude/skills/dev-wiki/active-knowledge-spec.md` for template and evaluation criteria.
-
-Process: Extract 2-5 key propositions per wiki source and decision. Each must pass 2 of 3 filters (multi-turn, non-obvious, phase-dependent). Assemble, count lines — if >30 re-distill, if >40 skip. Write to `$ROOT/.claude/rules/active-knowledge.md`.
-
-If no wiki knowledge and no new decisions, skip. Delete prior-phase file if stale.
-
-### 8. Identify Cross-Phase Facts (Step 15f-ter)
-
-Evaluate wiki facts NOT included in active-knowledge (failed phase-dependent but passed multi-turn + non-obvious). Note count in return — orchestrator handles the user prompt.
-
-### 9. Log and Index (Steps 15h-15i)
+### 7. Log and Index (Steps 15h-15i)
 
 Append to `$WIKI/log.md`: `[$ISO_TIMESTAMP] PLAN -- Phase N planned, X tasks, Y decisions`
 
@@ -92,8 +78,6 @@ phase: <N> - <name>
 decisions_written: <N> [<title1>, <title2>, ...]
 tasks_written: <N> [<brief list>]
 active_phase_md: written
-active_knowledge_md: written|skipped [<reason if skipped>]
-cross_phase_facts: <N> available for working-knowledge
 state_updated: yes
 phase_article_updated: yes
 log_appended: yes

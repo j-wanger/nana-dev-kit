@@ -22,14 +22,7 @@ Three anchors survive context compaction and restore session state:
 
 The agent reads this after compaction to know what phase it is in and what constraints apply, without re-reading the full phase article.
 
-### 2. Knowledge Anchor — `active-knowledge.md`
-
-**Location:** `$ROOT/.claude/rules/active-knowledge.md` (rules layer, auto-loaded every turn)
-**Owner:** `/dev-plan` (writes at Step 15f-bis)
-**Contents:** 2-5 distilled knowledge propositions from cross-wiki retrieval, each passing 2-of-3 activation filters (multi-turn, non-obvious, phase-dependent).
-**Budget:** 20-30 lines, ~150 tokens/turn. Hard cap: 40 lines.
-
-Prevents the agent from losing phase-specific domain knowledge after compaction. Facts that fail the phase-dependent filter but pass multi-turn + non-obvious are candidates for working-knowledge instead.
+### 2. (removed — Phase 88 ak-ride-along trim-trial; was the active-knowledge knowledge anchor)
 
 ### 3. Task State Anchor — TodoWrite
 
@@ -43,7 +36,6 @@ Prevents the agent from losing phase-specific domain knowledge after compaction.
 | Anchor | Target Lines | Hard Cap | Per-Turn Cost |
 |--------|-------------|----------|---------------|
 | `active-phase.md` | 10-15 | 20 lines | ~50 tokens |
-| `active-knowledge.md` | 20-30 | 40 lines | ~150 tokens |
 | TodoWrite tasks | N/A | ~8 tasks | ~100 tokens |
 | **Combined** | | | **~300 tokens/turn** |
 
@@ -56,7 +48,6 @@ After context compaction, the agent restores working context in ~5 tool calls:
 1. **Read** `active-phase.md` — phase identity, scope, constraints
 2. **Read** `_CURRENT_STATE.md` — project state, next action, blockers
 3. **Read** `tasks.md` — find next uncompleted task for active phase
-4. **Read** `active-knowledge.md` — domain knowledge for current phase
 5. **Check** TodoWrite — in-progress task state
 
 This sequence fully restores working context. The agent then states: "Resuming task: <description>. Scope: <scope>. TDD: <test spec>."
@@ -71,6 +62,4 @@ This sequence fully restores working context. The agent then states: "Resuming t
 | No phases defined | "Run `/dev init`." STOP. |
 | Approach reviewer timeout | Proceed without critique. Warn: "Approach reviewer unavailable." |
 | Plan reviewer timeout | Accept draft tasks without review score. Warn: "Plan reviewer unavailable." |
-| active-knowledge >40 lines | Skip writing. Report: "Active knowledge exceeds 40-line cap. Skipping." |
 | working-knowledge >100 entries or >210 lines | Tolerated until next session-start; the deterministic curator enforces the cap (see `~/.claude/skills/dev-wiki/working-knowledge-spec.md`). Do not hand-prune. |
-| active-knowledge.md absent at recovery | Skip Step 8 in recovery protocol. Warn: "No active-knowledge.md — domain knowledge may be stale." |

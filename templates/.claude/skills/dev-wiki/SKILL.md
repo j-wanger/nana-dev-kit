@@ -105,7 +105,6 @@ Key companions:
 - Slugification rules: `~/.claude/skills/dev-wiki/slugification.md`
 - Size budgets: `~/.claude/skills/dev-wiki/size-budgets.md`
 - Architecture template (data flow conventions): `~/.claude/skills/dev-wiki/architecture-template.md`
-- Active knowledge spec: `~/.claude/skills/dev-wiki/active-knowledge-spec.md`
 - Working knowledge spec (partitioning): `~/.claude/skills/dev-wiki/working-knowledge-spec.md`
 - CLAUDE.md lifecycle: `~/.claude/skills/dev-wiki/claude-md-lifecycle.md`
 
@@ -114,7 +113,7 @@ Key companions:
 
 - dev-wiki owns `.dev-wiki/`, knowledge-wiki owns `wiki/`
 - `/dev-plan` reads wiki articles for knowledge-informed planning
-- `active-knowledge.md` (written by `/dev-plan`) and `working-knowledge.md` (written by `/wiki-query`) are separate knowledge layers
+- `working-knowledge.md` (written by `/wiki-query`) are separate knowledge layers
 - knowledge-wiki does not write to `.dev-wiki/`; dev-wiki does not write to `wiki/`
 
 ## If Unclear

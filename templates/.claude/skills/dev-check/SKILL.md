@@ -6,7 +6,6 @@ writes:
   # Tier 1 — auto-apply
   - index.md
   - $ROOT/.claude/rules/active-phase.md
-  - $ROOT/.claude/rules/active-knowledge.md
   # Tier 2 — user-gated
   - _CURRENT_STATE.md(Active Phase)
   - articles/phases/*(frontmatter status)
@@ -60,8 +59,7 @@ Read `index.md`, extract listed article paths. Glob `articles/**/*.md` for files
 Severity: WARNING
 
 **S10: Active knowledge phase match**
-Read `$ROOT/.claude/rules/active-knowledge.md` (skip if absent). Extract `## Phase: N` line. Compare against active phase in `_CURRENT_STATE.md`. Mismatch = error.
-Severity: ERROR
+(S10 removed — Phase 88 ak-ride-along trim-trial; active-knowledge.md is no longer written.)
 
 ### State Consistency Checks
 
@@ -117,7 +115,6 @@ If 0 errors and 0 warnings, skip: "No fixes needed." STOP.
 |-----|---------|--------|
 | Rebuild index.md | S7 phantoms/missing | Regenerate from articles on disk |
 | Sync active-phase.md | S2 mismatch | Rewrite from phase article (source of truth) |
-| Delete mismatched active-knowledge | S10 mismatch | Delete file; `/dev-plan` regenerates |
 
 Report: `[ok] <description>`
 

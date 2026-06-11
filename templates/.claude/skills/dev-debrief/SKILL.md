@@ -2,7 +2,7 @@
 name: dev-debrief
 description: "Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."
 reads: [$WIKI/_CURRENT_STATE.md, $WIKI/_ARCHITECTURE.md, $WIKI/tasks.md, $WIKI/articles/phases/*, $ROOT/CLAUDE.md]
-writes: [$WIKI/_CURRENT_STATE.md(Next Action, Journal, Key Artifacts, Cross-References), $WIKI/articles/journal/*, $WIKI/articles/decisions/*, $WIKI/log.md, $WIKI/index.md, $ROOT/.claude/rules/active-knowledge.md, $ROOT/.claude/rules/working-knowledge.md, $ROOT/CLAUDE.md]
+writes: [$WIKI/_CURRENT_STATE.md(Next Action, Journal, Key Artifacts, Cross-References), $WIKI/articles/journal/*, $WIKI/articles/decisions/*, $WIKI/log.md, $WIKI/index.md, $ROOT/.claude/rules/working-knowledge.md, $ROOT/CLAUDE.md]
 dispatches: [unified-reviewer, debrief-executor]
 tier: complex-orchestration
 ---
@@ -188,21 +188,7 @@ Create ONE journal entry at `$WIKI/articles/journal/<today>-<slug>.md`. Read `~/
 
 If a journal file for today with the same slug exists, append a numeric suffix.
 
-### Step 9: Activation Quality Logging
-
-If `$ROOT/.claude/rules/active-knowledge.md` exists:
-
-1. Count source sections (`###` headings under `## Phase:`) in active-knowledge.md.
-2. For each entry, extract its `from:` slug (e.g., `[[wiki:some-slug]]` → `some-slug`).
-3. Check if the slug was referenced in this session's conversation context (approximate literal match — search for the slug string in conversation artifacts, commit messages, or tool outputs from this session).
-4. Compute approximate hit rate: entries referenced / total entries.
-5. Append to the journal entry (Step 8) under `### Activation Quality`:
-   ```
-   Active knowledge: N entries, M referenced (~X% approximate hit rate, literal match).
-   ```
-   If hit rate < 60%, add: `Consider pruning low-relevance entries in next /dev-plan.` (>60% is healthy activation.)
-
-If active-knowledge.md does not exist, skip this step.
+### Step 9: (removed — Phase 88 ak-ride-along trim-trial; was activation-quality logging over active-knowledge.md)
 
 ### Step 10: Capture Check (wiki-capture surfacing)
 
@@ -256,9 +242,7 @@ Read `~/.claude/skills/dev-debrief/debrief-finalization.md` Step 17 instructions
 
 Always rewrite `$ROOT/.claude/rules/active-phase.md` in full debrief mode. Format: Phase, Objective, Scope, Key constraints, Exit criteria, Abort rule, Gates. Keep to 10-15 lines, 20 line hard cap per `~/.claude/skills/dev-wiki/size-budgets.md`. Write the **delivery gate UNCHECKED** — delivery-flow Step D3 flips it to `[x]` only after the commit verifies (gate-state follows git-state).
 
-### Step 19: Validate/Transition active-knowledge.md
-
-Read `~/.claude/skills/dev-debrief/active-knowledge-transition.md` for the carry-forward logic. Two paths: phase-changed (carry forward entries to working-knowledge, delete active-knowledge.md) and same-phase (no action). Skip if no knowledge wiki and no active-knowledge.md.
+### Step 19: (removed — Phase 88 ak-ride-along trim-trial; was the active-knowledge carry-forward/delete transition)
 
 ### Step 20: Retro Check (Conditional)
 

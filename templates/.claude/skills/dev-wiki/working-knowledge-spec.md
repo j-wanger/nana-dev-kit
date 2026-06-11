@@ -49,4 +49,4 @@ After `/wiki-query` answers a substantive question (>3 sentences, 2+ articles), 
 
 Cross-project reusable patterns about HOW to do work, and cross-phase non-obvious project facts (multi-module, not derivable from one file). If `_ARCHITECTURE.md` or a single file captures it, don't duplicate here.
 
-**Cross-reference:** `active-knowledge-spec.md` for phase-scoped knowledge with different lifecycle.
+**Cross-reference:** (active-knowledge-spec.md removed — Phase 88 trim-trial) phase-scoped knowledge with different lifecycle.

@@ -2,7 +2,7 @@
 name: dev-plan
 description: "Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."
 reads: [$WIKI/_CURRENT_STATE.md, $WIKI/_ARCHITECTURE.md, $WIKI/tasks.md, $WIKI/articles/phases/*, $WIKI/articles/decisions/*]
-writes: [$WIKI/_CURRENT_STATE.md(Active Phase, Contract, Decisions, Blockers), $WIKI/tasks.md, $WIKI/articles/phases/*, $WIKI/articles/decisions/*, $ROOT/.claude/rules/active-phase.md, $ROOT/.claude/rules/active-knowledge.md, $ROOT/.claude/rules/working-knowledge.md(append cross-phase entries; curator enforces dedup/cap)]
+writes: [$WIKI/_CURRENT_STATE.md(Active Phase, Contract, Decisions, Blockers), $WIKI/tasks.md, $WIKI/articles/phases/*, $WIKI/articles/decisions/*, $ROOT/.claude/rules/active-phase.md, $ROOT/.claude/rules/working-knowledge.md(append cross-phase entries; curator enforces dedup/cap)]
 dispatches: [plan-reviewer, approach-reviewer, state-loader, artifact-writer]
 tier: complex-orchestration
 ---
@@ -69,10 +69,9 @@ Agent({
 ### After artifact writer returns
 
 1. Parse the structured return
-2. If `cross_phase_facts > 0`, ask user about working-knowledge seeding (Step 15f-ter)
-3. Mirror tasks to TodoWrite (Step 15g) — do this inline since TodoWrite is orchestrator-side
-4. Present Step 16 implementation transition gate (interactive)
-5. Report conversationally — "Phase N is planned with X tasks. Here's the approach: ..."
+2. Mirror tasks to TodoWrite (Step 15g) — do this inline since TodoWrite is orchestrator-side
+3. Present Step 16 implementation transition gate (interactive)
+4. Report conversationally — "Phase N is planned with X tasks. Here's the approach: ..."
 
 ---
 
@@ -85,7 +84,6 @@ This skill OWNS and rewrites these sections (preserve all others verbatim):
 - `## Recent Decisions`
 
 May APPEND to: `## Blockers and Open Questions` (planning questions only — do not rewrite or remove existing entries).
-May SEED: `.claude/rules/working-knowledge.md` (Step 15f-ter, user-gated). wiki-query also writes this file (Steps 7a, 8) — caps are idempotent.
 
 ---
 
@@ -260,7 +258,7 @@ Only update if the approach changes project structure. If no structural changes,
 Set `status: active`, `updated: <today>`. If creating a new phase article, read `~/.claude/skills/dev-wiki/phase-template.md` for the template.
 
 #### 15f: Write Compaction Anchor -- active-phase.md
-Do NOT create any other hooks or rules files beyond `active-phase.md` and `active-knowledge.md` (Steps 15f and 15f-bis). Ensure `$ROOT/.claude/rules/` exists (`mkdir -p`). Write `$ROOT/.claude/rules/active-phase.md` with: Phase, Objective, Scope (file globs), Key constraints (from decisions), Exit criteria, Abort rule, **and a Gates section**. Size: 10-20 lines.
+Do NOT create any other hooks or rules files beyond `active-phase.md` (Step 15f; the active-knowledge anchor was trimmed in Phase 88 — reversible trim-trial). Ensure `$ROOT/.claude/rules/` exists (`mkdir -p`). Write `$ROOT/.claude/rules/active-phase.md` with: Phase, Objective, Scope (file globs), Key constraints (from decisions), Exit criteria, Abort rule, **and a Gates section**. Size: 10-20 lines.
 
 The Gates section tracks the two boundary checkpoints (2-gate ceremony model):
 
@@ -271,18 +269,6 @@ Gates:
 ```
 
 The direction gate must be marked before implementation begins. The delivery gate is marked post-implementation when the user accepts the delivery report (see dev-debrief).
-
-#### 15f-bis: Write Compaction Anchor -- active-knowledge.md *(Lite: skip)*
-
-Distill cross-wiki articles from Step 4 and phase decisions from Steps 9-14 into `.claude/rules/active-knowledge.md`. Read `~/.claude/skills/dev-wiki/active-knowledge-spec.md` for the template, evaluation criteria, and size budget.
-
-**Process:** (1) Extract 2-5 key propositions per source. (2) Evaluate each: must pass 2 of 3 filters from `~/.claude/skills/dev-wiki/active-knowledge-spec.md` (multi-turn, non-obvious, phase-dependent) -- drop the rest. (3) Assemble using the template. (4) Count lines: if >30 re-distill; if still >40: skip writing active-knowledge.md, report: "Active knowledge exceeds 40-line cap. Skipping." Continue with Step 15g. (5) Write to `$ROOT/.claude/rules/active-knowledge.md`, overwriting any prior phase file.
-
-**Skip:** If no knowledge wiki and no new decisions in Steps 9-14, skip entirely. Delete any prior-phase file if it exists; if absent, skip silently.
-
-#### 15f-ter: Seed Working Knowledge (Cross-Phase Facts)
-
-After writing active-knowledge.md, evaluate retrieved facts from Step 4 that were NOT included in active-knowledge (failed phase-dependent filter but passed multi-turn + non-obvious). These are cross-phase facts useful beyond this phase. If any exist, offer: `"N cross-phase facts available for working knowledge. Activate? (y/n)"`. On confirmation: (1) read existing `.claude/rules/working-knowledge.md` if it exists, (2) append genuinely new entries as `[uses: 1]` with `activated: <today>`. **Keep each entry TERSE — ~1-2 sentences + a `[[pointer]]` to its decision article; this file is loaded into EVERY session's context, so detail belongs in the dev-wiki (automatic, not always-loaded), not here. The curator emits a size advisory above ~1500 chars/entry (Phase 79).** Dedup (by proposition text, NOT source slug), the 100-entry cap, and ordering are enforced deterministically by the session-start curator — see `~/.claude/skills/dev-wiki/working-knowledge-spec.md`; do NOT hand-dedup, hand-sort, or hand-prune here. Skip if no cross-phase facts found.
 
 #### 15g: Mirror Tasks to TodoWrite (Compaction Anchor)
 Write each task to TodoWrite with embedded constraints. Set all to `pending`. Set first to `in_progress` only if user will continue in this session (determined in Step 16).

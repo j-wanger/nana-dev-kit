@@ -13,7 +13,6 @@ Read silently (inject into context, do NOT print contents to user):
 1. `.dev-wiki/_CURRENT_STATE.md` — project state, active phase, next action, decisions
 2. `.dev-wiki/tasks.md` — active phase section (locate via `<!-- phase:phase-NN-... -->` comment)
 3. `.claude/rules/active-phase.md` — phase constraints and scope (compaction anchor)
-4. `.claude/rules/active-knowledge.md` — phase-scoped wiki knowledge (skip if absent)
 
 **Breadcrumbs:** If `.dev-wiki/.pending-commit` exists: read it, match committed files against open tasks in tasks.md, mark matching tasks `[x]`, delete the file. If `.dev-wiki/.session-end` exists: delete it (prior session ended without debrief — note to user). If `.dev-wiki/.stale-queue` exists and non-empty: emit "Stale queue has N entries — run `/dev-scan`." Do not auto-process.
 

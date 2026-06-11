@@ -58,8 +58,6 @@ For each decision in substance payload: read `~/.claude/skills/dev-wiki/decision
 
 Create ONE entry at `$WIKI/articles/journal/$DATE-<slug>.md`. Read `~/.claude/skills/dev-wiki/journal-templates.md` for rich template. If file exists with same slug, append numeric suffix. Include health_delta and soft_observations from substance. Add `duration: <estimate>` to frontmatter (post-compaction estimate — may undercount for long sessions). If duration_estimate not provided, use "unknown".
 
-**Activation quality (Step 9):** If `$ROOT/.claude/rules/active-knowledge.md` exists, count entries, check slug references against substance, compute hit rate, append under `### Activation Quality`.
-
 ### 4. Update tasks.md
 
 Read `$WIKI/tasks.md`. Mark completed `[x]`, add discovered, mark blocked. Reorder: active phase first. Read `~/.claude/skills/dev-wiki/size-budgets.md`.
@@ -100,9 +98,7 @@ Read `~/.claude/skills/dev-debrief/debrief-finalization.md` Step 17.
 
 Write `$ROOT/.claude/rules/active-phase.md`. Format: Phase, Objective, Scope, Key constraints, Exit criteria, Abort rule, Gates. 10-15 lines, 20 line hard cap per `~/.claude/skills/dev-wiki/size-budgets.md`. In the Gates section, write the **delivery gate UNCHECKED** (`- [ ] Delivery accepted`): the executor runs BEFORE the commit, so it must not pre-mark acceptance. Delivery-flow Step D3 flips it to `[x]` only after the commit verifiably lands (gate-state follows git-state — prevents the accepted-but-uncommitted divergence).
 
-### 12. Active-Knowledge Transition
-
-Read `~/.claude/skills/dev-debrief/active-knowledge-transition.md`. Phase-changed → carry forward to working-knowledge, delete file. Same-phase → no action.
+### 12. (removed — Phase 88 ak-ride-along trim-trial; was the active-knowledge transition)
 
 ### 13. Retro Check
 

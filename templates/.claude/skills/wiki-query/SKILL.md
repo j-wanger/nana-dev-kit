@@ -7,7 +7,6 @@ writes:
   - $ROOT/.claude/rules/working-knowledge.md(uses increment)  # Step 7a — ordering/cap/dedup owned by the curator (wk-prune.sh), not this skill
   # Tier 2 — user-gated
   - $ROOT/.claude/rules/working-knowledge.md(append new entries)           # Step 8
-  - $ROOT/.claude/rules/active-knowledge.md(promoted entries)              # Step 8a (user-confirmed; uses >= 5 promotion gate)
 dispatches: [analyst, writer, reviewer]
 tier: complex-orchestration
 ---
@@ -30,7 +29,7 @@ Step 0 below (in the Orchestration Flow) runs FIRST and resolves `wiki_path` —
 
 ## Read-Only for Wiki Files
 
-This skill writes `.claude/rules/working-knowledge.md` (Steps 7a and 8) and `.claude/rules/active-knowledge.md` (Step 8a, user-gated). All other writes are prohibited:
+This skill writes `.claude/rules/working-knowledge.md` (Steps 7a and 8). All other writes are prohibited:
 
 - NEVER modify articles in `<wiki_path>/articles/`
 - NEVER modify `<wiki_path>/index.md`, `schema.md`, or `log.md`
@@ -50,7 +49,6 @@ May UPDATE (user-gated):
 - `.claude/rules/working-knowledge.md` — Step 8 (append new entries)
 
 Ordering, the entry cap, and dedup are NOT this skill's job — they are owned by the deterministic curator (`wk-prune.sh`, session-start). This skill only increments and appends; the curator normalizes on next session start. See `~/.claude/skills/dev-wiki/working-knowledge-spec.md` (the single source of truth for the cap/dedup/ordering policy).
-- `.claude/rules/active-knowledge.md` — Step 8a (promotion, user confirms)
 
 Read-only: all files under `<wiki_path>/`.
 
@@ -200,27 +198,7 @@ Report: `"Activated N facts into working knowledge (M total entries)."`
 
 **On decline ("n", "no"):** Skip. No file changes.
 
-### Step 8a: Mid-Phase Knowledge Promotion (Optional)
-
-After working-knowledge activation (Step 8) completes — regardless of whether the user activated new facts — check for promotion candidates:
-
-1. Read `.claude/rules/working-knowledge.md`. Scan for entries with `uses` ≥ 5.
-2. For each candidate, evaluate the 2-of-3 active-knowledge filter (from `~/.claude/skills/dev-wiki/active-knowledge-spec.md`):
-   - **Multi-turn:** Will this fact be needed across multiple turns (not a one-off lookup)?
-   - **Non-obvious:** Would the model's parametric knowledge get this wrong?
-   - **Phase-dependent:** Does the current active phase depend on this exact fact?
-   A fact must pass at least 2 of 3 filters to qualify.
-3. Dedup: skip any candidate whose `source:` slug already appears in `.claude/rules/active-knowledge.md`.
-4. If qualifying candidates exist, offer:
-   ```
-   N working-knowledge entries qualify for active-knowledge promotion (compaction-resilient):
-   - <proposition> (uses: N, source: slug)
-   Promote to active-knowledge? (y/n)
-   ```
-5. **On confirmation:** Read active-knowledge.md (if absent, create with header and current phase title per `~/.claude/skills/dev-wiki/active-knowledge-spec.md`). Check line count — if adding entries would exceed the 40-line hard cap, report: `"Promotion would exceed 40-line active-knowledge cap. Skipping."` and stop. Otherwise, append under a `### Promoted from working-knowledge` subsection with `from:` and `retrieved:` fields per the active-knowledge-spec format.
-6. **On decline or no candidates:** Skip silently.
-
-**Skip conditions:** If `.claude/rules/working-knowledge.md` does not exist, or if no active phase exists (active-knowledge.md has no target), skip entirely.
+### Step 8a: (removed — Phase 88 ak-ride-along trim-trial; was mid-phase active-knowledge promotion, the second writer)
 
 ## Tool Standards
 

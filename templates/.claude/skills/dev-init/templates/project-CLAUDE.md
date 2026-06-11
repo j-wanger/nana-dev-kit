@@ -29,7 +29,6 @@ The following modules under `.claude/rules/` apply to this project. Each is smal
 These files are written and pruned by skills; treat as machine-generated:
 
 - `.claude/rules/active-phase.md` — owned by `/dev-plan` and `/dev-debrief`; current phase scope and constraints
-- `.claude/rules/active-knowledge.md` — owned by `/dev-plan`; phase-distilled wiki knowledge
 - `.claude/rules/working-knowledge.md` — owned by `/wiki-query`, written at phase debrief; cross-phase facts with usage decay
 
 ## Project Pointers
