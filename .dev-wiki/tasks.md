@@ -1110,7 +1110,7 @@ A2 reject -> orchestrator-only verdicts; ledger block appended, 6 rows, all_acce
 
 ## Phase 90 — Fable-5 Distillation
 
-<!-- gate-log:phase-90 direction=approved delivery=pending -->
+<!-- gate-log:phase-90 direction=approved delivery=accepted -->
 - [x] T1 Distill fable-5 vs opus-4-8 contrast: paired-transcript contrastive read (signal-watch + nana-dev-kit via the model field) + sgup/ai Fable5.md reference → codifiable-vs-intrinsic split | scope: eval/fable-distill/findings.md | success: test -f eval/fable-distill/findings.md
 - [x] T2 Track A — soul lift (both landings): 5 checkable forcing-functions into nana-soul.md (global + templates), absence-diff confirmed first, parity-verified | scope: ~/.claude/rules/nana-soul.md + templates/.claude/rules/nana-soul.md | success: diff -q the two copies && all 5 markers present x1
 - [x] T3 Track B1 — reframe-absorption beat: dev-plan Step 10 gates forward progress on reframe absorption, bounded firing condition (both copies) | scope: dev-plan SKILL.md (global + templates) | success: grep Reframe-absorption in both, parity

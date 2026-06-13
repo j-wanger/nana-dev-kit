@@ -18,4 +18,4 @@ eval/dogfood-round/evidence/window-events.md until the Phase-93 trim-trial dispo
 eval/dogfood-round/pre-registration.md). This session is a Phase-90 working session — attestation owed.
 Gates:
 - [x] Direction confirmed by user (A1 accept-pilot-gated, A2/A3/A4 accept — 2026-06-13)
-- [ ] Delivery accepted (post-implementation report)
+- [x] Delivery accepted (post-implementation report 2026-06-13, f2d3658)
