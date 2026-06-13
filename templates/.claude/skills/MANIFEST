@@ -20,7 +20,7 @@ a6e08c453421b01f16d2272685e0dbce  templates/.claude/skills/dev-init/templates/pr
 6885f7ad0d5fd5f6858a3a1050de0466  templates/.claude/skills/dev-plan/approach-reviewer-prompt.md
 92d09542be4996e8b18d70db681ca8ad  templates/.claude/skills/dev-plan/artifact-writer-prompt.md
 ca0c150fa64c56dd728f664ceaee1e3d  templates/.claude/skills/dev-plan/assumption-gate-example.md
-16b339a9f3c1867bd08a265cef9a34a0  templates/.claude/skills/dev-plan/assumption-gate.md
+091c9f25b38c2dc54af8d8345db3359a  templates/.claude/skills/dev-plan/assumption-gate.md
 e433a2c48ce8c294413724249046ed7f  templates/.claude/skills/dev-plan/compaction-anchors-spec.md
 494c4932376aae8417d4315c41db2c14  templates/.claude/skills/dev-plan/implementation-guide.md
 0292ee0ac5649b100f65c8a953292f50  templates/.claude/skills/dev-plan/iterative-retrieval-spec.md

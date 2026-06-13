@@ -40,11 +40,11 @@
 <body>
 
 <h1>Nana Dev Kit</h1>
-<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-06-13 10:26</p>
+<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-06-13 11:25</p>
 
 <div class="stats">
-  <div class="stat"><div class="num">1034</div><div class="label">Files</div></div>
-  <div class="stat"><div class="num">177,946</div><div class="label">Lines of Code</div></div>
+  <div class="stat"><div class="num">1039</div><div class="label">Files</div></div>
+  <div class="stat"><div class="num">178,265</div><div class="label">Lines of Code</div></div>
   <div class="stat"><div class="num">521</div><div class="label">Automated Tests</div></div>
   <div class="stat"><div class="num">7</div><div class="label">Harness Layers</div></div>
   <div class="stat"><div class="num">v0.5.0</div><div class="label">Latest Tag</div></div>
@@ -250,7 +250,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 3: Skills <span class="badge badge-green">118 files, 11,176 lines</span></h3>
+  <h3>Templates — Layer 3: Skills <span class="badge badge-green">118 files, 11,189 lines</span></h3>
   <ul class="file-list">
     <li><span>templates/.claude/skills/MANIFEST</span><span class='lines'>144</span></li>
     <li><span>templates/.claude/skills/dev-check/SKILL.md</span><span class='lines'>147</span></li>
@@ -274,7 +274,7 @@
     <li><span>templates/.claude/skills/dev-plan/approach-reviewer-prompt.md</span><span class='lines'>68</span></li>
     <li><span>templates/.claude/skills/dev-plan/artifact-writer-prompt.md</span><span class='lines'>92</span></li>
     <li><span>templates/.claude/skills/dev-plan/assumption-gate-example.md</span><span class='lines'>41</span></li>
-    <li><span>templates/.claude/skills/dev-plan/assumption-gate.md</span><span class='lines'>74</span></li>
+    <li><span>templates/.claude/skills/dev-plan/assumption-gate.md</span><span class='lines'>87</span></li>
     <li><span>templates/.claude/skills/dev-plan/compaction-anchors-spec.md</span><span class='lines'>65</span></li>
     <li><span>templates/.claude/skills/dev-plan/implementation-guide.md</span><span class='lines'>93</span></li>
     <li><span>templates/.claude/skills/dev-plan/iterative-retrieval-spec.md</span><span class='lines'>41</span></li>
@@ -411,7 +411,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Eval Harness <span class="badge badge-green">686 files, 139,061 lines</span></h3>
+  <h3>Eval Harness <span class="badge badge-green">689 files, 139,224 lines</span></h3>
   <ul class="file-list">
     <li><span>eval/README.md</span><span class='lines'>85</span></li>
     <li><span>eval/amplifier/SCHEMA-NOTES.md</span><span class='lines'>110</span></li>
@@ -977,6 +977,9 @@
     <li><span>eval/dogfood-round/rehearsals/deregister-detect-loop.jq</span><span class='lines'>19</span></li>
     <li><span>eval/dogfood-round/rehearsals/rehearsal.log</span><span class='lines'>21</span></li>
     <li><span>eval/dogfood-round/run-exit-criteria.sh</span><span class='lines'>100</span></li>
+    <li><span>eval/fable-distill/findings.md</span><span class='lines'>61</span></li>
+    <li><span>eval/fable-distill/framing-subagent-prompt.md</span><span class='lines'>46</span></li>
+    <li><span>eval/fable-distill/pilot-protocol.md</span><span class='lines'>56</span></li>
     <li><span>eval/hook-hygiene/capture-diagnosis.md</span><span class='lines'>56</span></li>
     <li><span>eval/hook-hygiene/check-matrix.sh</span><span class='lines'>63</span></li>
     <li><span>eval/hook-hygiene/coverage-matrix.md</span><span class='lines'>119</span></li>
@@ -1102,7 +1105,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Specs <span class="badge badge-green">77 files, 7,514 lines</span></h3>
+  <h3>Specs <span class="badge badge-green">79 files, 7,657 lines</span></h3>
   <ul class="file-list">
     <li><span>specs/cut-heuristic-machinery-self-dialogue.md</span><span class='lines'>79</span></li>
     <li><span>specs/domain-research-in-dev-plan.md</span><span class='lines'>81</span></li>
@@ -1180,6 +1183,8 @@
     <li><span>specs/phase-87-stage2-episode-contrast.md</span><span class='lines'>247</span></li>
     <li><span>specs/phase-88-trim-follow-on.md</span><span class='lines'>291</span></li>
     <li><span>specs/phase-89-dogfood-demand-evidence.md</span><span class='lines'>263</span></li>
+    <li><span>specs/phase-90-fable-distillation.md</span><span class='lines'>34</span></li>
+    <li><span>specs/phase-92-memory-layer-prune.md</span><span class='lines'>109</span></li>
     <li><span>specs/ts-init-design.md</span><span class='lines'>252</span></li>
   </ul>
 </div>
@@ -1263,11 +1268,11 @@
 </table>
 
 <h2>Recent Git History</h2>
-<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">8e02a29 Phase 89 — delivery accepted; flip delivery gate
-8efcec6 Phase 89: Post-Trim Dogfood & Demand-Evidence Round — debrief: journal written, ledger revisit filled (A1/A2/A3/A5 held, A4 BIT stale-premise absorbed by reframing; validator clean), retro triggered at 75th phase (recurring Stop-hook-noise-on-non-code class → bundle py-review + ctw candidates into next hook-hardening round), 5 soft observations, 4 memory-harvest stores, state refreshed, READY FOR COMPLETION; delivery accepted 2026-06-11
-a2b65ce Phase 89 review-gate fixes (9/10 accept, 1 MEDIUM + 3 LOW fixed inline): pre-registration Addendum 1 corrects the removed-class inventory against the COMMITTED .stale-queue at 45460bc (was pinned from the uncommitted working tree — append-only fix per the file's own VOID rule; no Phase-89 row re-graded, all wk rows were honestly non-probative) + the motivating wk-prune now committed (working-knowledge.md + .stale-queue, 9-entry removed class version-pinned for Phases 90-93); check-currency hook_cmds() handles legacy flat registrations (same parsing model as the deregistration filter, selftest 6/6 re-verified); decision-article stage labels aligned to tasks.md ids; spec c10 wording matched to what the checker actually asserts; spec + phase/decision articles version-controlled; active-phase.md trimmed to 20-line cap
-ca81ff9 Phase 89 T6: close-out — exit-criteria runner ALL-PASS 10/10 (make test green, make eval 50/50 denominator unchanged — no eval-diff note needed); memory-demand.md filed for the A4/A6 round (edge-screener THREE-WAY-clean zero on a live layer: no hook coercion, rules-instruction skipped, no spontaneous use; the pinned continuity case arose naturally and the .dev-wiki file substrate served it entirely; kit-side: writer LIVE 2 bridge stores + 1 read-back, 1 block→COMPLY follow-through datapoint; es writer steps unreached-not-declined); close-out session self-attested in window-events (ef772719, same session as kit-side planning rows); Phases-90-93 per-session window-events append obligation pinned in always-loaded active-phase.md (mandatory activation per HEU-012); Blockers: A4/A6 evidence pointer + py-review docs-only-diff noise-candidate filing + edge-screener Phase-10 pending-gate note; tasks 6/6 [x]
-98dffb8 Phase 89 T5: evidence sessions — 3 real headless edge-screener sessions on its own agenda (S1 /dev-plan Phase-10: discovered the stale candidate-premise itself [a6effcb already shipped it], reframed retroactive plan, stopped at the direction gate without self-answering; S2 continuity case: resolved S1's riskiest open question from .dev-wiki state alone [coverage gap = 2 unreachable defensive guards]; S3 gates verification: 394/94.58%/mypy 0/ruff clean no regressions), measurement-blind archived prompts, orchestrator-extracted rows (provenance-filtered log deltas 269→278→287→290; transcripts 66dafa8c/4fcee604/f2b8cc14), reachability records + window-events attestations incl. kit-side ef772719; headline observations: hardened check-tests-were-run SKIPPED cleanly where the pre-harden copy noise-blocked in Ph85 (helped ×2), memory demand ZERO across all 3 sessions with live layer (no nudge, no rules-instructed search, no spontaneous use; S2's cross-session continuity served entirely by the file substrate), ak-window 3 probative sessions zero trigger events, wk-window honestly UNFALSIFIABLE-IN-THIS-CONTEXT; format+window checkers PASS</pre>
+<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">09f2a71 Phase 91 setup: renumber memory-prune 91->92; point next-action at install re-sync + drift-detection phase
+f05280d Phase 90 — delivery accepted; flip delivery gate (f2d3658 verified pushed)
+f2d3658 Phase 90 — Fable-5 Distillation: codifiable soul lift + design recovery of intrinsic reframe behaviors
+8e02a29 Phase 89 — delivery accepted; flip delivery gate
+8efcec6 Phase 89: Post-Trim Dogfood & Demand-Evidence Round — debrief: journal written, ledger revisit filled (A1/A2/A3/A5 held, A4 BIT stale-premise absorbed by reframing; validator clean), retro triggered at 75th phase (recurring Stop-hook-noise-on-non-code class → bundle py-review + ctw candidates into next hook-hardening round), 5 soft observations, 4 memory-harvest stores, state refreshed, READY FOR COMPLETION; delivery accepted 2026-06-11</pre>
 
 <footer>
   Generated by <code>scripts/generate-report.py</code> &mdash; run <code>make report</code> to regenerate

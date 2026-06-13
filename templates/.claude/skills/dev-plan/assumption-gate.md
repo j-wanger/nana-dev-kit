@@ -18,6 +18,19 @@ Surface the plan's load-bearing assumptions — an assumption is load-bearing if
 change were it false. From the approach (Step 10) + the spec, produce **3–6** assumptions, one short
 sentence each, ranked by **cost-of-error** (worst-if-wrong first). Reason ONLY from the plan; do not invent.
 
+**Assumption, not direction (filter EVERY candidate before it reaches the gate):** A load-bearing
+assumption is a belief about something you do NOT control — a domain fact, the maintainer's intent, an
+external or infrastructure reality the plan takes on faith and that could be FALSE. It is NOT a restatement
+of the approach you chose. **Checkable test:** write "If this is FALSE, then [specific breakage]." If the
+negation is incoherent, or the only consequence is *"then I'd have picked a different approach,"* it is a
+DIRECTION CHOICE, not an assumption — DROP it. The maintainer's verdict adds value by adjudicating a fact
+you LACK (what a `don't-know` marks), not by blessing a decision you MADE — surfacing your own choices as
+"assumptions" regresses the gate into the "approve the approach? → blind yes" it exists to replace.
+
+- ✗ Direction (drop): "We should add a `--update` mode." → negation is just "I'd have chosen differently."
+- ✓ Assumption (keep): "`--project-local` is the only install path consuming projects use." → if false, the
+  fix misses a path the maintainer may know of.
+
 - Step-10 T0's "weakest assumption" MUST appear as one member of this set. If it is absent, the set is
   incomplete — regenerate. (T0 is the same surfacing reflex; this is the SINGLE surfacer, not a second list.)
 - Each assumption names what BREAKS if it is false (its cost-of-error). Include the *is-it-actually-so*
