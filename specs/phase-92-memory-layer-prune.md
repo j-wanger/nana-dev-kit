@@ -1,5 +1,5 @@
 <!-- nana:approved 2026-06-12 -->
-# Spec: Phase 91 — Memory-Layer Prune Round
+# Spec: Phase 92 — Memory-Layer Prune Round
 
 ## Objective
 
@@ -24,7 +24,7 @@ A closed verdict-row set, one row per (component × evidence pointer):
 
 Plus three artifacts: (a) the standalone admissibility ruling on the Phase-89 evidence (committed before any verdict row); (b) the memory-reference surface enumeration (repo AND installed trees, every hit classified `mcp-layer | auto-memory | unrelated`); (c) for every cut/disable verdict, the removal set, store backup, and installed-surface deregistration over kit-marker-discovered roots.
 
-Plus exactly one authorized prior-block ledger edit (see Constraints): flipping the Phase-83 block A5 row's `revisit-status: open` → `closed (Phase 91, <verdict-table pointer>)`. The Phase-90 direction gate appends its own block as normal.
+Plus exactly one authorized prior-block ledger edit (see Constraints): flipping the Phase-83 block A5 row's `revisit-status: open` → `closed (Phase 92, <verdict-table pointer>)`. The Phase-90 direction gate appends its own block as normal.
 
 ### Out of scope
 
@@ -40,7 +40,7 @@ Plus exactly one authorized prior-block ledger edit (see Constraints): flipping 
 Admissibility-first, then Phase-83 prune discipline. The admissibility ruling is a standalone artifact whose add-commit must be a strict ancestor of the verdict table's add-commit (different commits — a same-commit add defeats the ancestry check); it rules on the Phase-89 evidence against the pinned A4-reject rationale and must cite the liveness probe's positive control, not file presence. Only then is the verdict table filled: per row, classify the zero (couldnt-fire vs didnt-fire, sandbox-armed in `mktemp -d`), define the removal set FIRST, run liveness grep where alive = references from outside the removal set across repo + all kit-marker-discovered installed roots. The evidence split is honored per row: consuming-project demand evidence (the three-way zero, the continuity case) bears on the layer's consumer-facing reach; kit-side writer liveness (2 stores + read-back) bears on the writers — no blanket verdict across components with opposite evidence. HARD maintainer checkpoint with the complete table before any execution. Approved verdicts execute serially, each preceded by a verified store backup, with sandbox-rehearsed deregistration, survivor functional smoke, and revert-on-failure. The templates/modules.json byte-freeze from Phase 89 has LAPSED for this phase; the no-revert pins above still bind.
 
 Verdict-execution semantics (closed enum; cell tokens exactly as spelled):
-- **cut** — remove the full removal set this phase, one commit per candidate, subject `Phase 91 cut: <candidate>`. A memory_server cut additionally regenerates the vendoring patch series in the same commit (the patch is removal-set discipline, not a separate verdict token).
+- **cut** — remove the full removal set this phase, one commit per candidate, subject `Phase 92 cut: <candidate>`. A memory_server cut additionally regenerates the vendoring patch series in the same commit (the patch is removal-set discipline, not a separate verdict token).
 - **disable-at-boundary** — remove registration/exposure without deleting code; SAME commit-subject and deregistration discipline as a cut (counted identically by the exit criteria).
 - **harden** — verdict + filed follow-up with re-trigger; implementation out of this phase unless it fits the per-candidate commit discipline AND the maintainer approves it at the checkpoint.
 - **keep** — re-affirmation citing the evidence line that earned it; no change.
@@ -62,11 +62,11 @@ Table finality: verdict cells reflect FINAL checkpoint-approved verdicts. If the
 - Couldnt-fire vs didnt-fire classification is mandatory per destructive row before execution; couldnt-fire = defect filing, never a demand-evidence cut ([[HEU-012]]).
 - Every cut ships deregistration over ALL kit-marker-discovered installed roots (Phase-84 coverage-matrix method), and the verdict row carries an explicit `unreachable-installs:` line stating how a stale unreachable consumer degrades (verified by simulating a consumer with the server absent — noisy or harmless, never assumed) — prevents silent ghost registrations (the settings merge is add/update-only; no deregistration mechanism exists until a cut builds its own).
 - The surface enumeration counts as evidence only after a positive control (a known-present surface must appear) and only with ≥2 independent naming conventions (`memory_`, `memory.db`, `memory_server`, server name `"memory"`, `enforce-memory`) over BOTH repo and installed trees; the artifact contains exactly ONE classification table, every row classified `mcp-layer | auto-memory | unrelated` — prevents count-fitting to "20", the Ph84 zsh word-split false-matrix class, and auto-memory conflation in either direction (false-keep from auto-memory writes, collateral damage from a careless cut script).
-- Ledger edit carve-out: the ONE permitted prior-block edit is flipping the Phase-83 block A5 row's `revisit-status: open` → `closed (Phase 91, <pointer>)`; `scripts/check-assumption-ledger.sh` must pass after the edit; no other prior-block byte changes (the Phase-88 A4/A6 held rows are closed via Blockers filings + the verdict table, not ledger edits) — prevents both the silent-open-forever state and a general license to rewrite history.
+- Ledger edit carve-out: the ONE permitted prior-block edit is flipping the Phase-83 block A5 row's `revisit-status: open` → `closed (Phase 92, <pointer>)`; `scripts/check-assumption-ledger.sh` must pass after the edit; no other prior-block byte changes (the Phase-88 A4/A6 held rows are closed via Blockers filings + the verdict table, not ledger edits) — prevents both the silent-open-forever state and a general license to rewrite history.
 - Per-candidate expected deltas (eval denominator, hook count, settings entries) are pre-registered in the verdict row before execution; regenerated-artifact diff ⊆ planned removal set; no hand-edits to generated artifacts — prevents wholesale regeneration absorbing over-deletion.
 - Post-cut functional smoke on SURVIVING hooks (pipe a real event, assert firing), never presence checks — the 5-times-bitten registered-but-broken class.
 - Evidence split discipline: consuming-project evidence may not justify cutting a kit-side-live writer, and kit-side liveness may not justify keeping consumer-facing reach — each row cites its own evidence pointer (file + line/section).
-- Window-events attestation rows appended for EVERY Phase-90 working session under a `## Phase 91` section of `eval/dogfood-round/evidence/window-events.md` (pre-registration protocol) — the Phases-90-93 standing obligation is itself an exit criterion here.
+- Window-events attestation rows appended for EVERY Phase-90 working session under a `## Phase 92` section of `eval/dogfood-round/evidence/window-events.md` (pre-registration protocol) — the Phases-90-93 standing obligation is itself an exit criterion here.
 - Exit-criteria commands below are normative for `eval/memory-prune/run-exit-criteria.sh` but the runner platform-normalizes them (`tr -d ' '` after `wc`, BSD/GNU portability) — the Phase-88/89 runner pattern; semantics may not weaken.
 - Prior decisions bind: [[memory-architecture-classification]] (as superseded — MCP = voluntary layer), [[vendor-memory-server]] (near-zero divergence contract), [[single-source-scope-tagged-hook-registration]], the Phase-83 verdict table (memory-mcp-scaffold keep, memory-reinforcement harden), [[prune-on-value-subtraction]].
 - Zero cuts is a valid outcome; verdicts are evidence-forced, not quota-driven.
@@ -86,9 +86,9 @@ All via `eval/memory-prune/run-exit-criteria.sh` (ALL-PASS required). Candidate 
 - [ ] `! grep -E 'DROW' eval/memory-prune/verdict-table.md | grep -vE 'couldnt-fire|didnt-fire'` — every destructive row carries its zero-classification (runner expands DROW)
 - [ ] `test -f eval/memory-prune/surface-enumeration.md && grep -q 'POSITIVE-CONTROL: PASS' eval/memory-prune/surface-enumeration.md && ! grep -E '^\| S' eval/memory-prune/surface-enumeration.md | grep -vE '\| (mcp-layer|auto-memory|unrelated) \|'` — enumeration with passed positive control; surface rows (id prefix `S`) all 3-way classified
 - [ ] `test "$(grep -cE 'DROW' eval/memory-prune/verdict-table.md | tr -d ' ')" -eq 0 || grep -q 'BACKUP-VERIFIED: ' eval/memory-prune/verdict-table.md` — store backup verified before any executed destructive verdict (vacuous at zero cuts)
-- [ ] `test "$(git log --oneline --grep='^Phase 91 cut:' | wc -l | tr -d ' ')" = "$(grep -cE 'DROW' eval/memory-prune/verdict-table.md | tr -d ' ')"` — one commit per executed destructive verdict (both sides 0 at zero cuts)
+- [ ] `test "$(git log --oneline --grep='^Phase 92 cut:' | wc -l | tr -d ' ')" = "$(grep -cE 'DROW' eval/memory-prune/verdict-table.md | tr -d ' ')"` — one commit per executed destructive verdict (both sides 0 at zero cuts)
 - [ ] `make test && make eval && bash scripts/check-install-drift.sh && bash tests/test_settings_template.sh` — suite green, eval denominator 50 or diff explained in the verdict table, drift 0, generated settings match modules.json
-- [ ] `grep -q '^## Phase 91' eval/dogfood-round/evidence/window-events.md && bash scripts/check-assumption-ledger.sh && ! awk '/^## Phase 83 /,/^## Phase 84 /' .dev-wiki/assumption-ledger.md | grep -qE '^- A5 .*revisit-status: open'` — window-events obligation met, ledger validator green, and the Phase-83 A5 row no longer open
+- [ ] `grep -q '^## Phase 92' eval/dogfood-round/evidence/window-events.md && bash scripts/check-assumption-ledger.sh && ! awk '/^## Phase 83 /,/^## Phase 84 /' .dev-wiki/assumption-ledger.md | grep -qE '^- A5 .*revisit-status: open'` — window-events obligation met, ledger validator green, and the Phase-83 A5 row no longer open
 
 ## Checkpoints
 
