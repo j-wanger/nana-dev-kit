@@ -16,7 +16,7 @@ a91ebdae86f0742d7fe84a48807f3378  templates/.claude/skills/dev-debrief/reviewer-
 f260f68027309c17320ab4c03730137a  templates/.claude/skills/dev-init/scaffold-claude-md.md
 ad1d610e7bb6447b11b25a83980c221c  templates/.claude/skills/dev-init/templates/AGENTS.md
 a6e08c453421b01f16d2272685e0dbce  templates/.claude/skills/dev-init/templates/project-CLAUDE.md
-6973d78c5bb574ac0cdb46612288ca4e  templates/.claude/skills/dev-plan/SKILL.md
+220a44051e31394c821f4b5f147c6c98  templates/.claude/skills/dev-plan/SKILL.md
 6885f7ad0d5fd5f6858a3a1050de0466  templates/.claude/skills/dev-plan/approach-reviewer-prompt.md
 92d09542be4996e8b18d70db681ca8ad  templates/.claude/skills/dev-plan/artifact-writer-prompt.md
 ca0c150fa64c56dd728f664ceaee1e3d  templates/.claude/skills/dev-plan/assumption-gate-example.md

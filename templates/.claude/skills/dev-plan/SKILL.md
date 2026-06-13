@@ -189,6 +189,8 @@ The wiki provides domain knowledge; the user provides **intent**. Three question
 
 **Non-vacuity gate:** Review your T0 output. If any response merely confirms the user's framing without naming a specific risk or alternative, redo that check. After one retry, if still vacuous, log `"T0: unable to generate genuine challenge for [check N]"` and proceed — do not block planning.
 
+**Reframe-absorption (conditional — fires when the user's Step 9 answer materially changes your approach, not for a mere parameter choice — a changed parameter, a clarified scope detail, or a yes/no confirmation does NOT trigger this):** Do NOT proceed to propose until you have emitted, in conversation: (1) the reframe restated in the project's own decision-vocabulary — not the user's words echoed back; (2) what it *invalidates* in your prior approach; (3) a check against the constraints already loaded (prior decisions, wiki knowledge). Forward progress is gated on this — silently complying with a reframe is the failure this catches.
+
 Based on user's answers (or prior constraints), propose the approach for THIS PHASE ONLY.
 
 - **1-2 options with trade-offs.** Lead with your recommendation.
