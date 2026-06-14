@@ -1120,7 +1120,7 @@ A2 reject -> orchestrator-only verdicts; ledger block appended, 6 rows, all_acce
 <!-- phase:phase-91-memory-e2e-and-gate-forcing-function -->
 ## Phase 91 — Consuming-Project Memory E2E + Assumption-Gate Forcing Function
 
-<!-- gate-log:phase-91 direction=approved delivery=pending -->
+<!-- gate-log:phase-91 direction=approved delivery=accepted -->
 
 ### Track 3 — Assumption-gate forcing function (the gate kept getting skipped — 3rd time — because Phase-90's fix was prose; bind it)
 - [x] T1 enforce-assumption-gate.sh + firing test: RED — tests/test_enforce_assumption_gate.sh pipes real PreToolUse events for an implementation file (src/x.py) in a mktemp -d project: active phase with NO ledger block ⇒ exit 2; empty/touched ledger ⇒ exit 2; malformed-nonempty block (`- A1 junk`) ⇒ exit 2; a valid block ⇒ exit 0; allowlisted path (.dev-wiki/*, *.md) ⇒ exit 0; no .claude/enforce marker ⇒ exit 0 (opt-in); mktemp scratch, NEVER live state. GREEN — implement the hook mirroring enforce-spec.sh (opt-in .claude/enforce OR ~/.claude/enforce marker; .dev-wiki gate; jq parse + project-relative normalize; identical allowlist; parse phase number from .claude/rules/active-phase.md; decide via `scripts/check-assumption-ledger.sh --schema .dev-wiki/assumption-ledger.md` AND `--gate .dev-wiki/assumption-ledger.md <phase>` — either non-zero ⇒ exit 2 with "[nana:enforce-assumption-gate] Phase N has no valid assumption-gate positions — run the dev-plan Step-13 gate before implementing", else allow; log_firing JSONL). REFACTOR — fail-open on missing jq / active-phase / ledger / checker. | scope: templates/.claude/hooks/enforce-assumption-gate.sh, tests/test_enforce_assumption_gate.sh | success: bash tests/test_enforce_assumption_gate.sh | size: M

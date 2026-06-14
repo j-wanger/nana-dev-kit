@@ -17,4 +17,4 @@ Standing (Phases 90-93): EVERY working session appends window-events attestation
 eval/dogfood-round/evidence/window-events.md until the Phase-93 trim-trial disposition. Attestation owed.
 Gates:
 - [x] Direction confirmed by user (assumption positions 2026-06-14: A1/A2/A3 accept held, A4 don't-know → deferred)
-- [ ] Delivery accepted (post-implementation report)
+- [x] Delivery accepted (post-implementation report 2026-06-14, commit 318e9b6)
