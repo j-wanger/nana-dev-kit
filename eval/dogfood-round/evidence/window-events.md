@@ -36,3 +36,24 @@ Phase-89 probative exposure: ak window 3 probative sessions (2 consuming-project
 zero trigger events; wk window 0 probative sessions (suppression + inventory non-overlap —
 recorded honestly; the wk trigger's live surface is the removed/prospective inventory classes,
 which this phase's session tasks did not intersect).
+
+## Phase 90
+
+No per-session attestation rows were appended during the Phase-90 working sessions (the standing
+obligation was added to active-phase.md at the Phase-89 close-out but Phase-90 sessions did not
+self-attest). Recorded here as a known gap, not back-filled (no reliable post-hoc session
+reconstruction). The trim-trial windows remain open through Phase 93; the Phase-90 omission does
+not change any disposition (that authority is the Phase-93 debrief).
+
+## Phase 91
+
+kit-side sessions: phase-91-impl+debrief
+
+| date | session-id | window | reachability | probative? | event |
+|---|---|---|---|---|---|
+| 2026-06-14 | p91-session | ak | compaction=n planning=y | y (kit-side Phase-91 planning + implementation: dev-plan run, gate narrowing, memory root-cause — planning/implementation decisions reached correctly without active-knowledge re-presentation) | none |
+| 2026-06-14 | p91-session | wk | WK-already-presents-it | n (kit-side suppression: always-loaded working-knowledge still presents pinned decisions; no removed-class entry was re-derived) | none |
+
+Phase-91 probative exposure: ak window 1 probative session (kit-side), zero trigger events; wk
+window 0 probative sessions (kit-side suppression). Recorded honestly per the pinned reachability
+rules; disposition authority unchanged (Phase-93 debrief).

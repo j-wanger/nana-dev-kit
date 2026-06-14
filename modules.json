@@ -11,7 +11,8 @@
       "mcp": {
         "name": "memory",
         "module": "memory_server",
-        "cwd": "~/.claude"
+        "cwd": "~/.claude",
+        "env": { "PYTHONPATH": "~/.claude" }
       }
     },
     {
@@ -51,6 +52,7 @@
     { "event": "SessionStart", "matcher": "", "script": "session-start.sh", "scope": "project" },
     { "event": "PreToolUse", "matcher": "Write|Edit|MultiEdit", "script": "enforce-spec.sh", "scope": "project" },
     { "event": "PreToolUse", "matcher": "Write|Edit|MultiEdit", "script": "enforce-memory.sh", "scope": "project" },
+    { "event": "PreToolUse", "matcher": "Write|Edit|MultiEdit", "script": "enforce-assumption-gate.sh", "scope": "project" },
     { "event": "PreToolUse", "matcher": "Write|Edit|MultiEdit", "script": "dev-wiki-scope-check.sh", "scope": "project" },
     { "event": "PreToolUse", "matcher": "Write|Edit|MultiEdit", "script": "scan-secrets.sh", "scope": "project" },
     { "event": "PreToolUse", "matcher": "Bash", "script": "block-dangerous-bash.sh", "scope": "project" },

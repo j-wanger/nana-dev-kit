@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 89</title>
+<title>Delivery Report: Phase 91</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,38 +21,40 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 89 &mdash; Phase 89</h1>
+<h1>Delivery Report: Phase 91 &mdash; Phase 91</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">6/6</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">9</div><div class="label">Files Changed</div></div>
-  <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (49 passed)</div></div>
+  <div class="card"><div class="num">6/9</div><div class="label">Tasks (66%)</div></div>
+  <div class="card"><div class="num">19</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (51 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">50/50</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+108</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-41</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">3</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">12:09</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+161</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-73</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">2</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">14:41</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>T1 Pre-registration commit FIRST: test check-preregistration.sh selftest (missing-section + non-ancestor fixtures fai...</td></tr>
-<tr><td>&#x2705;</td><td>T2 Evidence checkers: test seeded fixtures (malformed session block, stub demand row, missing header field, misplaced...</td></tr>
-<tr><td>&#x2705;</td><td>T3 Guard checkers + runner: test seeded controls (stale ctw hash, lingering detect-loop registration, templates/ touc...</td></tr>
-<tr><td>&#x2705;</td><td>T4 Probes + HARD checkpoint + edge-screener re-sync: test rehearsal on a COPY of the actual edge-screener settings.lo...</td></tr>
-<tr><td>&#x2705;</td><td>T5 Evidence sessions: test pinned-rule extraction reproducibility (RED: re-running the pinned classification commands...</td></tr>
-<tr><td>&#x2705;</td><td>T6 Close-out: test run-exit-criteria.sh ALL-PASS only on full run (RED: seeded-failure control), write memory-demand....</td></tr>
+<tr><td>&#x2705;</td><td>T1 enforce-assumption-gate.sh + firing test: RED — tests/test_enforce_assumption_gate.sh pipes real PreToolUse events...</td></tr>
+<tr><td>&#x2705;</td><td>T2 Register (single source of truth) + regenerate: RED — tests/test_registration.sh asserts enforce-assumption-gate p...</td></tr>
+<tr><td>&#x2705;</td><td>T3 Both-landings + verify-by-firing + document the binding: RED — clean-env firing smoke (pipe a real event from a mk...</td></tr>
+<tr><td>&#x2705;</td><td>T4 Teach the MCP registration `env`, set PYTHONPATH: RED — the REAL `-m memory_server` launch from a non-package cwd ...</td></tr>
+<tr><td>&#x2705;</td><td>T5 Verify-by-firing in a REAL consumer (A2's committed acceptance — STOP-on-fail): RED — in a consumer (fresh mktemp ...</td></tr>
+<tr><td>&#x2705;</td><td>T6 Per-project topology hygiene + setup docs: RED — the template gitignore lacks .memory/. GREEN — ship .memory/ (+ -...</td></tr>
+<tr><td>&#x2B1C;</td><td>Build the idempotent `install.sh` update / consuming-project re-sync mode (the ORIGINAL Phase-91 scope; signal-watch ...</td></tr>
+<tr><td>&#x2B1C;</td><td>Consumer assumption-ledger format-drift normalization (older blocks fail strict `--schema`; a migration pass would al...</td></tr>
+<tr><td>&#x2B1C;</td><td>Re-measure Phase-92 memory-layer demand on the now-WORKING layer (couldn't-fire → can-fire changes the prune's eviden...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Dogfood &amp; Demand-Evidence Round</td><td>high</td></tr>
-<tr><td>Trim-round executed outcome (Phase 88)</td><td>high</td></tr>
-<tr><td>Trim Follow-On Round (Phase 88)</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Assumption-Gate Hook Binding (prose → enforce-assumption-gate.sh, --gate-only)</td><td>high</td></tr>
+<tr><td>Memory MCP Consumer E2E Fix (fix-then-judge + PYTHONPATH env)</td><td>high</td></tr>
 </table>
 
 <h2>Files Changed</h2>
@@ -60,18 +62,28 @@
 <li><code>.claude/rules/active-phase.md</code></li>
 <li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
-<li><code>.dev-wiki/articles/phases/phase-89-dogfood-evidence-round.md</code></li>
 <li><code>.dev-wiki/assumption-ledger.md</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
+<li><code>.dev-wiki/tasks.md</code></li>
 <li><code>docs/report.html</code></li>
 <li><code>docs/workflow.html</code></li>
+<li><code>eval/dogfood-round/evidence/window-events.md</code></li>
+<li><code>modules.json</code></li>
+<li><code>scripts/register-settings.py</code></li>
+<li><code>templates/.claude/settings.json</code></li>
+<li><code>templates/.claude/skills/MANIFEST</code></li>
+<li><code>templates/.claude/skills/dev-plan/SKILL.md</code></li>
+<li><code>templates/.claude/skills/dev-plan/assumption-gate.md</code></li>
+<li><code>templates/.claude/skills/py-init/transform.md</code></li>
+<li><code>templates/.claude/skills/ts-init/transform.md</code></li>
+<li><code>tests/test_install.sh</code></li>
 
 
 </ul>
 
 <h2>Test Results</h2>
-<p><span class="status" style="background:#2d7d2d">PASS</span> 49 passed, 1 failed</p>
+<p><span class="status" style="background:#2d7d2d">PASS</span> 51 passed, 1 failed</p>
 <pre>  --count includes dir-currency rows                 OK
 
 install-drift dir-currency: 7 run, 7 passed, 0 failed
@@ -83,7 +95,7 @@ All tests passed.</pre>
 <pre>Score: 50/50 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-06-11 12:09:13 by generate-delivery-report.py
+  Generated 2026-06-14 14:41:30 by generate-delivery-report.py
 </div>
 </body>
 </html>

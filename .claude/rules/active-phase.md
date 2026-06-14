@@ -1,21 +1,20 @@
 # Active Phase Context
 
-Phase: 90 — Fable-5 Distillation (executed 2026-06-13; READY FOR DELIVERY GATE)
-Objective: make future opus-4-8 sessions behave more like the removed fable-5 at assumption-
-surfacing, frame-challenging, and interaction clarity — via checkable forcing-functions (not more
-comply-in-form prose) + system-design recovery of the "intrinsic" reframe behaviors.
-Status: implemented. Track A (soul lift, both copies, parity-verified, 5 forcing-functions present),
-Track B1 (dev-plan reframe-absorption beat, both copies), Track B2 (clean-context framing subagent
-STAGED + pilot-gated — built, NOT wired). I2 reveal-banking deferred (feeds Phase-91 prune target).
-Key constraints: ships on JUDGMENT not measurement (interaction quality unmeasurable in-kit — Ph59/Ph80);
-B2 deploys ONLY after the consuming-project pilot passes (eval/fable-distill/pilot-protocol.md);
-nana-personal.md user-owned (untouched); trim-trial commits d43950f/df3e623/75b48af/b8bd416 untouched.
-Scope: nana-soul.md + dev-plan SKILL.md (both global+template), eval/fable-distill/**, dev-wiki records.
-Next: delivery report → user acceptance → /dev-debrief (journal + review gate) → commit/push.
-Memory-prune renumbered Phase 90 → Phase 91 (spec + decision article re-pointed).
-Standing (Phases 90-93): EVERY working session appends its window-events attestation rows to
-eval/dogfood-round/evidence/window-events.md until the Phase-93 trim-trial disposition (protocol:
-eval/dogfood-round/pre-registration.md). This session is a Phase-90 working session — attestation owed.
+Phase: 91 — Consuming-Project Memory E2E + Assumption-Gate Forcing Function (implemented 2026-06-14; READY FOR DELIVERY GATE)
+Objective: (Track 3) bind the dev-plan assumption gate with a forcing-function hook so it cannot be
+skipped — Phase-90's "fix" was prose and didn't bind (3rd skip); (Track 1) make Memory MCP actually fire
+in consuming projects (root cause: `-m memory_server` resolves only from the package-bearing kit cwd;
+fix = PYTHONPATH=$HOME/.claude env on the registration). Track 2 (recovery) DEFERRED per gate A4.
+Status: implemented. 6/6 tasks [x]. Track 3 — enforce-assumption-gate.sh (PreToolUse Write|Edit|MultiEdit,
+`--gate`-only, both-landings, 7 firing cases). Track 1 — register-settings.py cmd_mcp emits env +
+modules.json mcp env; verified by FIRING a consumer memory_search (DB created). make test ALL-PASS.
+Scope: enforce-assumption-gate.sh, modules.json, register-settings.py, dev-plan {assumption-gate,SKILL}.md,
+tests/**, ~/.claude + ~/.claude.json landings, docs, consumer propagation (USER OVERRIDE), .dev-wiki records.
+Key constraints: verify-by-FIRING not presence (HEU-012); `--gate`-only (whole-file --schema false-locks
+properly-gated projects — aml-substrate); no-lockout consumer propagation (armed in kit+aml-substrate, staged
+in 4 consumers, signal-watch deferred); fix-then-judge unblocks Phase-92's prune. Next: delivery → accept → push.
+Standing (Phases 90-93): EVERY working session appends window-events attestation rows to
+eval/dogfood-round/evidence/window-events.md until the Phase-93 trim-trial disposition. Attestation owed.
 Gates:
-- [x] Direction confirmed by user (A1 accept-pilot-gated, A2/A3/A4 accept — 2026-06-13)
-- [x] Delivery accepted (post-implementation report 2026-06-13, f2d3658)
+- [x] Direction confirmed by user (assumption positions 2026-06-14: A1/A2/A3 accept held, A4 don't-know → deferred)
+- [ ] Delivery accepted (post-implementation report)

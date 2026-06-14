@@ -100,7 +100,7 @@ def cmd_hooks(args):
 def cmd_mcp(args):
     # Server name + module come from modules.json when provided (Phase 82) — they were
     # hardcoded here, which made the manifest's declared mcp block dead config.
-    name, module = "memory", "memory_server"
+    name, module, env = "memory", "memory_server", None
     if getattr(args, "modules_json", None) and os.path.isfile(args.modules_json):
         with open(args.modules_json) as f:
             manifest = json.load(f)
@@ -109,10 +109,11 @@ def cmd_mcp(args):
             if mcp:
                 name = mcp.get("name", name)
                 module = mcp.get("module", module)
+                env = mcp.get("env")  # optional {VAR: value}; values may contain ~ or $HOME
                 break
 
     if args.dry_run:
-        print(f"[dry-run] register MCP: name={name}, module={module}, python={args.python}, cwd={args.cwd}")
+        print(f"[dry-run] register MCP: name={name}, module={module}, python={args.python}, cwd={args.cwd}, env={env}")
         return
 
     settings_path = args.settings_json
@@ -122,11 +123,16 @@ def cmd_mcp(args):
             data = json.load(f)
     if "mcpServers" not in data:
         data["mcpServers"] = {}
-    data["mcpServers"][name] = {
+    entry = {
         "command": os.path.expanduser(args.python),
         "args": ["-m", module],
         "cwd": os.path.expanduser(args.cwd),
     }
+    if env:
+        # cwd is CLI-passed; env is manifest-sourced (deliberate sourcing asymmetry — Phase 91).
+        # Expand $HOME and ~ in env values so a relative kit path resolves at registration time.
+        entry["env"] = {k: os.path.expanduser(os.path.expandvars(str(v))) for k, v in env.items()}
+    data["mcpServers"][name] = entry
 
     with open(settings_path, "w") as f:
         json.dump(data, f, indent=2)

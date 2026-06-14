@@ -70,6 +70,7 @@ for f in "$KIT/templates/.claude/rules/"*.md; do n=$(basename "$f"); [ -f ".clau
 [ -f .github/CODEOWNERS ] || cp "$KIT/templates/.github/CODEOWNERS" .github/
 grep -q '.nana/' .gitignore 2>/dev/null || echo '.nana/' >> .gitignore
 grep -q 'enforcement.log' .gitignore 2>/dev/null || echo '.dev-wiki/enforcement.log' >> .gitignore
+grep -q '.memory/' .gitignore 2>/dev/null || echo '.memory/*.db*' >> .gitignore   # per-project memory MCP store (binary; never commit)
 ```
 
 ## Step 6: Sync and Install

@@ -85,3 +85,7 @@ truth; do NOT inline a divergent copy here. Append only; never rewrite a prior p
 deterministic check asserts on, so the gate cannot be narrated without actually being taken.
 
 See `assumption-gate-example.md` for a worked mixed-positions case and an all-accept case.
+
+## Enforcement (Phase 91)
+
+This gate is hook-bound, not prose-only: `enforce-assumption-gate.sh` (PreToolUse `Write|Edit|MultiEdit`, mirrors `enforce-spec`) blocks implementation writes whenever the active phase's ledger block is absent or malformed — it runs `check-assumption-ledger.sh --gate <phase>` (the active phase has positions recorded). Whole-file `--schema` is deliberately NOT required — a malformed prior-phase block (format drift in older/consumer ledgers) must not false-block a properly-gated current phase. The Phase-90 fix was prose-only and was skipped a 3rd time; the hook makes the durable ledger block a precondition for implementation. It enforces that the gate FIRED — not reasoning quality (all-accept stays allowed-but-warned).

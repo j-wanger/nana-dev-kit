@@ -16,11 +16,11 @@ a91ebdae86f0742d7fe84a48807f3378  templates/.claude/skills/dev-debrief/reviewer-
 f260f68027309c17320ab4c03730137a  templates/.claude/skills/dev-init/scaffold-claude-md.md
 ad1d610e7bb6447b11b25a83980c221c  templates/.claude/skills/dev-init/templates/AGENTS.md
 a6e08c453421b01f16d2272685e0dbce  templates/.claude/skills/dev-init/templates/project-CLAUDE.md
-220a44051e31394c821f4b5f147c6c98  templates/.claude/skills/dev-plan/SKILL.md
+a42fdbac96d8ba09390f6bff0007e07b  templates/.claude/skills/dev-plan/SKILL.md
 6885f7ad0d5fd5f6858a3a1050de0466  templates/.claude/skills/dev-plan/approach-reviewer-prompt.md
 92d09542be4996e8b18d70db681ca8ad  templates/.claude/skills/dev-plan/artifact-writer-prompt.md
 ca0c150fa64c56dd728f664ceaee1e3d  templates/.claude/skills/dev-plan/assumption-gate-example.md
-091c9f25b38c2dc54af8d8345db3359a  templates/.claude/skills/dev-plan/assumption-gate.md
+93afe9c9ed6585433b747a824245c549  templates/.claude/skills/dev-plan/assumption-gate.md
 e433a2c48ce8c294413724249046ed7f  templates/.claude/skills/dev-plan/compaction-anchors-spec.md
 494c4932376aae8417d4315c41db2c14  templates/.claude/skills/dev-plan/implementation-guide.md
 0292ee0ac5649b100f65c8a953292f50  templates/.claude/skills/dev-plan/iterative-retrieval-spec.md
@@ -68,7 +68,7 @@ e1a8fb68d256f4e35bc46ca6b0c5d1ef  templates/.claude/skills/nana-init/SKILL.md
 3cb21107c1f218c7e5db86649a6a4a6e  templates/.claude/skills/nana/SKILL.md
 eac499e3359d9c71db775ff19bd8a76c  templates/.claude/skills/py-init/SKILL.md
 eaf3ff5083d5adbafae334e7db01f1e3  templates/.claude/skills/py-init/scanner.md
-4f467dd12489597e61bb7e8082209840  templates/.claude/skills/py-init/transform.md
+bd4d714fd65d885b8c9f4c4a64ba85d4  templates/.claude/skills/py-init/transform.md
 c27991e337470cd89df485d6fd9011af  templates/.claude/skills/py-lint/SKILL.md
 cefb4a1bd5cf707c9b062640fb353221  templates/.claude/skills/py-review/SKILL.md
 f9dcecfa3ba6af91de1813c40909c982  templates/.claude/skills/py-test/SKILL.md
@@ -77,7 +77,7 @@ fbeb0156f9f818f7ddc12a9fac66f937  templates/.claude/skills/spec/SKILL.md
 70080273d4981cb0cf0e2abc267d0982  templates/.claude/skills/spec/spec-reviewer-prompt.md
 82d264909a0abe1ac2af22681c4c9ab0  templates/.claude/skills/ts-init/SKILL.md
 efd2db12e12ce274fddcd4e8419535ed  templates/.claude/skills/ts-init/scanner.md
-034803c16bac067691aa3ee05409b151  templates/.claude/skills/ts-init/transform.md
+82f8649c8d0d2b35b37ccd63d2e1c1d4  templates/.claude/skills/ts-init/transform.md
 e25689dcabb6ba8d44906315d4740663  templates/.claude/skills/wiki-absorb/SKILL.md
 5e483a95d6f976a3609562881e2b817e  templates/.claude/skills/wiki-absorb/analyst-prompt.md
 fcafe4e22725d0fe4c3f8e3aff91d917  templates/.claude/skills/wiki-absorb/reviewer-prompt.md
