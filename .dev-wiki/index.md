@@ -94,7 +94,7 @@
 - [[phase-89-dogfood-evidence-round|Phase 89: Post-Trim Dogfood & Demand-Evidence Round]] -- completed
 - [[fable-distillation-round|Phase 90: Fable-5 Distillation]] -- completed (no phase article; tracked via the decision)
 - [[phase-91-memory-e2e-and-gate-forcing-function|Phase 91: Consuming-Project Memory E2E + Assumption-Gate Forcing Function]] -- completed
-- [[phase-92-strategic-inflection-review|Phase 92: Strategic Inflection Review & Roadmap Re-sequencing]] -- active
+- [[phase-92-strategic-inflection-review|Phase 92: Strategic Inflection Review & Roadmap Re-sequencing]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility

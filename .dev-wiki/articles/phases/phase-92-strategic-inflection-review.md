@@ -7,7 +7,7 @@ parents: []
 created: 2026-06-18
 updated: 2026-06-18
 source: plan
-status: active
+status: completed
 scope: [".dev-wiki/**", ".claude/rules/active-phase.md", "specs/phase-92-memory-layer-prune.md"]
 entry_criteria: "Phase 91 delivered (e62e4dd); maintainer called an inflection point"
 exit_criteria: "two decision articles present; assumption-ledger --gate + --schema pass for Phase 92; roadmap re-sequenced to 93->94->95; old prune spec carries the re-sequence note"

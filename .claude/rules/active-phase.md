@@ -29,4 +29,4 @@ eval/dogfood-round/evidence/window-events.md until the Phase-93 trim-trial dispo
 Decisions: [[strategic-inflection-review]] (high), [[deterministic-vs-llm-boundary]] (high).
 Gates:
 - [x] Direction confirmed by user (assumption positions 2026-06-18: A1 reject->product-frame absorbed; A2/A3/A4/A5 accept; all_accept:false)
-- [ ] Delivery accepted (post-implementation report)
+- [x] Delivery accepted (post-implementation report 2026-06-18, commit 1dc1d80 verified pushed)
