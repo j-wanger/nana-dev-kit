@@ -1155,7 +1155,7 @@ The three "Discovered" items above formalize into the roadmap: install.sh re-syn
 
 ## Phase 93 — install.sh Idempotent Update / Consuming-Project Re-sync Mode
 
-<!-- gate-log:phase-93 direction=approved delivery=pending -->
+<!-- gate-log:phase-93 direction=approved delivery=accepted -->
 
 Standard ceremony. Direction gate closed 2026-06-18 (ledger A1-A5 accept, all_accept:true). Spec specs/phase-93-install-resync.md (nana:approved). BUILD + SANDBOX-VERIFY ONLY — ZERO live consumer writes. Controls-first TDD.
 

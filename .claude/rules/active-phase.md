@@ -15,4 +15,4 @@ Next: delivery gate → Phase 94 (consumer memory re-measure) → Phase 95 (memo
 Live application of --update is DEFERRED (Blockers): dry-run-first, per consumer, arm-separately; NO live consumer write occurred.
 Gates:
 - [x] Direction confirmed by user (assumption positions 2026-06-18: A1-A5 accept, all_accept:true)
-- [ ] Delivery accepted (post-implementation report)
+- [x] Delivery accepted (post-implementation report 2026-06-18; commit 5f830dc verified)
