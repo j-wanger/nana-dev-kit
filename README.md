@@ -107,12 +107,12 @@ When active: `/spec` required before implementation (PreToolUse), `memory_search
 
 ## Upgrading
 
-Re-run `~/nana-dev-kit/install.sh` to update. Existing files are overwritten; `nana-personal.md` is preserved if it already exists.
+Re-run `~/nana-dev-kit/install.sh` to refresh the global install (`nana-personal.md` preserved). To re-sync a **consuming project** to the current kit, run `install.sh --update` from its root: it ADD/UPDATEs hooks, dedupes registrations by basename, and deregisters cut hooks (timestamped backup → survivor smoke → revert-on-failure). Idempotent; arming is decoupled (`.claude/enforce` untouched unless `--arm`); non-kit settings, `.dev-wiki`, and `.gitignore` are preserved. Preview with `--update --dry-run`; report drift read-only with `scripts/check-install-drift.sh --consumer .`.
 
 ## Testing
 
 ```bash
-make test    # ~500 tests across 27 scripts
+make test    # ~530 tests across 28 scripts
 make eval    # 52 eval scenarios (requires jq)
 make report  # package inventory at docs/report.html
 ```

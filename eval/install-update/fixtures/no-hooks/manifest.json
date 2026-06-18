@@ -1,0 +1,12 @@
+{
+  "class": "no-hooks",
+  "models": "signal-watch — a consuming project with NO kit hooks installed at all",
+  "mutations": [
+    { "op": "strip_all" }
+  ],
+  "expect": {
+    "cut_hooks": [],
+    "duplicate_registrations": [],
+    "missing_mode": "all"
+  }
+}

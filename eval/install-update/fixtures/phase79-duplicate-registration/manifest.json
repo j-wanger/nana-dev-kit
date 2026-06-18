@@ -1,0 +1,12 @@
+{
+  "class": "phase79-duplicate-registration",
+  "models": "a pre-Phase-79 hand-patched consumer — enforce-spec.sh registered under two distinct command strings (bare relative + ${CLAUDE_PROJECT_DIR}-absolute); DRQ-1: both fire, register-settings.py is upsert-only and cannot dedupe them",
+  "mutations": [
+    { "op": "duplicate", "script": "enforce-spec.sh", "event": "PreToolUse", "matcher": "Write|Edit|MultiEdit" }
+  ],
+  "expect": {
+    "cut_hooks": [],
+    "duplicate_registrations": ["enforce-spec.sh"],
+    "missing_mode": "none"
+  }
+}

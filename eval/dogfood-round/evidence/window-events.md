@@ -69,3 +69,30 @@ kit-side session: phase-92-strategic-inflection-review (this /dev-plan session)
 
 Phase-92 probative exposure: ak window 1 probative session (kit-side), zero trigger events; wk
 window 0 probative sessions (kit-side suppression). Disposition authority unchanged (Phase-93 debrief).
+
+## Phase 93
+
+kit-side session: phase-93-install-resync (build + sandbox-verify + this debrief)
+
+| date | session-id | window | reachability | probative? | event |
+|---|---|---|---|---|---|
+| 2026-06-18 | p93-session | ak | compaction=n planning=y | y (kit-side Phase-93 implementation: post-compaction task resume + controls-first TDD decisions reached correctly without active-knowledge re-presentation) | none |
+| 2026-06-18 | p93-session | wk | WK-already-presents-it | n (kit-side suppression: always-loaded working-knowledge still presents the pinned decisions; no removed-class entry was re-derived) | none |
+
+Phase-93 probative exposure: ak window 1 probative session (kit-side), zero trigger events; wk
+window 0 probative sessions (kit-side suppression).
+
+## Window close — disposition (Phase-93 debrief, 2026-06-18)
+
+The 5-phase observation windows for both trim-trials close at this debrief. **Across the full window
+(Phases 88, 89, 90, 91, 92, 93): ZERO trigger-matching events.** No `event: filed` row exists; every
+section reads `none`. ak saw probative kit-side planning/recovery sessions (Ph89/91/92/93) that reached
+correct decisions WITHOUT active-knowledge re-presentation; wk was kit-side-suppressed throughout
+(always-loaded working-knowledge still presents the pinned decisions, so no removed-class entry was
+re-derivable to count — recorded honestly, never back-filled; the Phase-90 self-attestation gap is
+noted in that section). Windows closed CLEAN.
+
+Disposition recommendation (authority = maintainer, executed at Phase 95 per the roadmap "make the
+Ph88 trim-trials permanent if windows close clean"): **CONFIRM both ak-ride-along (d43950f) and
+wk-seeding (df3e623) — not restore.** The trim-trial Blockers entries stay open until Phase 95 records
+the confirm; this file is frozen at window close.

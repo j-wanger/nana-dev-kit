@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 91</title>
+<title>Delivery Report: Phase 93</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,40 +21,38 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 91 &mdash; Phase 91</h1>
+<h1>Delivery Report: Phase 93 &mdash; Phase 93</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">6/9</div><div class="label">Tasks (66%)</div></div>
-  <div class="card"><div class="num">19</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">5/5</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">16</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (51 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">50/50</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+161</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-73</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">2</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">14:41</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+442</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-79</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">4</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">13:03</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>T1 enforce-assumption-gate.sh + firing test: RED — tests/test_enforce_assumption_gate.sh pipes real PreToolUse events...</td></tr>
-<tr><td>&#x2705;</td><td>T2 Register (single source of truth) + regenerate: RED — tests/test_registration.sh asserts enforce-assumption-gate p...</td></tr>
-<tr><td>&#x2705;</td><td>T3 Both-landings + verify-by-firing + document the binding: RED — clean-env firing smoke (pipe a real event from a mk...</td></tr>
-<tr><td>&#x2705;</td><td>T4 Teach the MCP registration `env`, set PYTHONPATH: RED — the REAL `-m memory_server` launch from a non-package cwd ...</td></tr>
-<tr><td>&#x2705;</td><td>T5 Verify-by-firing in a REAL consumer (A2's committed acceptance — STOP-on-fail): RED — in a consumer (fresh mktemp ...</td></tr>
-<tr><td>&#x2705;</td><td>T6 Per-project topology hygiene + setup docs: RED — the template gitignore lacks .memory/. GREEN — ship .memory/ (+ -...</td></tr>
-<tr><td>&#x2B1C;</td><td>Build the idempotent `install.sh` update / consuming-project re-sync mode (the ORIGINAL Phase-91 scope; signal-watch ...</td></tr>
-<tr><td>&#x2B1C;</td><td>Consumer assumption-ledger format-drift normalization (older blocks fail strict `--schema`; a migration pass would al...</td></tr>
-<tr><td>&#x2B1C;</td><td>Re-measure Phase-92 memory-layer demand on the now-WORKING layer (couldn't-fire → can-fire changes the prune's eviden...</td></tr>
+<tr><td>&#x2705;</td><td>T1 Consumer-state fixture harness + seeded controls (controls-first): test tests/test_install_update.sh builds mktemp...</td></tr>
+<tr><td>&#x2705;</td><td>T2 install.sh --update mode (reconcile ADD/UPDATE + dedupe-by-basename, arming decoupled): test --update on a staged ...</td></tr>
+<tr><td>&#x2705;</td><td>T3 Automated basename-normalized deregistration of cut hooks behind safety rails: test a seeded cut-hook (detect-loop...</td></tr>
+<tr><td>&#x2705;</td><td>T4 Idempotency + don't-clobber invariants + drift-comparator integration: test re-running --update is a true no-op, n...</td></tr>
+<tr><td>&#x2705;</td><td>T5 Close-out: docs + deferred live-application filing: document --update (install.sh header + README + AGENTS pointer...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Assumption-Gate Hook Binding (prose → enforce-assumption-gate.sh, --gate-only)</td><td>high</td></tr>
-<tr><td>Memory MCP Consumer E2E Fix (fix-then-judge + PYTHONPATH env)</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Deregistration + dedupe as register-settings.py subcommands (first dereg mechanism, two-tier cut handling, basename-normalized)</td><td>high</td></tr>
+<tr><td>install.sh Idempotent Update / Re-sync Mode (build + sandbox-verify, automated dereg behind rails, build-only)</td><td>high</td></tr>
+<tr><td>Deterministic vs LLM Boundary in an Agentic Harness</td><td>high</td></tr>
+<tr><td>Strategic Inflection Review — Product Frame + Re-measure-then-Shrink</td><td>high</td></tr>
 </table>
 
 <h2>Files Changed</h2>
@@ -66,27 +64,24 @@
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
+<li><code>Makefile</code></li>
+<li><code>README.md</code></li>
 <li><code>docs/report.html</code></li>
 <li><code>docs/workflow.html</code></li>
 <li><code>eval/dogfood-round/evidence/window-events.md</code></li>
+<li><code>install.sh</code></li>
 <li><code>modules.json</code></li>
+<li><code>scripts/check-install-drift.sh</code></li>
 <li><code>scripts/register-settings.py</code></li>
-<li><code>templates/.claude/settings.json</code></li>
-<li><code>templates/.claude/skills/MANIFEST</code></li>
-<li><code>templates/.claude/skills/dev-plan/SKILL.md</code></li>
-<li><code>templates/.claude/skills/dev-plan/assumption-gate.md</code></li>
-<li><code>templates/.claude/skills/py-init/transform.md</code></li>
-<li><code>templates/.claude/skills/ts-init/transform.md</code></li>
-<li><code>tests/test_install.sh</code></li>
 
 
 </ul>
 
 <h2>Test Results</h2>
 <p><span class="status" style="background:#2d7d2d">PASS</span> 51 passed, 1 failed</p>
-<pre>  --count includes dir-currency rows                 OK
+<pre>  [check-drift --consumer] clean again after --update reconciles the staged fixture (detect-and-warn closes) OK
 
-install-drift dir-currency: 7 run, 7 passed, 0 failed
+install-update-harness: 37 run, 37 passed, 0 failed
 
 All tests passed.</pre>
 
@@ -95,7 +90,7 @@ All tests passed.</pre>
 <pre>Score: 50/50 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-06-14 14:41:30 by generate-delivery-report.py
+  Generated 2026-06-18 13:03:26 by generate-delivery-report.py
 </div>
 </body>
 </html>

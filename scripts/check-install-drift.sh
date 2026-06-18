@@ -48,12 +48,64 @@ for a in "$@"; do
   case "$a" in
     --count) MODE="count" ;;
     --excludes) MODE="excludes" ;;
+    --consumer) MODE="consumer" ;;
     *) ROOT_ARG="$a" ;;
   esac
 done
 
 if [ "$MODE" = "excludes" ]; then
   printf '%s\n' "${EXCLUDE[@]}"
+  exit 0
+fi
+
+# --- Consumer-aware drift (Phase 93): detect-and-warn complement to install.sh --update ---
+# This is a DIFFERENT comparison from the kit-vs-installed drift below: a consuming project's
+# project-local hook set (files + settings.local.json registrations) reconciled, BY BASENAME,
+# against the kit's CURRENT scope:project hook set. Surfaces the three classes --update fixes —
+#   missing:   a current kit project hook absent from the consumer            (ADD)
+#   duplicate: one script basename registered more than once (DRQ-1)          (DEDUPE)
+#   cut:       a registered/present basename the kit no longer ships          (DEREG — flagged)
+# Liberal flagging (every cut hook, on the cut-list or not); --update removes only the cut-list.
+# Read-only and FAIL-OPEN (the comparator never mutates a consumer). Exit 1 on drift, 0 clean.
+if [ "$MODE" = "consumer" ]; then
+  CROOT="$ROOT_ARG"
+  if [ -z "$CROOT" ] || ! command -v jq >/dev/null 2>&1 || [ ! -f "$MODULES_JSON" ]; then
+    exit 0
+  fi
+  C_SETTINGS="$CROOT/.claude/settings.local.json"
+  C_HOOKS="$CROOT/.claude/hooks"
+  KIT_SET=$(jq -r '.hooks[] | select(.scope == "project") | .script' "$MODULES_JSON" 2>/dev/null | sort -u)
+
+  c_registered() {  # one basename per registration command (dups kept)
+    [ -f "$C_SETTINGS" ] || return 0
+    jq -r '(.hooks // {}) | to_entries[] | .value[]? | (.hooks // [])[]? | (.command // .prompt // empty)' \
+       "$C_SETTINGS" 2>/dev/null | sed 's#.*/##' | sed '/^$/d'
+  }
+  c_present() {  # registered OR on-disk basenames
+    { c_registered
+      if [ -d "$C_HOOKS" ]; then find "$C_HOOKS" -maxdepth 1 -type f -name '*.sh' -exec basename {} \; ; fi
+    } | sort -u
+  }
+
+  C_DRIFT=()
+  while IFS= read -r b; do
+    [ -n "$b" ] || continue
+    c_present | grep -qxF "$b" || C_DRIFT+=("missing: $b")
+  done <<< "$KIT_SET"
+  while IFS= read -r b; do
+    [ -n "$b" ] || continue
+    C_DRIFT+=("duplicate: $b")
+  done < <(c_registered | sort | uniq -d)
+  while IFS= read -r b; do
+    [ -n "$b" ] || continue
+    grep -qxF "$b" <<<"$KIT_SET" || C_DRIFT+=("cut: $b")
+  done < <(c_present)
+
+  if [ "${#C_DRIFT[@]}" -gt 0 ]; then
+    printf '%s\n' "${C_DRIFT[@]}"
+    echo "consumer drift: ${#C_DRIFT[@]} item(s) in $CROOT — run install.sh --update to reconcile."
+    exit 1
+  fi
   exit 0
 fi
 

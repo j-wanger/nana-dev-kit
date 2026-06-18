@@ -9,7 +9,13 @@
 #   --no-typescript  Skip ts-init skill
 #   --project-local  Install ALL project-scoped hooks from modules.json (17)
 #                    into $PWD/.claude/hooks/. No global writes.
-#   --dry-run        Print actions without copying
+#   --update         Idempotently re-sync an already-installed consuming project ($PWD/.claude)
+#                    to the current kit: ADD/UPDATE project hooks, dedupe registrations by script
+#                    basename (DRQ-1), and FLAG cut hooks for the gated dereg. Arming is DECOUPLED
+#                    — .claude/enforce is left untouched unless --arm is also passed. A consumer
+#                    with no kit hooks (e.g. signal-watch) is fully installed via this same path.
+#   --arm            With --update: also create/keep the .claude/enforce marker (opt-in arming).
+#   --dry-run        Print actions without copying (with --update: print the reconciliation diff)
 
 set -euo pipefail
 
@@ -24,6 +30,8 @@ REGISTER_SCRIPT="$SCRIPT_DIR/scripts/register-settings.py"
 DRY_RUN=false
 SHOW_STATUS=false
 PROJECT_LOCAL=false
+UPDATE=false
+ARM=false
 INSTALL_CORE=true
 INSTALL_PYTHON=true
 INSTALL_TYPESCRIPT=true
@@ -38,6 +46,10 @@ while [[ $# -gt 0 ]]; do
       SHOW_STATUS=true ;;
     --project-local)
       PROJECT_LOCAL=true ;;
+    --update)
+      UPDATE=true ;;
+    --arm)
+      ARM=true ;;
     --core-only)
       INSTALL_PYTHON=false
       INSTALL_TYPESCRIPT=false
@@ -55,7 +67,7 @@ while [[ $# -gt 0 ]]; do
       INSTALL_KNOWLEDGE=true ;;
     *)
       echo "Error: unknown flag: $1" >&2
-      echo "Usage: install.sh [--all|--core-only|--no-python|--no-typescript] [--project-local] [--dry-run] [--status]" >&2
+      echo "Usage: install.sh [--all|--core-only|--no-python|--no-typescript] [--project-local] [--update [--arm]] [--dry-run] [--status]" >&2
       exit 1 ;;
   esac
   shift
@@ -80,6 +92,151 @@ ship_hook_dirs() {  # $1 = destination hooks dir; $2.. = shipped script basename
     done
   done
 }
+
+# --- Helper: basenames registered in a settings file (one line per registration; dups kept) ---
+# Used by --update to compute the reconciliation diff (dedupe + cut-flag detection). Genuinely
+# fail-open under set -euo pipefail: a missing OR malformed-JSON file yields empty + exit 0 (the
+# `jq -e .` validity gate returns BEFORE the producing pipeline, so a parse error cannot propagate
+# its non-zero exit through a `$(...)` substitution and abort the script — the prior `2>/dev/null`
+# only hid jq's message, not its exit code). --update also fail-STOPS on malformed settings upfront.
+registered_basenames() {  # $1 = settings file
+  [ -f "$1" ] || return 0
+  jq -e . "$1" >/dev/null 2>&1 || return 0
+  jq -r '(.hooks // {}) | to_entries[] | .value[]? | (.hooks // [])[]? | (.command // .prompt // empty)' \
+     "$1" 2>/dev/null | sed 's#.*/##' | sed '/^$/d'
+}
+
+# --- Helper: post-dereg survivor smoke — a kept, state-independent enforce hook still fires ---
+# block-dangerous-bash.sh is payload-driven (not marker-gated): exit 2 on a dangerous command,
+# exit 0 on a safe one. A dereg that corrupts settings.local.json or drops a survivor registration
+# fails this; install.sh then reverts from the timestamped backup (HEU-012: assert allow AND block).
+survivor_smoke_ok() {  # $1 = hooks dir, $2 = settings file
+  jq -e . "$2" >/dev/null 2>&1 || return 1
+  local probe="$1/block-dangerous-bash.sh" rc_block=0 rc_allow=0
+  [ -x "$probe" ] || return 0   # survivor absent in this consumer — JSON-validity check stands alone
+  set +e
+  echo '{"tool_input":{"command":"rm -rf /"}}' | bash "$probe" >/dev/null 2>&1; rc_block=$?
+  echo '{"tool_input":{"command":"ls -la"}}'   | bash "$probe" >/dev/null 2>&1; rc_allow=$?
+  set -e
+  [ "$rc_block" -eq 2 ] && [ "$rc_allow" -eq 0 ]
+}
+
+# --- Update / re-sync mode (short-circuit, operates on $PWD/.claude; arming decoupled) ---
+if $UPDATE; then
+  HOOKS_SRC="$SCRIPT_DIR/templates/.claude/hooks"
+  PROJ_HOOKS_DIR=".claude/hooks"
+  PROJ_SETTINGS=".claude/settings.local.json"
+  PROJECT_HOOKS=$(jq -r '.hooks[] | select(.scope == "project") | .script' "$MODULES_JSON")
+  for h in $PROJECT_HOOKS; do
+    [ -f "$HOOKS_SRC/$h" ] || { echo "Error: source missing: $HOOKS_SRC/$h" >&2; exit 1; }
+  done
+  # Malformed consumer settings is a prerequisite violation — fail STOP here, BEFORE any cp/mutation,
+  # so a hand-corrupted settings.local.json can never leave a half-synced consumer (files refreshed,
+  # registrations un-reconciled). register-settings.py's json.load would also crash on it downstream.
+  if [ -f "$PROJ_SETTINGS" ] && ! jq -e . "$PROJ_SETTINGS" >/dev/null 2>&1; then
+    echo "Error: $PWD/$PROJ_SETTINGS is not valid JSON — fix or remove it before --update (no files changed)." >&2
+    exit 1
+  fi
+  KIT_SET=$(echo "$PROJECT_HOOKS" | tr ' ' '\n' | sort -u | sed '/^$/d')
+
+  # ADD: kit project hooks whose file is absent in the consumer (present ones are refreshed).
+  ADDS=""
+  for h in $PROJECT_HOOKS; do
+    [ -f "$PROJ_HOOKS_DIR/$h" ] || ADDS="$ADDS $h"
+  done
+  # DEDUPE: script basenames registered more than once (DRQ-1).
+  DUPS=$(registered_basenames "$PROJ_SETTINGS" | sort | uniq -d | tr '\n' ' ')
+  # CUT (FLAG ONLY this phase — destructive dereg is the gated follow-on): registered-or-present
+  # basenames the current kit no longer ships. Liberal flagging; conservative removal lives behind
+  # the cut-list + rails so a consumer's legitimate custom hook is never silently nuked.
+  PRESENT=$( { registered_basenames "$PROJ_SETTINGS"
+               if [ -d "$PROJ_HOOKS_DIR" ]; then
+                 find "$PROJ_HOOKS_DIR" -maxdepth 1 -type f -name '*.sh' -exec basename {} \;
+               fi; } | sort -u )
+  CUTS=""
+  while IFS= read -r b; do
+    [ -n "$b" ] || continue
+    grep -qxF "$b" <<<"$KIT_SET" || CUTS="$CUTS $b"
+  done <<< "$PRESENT"
+
+  # Cut-list (modules.json .cut_hooks): the CONSERVATIVE auto-remove set. A flagged cut hook NOT
+  # on this list is reported but never removed — a consumer's legitimate custom hook must survive.
+  CUT_LIST=$(jq -r '.cut_hooks[]?' "$MODULES_JSON")
+  TO_DEREG=""
+  for c in $CUT_LIST; do
+    cs="$c"; case "$cs" in *.sh) ;; *) cs="$cs.sh" ;; esac
+    if [ -f "$PROJ_HOOKS_DIR/$cs" ] || registered_basenames "$PROJ_SETTINGS" | grep -qxF "$cs"; then
+      TO_DEREG="$TO_DEREG $cs"
+    fi
+  done
+  FLAG_ONLY=""
+  for b in $CUTS; do
+    echo " $TO_DEREG " | grep -qF " $b " || FLAG_ONLY="$FLAG_ONLY $b"
+  done
+
+  if $DRY_RUN; then
+    echo "[dry-run] --- Mode: update (re-sync $PWD/.claude to current kit) ---"
+    echo "[dry-run] add hooks:${ADDS:- (none — all present, will be refreshed)}"
+    echo "[dry-run] refresh present hooks: $(echo "$PROJECT_HOOKS" | wc -w | tr -d ' ') project hook(s) overwritten from templates"
+    [ -n "${DUPS// /}" ] && echo "[dry-run] dedupe registrations (by basename): $DUPS" || echo "[dry-run] dedupe registrations: (none)"
+    [ -n "${TO_DEREG// /}" ] && echo "[dry-run] deregister cut hooks (remove file + registration; settings backed up first):$TO_DEREG" || echo "[dry-run] deregister cut hooks: (none)"
+    [ -n "${FLAG_ONLY// /}" ] && echo "[dry-run] FLAG cut hooks (NOT on cut-list — reported, not removed):$FLAG_ONLY"
+    $ARM && echo "[dry-run] arm: touch .claude/enforce" || echo "[dry-run] arming DECOUPLED — .claude/enforce untouched (pass --arm to arm)"
+    echo "[dry-run] (no files written)"
+    exit 0
+  fi
+
+  mkdir -p "$PROJ_HOOKS_DIR"
+  for h in $PROJECT_HOOKS; do
+    cp "$HOOKS_SRC/$h" "$PROJ_HOOKS_DIR/$h"
+    chmod +x "$PROJ_HOOKS_DIR/$h"
+  done
+  # shellcheck disable=SC2086 — word-split intended: newline/space-separated script basenames
+  ship_hook_dirs "$PROJ_HOOKS_DIR" $PROJECT_HOOKS
+  # ADD/UPDATE registrations + dedupe-by-basename in one upsert pass (register-settings owns the
+  # settings JSON; --dedupe collapses the DRQ-1 duplicate command strings upsert cannot remove).
+  python3 "$REGISTER_SCRIPT" hooks "$PROJ_SETTINGS" "$MODULES_JSON" --scope project-local --dedupe
+
+  # --- Destructive deregistration of cut-list hooks (rails: backup -> remove -> smoke -> revert) ---
+  DEREGGED=""
+  BK_DIR=""
+  if [ -n "${TO_DEREG// /}" ]; then
+    TS=$(date +%Y%m%d%H%M%S)
+    BK_DIR=".claude/.dereg-backup.$TS"
+    mkdir -p "$BK_DIR/hooks"
+    # RAIL: timestamped backup BEFORE any removal — settings + the files being removed, so the whole
+    # op is reversible (a registered-but-missing half-state is exactly the class we are avoiding).
+    cp "$PROJ_SETTINGS" "$BK_DIR/settings.local.json"
+    dereg_args=()
+    for cs in $TO_DEREG; do
+      [ -f "$PROJ_HOOKS_DIR/$cs" ] && cp "$PROJ_HOOKS_DIR/$cs" "$BK_DIR/hooks/$cs"
+      rm -f "$PROJ_HOOKS_DIR/$cs"
+      dereg_args+=(--basename "$cs")
+    done
+    python3 "$REGISTER_SCRIPT" deregister "$PROJ_SETTINGS" "${dereg_args[@]}"
+    # RAIL: survivor functional smoke + JSON validity; revert from backup on ANY failure.
+    if survivor_smoke_ok "$PROJ_HOOKS_DIR" "$PROJ_SETTINGS"; then
+      DEREGGED="$TO_DEREG"
+    else
+      cp "$BK_DIR/settings.local.json" "$PROJ_SETTINGS"
+      for cs in $TO_DEREG; do [ -f "$BK_DIR/hooks/$cs" ] && cp "$BK_DIR/hooks/$cs" "$PROJ_HOOKS_DIR/$cs"; done
+      echo "Error: dereg survivor smoke failed — reverted settings + cut files from $BK_DIR" >&2
+      exit 1
+    fi
+  fi
+
+  # Arming is DECOUPLED from the hook refresh — the staged consumers must NOT auto-arm (Phase 91).
+  $ARM && touch .claude/enforce
+  echo ""
+  echo "Re-synced $PWD/.claude to current kit:"
+  echo "  hooks refreshed: $(echo "$PROJECT_HOOKS" | wc -w | tr -d ' ') project hook(s)"
+  [ -n "${ADDS// /}" ] && echo "  added:$ADDS"
+  [ -n "${DUPS// /}" ] && echo "  duplicate registrations deduped: $DUPS"
+  [ -n "${DEREGGED// /}" ] && echo "  deregistered cut hooks:$DEREGGED (settings backed up in $BK_DIR)"
+  [ -n "${FLAG_ONLY// /}" ] && echo "  cut hooks flagged (not on cut-list — left in place):$FLAG_ONLY"
+  $ARM && echo "  armed: .claude/enforce" || echo "  arming decoupled: .claude/enforce unchanged"
+  exit 0
+fi
 
 # --- Project-local install (short-circuit, no global writes) ---
 if $PROJECT_LOCAL; then

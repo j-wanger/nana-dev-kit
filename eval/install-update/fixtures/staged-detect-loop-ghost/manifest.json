@@ -1,0 +1,12 @@
+{
+  "class": "staged-detect-loop-ghost",
+  "models": "edge-screener / edge-analyst / ai-game / fate / aml-substrate — a staged consumer still carrying the Phase-88-cut detect-loop.sh (file + Stop registration) the kit no longer ships",
+  "mutations": [
+    { "op": "add_ghost", "script": "detect-loop.sh", "event": "Stop", "matcher": "" }
+  ],
+  "expect": {
+    "cut_hooks": ["detect-loop.sh"],
+    "duplicate_registrations": [],
+    "missing_mode": "none"
+  }
+}
