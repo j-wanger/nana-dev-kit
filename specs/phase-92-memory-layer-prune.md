@@ -1,4 +1,11 @@
 <!-- nana:approved 2026-06-12 -->
+<!-- RE-SEQUENCED 2026-06-18 by the Phase-92 Strategic Inflection Review ([[strategic-inflection-review]]):
+     this spec's prune work is now Phase 95 (memory-layer shrink), GATED on a Phase-94 consumer memory
+     re-measure. Rationale: the Ph89 demand-zero was couldnt-fire (consumer memory was broken until Ph91);
+     HEU-012 bars cutting on it, so one clean re-measure on re-synced WORKING memory must precede any cut.
+     New sequence: Phase 92 = the review; Phase 93 = install.sh re-sync (the re-sync prerequisite);
+     Phase 94 = the re-measure; Phase 95 = this prune round. The objective/approach below stand for the
+     eventual Phase-95 round, but the phase NUMBER and the cut-without-re-measure premise are superseded. -->
 # Spec: Phase 92 — Memory-Layer Prune Round
 
 ## Objective

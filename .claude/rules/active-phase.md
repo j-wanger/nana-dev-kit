@@ -1,20 +1,32 @@
 # Active Phase Context
 
-Phase: 91 — Consuming-Project Memory E2E + Assumption-Gate Forcing Function (implemented 2026-06-14; READY FOR DELIVERY GATE)
-Objective: (Track 3) bind the dev-plan assumption gate with a forcing-function hook so it cannot be
-skipped — Phase-90's "fix" was prose and didn't bind (3rd skip); (Track 1) make Memory MCP actually fire
-in consuming projects (root cause: `-m memory_server` resolves only from the package-bearing kit cwd;
-fix = PYTHONPATH=$HOME/.claude env on the registration). Track 2 (recovery) DEFERRED per gate A4.
-Status: implemented. 6/6 tasks [x]. Track 3 — enforce-assumption-gate.sh (PreToolUse Write|Edit|MultiEdit,
-`--gate`-only, both-landings, 7 firing cases). Track 1 — register-settings.py cmd_mcp emits env +
-modules.json mcp env; verified by FIRING a consumer memory_search (DB created). make test ALL-PASS.
-Scope: enforce-assumption-gate.sh, modules.json, register-settings.py, dev-plan {assumption-gate,SKILL}.md,
-tests/**, ~/.claude + ~/.claude.json landings, docs, consumer propagation (USER OVERRIDE), .dev-wiki records.
-Key constraints: verify-by-FIRING not presence (HEU-012); `--gate`-only (whole-file --schema false-locks
-properly-gated projects — aml-substrate); no-lockout consumer propagation (armed in kit+aml-substrate, staged
-in 4 consumers, signal-watch deferred); fix-then-judge unblocks Phase-92's prune. Next: delivery → accept → push.
-Standing (Phases 90-93): EVERY working session appends window-events attestation rows to
+Phase: 92 — Strategic Inflection Review & Roadmap Re-sequencing (planned+executed inline 2026-06-18)
+Objective: at an inflection point, re-examine the kit's strengths/limitations + founding objectives and
+define the deterministic-vs-LLM component boundary — grounded in the kit's OWN measured evidence (the
+amplifier program), not recollection. Output: a direction decision + a det-vs-LLM principles artifact + a
+re-sequenced roadmap. Decisions/docs only — NO implementation code.
+Status: planned+executed inline. 3/3 tasks [x]. Review gate = the in-workflow adversarial critique (corrected
+5 synthesis overclaims, recorded in the decision article). Direction gate closed 2026-06-18.
+FRAME (maintainer): PRODUCT FOR CONSUMERS (rejected instrument-primary) => inward measurement/hygiene growth =
+creep to correct; consumer surface = primary. DIRECTION: re-measure-once-then-shrink (Ph89 memory demand-zero
+is couldnt-fire — memory was broken until Ph91; HEU-012 bars cutting on it), NOT the synthesis's "refocus"
+(smuggled 2 unmeasured builds).
+Re-sequenced roadmap (this review's output):
+- Phase 93 — install.sh idempotent update / consuming-project re-sync mode (unbuilt original Phase-91 scope;
+  propagates Ph91 memory fix + assumption gate + post-trim surfaces into signal-watch + 4 staged consumers).
+- Phase 94 — clean consumer memory re-measure on a re-synced consumer (lightweight dogfood, consuming-project).
+- Phase 95 — memory-layer shrink (Ph88 trim-trials permanent if clean; prune re-presentation; enforce-memory
+  redesign-or-retire). Supersedes specs/phase-92-memory-layer-prune.md.
+Scope: .dev-wiki/** (decisions, ledger, state, phase article, index, log, tasks), .claude/rules/active-phase.md,
+specs/phase-92-memory-layer-prune.md (re-sequence pointer only). OUT: implementation code; any memory-layer cut
+(Phase 95 authority, gated on Phase-94 re-measure); reverting d43950f/df3e623/75b48af/b8bd416.
+Key constraints: det-vs-LLM principles are a MAINTENANCE GUIDELINE, not a mandate to rewrite the working
+linter-skills (dev-check/wiki-health/wiki-registry stay deferred until a real mis-read is observed); the Ph87
+"determinism beat LLM reviewers" claim is a binary-file confound, NOT keep-evidence; the amplifier-null is 4
+clean nulls + 1 instrument-dead (Ph80 leaked), untested regimes remain.
+Standing (Phases 90-93): EVERY working session appends a window-events attestation row to
 eval/dogfood-round/evidence/window-events.md until the Phase-93 trim-trial disposition. Attestation owed.
+Decisions: [[strategic-inflection-review]] (high), [[deterministic-vs-llm-boundary]] (high).
 Gates:
-- [x] Direction confirmed by user (assumption positions 2026-06-14: A1/A2/A3 accept held, A4 don't-know → deferred)
-- [x] Delivery accepted (post-implementation report 2026-06-14, commit 318e9b6)
+- [x] Direction confirmed by user (assumption positions 2026-06-18: A1 reject->product-frame absorbed; A2/A3/A4/A5 accept; all_accept:false)
+- [ ] Delivery accepted (post-implementation report)

@@ -1140,3 +1140,16 @@ A2 reject -> orchestrator-only verdicts; ledger block appended, 6 rows, all_acce
 - [ ] Consumer assumption-ledger format-drift normalization (older blocks fail strict `--schema`; a migration pass would also unblock whole-file `--schema` enforcement if ever wanted). | size: M
 - [ ] Re-measure Phase-92 memory-layer demand on the now-WORKING layer (couldn't-fire → can-fire changes the prune's evidence basis; the prior consumer zeros are inadmissible). | size: M
 
+<!-- phase:phase-92-strategic-inflection-review -->
+## Phase 92 — Strategic Inflection Review & Roadmap Re-sequencing
+
+<!-- gate-log:phase-92 direction=approved delivery=pending -->
+
+Lite ceremony (decision/review phase; the quality gate was the in-workflow adversarial critique, which corrected 5 synthesis overclaims). Planned+executed inline 2026-06-18.
+
+- [x] T1 Capture the corrected strategic review + the two gate decisions as decision articles | scope: .dev-wiki/articles/decisions/** | success: strategic-inflection-review.md + deterministic-vs-llm-boundary.md exist with the corrected findings (5 critique corrections recorded)
+- [x] T2 Close the direction gate + re-sequence the roadmap (ledger Phase-92 block, _CURRENT_STATE owned sections, active-phase.md) | scope: .dev-wiki/**, .claude/rules/active-phase.md | success: `bash scripts/check-assumption-ledger.sh --gate .dev-wiki/assumption-ledger.md 92` exits 0 AND `--schema` exits 0; _CURRENT_STATE + active-phase.md show the 93→94→95 sequence
+- [x] T3 Reconcile the old phase-92-memory-prune spec to the re-sequenced Phase 95 + bookkeeping (index, log, phase article, window-events attestation) | scope: specs/**, .dev-wiki/**, eval/dogfood-round/evidence/window-events.md | success: the old spec carries the re-sequence note; index/log updated; phase article present; Phase-92 window-events row appended
+
+The three "Discovered" items above formalize into the roadmap: install.sh re-sync = Phase 93 (ledger format-drift normalization folds in); memory re-measure = Phase 94 (precondition for the Phase 95 memory-layer shrink).
+

@@ -57,3 +57,15 @@ kit-side sessions: phase-91-impl+debrief
 Phase-91 probative exposure: ak window 1 probative session (kit-side), zero trigger events; wk
 window 0 probative sessions (kit-side suppression). Recorded honestly per the pinned reachability
 rules; disposition authority unchanged (Phase-93 debrief).
+
+## Phase 92
+
+kit-side session: phase-92-strategic-inflection-review (this /dev-plan session)
+
+| date | session-id | window | reachability | probative? | event |
+|---|---|---|---|---|---|
+| 2026-06-18 | p92-session | ak | compaction=n planning=y | y (kit-side Phase-92 strategic review + roadmap re-sequencing: dev-plan run, frame/direction gate, det-vs-LLM boundary decision reached correctly without active-knowledge re-presentation) | none |
+| 2026-06-18 | p92-session | wk | WK-already-presents-it | n (kit-side suppression: always-loaded working-knowledge still presents the pinned decisions; no removed-class entry was re-derived) | none |
+
+Phase-92 probative exposure: ak window 1 probative session (kit-side), zero trigger events; wk
+window 0 probative sessions (kit-side suppression). Disposition authority unchanged (Phase-93 debrief).
