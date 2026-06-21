@@ -5,7 +5,7 @@ category: decisions
 tags: [memory, disposition, subtraction, enforce-memory, trim-trial, det-vs-llm]
 parents: [phase-95-memory-layer-disposition]
 created: 2026-06-20
-updated: 2026-06-20
+updated: 2026-06-21
 source: plan
 confidence: high
 ---
@@ -74,3 +74,20 @@ restoring the trim-trials (windows clean → confirm).
 - Cross-links: [[consumer-memory-remeasure]], [[strategic-inflection-review]],
   [[deterministic-vs-llm-boundary]], [[trim-round-outcome]], [[prune-on-value-subtraction]],
   [[HEU-012]].
+
+## Outcome (executed 2026-06-21, commits 3d401d5 + b960c70)
+
+All obligations closed; verdict table `eval/memory-disposition/verdict-table.md`:
+- **memory-mcp-layer KEEP**, **bridge-writer KEEP**, **harvest-writer KEEP** (keep-by-affirmation per A3).
+- **enforce-memory REDESIGNED** (T3 maintainer checkpoint, on enforce-memory-audit.md ~55% per-episode value
+  + the gameable marker, and redesign-spike.md SPIKE: PASS): the agent-touched `.claude/.memory-consulted`
+  existence check is replaced by a transcript assertion of a real `memory_search` (`type==assistant` tool_use)
+  with `ts >= ~/.claude/.session-start-ts` — det-vs-LLM Principle 2 + per-session freshness (fixes the
+  resumed-session stale-pass; sessionId is stable across --resume, so .session-start-ts is the anchor, not
+  sessionId). jq-only, fail-open. Supersedes the standing Phase-88 keep. Honest limit: a fail-open nudge —
+  one real search per session satisfies it.
+- **ak-ride-along (d43950f) + wk-seeding (df3e623) CONFIRMED** permanent.
+
+Ledger Phase-83 A5 `open->held`; Phase-88 A4/A6 + the trim re-triggers + the enforce-memory resume-artifact
+harden-candidate resolved. The Phase-95 ultracode adversarial verification corrected a window-gamed 71% audit
+headline to the honest 55%/35-70% band and surfaced the stale-pass that shaped the freshness bound.

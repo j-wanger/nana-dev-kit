@@ -7,7 +7,7 @@ parents: []
 created: 2026-06-20
 updated: 2026-06-20
 source: plan
-status: active
+status: completed
 scope: ["eval/memory-disposition/**", ".dev-wiki/**", "specs/phase-92-memory-layer-prune.md", "eval/dogfood-round/evidence/window-events.md", "scripts/check-assumption-ledger.sh", "templates/.claude/hooks/enforce-memory.sh", "modules.json", "templates/.claude/settings.json"]
 entry_criteria: "Phase 94 delivery accepted (45cb12b; consumer reversal banked); spec specs/phase-95-memory-layer-disposition.md nana:approved; Phase-95 ledger block appended + validated; direction gate closed (all_accept:false)"
 exit_criteria: "every open memory ledger obligation (Phase-83 A5, Phase-88 A4/A6/A5-trim, enforce-memory revisit, 2 trim-trial windows) reaches a recorded evidence-cited closed-enum verdict; run-exit-criteria.sh ALL-PASS; make test + check-install-drift green"
