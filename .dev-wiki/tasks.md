@@ -1203,7 +1203,7 @@ Standard ceremony. Direction gate closed 2026-06-21 (ledger Phase-96; all_accept
 <!-- phase:phase-97-frontier-positioning-sweep -->
 ## Phase 97 — Frontier Positioning Sweep
 
-<!-- gate-log:phase-97 direction=approved delivery=pending -->
+<!-- gate-log:phase-97 direction=approved delivery=accepted -->
 
 Standard ceremony. Direction gate closed 2026-06-21 (ledger Phase-97; all_accept:false — A1 reject→product-positioning reframe, A2 reject→lab-artifacts-primary, A3 don't-know→half-life-to-T4). Spec = the frozen `companion/research/pre-registration.md` (gitignored — deliberate deviation, the apparatus is private). External arm of the Ph92 re-measure-then-shrink; the internal arm ([[memory-layer-disposition]]) already returned KEEP. VERDICT only — NO cut executed. Lab artifacts PRIMARY / OSS SECONDARY. Rung A of the companion de-risking ladder (B pipeline / C opencode / D generalization are future phases). Research-shaped tasks — controls-first + frozen-instrument discipline replaces the TDD cycle where it doesn't map.
 

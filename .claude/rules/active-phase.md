@@ -1,6 +1,6 @@
 # Active Phase Context
 
-Phase: 97 — Frontier Positioning Sweep (external arm of the shrink/direction decision) — IMPLEMENTATION COMPLETE (4/4 tasks); delivery gate PENDING.
+Phase: 97 — Frontier Positioning Sweep (external arm of the shrink/direction decision) — COMPLETED 2026-06-21 (4/4 tasks; delivery accepted, commit cbc057e).
 Objective: Pre-registered, evidence-based read of where the agent-harness / agent-tooling frontier is converging, read MECHANICALLY against a frozen decision rule to answer: is nana-dev-kit's bet (deterministic spine + lifecycle ceremony) DIFFERENTIATED / COMMODITIZED / DIVERGENT vs the frontier. The EXTERNAL arm of the Ph92 re-measure-then-shrink (internal arm [[memory-layer-disposition]] returned KEEP). VERDICT only — executes NO cut.
 Outcome: VERDICT = INCONCLUSIVE — forced-under-observed (differentiated-leaning). Label INCONCLUSIVE (of record), kept SEPARATE from the differentiated-leaning substance (anti-retrofit; independent cold re-derivation CONFIRMED). K_low=0 / K_high=1 (B5 boundary-validator CONTESTED — OpenAI Pydantic tool-validation, sole FOR, below the bar); CORE (B1 blocking gates + B4 assumption gate) UNCOMMODITIZED. NET: external frontier gives NO case to shrink the bet; both arms of the Ph92 re-measure now agree. Freeze = SHA256 attestation. A3 resolved: QUARTERLY core-primitive watch for rung B. ZERO shippable-kit change; make test PASS; drift 0.
 Scope: companion/research/** (gitignored, local-only — NEVER shipped) + .gitignore + .dev-wiki/** + .claude/rules/active-phase.md. OUT: any kit code/config change; any actual shrink/cut (gated to a later phase).
@@ -8,7 +8,7 @@ Key constraints: pre-registration FROZEN before T3 (SHA256 attestation, re-verif
 Exit: companion/ gitignored + `git ls-files companion/` empty (✓); pre-registration.md frozen before T3, ≥1 falsifiable threshold per outcome (✓); sweep-findings.md + convergence-map.md URL-cited + classified (✓); verdict.md states a frozen-rule outcome + half-life→cadence (✓ INCONCLUSIVE); ZERO kit code/config change (✓); make test PASS + drift 0 (✓).
 Abort: a sweep that can't reach a frozen-rule outcome → INCONCLUSIVE with named resolving-evidence (routes rung B), never a retrofitted verdict; >3 attempts on a task → ask user skip|abort.
 Spec: companion/research/pre-registration.md (the frozen instrument, gitignored). Decision: [[frontier-positioning-sweep]] (high). Ledger: Phase 97 (all_accept:false; A1/A2/A3 revisit-status held).
-Status: IMPLEMENTATION COMPLETE 2026-06-21 (4/4 tasks). Verdict INCONCLUSIVE-forced-under-observed (differentiated-leaning). Delivery gate pending user acceptance + commit (flips delivery gate AND transitions active→completed).
+Status: COMPLETED + DELIVERY ACCEPTED 2026-06-21 (4/4 tasks; commit cbc057e). Verdict INCONCLUSIVE-forced-under-observed (differentiated-leaning). Phase article transitioned active→completed. Next: rung-B (quarterly frontier watch) is the open fork, planned only if/when justified.
 Gates:
 - [x] Direction confirmed by user (assumption positions taken 2026-06-21; A1/A2 reject, A3 don't-know→T4; ledger Phase 97; revisit-status held)
-- [ ] Delivery accepted (post-implementation report)
+- [x] Delivery accepted (post-implementation report 2026-06-21; commit cbc057e)
