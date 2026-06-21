@@ -22,3 +22,6 @@ benchmark/.venv/
 .claude/hooks/
 .claude/.loop-state
 wiki/.wiki-resolved
+
+# Local-only research companion (Phase 97+) — never shipped
+companion/
