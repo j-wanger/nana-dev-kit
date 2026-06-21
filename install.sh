@@ -14,7 +14,13 @@
 #                    basename (DRQ-1), and FLAG cut hooks for the gated dereg. Arming is DECOUPLED
 #                    — .claude/enforce is left untouched unless --arm is also passed. A consumer
 #                    with no kit hooks (e.g. signal-watch) is fully installed via this same path.
-#   --arm            With --update: also create/keep the .claude/enforce marker (opt-in arming).
+#   --migrate-to-local  Consolidate a consumer that registered its kit hooks in the PROJECT-scope
+#                    .claude/settings.json (the committed file --update never reads) onto the kit's single
+#                    canonical .claude/settings.local.json topology: relocate the kit set to local +
+#                    deregister kit-managed + cut hooks from settings.json + remove cut files. Each hook
+#                    then lives in ONE file (DRQ-1 cross-file double-fire structurally impossible). Behind
+#                    a timestamped backup of BOTH settings files → survivor smoke → revert. Run before --update.
+#   --arm            With --update / --migrate-to-local: also create/keep the .claude/enforce marker (opt-in arming).
 #   --dry-run        Print actions without copying (with --update: print the reconciliation diff)
 
 set -euo pipefail
@@ -31,6 +37,7 @@ DRY_RUN=false
 SHOW_STATUS=false
 PROJECT_LOCAL=false
 UPDATE=false
+MIGRATE=false
 ARM=false
 INSTALL_CORE=true
 INSTALL_PYTHON=true
@@ -48,6 +55,8 @@ while [[ $# -gt 0 ]]; do
       PROJECT_LOCAL=true ;;
     --update)
       UPDATE=true ;;
+    --migrate-to-local)
+      MIGRATE=true ;;
     --arm)
       ARM=true ;;
     --core-only)
@@ -67,7 +76,7 @@ while [[ $# -gt 0 ]]; do
       INSTALL_KNOWLEDGE=true ;;
     *)
       echo "Error: unknown flag: $1" >&2
-      echo "Usage: install.sh [--all|--core-only|--no-python|--no-typescript] [--project-local] [--update [--arm]] [--dry-run] [--status]" >&2
+      echo "Usage: install.sh [--all|--core-only|--no-python|--no-typescript] [--project-local] [--update [--arm]] [--migrate-to-local [--arm]] [--dry-run] [--status]" >&2
       exit 1 ;;
   esac
   shift
@@ -234,6 +243,139 @@ if $UPDATE; then
   [ -n "${DUPS// /}" ] && echo "  duplicate registrations deduped: $DUPS"
   [ -n "${DEREGGED// /}" ] && echo "  deregistered cut hooks:$DEREGGED (settings backed up in $BK_DIR)"
   [ -n "${FLAG_ONLY// /}" ] && echo "  cut hooks flagged (not on cut-list — left in place):$FLAG_ONLY"
+  $ARM && echo "  armed: .claude/enforce" || echo "  arming decoupled: .claude/enforce unchanged"
+  exit 0
+fi
+
+# --- Migrate-to-local mode (Phase 96): consolidate a consumer that registered its kit hooks in the
+# project-scope .claude/settings.json (the committed file --update never looks at) onto the kit's single
+# canonical topology, gitignored .claude/settings.local.json — register the current kit set into
+# settings.local.json, deregister the kit-managed + cut (detect-loop) basenames from settings.json, and
+# remove the cut hook FILES. The existing --update is UNCHANGED. Because each kit hook then lives in
+# exactly ONE file, the DRQ-1 cross-file double-fire is structurally impossible (basename-normalized).
+# Rails: --dry-run; timestamped backup of BOTH settings files BEFORE any write; survivor smoke; revert.
+if $MIGRATE; then
+  HOOKS_SRC="$SCRIPT_DIR/templates/.claude/hooks"
+  PROJ_HOOKS_DIR=".claude/hooks"
+  S_LOCAL=".claude/settings.local.json"
+  S_JSON=".claude/settings.json"
+  PROJECT_HOOKS=$(jq -r '.hooks[] | select(.scope == "project") | .script' "$MODULES_JSON")
+  for h in $PROJECT_HOOKS; do
+    [ -f "$HOOKS_SRC/$h" ] || { echo "Error: source missing: $HOOKS_SRC/$h" >&2; exit 1; }
+  done
+  # Malformed settings (either file) is a prerequisite violation — fail STOP before any mutation.
+  for sf in "$S_JSON" "$S_LOCAL"; do
+    if [ -f "$sf" ] && ! jq -e . "$sf" >/dev/null 2>&1; then
+      echo "Error: $PWD/$sf is not valid JSON — fix or remove it before --migrate-to-local (no files changed)." >&2
+      exit 1
+    fi
+  done
+  KIT_SET=$(echo "$PROJECT_HOOKS" | tr ' ' '\n' | sort -u | sed '/^$/d')
+  CUT_SET=$(jq -r '.cut_hooks[]?' "$MODULES_JSON" | sed '/^$/d; s/\.sh$//; s/$/.sh/')
+  # kit-managed = current kit set + cut-list (the basenames this op may relocate / deregister).
+  MANAGED=$(printf '%s\n%s\n' "$KIT_SET" "$CUT_SET" | sort -u | sed '/^$/d')
+
+  # kit-managed basenames currently registered in settings.json (the topology to consolidate away).
+  IN_JSON=""
+  if [ -f "$S_JSON" ]; then
+    while IFS= read -r b; do
+      [ -n "$b" ] || continue
+      if grep -qxF "$b" <<<"$MANAGED"; then IN_JSON="$IN_JSON $b"; fi
+    done < <(registered_basenames "$S_JSON" | sort -u)
+  fi
+  # cut-hook FILES present on disk (removed during consolidation, like --update's dereg).
+  CUT_FILES=""
+  for cs in $CUT_SET; do [ -f "$PROJ_HOOKS_DIR/$cs" ] && CUT_FILES="$CUT_FILES $cs"; done
+  # cut-hook registrations lingering in settings.local.json (deregister from there too).
+  CUT_IN_LOCAL=""
+  if [ -f "$S_LOCAL" ]; then
+    for cs in $CUT_SET; do
+      if registered_basenames "$S_LOCAL" | grep -qxF "$cs"; then CUT_IN_LOCAL="$CUT_IN_LOCAL $cs"; fi
+    done
+  fi
+
+  # Idempotent no-op: nothing kit-managed in settings.json, no cut FILE, no cut reg in settings.local.
+  if [ -z "${IN_JSON// /}" ] && [ -z "${CUT_FILES// /}" ] && [ -z "${CUT_IN_LOCAL// /}" ]; then
+    if $DRY_RUN; then
+      echo "[dry-run] --- Mode: migrate-to-local ($PWD/.claude) ---"
+      echo "[dry-run] already consolidated — no kit registrations in settings.json, no cut residue (no-op)"
+      exit 0
+    fi
+    echo ""
+    echo "Already consolidated: $PWD/.claude has no kit registrations in settings.json and no cut residue (no change)."
+    $ARM && { mkdir -p .claude; touch .claude/enforce; echo "  armed: .claude/enforce"; }
+    exit 0
+  fi
+
+  if $DRY_RUN; then
+    echo "[dry-run] --- Mode: migrate-to-local (consolidate settings.json kit regs -> settings.local.json) ---"
+    echo "[dry-run] relocate to settings.local.json (register current kit set): $(echo "$KIT_SET" | wc -w | tr -d ' ') hook(s)"
+    echo "[dry-run] deregister kit-managed from settings.json:${IN_JSON:- (none)}"
+    [ -n "${CUT_IN_LOCAL// /}" ] && echo "[dry-run] deregister cut hooks from settings.local.json:$CUT_IN_LOCAL"
+    [ -n "${CUT_FILES// /}" ] && echo "[dry-run] remove cut hook files:$CUT_FILES"
+    echo "[dry-run] refresh $(echo "$PROJECT_HOOKS" | wc -w | tr -d ' ') kit hook file(s) from templates"
+    echo "[dry-run] back up settings.json (and settings.local.json if present) first (timestamped); survivor smoke gates the result"
+    $ARM && echo "[dry-run] arm: touch .claude/enforce" || echo "[dry-run] arming DECOUPLED — .claude/enforce untouched (pass --arm to arm)"
+    echo "[dry-run] (no files written)"
+    exit 0
+  fi
+
+  # RAIL: timestamped backup of BOTH settings files BEFORE any write (the cut now touches a COMMITTED file).
+  TS=$(date +%Y%m%d%H%M%S)
+  BK_DIR=".claude/.migrate-backup.$TS"
+  mkdir -p "$BK_DIR/hooks"
+  HAD_LOCAL=false
+  [ -f "$S_JSON" ]  && cp "$S_JSON"  "$BK_DIR/settings.json"
+  if [ -f "$S_LOCAL" ]; then cp "$S_LOCAL" "$BK_DIR/settings.local.json"; HAD_LOCAL=true; fi
+  for cs in $CUT_FILES; do cp "$PROJ_HOOKS_DIR/$cs" "$BK_DIR/hooks/$cs"; done
+
+  # 0. ship the current kit hook FILES (mirrors --update) BEFORE registering them — so the relocated
+  # registrations point at present, current files and the survivor-smoke probe is never absent (else
+  # migrate-alone leaves the registered-but-missing half-state the kit has been bitten by 5x; HEU-012).
+  mkdir -p "$PROJ_HOOKS_DIR"
+  for h in $PROJECT_HOOKS; do
+    cp "$HOOKS_SRC/$h" "$PROJ_HOOKS_DIR/$h"
+    chmod +x "$PROJ_HOOKS_DIR/$h"
+  done
+  # shellcheck disable=SC2086 — word-split intended: newline/space-separated script basenames
+  ship_hook_dirs "$PROJ_HOOKS_DIR" $PROJECT_HOOKS
+
+  # 1. land the current kit set in settings.local.json (the canonical topology).
+  python3 "$REGISTER_SCRIPT" hooks "$S_LOCAL" "$MODULES_JSON" --scope project-local --dedupe
+  # 2. deregister the kit-managed (kit + cut) basenames from settings.json.
+  if [ -f "$S_JSON" ] && [ -n "${IN_JSON// /}" ]; then
+    dj=(); for b in $IN_JSON; do dj+=(--basename "$b"); done
+    python3 "$REGISTER_SCRIPT" deregister "$S_JSON" "${dj[@]}"
+  fi
+  # 3. deregister any lingering cut hooks from settings.local.json.
+  if [ -n "${CUT_IN_LOCAL// /}" ]; then
+    dl=(); for b in $CUT_IN_LOCAL; do dl+=(--basename "$b"); done
+    python3 "$REGISTER_SCRIPT" deregister "$S_LOCAL" "${dl[@]}"
+  fi
+  # 4. remove the cut hook FILES.
+  for cs in $CUT_FILES; do rm -f "$PROJ_HOOKS_DIR/$cs"; done
+
+  # RAIL: survivor functional smoke + JSON validity; revert BOTH files + cut files on ANY failure.
+  if survivor_smoke_ok "$PROJ_HOOKS_DIR" "$S_LOCAL"; then
+    :
+  else
+    [ -f "$BK_DIR/settings.json" ] && cp "$BK_DIR/settings.json" "$S_JSON"
+    if $HAD_LOCAL; then cp "$BK_DIR/settings.local.json" "$S_LOCAL"; else rm -f "$S_LOCAL"; fi
+    for cs in $CUT_FILES; do [ -f "$BK_DIR/hooks/$cs" ] && cp "$BK_DIR/hooks/$cs" "$PROJ_HOOKS_DIR/$cs"; done
+    echo "Error: migrate survivor smoke failed — reverted settings + cut files from $BK_DIR" >&2
+    exit 1
+  fi
+
+  # Arming is DECOUPLED — touched only with --arm (Phase 91 / Phase 96 A5).
+  $ARM && touch .claude/enforce
+  echo ""
+  echo "Consolidated $PWD/.claude to the settings.local.json topology:"
+  echo "  kit hooks registered in settings.local.json: $(echo "$KIT_SET" | wc -w | tr -d ' ')"
+  echo "  kit hook files refreshed from templates: $(echo "$PROJECT_HOOKS" | wc -w | tr -d ' ')"
+  [ -n "${IN_JSON// /}" ] && echo "  deregistered from settings.json:$IN_JSON"
+  [ -n "${CUT_IN_LOCAL// /}" ] && echo "  deregistered cut hooks from settings.local.json:$CUT_IN_LOCAL"
+  [ -n "${CUT_FILES// /}" ] && echo "  removed cut hook files:$CUT_FILES"
+  echo "  settings backed up in $BK_DIR"
   $ARM && echo "  armed: .claude/enforce" || echo "  arming decoupled: .claude/enforce unchanged"
   exit 0
 fi

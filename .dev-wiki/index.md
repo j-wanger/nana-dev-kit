@@ -97,7 +97,8 @@
 - [[phase-92-strategic-inflection-review|Phase 92: Strategic Inflection Review & Roadmap Re-sequencing]] -- completed
 - [[phase-93-install-resync|Phase 93: install.sh Idempotent Update / Consuming-Project Re-sync Mode]] -- completed
 - [[phase-94-consumer-memory-remeasure|Phase 94: Clean Consumer Memory Re-measure]] -- completed
-- [[phase-95-memory-layer-disposition|Phase 95: Memory-Layer Disposition (Reconcile-and-Close)]] -- active
+- [[phase-95-memory-layer-disposition|Phase 95: Memory-Layer Disposition (Reconcile-and-Close)]] -- completed
+- [[phase-96-consumer-resync-rollout|Phase 96: Consumer Re-sync Rollout (consolidate-to-local + live --update across all 7)]] -- active (delivery pending)
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
@@ -306,6 +307,7 @@
 - [[readme-budget-superseded|README budget superseded: 58 -> 90-100 lines]] -- high confidence, accepted
 
 ### Journal
+- [[2026-06-21-phase-96-consumer-resync-rollout-complete|Phase 96 complete — Consumer Re-sync Rollout: consolidate-to-local + live --update across all 7 consumers; probe reversed the Phase-93 settings.local premise (4/7 on settings.json); review caught the working-tree-only VC-durability caveat]] (journal, 2026-06-21)
 - [[2026-06-21-phase-95-memory-layer-disposition-complete|Phase 95 complete — Memory-Layer Disposition]] (journal, 2026-06-21)
 - [[2026-06-20-phase-94-consumer-memory-remeasure-complete|Phase 94 complete — Clean Consumer Memory Re-measure: one admissible RETROSPECTIVE re-measure on the working (Ph91) layer, verify-by-firing FIRES, 3-consumer machinery gradient (0/20/44 persisted rows) REVERSES the "consumer demand is zero" prior; EVIDENCE ONLY, Phase 95 disposes]] -- 2026-06-20
 - [[2026-06-18-phase-93-install-resync-complete|Phase 93 complete — install.sh Idempotent Update / Consuming-Project Re-sync Mode: first deregistration mechanism, --update reconciles project-local hooks + settings.local.json (ADD/UPDATE + dedupe-by-basename + cut-hook dereg), BUILD + SANDBOX-VERIFY ONLY]] -- 2026-06-18

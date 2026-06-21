@@ -91,6 +91,26 @@ detect_missing_hooks() {
   done
 }
 
+# kit_cut_hooks -> cut-list basenames (modules.json .cut_hooks), normalized to *.sh.
+kit_cut_hooks() {
+  jq -r '.cut_hooks[]?' "$MODULES_JSON" 2>/dev/null | while IFS= read -r c; do
+    [ -n "$c" ] || continue; case "$c" in *.sh) echo "$c" ;; *) echo "$c.sh" ;; esac
+  done
+}
+
+# detect_settings_json_kit_regs <consumer-root> -> kit-managed (current kit set OR cut-list)
+# basenames registered in .claude/settings.json (the Phase-96 settings.json-topology drift class:
+# 4/7 consumers register kit hooks in the project-scope committed file, where --update never looks).
+# --migrate-to-local must relocate these to settings.local.json + dereg the cut ones from settings.json.
+detect_settings_json_kit_regs() {
+  local root="$1" managed
+  managed=$(printf '%s\n%s\n' "$(kit_project_hooks)" "$(kit_cut_hooks)" | sort -u | sed '/^$/d')
+  registered_basenames "$root/.claude/settings.json" | sort -u | while IFS= read -r b; do
+    [ -n "$b" ] || continue
+    grep -qxF "$b" <<<"$managed" && echo "$b"
+  done
+}
+
 # ---------------------------------------------------------------------------
 # Fixture builder: a synced baseline consumer + manifest-declared mutations.
 # ---------------------------------------------------------------------------
@@ -160,6 +180,32 @@ apply_mutations() {
   done
 }
 
+# build_settings_json_topology_consumer <root> — the Phase-96 Group-B drift class: kit hooks
+# registered in .claude/settings.json (PROJECT scope, the committed file — where --update never
+# looks), NO settings.local.json, a lingering detect-loop ghost (file + settings.json registration),
+# and a non-kit custom key the migration MUST preserve. Real template hooks are shipped on disk so
+# the post-migration survivor smoke has a functional block-dangerous-bash probe. enforce left unset.
+build_settings_json_topology_consumer() {
+  local root="$1" h tmp
+  rm -rf "$root/.claude"
+  mkdir -p "$root/.claude/hooks"
+  while IFS= read -r h; do
+    [ -n "$h" ] || continue
+    cp "$REPO_ROOT/templates/.claude/hooks/$h" "$root/.claude/hooks/$h" 2>/dev/null \
+      || printf '#!/usr/bin/env bash\nexit 0\n' > "$root/.claude/hooks/$h"
+    chmod +x "$root/.claude/hooks/$h"
+  done < <(kit_project_hooks)
+  # kit regs land in the PROJECT-scope settings.json (not settings.local.json) — the topology --update misses.
+  python3 "$REGISTER" hooks "$root/.claude/settings.json" "$MODULES_JSON" --scope project-local >/dev/null 2>&1
+  # a non-kit custom key the migration must not clobber
+  tmp=$(mktemp); jq '. + {"permissions":{"allow":["Bash(ls:*)"]}}' "$root/.claude/settings.json" > "$tmp" && mv "$tmp" "$root/.claude/settings.json"
+  # detect-loop ghost: file + a settings.json registration (the cut hook --update would orphan here)
+  printf '#!/usr/bin/env bash\nexit 0\n' > "$root/.claude/hooks/detect-loop.sh"
+  chmod +x "$root/.claude/hooks/detect-loop.sh"
+  append_registration "$root/.claude/settings.json" "PostToolUse" "Bash" "\${CLAUDE_PROJECT_DIR}/.claude/hooks/detect-loop.sh"
+  rm -f "$root/.claude/settings.local.json"
+}
+
 # norm <newline-list> -> sorted, unique, blank-free; sets_equal compares two as sets.
 norm() { printf '%s\n' "$1" | sed '/^$/d' | sort -u; }
 sets_equal() { [ "$(norm "$1")" = "$(norm "$2")" ]; }
@@ -202,6 +248,23 @@ if detect_duplicate_registrations "$CTRL" | grep -qxF "$SEED_DUP"; then
 else
   test_fail "INSTRUMENT-DEAD: seeded duplicate $SEED_DUP not flagged. Got: [$(one_line "$(detect_duplicate_registrations "$CTRL")")]"
 fi
+
+# Phase-96 seeded controls — the settings.json-topology detector (clean-on-seed = instrument-dead).
+test_start "SEEDED settings.json kit-regs are flagged (else INSTRUMENT-DEAD — migration untrustworthy)"
+TOPO=$(mktemp -d); SANDBOXES+=("$TOPO")
+build_settings_json_topology_consumer "$TOPO"
+got_topo=$(detect_settings_json_kit_regs "$TOPO")
+# must flag both a current-kit hook (in settings.json) AND the detect-loop ghost registered there
+if echo "$got_topo" | grep -qxF "detect-loop.sh" && [ "$(norm "$got_topo" | wc -l | tr -d ' ')" -gt 1 ]; then
+  test_pass
+else
+  test_fail "INSTRUMENT-DEAD: settings.json kit-regs not flagged. Got: [$(one_line "$got_topo")]"
+fi
+
+test_start "settings.local-topology synced consumer flags NO settings.json kit-regs (no false positive)"
+build_synced_consumer "$CTRL"   # kit regs in settings.local.json, no settings.json
+if [ -z "$(detect_settings_json_kit_regs "$CTRL")" ]; then test_pass
+else test_fail "cries wolf: flagged settings.json kit-regs on a settings.local consumer: [$(one_line "$(detect_settings_json_kit_regs "$CTRL")")]"; fi
 
 # ---------------------------------------------------------------------------
 # Drift-class fixtures (one manifest.json per class — the "table").
@@ -449,5 +512,124 @@ C=$(mktemp -d); SANDBOXES+=("$C"); build_synced_consumer "$C"; apply_mutations "
 run_update "$C" >/dev/null 2>&1 || true
 rc=0; out=$(bash "$DRIFT_SH" --consumer "$C" 2>&1) || rc=$?
 if [ "$rc" -eq 0 ]; then test_pass; else test_fail "consumer still drifts after --update (rc=$rc out=[$out])"; fi
+
+# ---------------------------------------------------------------------------
+# Phase 96 — install.sh --migrate-to-local (consolidate settings.json topology -> settings.local.json).
+# RED until T2 implements the mode; controls above prove the detector is live (not instrument-dead).
+# ---------------------------------------------------------------------------
+echo "--- Phase 96: install.sh --migrate-to-local (consolidate-to-local) ---"
+run_migrate() { local dir="$1"; shift; ( cd "$dir" && bash "$INSTALL" --migrate-to-local "$@" ); }
+
+test_start "[--migrate-to-local] exits 0 on a settings.json-topology consumer"
+C=$(mktemp -d); SANDBOXES+=("$C"); build_settings_json_topology_consumer "$C"
+if run_migrate "$C" >/dev/null 2>&1; then test_pass; else test_fail "install.sh --migrate-to-local exited non-zero"; fi
+
+test_start "[--migrate-to-local] kit regs relocated to settings.local.json (current kit set complete)"
+C=$(mktemp -d); SANDBOXES+=("$C"); build_settings_json_topology_consumer "$C"
+run_migrate "$C" >/dev/null 2>&1 || true
+miss=$(detect_missing_hooks "$C")   # reads settings.local.json + on-disk; empty => kit set registered there
+if [ -f "$C/.claude/settings.local.json" ] && [ -z "$miss" ]; then test_pass
+else test_fail "kit regs not in settings.local.json (exists=$([ -f "$C/.claude/settings.local.json" ] && echo y || echo n), missing=[$(one_line "$miss")])"; fi
+
+test_start "[--migrate-to-local] settings.json is kit-clean (no kit/cut registrations remain)"
+C=$(mktemp -d); SANDBOXES+=("$C"); build_settings_json_topology_consumer "$C"
+run_migrate "$C" >/dev/null 2>&1 || true
+leftover=$(detect_settings_json_kit_regs "$C")
+if [ -z "$leftover" ]; then test_pass
+else test_fail "settings.json still holds kit/cut regs after migrate: [$(one_line "$leftover")]"; fi
+
+test_start "[--migrate-to-local] detect-loop ghost-free in BOTH files + file removed"
+C=$(mktemp -d); SANDBOXES+=("$C"); build_settings_json_topology_consumer "$C"
+run_migrate "$C" >/dev/null 2>&1 || true
+dl_json=true;  registered_basenames "$C/.claude/settings.json"       | grep -qxF detect-loop.sh && dl_json=false
+dl_local=true; registered_basenames "$C/.claude/settings.local.json" | grep -qxF detect-loop.sh && dl_local=false
+dl_file=true;  [ -f "$C/.claude/hooks/detect-loop.sh" ] && dl_file=false
+if $dl_json && $dl_local && $dl_file; then test_pass
+else test_fail "detect-loop survives (settings.json reg=$($dl_json||echo PRESENT) settings.local reg=$($dl_local||echo PRESENT) file=$($dl_file||echo PRESENT))"; fi
+
+test_start "[--migrate-to-local] non-kit settings.json key preserved (don't-clobber)"
+C=$(mktemp -d); SANDBOXES+=("$C"); build_settings_json_topology_consumer "$C"
+run_migrate "$C" >/dev/null 2>&1 || true
+if [ -f "$C/.claude/settings.json" ] && [ "$(jq -r '.permissions.allow[0] // empty' "$C/.claude/settings.json")" = "Bash(ls:*)" ]; then test_pass
+else test_fail "non-kit permissions key not preserved in settings.json after migrate"; fi
+
+test_start "[--migrate-to-local] timestamped backup of settings.json created (rollback exists)"
+C=$(mktemp -d); SANDBOXES+=("$C"); build_settings_json_topology_consumer "$C"
+PRE=$(jq -S . "$C/.claude/settings.json")
+run_migrate "$C" >/dev/null 2>&1 || true
+BK=$(ls -d "$C"/.claude/.*-backup.*/settings.json 2>/dev/null | head -1)
+if [ -n "$BK" ] && [ -f "$BK" ] && [ "$(jq -S . "$BK")" = "$PRE" ]; then test_pass
+else test_fail "no faithful settings.json backup (BK='$BK') — migration not reversible"; fi
+
+test_start "[--migrate-to-local] survivor smoke: block-dangerous-bash fires exit-2 block / exit-0 allow post-migrate"
+C=$(mktemp -d); SANDBOXES+=("$C"); build_settings_json_topology_consumer "$C"
+run_migrate "$C" >/dev/null 2>&1 || true
+PROBE="$C/.claude/hooks/block-dangerous-bash.sh"; sb=0; sa=0
+if [ -x "$PROBE" ]; then
+  echo '{"tool_input":{"command":"rm -rf /"}}' | bash "$PROBE" >/dev/null 2>&1 || sb=$?
+  echo '{"tool_input":{"command":"ls -la"}}'   | bash "$PROBE" >/dev/null 2>&1 || sa=$?
+else sb=-1; fi
+if [ "$sb" -eq 2 ] && [ "$sa" -eq 0 ]; then test_pass
+else test_fail "survivor smoke failed post-migrate: block rc=$sb (want 2), allow rc=$sa (want 0)"; fi
+
+test_start "[--migrate-to-local] second run is a no-op (idempotent)"
+C=$(mktemp -d); SANDBOXES+=("$C"); build_settings_json_topology_consumer "$C"
+run_migrate "$C" >/dev/null 2>&1 || true; s1=$(snapshot "$C")
+run_migrate "$C" >/dev/null 2>&1 || true; s2=$(snapshot "$C")
+if [ "$s1" = "$s2" ]; then test_pass; else test_fail "second --migrate-to-local mutated the consumer tree"; fi
+
+test_start "[--migrate-to-local --dry-run] writes nothing + reports the relocate/dereg"
+C=$(mktemp -d); SANDBOXES+=("$C"); build_settings_json_topology_consumer "$C"
+before=$(snapshot "$C")
+MOUT=$(run_migrate "$C" --dry-run 2>&1) || true
+after=$(snapshot "$C")
+if [ "$before" = "$after" ] && echo "$MOUT" | grep -qi 'detect-loop' && echo "$MOUT" | grep -qiE 'local|relocat|migrat'; then test_pass
+else test_fail "--migrate-to-local --dry-run mis-behaved (changed=$([ "$before" = "$after" ] && echo no || echo YES)) out=[$MOUT]"; fi
+
+test_start "[--migrate-to-local] arming decoupled: un-armed stays un-armed, --arm arms"
+C=$(mktemp -d); SANDBOXES+=("$C"); build_settings_json_topology_consumer "$C"   # unarmed
+run_migrate "$C" >/dev/null 2>&1 || true
+unarmed_ok=true; [ -e "$C/.claude/enforce" ] && unarmed_ok=false
+C2=$(mktemp -d); SANDBOXES+=("$C2"); build_settings_json_topology_consumer "$C2"
+run_migrate "$C2" --arm >/dev/null 2>&1 || true
+armed_ok=true; [ -e "$C2/.claude/enforce" ] || armed_ok=false
+if $unarmed_ok && $armed_ok; then test_pass
+else test_fail "arming not decoupled (unarmed_stayed=$unarmed_ok armed_with_flag=$armed_ok)"; fi
+
+test_start "[--migrate-to-local] ships the kit hook FILES too (registered-but-missing guard)"
+C=$(mktemp -d); SANDBOXES+=("$C"); build_settings_json_topology_consumer "$C"
+rm -f "$C/.claude/hooks/enforce-spec.sh" "$C/.claude/hooks/block-dangerous-bash.sh"   # files missing behind regs
+run_migrate "$C" >/dev/null 2>&1 || true
+miss=""
+while IFS= read -r h; do [ -n "$h" ] || continue; [ -x "$C/.claude/hooks/$h" ] || miss="$miss $h"; done < <(kit_project_hooks)
+if [ -z "${miss// /}" ]; then test_pass
+else test_fail "migrate left kit hook files missing (registered-but-missing):$miss"; fi
+
+test_start "[--migrate-to-local --arm] on a bare consumer (no .claude) arms cleanly (mkdir before touch)"
+C=$(mktemp -d); SANDBOXES+=("$C")   # completely empty: no .claude at all
+rc=0; run_migrate "$C" --arm >/dev/null 2>&1 || rc=$?
+if [ "$rc" -eq 0 ] && [ -f "$C/.claude/enforce" ]; then test_pass
+else test_fail "bare-consumer --arm failed (rc=$rc, enforce=$([ -f "$C/.claude/enforce" ] && echo yes || echo no))"; fi
+
+test_start "[check-drift --consumer] SEEDED settings.json-topology kit-regs flagged (exit 1)"
+C=$(mktemp -d); SANDBOXES+=("$C"); build_settings_json_topology_consumer "$C"
+rc=0; out=$(bash "$DRIFT_SH" --consumer "$C" 2>&1) || rc=$?
+if [ "$rc" -eq 1 ] && echo "$out" | grep -qi 'settings-json-topology'; then test_pass
+else test_fail "settings.json-topology drift not flagged (rc=$rc out=[$out])"; fi
+
+test_start "[check-drift --consumer] clean after --migrate-to-local + --update (topology drift closes)"
+C=$(mktemp -d); SANDBOXES+=("$C"); build_settings_json_topology_consumer "$C"
+( cd "$C" && bash "$INSTALL" --migrate-to-local >/dev/null 2>&1 && bash "$INSTALL" --update >/dev/null 2>&1 ) || true
+rc=0; out=$(bash "$DRIFT_SH" --consumer "$C" 2>&1) || rc=$?
+if [ "$rc" -eq 0 ]; then test_pass; else test_fail "consumer still drifts after migrate+update (rc=$rc out=[$out])"; fi
+
+test_start "[check-drift --consumer] a strayed GLOBAL kit hook (context-size-check) is NOT flagged as cut"
+C=$(mktemp -d); SANDBOXES+=("$C"); build_synced_consumer "$C"
+GH=$(jq -r '.hooks[] | select(.scope=="global") | .script' "$MODULES_JSON" | head -1)
+if [ -n "$GH" ]; then
+  cp "$REPO_ROOT/templates/.claude/hooks/$GH" "$C/.claude/hooks/$GH" 2>/dev/null || printf '#!/usr/bin/env bash\nexit 0\n' > "$C/.claude/hooks/$GH"
+  rc=0; out=$(bash "$DRIFT_SH" --consumer "$C" 2>&1) || rc=$?
+  if [ "$rc" -eq 0 ]; then test_pass; else test_fail "global kit hook $GH wrongly flagged as drift (rc=$rc out=[$out])"; fi
+else test_pass; fi
 
 test_summary "install-update-harness"

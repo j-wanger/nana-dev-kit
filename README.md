@@ -107,7 +107,7 @@ When active: `/spec` required before implementation (PreToolUse), `memory_search
 
 ## Upgrading
 
-Re-run `~/nana-dev-kit/install.sh` to refresh the global install (`nana-personal.md` preserved). To re-sync a **consuming project** to the current kit, run `install.sh --update` from its root: it ADD/UPDATEs hooks, dedupes registrations by basename, and deregisters cut hooks (timestamped backup → survivor smoke → revert-on-failure). Idempotent; arming is decoupled (`.claude/enforce` untouched unless `--arm`); non-kit settings, `.dev-wiki`, and `.gitignore` are preserved. Preview with `--update --dry-run`; report drift read-only with `scripts/check-install-drift.sh --consumer .`.
+Re-run `~/nana-dev-kit/install.sh` to refresh the global install (`nana-personal.md` preserved). To re-sync a **consuming project** to the current kit, run `install.sh --update` from its root: it ADD/UPDATEs hooks, dedupes registrations by basename, and deregisters cut hooks (timestamped backup → survivor smoke → revert-on-failure). Idempotent; arming is decoupled (`.claude/enforce` untouched unless `--arm`); non-kit settings, `.dev-wiki`, and `.gitignore` are preserved. Preview with `--update --dry-run`; report drift read-only with `scripts/check-install-drift.sh --consumer .`. A consumer that registered its kit hooks in the project-scope `.claude/settings.json` (rather than gitignored `settings.local.json`) is first consolidated onto the canonical local topology with `install.sh --migrate-to-local` (relocates kit regs to `settings.local.json`, deregisters kit/cut hooks from `settings.json`; both settings files backed up → survivor smoke → revert), then `--update` refreshes it — so each hook is registered in exactly one file (no DRQ-1 cross-file double-fire).
 
 ## Testing
 

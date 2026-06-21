@@ -113,3 +113,12 @@ Neither is restored; no revert of d43950f / df3e623. The trim-trial Blockers re-
 by this disposition (see _CURRENT_STATE Blockers). Verdict recorded in
 `eval/memory-disposition/verdict-table.md` (ak-ride-along=confirm, wk-seeding=confirm). Re-trigger standing
 (should a future phase surface a window trigger): the trims remain git-revertible.
+
+## Phase 96 — Consumer Re-sync Rollout (2026-06-21)
+
+No trim-trial observation windows are open in this phase. The ak-ride-along (d43950f) + wk-seeding
+(df3e623) trims were CONFIRMED permanent at Phase 95 (windows closed clean); Phase 96 introduces NO new
+reversible trim-trials — it is a forward live rollout (install.sh --update / --migrate-to-local across the
+7 consumers), not a removal-pending-confirmation. Reversibility of the rollout itself is carried by the
+per-consumer timestamped `.claude/.migrate-backup.<ts>/` dirs (Group-B) + the pre-state WIP commits, not by
+a trim-trial window. Nothing to attest against the trim accumulator this phase.

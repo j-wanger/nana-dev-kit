@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 93</title>
+<title>Delivery Report: Phase 96</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,67 +21,62 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 93 &mdash; Phase 93</h1>
+<h1>Delivery Report: Phase 96 &mdash; Phase 96</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">5/5</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">16</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">6/6</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">13</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (51 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">50/50</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+442</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-79</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">4</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">13:03</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+440</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-53</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">1</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">13:49</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>T1 Consumer-state fixture harness + seeded controls (controls-first): test tests/test_install_update.sh builds mktemp...</td></tr>
-<tr><td>&#x2705;</td><td>T2 install.sh --update mode (reconcile ADD/UPDATE + dedupe-by-basename, arming decoupled): test --update on a staged ...</td></tr>
-<tr><td>&#x2705;</td><td>T3 Automated basename-normalized deregistration of cut hooks behind safety rails: test a seeded cut-hook (detect-loop...</td></tr>
-<tr><td>&#x2705;</td><td>T4 Idempotency + don't-clobber invariants + drift-comparator integration: test re-running --update is a true no-op, n...</td></tr>
-<tr><td>&#x2705;</td><td>T5 Close-out: docs + deferred live-application filing: document --update (install.sh header + README + AGENTS pointer...</td></tr>
+<tr><td>&#x2705;</td><td>T1 Controls-first fixtures + seeded controls for the settings.json-topology migration (RED before any --migrate-to-lo...</td></tr>
+<tr><td>&#x2705;</td><td>T2 install.sh --migrate-to-local (one-shot consolidate-to-local; existing --update UNCHANGED): RED — T1's seeded cont...</td></tr>
+<tr><td>&#x2705;</td><td>T3 Drift-comparator + docs + kit-green (HARD checkpoint precondition): GREEN — extend `scripts/check-install-drift.sh...</td></tr>
+<tr><td>&#x2705;</td><td>T4 Live rollout — ready-3 (settings.local topology) + arm signal-watch (GATED, post-checkpoint): per consumer in {sig...</td></tr>
+<tr><td>&#x2705;</td><td>T5 Live rollout — Group-B 4 (settings.json topology) via migrate-then-update + arm aml-casework (GATED): per consumer...</td></tr>
+<tr><td>&#x2705;</td><td>T6 Close-out + exit-criteria runner (GREEN): finalize `eval/consumer-resync/rollout-evidence.md` (per-consumer table:...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Deregistration + dedupe as register-settings.py subcommands (first dereg mechanism, two-tier cut handling, basename-normalized)</td><td>high</td></tr>
-<tr><td>install.sh Idempotent Update / Re-sync Mode (build + sandbox-verify, automated dereg behind rails, build-only)</td><td>high</td></tr>
-<tr><td>Deterministic vs LLM Boundary in an Agentic Harness</td><td>high</td></tr>
-<tr><td>Strategic Inflection Review — Product Frame + Re-measure-then-Shrink</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Consumer Re-sync Rollout — consolidate-to-local + live --update across all 7 consumers</td><td>high</td></tr>
 </table>
 
 <h2>Files Changed</h2>
 <ul>
 <li><code>.claude/rules/active-phase.md</code></li>
-<li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
 <li><code>.dev-wiki/assumption-ledger.md</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
-<li><code>Makefile</code></li>
 <li><code>README.md</code></li>
 <li><code>docs/report.html</code></li>
 <li><code>docs/workflow.html</code></li>
 <li><code>eval/dogfood-round/evidence/window-events.md</code></li>
 <li><code>install.sh</code></li>
-<li><code>modules.json</code></li>
 <li><code>scripts/check-install-drift.sh</code></li>
-<li><code>scripts/register-settings.py</code></li>
+<li><code>tests/test_install_update.sh</code></li>
 
 
 </ul>
 
 <h2>Test Results</h2>
-<p><span class="status" style="background:#2d7d2d">PASS</span> 51 passed, 1 failed</p>
-<pre>  [check-drift --consumer] clean again after --update reconciles the staged fixture (detect-and-warn closes) OK
+<p><span class="status" style="background:#2d7d2d">PASS</span> 51 passed, 2 failed</p>
+<pre>  [check-drift --consumer] a strayed GLOBAL kit hook (context-size-check) is NOT flagged as cut OK
 
-install-update-harness: 37 run, 37 passed, 0 failed
+install-update-harness: 54 run, 54 passed, 0 failed
 
 All tests passed.</pre>
 
@@ -90,7 +85,7 @@ All tests passed.</pre>
 <pre>Score: 50/50 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-06-18 13:03:26 by generate-delivery-report.py
+  Generated 2026-06-21 13:49:32 by generate-delivery-report.py
 </div>
 </body>
 </html>

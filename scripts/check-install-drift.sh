@@ -75,6 +75,9 @@ if [ "$MODE" = "consumer" ]; then
   C_SETTINGS="$CROOT/.claude/settings.local.json"
   C_HOOKS="$CROOT/.claude/hooks"
   KIT_SET=$(jq -r '.hooks[] | select(.scope == "project") | .script' "$MODULES_JSON" 2>/dev/null | sort -u)
+  # Global-scope kit hooks (install to ~/.claude, not per-project). A stray copy in a project hooks
+  # dir is NOT a "cut" — the kit still ships it — so it must not be flagged as drift (Phase 96).
+  KIT_GLOBAL=$(jq -r '.hooks[] | select(.scope == "global") | .script' "$MODULES_JSON" 2>/dev/null | sort -u)
 
   c_registered() {  # one basename per registration command (dups kept)
     [ -f "$C_SETTINGS" ] || return 0
@@ -98,12 +101,27 @@ if [ "$MODE" = "consumer" ]; then
   done < <(c_registered | sort | uniq -d)
   while IFS= read -r b; do
     [ -n "$b" ] || continue
-    grep -qxF "$b" <<<"$KIT_SET" || C_DRIFT+=("cut: $b")
+    grep -qxF "$b" <<<"$KIT_SET" && continue
+    grep -qxF "$b" <<<"$KIT_GLOBAL" && continue   # legit global kit hook strayed into the project dir — not drift
+    C_DRIFT+=("cut: $b")
   done < <(c_present)
+  # Phase 96: kit-managed regs in the PROJECT-scope .claude/settings.json (the committed file --update
+  # never looks at). Flag them as the settings.json-topology drift class that --migrate-to-local fixes;
+  # left in place they orphan a detect-loop reg on file-removal (ghost) and cross-file double-fire (DRQ-1).
+  C_SETTINGS_JSON="$CROOT/.claude/settings.json"
+  C_CUT_SET=$(jq -r '.cut_hooks[]?' "$MODULES_JSON" 2>/dev/null | sed '/^$/d; s/\.sh$//; s/$/.sh/')
+  C_MANAGED=$(printf '%s\n%s\n' "$KIT_SET" "$C_CUT_SET" | sort -u | sed '/^$/d')
+  if [ -f "$C_SETTINGS_JSON" ]; then
+    while IFS= read -r b; do
+      [ -n "$b" ] || continue
+      if grep -qxF "$b" <<<"$C_MANAGED"; then C_DRIFT+=("settings-json-topology: $b"); fi
+    done < <(jq -r '(.hooks // {}) | to_entries[] | .value[]? | (.hooks // [])[]? | (.command // .prompt // empty)' \
+               "$C_SETTINGS_JSON" 2>/dev/null | sed 's#.*/##' | sed '/^$/d' | sort -u)
+  fi
 
   if [ "${#C_DRIFT[@]}" -gt 0 ]; then
     printf '%s\n' "${C_DRIFT[@]}"
-    echo "consumer drift: ${#C_DRIFT[@]} item(s) in $CROOT — run install.sh --update to reconcile."
+    echo "consumer drift: ${#C_DRIFT[@]} item(s) in $CROOT — run install.sh --update (or --migrate-to-local for settings-json-topology) to reconcile."
     exit 1
   fi
   exit 0
