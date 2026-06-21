@@ -1167,7 +1167,7 @@ Standard ceremony. Direction gate closed 2026-06-18 (ledger A1-A5 accept, all_ac
 
 ## Phase 94 — Clean Consumer Memory Re-measure
 
-<!-- gate-log:phase-94 direction=approved -->
+<!-- gate-log:phase-94 direction=approved delivery=accepted -->
 
 Standard ceremony. Direction gate closed 2026-06-20 (ledger Phase-94; all_accept:false — A1/A4 accept, A2 don't-know→down-scope+expansion, A3→maintainer revised n=1 to n=3). Spec specs/phase-94-consumer-memory-remeasure.md (nana:approved). EVIDENCE ONLY — never disposition (Phase 95 disposes). Lightweight retrospective dogfood, NOT a measurement-apparatus phase. Substrate = signal-watch + aml-casework + aml-substrate (machinery gradient). Zero kit code changes (eval/ + .dev-wiki/ + specs/ only). Controls-first.
 

@@ -16,4 +16,4 @@ Next: delivery gate → Phase 95 RE-SCOPED (reconcile floor + coerced + read-bac
 enforce-memory redesign-or-retire; confirm Ph88 trim-trials — windows closed clean; supersedes specs/phase-92-memory-layer-prune.md).
 Gates:
 - [x] Direction confirmed (2026-06-20: A1/A4 accept, A2 don't-know→down-scope+expansion, A3→n=3; all_accept:false)
-- [ ] Delivery accepted (post-implementation report)
+- [x] Delivery accepted (post-implementation report 2026-06-20; ce9fe8e verified)

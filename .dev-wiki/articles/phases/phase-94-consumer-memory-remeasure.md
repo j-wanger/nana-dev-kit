@@ -7,7 +7,7 @@ parents: []
 created: 2026-06-20
 updated: 2026-06-20
 source: plan
-status: active
+status: completed
 scope: ["eval/memory-remeasure/**", ".dev-wiki/_CURRENT_STATE.md"]
 entry_criteria: "Phase 93 delivered (5f830dc); memory MCP repaired in consumer cwds (Phase 91); spec specs/phase-94-consumer-memory-remeasure.md nana:approved; direction gate closed (Phase-94 ledger)"
 exit_criteria: "verify-by-firing admissibility pass (broken-config control = COULDN'T-FIRE); retrospective 3-class tally across the 3-consumer gradient with read-back + attempted-vs-satisfied; memory-demand.md evidence file with NO-SUFFICIENCY caveat"
