@@ -1178,7 +1178,7 @@ Standard ceremony. Direction gate closed 2026-06-20 (ledger Phase-94; all_accept
 <!-- phase:phase-95-memory-layer-disposition -->
 ## Phase 95 — Memory-Layer Disposition
 
-<!-- gate-log:phase-95 direction=approved delivery=pending -->
+<!-- gate-log:phase-95 direction=approved delivery=accepted -->
 
 Standard ceremony. Direction gate closed 2026-06-20 (ledger Phase-95; all_accept:false — A1/A2/A4 accept, A3 reject of the kit-side writer-audit → keep-by-affirmation). Spec specs/phase-95-memory-layer-disposition.md (nana:approved). RECONCILE-AND-DISPOSE, NOT a cut hunt — adjudicate EVERY open memory-layer obligation to a recorded evidence-cited closed-enum verdict. Verdict row schema PINNED `| <id> | <verdict> | <evidence> |` (verdict col 2). Zero kit code UNLESS enforce-memory is redesigned/retired at the HARD checkpoint. Supersedes specs/phase-92-memory-layer-prune.md. Controls-first.
 

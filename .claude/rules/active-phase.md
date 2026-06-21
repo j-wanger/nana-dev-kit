@@ -8,7 +8,7 @@ Key constraints: verdict row schema PINNED `| <id> | <verdict> | <evidence> |` (
 Exit: run-exit-criteria.sh (+ --selftest) ALL-PASS; ledger validator + --gate 95 green; make test + eval (denom 50 unless enforce-memory flips) + check-install-drift drift 0.
 Abort: enforce-memory checkpoint = HARD (no execution on direction-gate authority); SPIKE: FAIL removes redesign; a retire revealing another armed marker → STOP + re-scope; >3 attempts → ask user skip|abort.
 Spec: specs/phase-95-memory-layer-disposition.md (nana:approved). Decision: [[memory-layer-disposition]] (high).
-Status: IMPLEMENTATION COMPLETE 2026-06-21 — 4/4 tasks [x]; run-exit-criteria 12/12, make test PASS, make eval 50/50 (denom unchanged), drift 0. Outcome: memory-mcp-layer + bridge/harvest-writer KEEP; enforce-memory REDESIGNED (real memory_search assertion vs gameable marker, ts>=session-start-ts; survivor-smoke PASS, installed-copy synced); ak-ride-along + wk-seeding CONFIRMED. Ledger Phase-83 A5 open->held; Phase-88 A4/A6 + trim re-triggers resolved. Awaiting delivery acceptance.
+Status: IMPLEMENTATION COMPLETE 2026-06-21 — 4/4 tasks [x]; run-exit-criteria 12/12, make test PASS, make eval 50/50 (denom unchanged), drift 0. Outcome: memory-mcp-layer + bridge/harvest-writer KEEP; enforce-memory REDESIGNED (real memory_search assertion vs gameable marker, ts>=session-start-ts; survivor-smoke PASS, installed-copy synced); ak-ride-along + wk-seeding CONFIRMED. Ledger Phase-83 A5 open->held; Phase-88 A4/A6 + trim re-triggers resolved. DELIVERY ACCEPTED 2026-06-21 (3d401d5 verified).
 Gates:
 - [x] Direction confirmed (2026-06-20: A1/A2/A4 accept, A3 reject->keep-by-affirmation; all_accept:false; ledger Phase-95)
-- [ ] Delivery accepted (post-implementation report)
+- [x] Delivery accepted (2026-06-21; 3d401d5 verified)
