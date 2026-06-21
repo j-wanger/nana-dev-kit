@@ -1,0 +1,3 @@
+{"type":"assistant","timestamp":"2026-06-20T01:00:00Z","sessionId":"subfix","message":{"content":[{"type":"tool_use","id":"sa1","name":"mcp__memory__memory_search","input":{"query":"subagent search"}}]}}
+{"type":"assistant","timestamp":"2026-06-20T01:00:01Z","sessionId":"subfix","message":{"content":[{"type":"text","text":"prose mentioning mcp__memory__memory_store must not count"},{"type":"tool_use","id":"sa2","name":"mcp__memory__memory_store","input":{"content":"subagent store"}}]}}
+{"type":"attachment","timestamp":"2026-06-20T01:00:02Z","content":"deferred tools: mcp__memory__memory_store mcp__memory__memory_search (must not count)"}
