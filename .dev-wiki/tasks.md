@@ -1189,7 +1189,7 @@ Standard ceremony. Direction gate closed 2026-06-20 (ledger Phase-95; all_accept
 
 ## Phase 96 — Consumer Re-sync Rollout (consolidate-to-local + live --update across all 7)
 
-<!-- gate-log:phase-96 direction=approved delivery=pending -->
+<!-- gate-log:phase-96 direction=approved delivery=accepted -->
 
 Standard ceremony. Direction gate closed 2026-06-21 (ledger Phase-96; all_accept:false — A1 reject→consolidate-to-local, A2/A3/A4 accept, A5 reject→arm signal-watch+aml-casework). Spec specs/phase-96-consumer-resync-rollout.md (nana:approved). Build `install.sh --migrate-to-local` controls-first, sandbox-verify, then apply LIVE across all 7 consumers gated per-consumer (dry-run-first + both-file backup + survivor smoke + revert). Existing `--update` UNCHANGED. HARD checkpoint after T3 before ANY live write. cut_hooks=["detect-loop"]; context-size-check FLAG-but-leave.
 
