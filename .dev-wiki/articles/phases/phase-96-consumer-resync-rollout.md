@@ -7,7 +7,7 @@ parents: []
 created: 2026-06-21
 updated: 2026-06-21
 source: plan
-status: active
+status: completed
 scope: ["install.sh", "tests/test_install_update.sh", "scripts/check-install-drift.sh", "scripts/register-settings.py", "eval/consumer-resync/**", "README.md", "AGENTS.md", "MANIFEST", "Makefile", ".dev-wiki/**"]
 entry_criteria: "Phase 95 delivery accepted (3d401d5 + b960c70); Phase-93 install.sh --update built + sandbox-verified; spec specs/phase-96-consumer-resync-rollout.md nana:approved; Phase-96 ledger block appended + validated; direction gate closed (all_accept:false — A1 reject->consolidate, A2/A3/A4 accept, A5 reject->arm signal-watch+aml-casework)"
 exit_criteria: "tests/test_install_update.sh PASS (new settings.json-topology fixture + post-migration idempotency + both seeded controls); --migrate-to-local dry-run/real correct + idempotent + both-file backup round-trips + survivor smoke; check-install-drift --consumer flags settings.json kit-regs; make test + make eval 50/50 + kit drift 0; ALL 7 consumers live on settings.local-only topology (working-tree/runtime), detect-loop ghost-free, post-drift clean, idempotent, survivor smoke (Group-B fired live in migrate; ready-3 probe byte-identity); armed set = edge-screener/edge-analyst/aml-substrate/signal-watch/aml-casework (ai-game+fate unarmed); NOTE 3 git-tracked consumers consolidated working-tree-only (VC durability = maintainer follow-up); Phase-93 deferred live-application Blockers filing RESOLVED; ## Phase 96 window-events; eval/consumer-resync/run-exit-criteria.sh ALL-PASS"

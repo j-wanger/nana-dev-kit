@@ -98,7 +98,7 @@
 - [[phase-93-install-resync|Phase 93: install.sh Idempotent Update / Consuming-Project Re-sync Mode]] -- completed
 - [[phase-94-consumer-memory-remeasure|Phase 94: Clean Consumer Memory Re-measure]] -- completed
 - [[phase-95-memory-layer-disposition|Phase 95: Memory-Layer Disposition (Reconcile-and-Close)]] -- completed
-- [[phase-96-consumer-resync-rollout|Phase 96: Consumer Re-sync Rollout (consolidate-to-local + live --update across all 7)]] -- active (delivery pending)
+- [[phase-96-consumer-resync-rollout|Phase 96: Consumer Re-sync Rollout (consolidate-to-local + live --update across all 7)]] -- completed
 
 ### Modules
 - [[scripts|scripts/]] -- Multi-agent sync utility
