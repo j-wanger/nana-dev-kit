@@ -55,7 +55,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <body>
 
 <h1>Nana Dev Kit &mdash; Workflow Breakdown</h1>
-<p class="subtitle">7-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-06-18 13:03</p>
+<p class="subtitle">7-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-06-21 00:06</p>
 
 <div class="toc">
 <h3>Contents</h3>
@@ -404,7 +404,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/hooks/dev-wiki-scope-check.sh</code></td><td>77</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
 <tr><td><code>.claude/hooks/enforce-assumption-gate.sh</code></td><td>82</td><td></td></tr>
 <tr><td><code>.claude/hooks/enforce-loop.sh</code></td><td>115</td><td>Stop: checks deliverables + debrief status (global)</td></tr>
-<tr><td><code>.claude/hooks/enforce-memory.sh</code></td><td>72</td><td></td></tr>
+<tr><td><code>.claude/hooks/enforce-memory.sh</code></td><td>98</td><td></td></tr>
 <tr><td><code>.claude/hooks/enforce-spec.sh</code></td><td>90</td><td>PreToolUse: blocks writes without approved spec (global)</td></tr>
 <tr><td><code>.claude/hooks/post-commit.sh</code></td><td>80</td><td>PostToolUse: detects git commits, writes .pending-commit</td></tr>
 <tr><td><code>.claude/hooks/post-compact.sh</code></td><td>19</td><td></td></tr>
@@ -619,7 +619,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>test_enforce.sh</code></td><td>13 assertions, 172 lines</td></tr>
 <tr><td><code>test_enforce_assumption_gate.sh</code></td><td>0 assertions, 66 lines</td></tr>
 <tr><td><code>test_eval_hermeticity.sh</code></td><td>0 assertions, 104 lines</td></tr>
-<tr><td><code>test_firing_log.sh</code></td><td>2 assertions, 164 lines</td></tr>
+<tr><td><code>test_firing_log.sh</code></td><td>2 assertions, 165 lines</td></tr>
 <tr><td><code>test_fixture_provenance.sh</code></td><td>0 assertions, 72 lines</td></tr>
 <tr><td><code>test_harden.sh</code></td><td>0 assertions, 307 lines</td></tr>
 <tr><td><code>test_hook_firing_coverage.sh</code></td><td>0 assertions, 169 lines</td></tr>
@@ -637,7 +637,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>test_step_numbering.sh</code></td><td>1 assertions, 38 lines</td></tr>
 <tr><td><code>test_sync_rules.sh</code></td><td>15 assertions, 100 lines</td></tr>
 <tr><td><code>test_templates.sh</code></td><td>100 assertions, 977 lines</td></tr>
-<tr><td><code>test_tooluse_hooks.sh</code></td><td>0 assertions, 164 lines</td></tr>
+<tr><td><code>test_tooluse_hooks.sh</code></td><td>0 assertions, 204 lines</td></tr>
 <tr><td><code>test_working_knowledge_curation.sh</code></td><td>0 assertions, 343 lines</td></tr>
 </table>
 <p style="margin-top:0.5rem;font-size:0.85rem">Total: <strong>245 assertions</strong> across 29 test scripts. Run with <code>make test</code>.</p>
@@ -841,7 +841,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 </pre>
 
 <footer>
-  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-06-18 13:03<br>
+  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-06-21 00:06<br>
   <code>scripts/generate-workflow.py</code> &mdash; run <code>make workflow</code> to regenerate
 </footer>
 

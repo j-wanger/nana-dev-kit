@@ -1,18 +1,19 @@
 {
-  "name": "enforce-memory allows write when memory consulted",
+  "name": "enforce-memory allows write when a real memory_search is in the transcript",
   "category": "hook",
   "hook": "enforce-memory.sh",
   "scoring": "binary",
   "setup": {
     "cwd_files": {
       ".dev-wiki/.gitkeep": "marker",
-      ".claude/.memory-consulted": "marker"
+      ".transcript.jsonl": "{\"type\":\"assistant\",\"timestamp\":\"2026-06-20T12:00:00Z\",\"message\":{\"content\":[{\"type\":\"tool_use\",\"name\":\"mcp__memory__memory_search\"}]}}"
     },
     "home_files": {
-      ".claude/enforce-memory": "marker"
+      ".claude/enforce-memory": "marker",
+      ".claude/.session-start-ts": "0"
     }
   },
-  "input": "{\"tool_name\": \"Write\", \"input\": {\"file_path\": \"src/app.py\"}}",
+  "input": "{\"tool_name\": \"Write\", \"input\": {\"file_path\": \"src/app.py\"}, \"transcript_path\": \".transcript.jsonl\"}",
   "expected": {
     "exit_code": 0
   }

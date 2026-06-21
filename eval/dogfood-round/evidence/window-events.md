@@ -96,3 +96,20 @@ Disposition recommendation (authority = maintainer, executed at Phase 95 per the
 Ph88 trim-trials permanent if windows close clean"): **CONFIRM both ak-ride-along (d43950f) and
 wk-seeding (df3e623) — not restore.** The trim-trial Blockers entries stay open until Phase 95 records
 the confirm; this file is frozen at window close.
+
+## Phase 95 — trim-trial disposition EXECUTED (2026-06-21)
+
+Per the roadmap ("make the Ph88 trim-trials permanent if their windows close clean") and the clean
+window close above (ZERO trigger-matching events Phases 88-93), the Phase-95 Memory-Layer Disposition
+round records the maintainer-authority disposition:
+
+- **CONFIRM ak-ride-along (d43950f)** — the active-knowledge re-presentation trim is permanent. Window
+  closed clean; no recovery/planning decision in the window was wrong for lack of phase-pinned knowledge.
+- **CONFIRM wk-seeding (df3e623)** — the debrief-side WK-seeding trim is permanent (REVERT-COUPLED with
+  ak-ride-along; a restore would have taken both reverts atomically + re-run test_companions.sh — not
+  triggered). Window closed clean.
+
+Neither is restored; no revert of d43950f / df3e623. The trim-trial Blockers re-trigger entries are closed
+by this disposition (see _CURRENT_STATE Blockers). Verdict recorded in
+`eval/memory-disposition/verdict-table.md` (ak-ride-along=confirm, wk-seeding=confirm). Re-trigger standing
+(should a future phase surface a window trigger): the trims remain git-revertible.

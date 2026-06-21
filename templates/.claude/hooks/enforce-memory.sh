@@ -61,12 +61,38 @@ case "$FILE_PATH" in
   *.md) log_firing "allow" "markdown"; exit 0 ;;
 esac
 
-# --- Memory gate check ---
-if [ -f ".claude/.memory-consulted" ]; then
-  log_firing "allow" "memory-consulted"
+# --- Memory gate (Phase 95 redesign): assert a REAL in-session memory_search, not a marker the agent
+#     touches itself. The old `.claude/.memory-consulted` check proved file-EXISTENCE, not consultation —
+#     gameable (the audit found ~45% of bites were ritual marker-touches). Read the transcript PreToolUse
+#     delivers and require a real assistant `tool_use` memory_search whose timestamp is at/after the
+#     session-start anchor (~/.claude/.session-start-ts, written by session-start.sh) — a real-event
+#     assertion (det-vs-LLM Principle 2) WITH per-session freshness. The deferred-tool catalog
+#     (attachment/system entries naming mcp__memory__*) is structurally excluded by the type==assistant +
+#     tool_use JSON gate, never a raw grep. FAIL-OPEN: a relevance gate never blocks on its own breakage. ---
+TRANSCRIPT=$(printf '%s' "$INPUT" | jq -r '.transcript_path // empty' 2>/dev/null || echo "")
+if [ -z "$TRANSCRIPT" ] || [ ! -r "$TRANSCRIPT" ]; then
+  log_firing "allow" "no-transcript"
+  exit 0
+fi
+SINCE=0
+[ -r "$HOME/.claude/.session-start-ts" ] && SINCE=$(cat "$HOME/.claude/.session-start-ts" 2>/dev/null || echo 0)
+case "$SINCE" in ''|*[!0-9]*) SINCE=0 ;; esac   # guard: only a bare epoch is a valid bound
+# grep -F narrows to candidate lines cheaply; the JSON gate below is authoritative. fromjson? tolerates
+# malformed lines so the scan never aborts. Output "1" per real, in-window match; head -1 short-circuits.
+FOUND=$(grep -F '"tool_use"' "$TRANSCRIPT" 2>/dev/null \
+  | jq -rR --argjson since "$SINCE" '
+      fromjson?
+      | select(.type=="assistant")
+      | (.timestamp // "" | sub("\\.[0-9]+";"") | (try fromdateiso8601 catch 0)) as $ts
+      | select($ts >= $since)
+      | .message.content[]?
+      | select(.type=="tool_use" and ((.name // "") | test("memory_search")))
+      | "1"' 2>/dev/null | head -n1 || true)   # || true: empty grep (no tool_use lines) must not abort under set -e
+if [ "$FOUND" = "1" ]; then
+  log_firing "allow" "memory-searched"
   exit 0
 fi
 
 log_firing "block" "no-memory-search" || true
-echo "[nana:enforce-memory] No memory_search detected this session. Call memory_search, then touch .claude/.memory-consulted" >&2
+echo "[nana:enforce-memory] No memory_search this session. Call mcp__memory__memory_search before this write." >&2
 exit 2

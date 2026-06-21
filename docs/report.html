@@ -40,12 +40,12 @@
 <body>
 
 <h1>Nana Dev Kit</h1>
-<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-06-18 13:03</p>
+<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-06-21 00:06</p>
 
 <div class="stats">
-  <div class="stat"><div class="num">1042</div><div class="label">Files</div></div>
-  <div class="stat"><div class="num">178,903</div><div class="label">Lines of Code</div></div>
-  <div class="stat"><div class="num">552</div><div class="label">Automated Tests</div></div>
+  <div class="stat"><div class="num">1054</div><div class="label">Files</div></div>
+  <div class="stat"><div class="num">180,346</div><div class="label">Lines of Code</div></div>
+  <div class="stat"><div class="num">556</div><div class="label">Automated Tests</div></div>
   <div class="stat"><div class="num">7</div><div class="label">Harness Layers</div></div>
   <div class="stat"><div class="num">v0.5.0</div><div class="label">Latest Tag</div></div>
 </div>
@@ -151,7 +151,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Test Suite <span class="badge badge-green">33 files, 5,450 lines</span></h3>
+  <h3>Test Suite <span class="badge badge-green">34 files, 5,944 lines</span></h3>
   <ul class="file-list">
     <li><span>tests/fixtures/real-events/detect-loop-success-event.json</span><span class='lines'>1</span></li>
     <li><span>tests/fixtures/real-events/detect-loop-success-event.json.provenance</span><span class='lines'>5</span></li>
@@ -167,12 +167,13 @@
     <li><span>tests/test_enforce.sh</span><span class='lines'>172</span></li>
     <li><span>tests/test_enforce_assumption_gate.sh</span><span class='lines'>66</span></li>
     <li><span>tests/test_eval_hermeticity.sh</span><span class='lines'>104</span></li>
-    <li><span>tests/test_firing_log.sh</span><span class='lines'>164</span></li>
+    <li><span>tests/test_firing_log.sh</span><span class='lines'>165</span></li>
     <li><span>tests/test_fixture_provenance.sh</span><span class='lines'>72</span></li>
     <li><span>tests/test_harden.sh</span><span class='lines'>307</span></li>
     <li><span>tests/test_hook_firing_coverage.sh</span><span class='lines'>169</span></li>
     <li><span>tests/test_install.sh</span><span class='lines'>896</span></li>
     <li><span>tests/test_install_drift_dircurrency.sh</span><span class='lines'>140</span></li>
+    <li><span>tests/test_install_update.sh</span><span class='lines'>453</span></li>
     <li><span>tests/test_lifecycle_hooks_firing.sh</span><span class='lines'>151</span></li>
     <li><span>tests/test_long_cadence_hooks.sh</span><span class='lines'>159</span></li>
     <li><span>tests/test_manifest_freshness.sh</span><span class='lines'>49</span></li>
@@ -184,7 +185,7 @@
     <li><span>tests/test_step_numbering.sh</span><span class='lines'>38</span></li>
     <li><span>tests/test_sync_rules.sh</span><span class='lines'>100</span></li>
     <li><span>tests/test_templates.sh</span><span class='lines'>977</span></li>
-    <li><span>tests/test_tooluse_hooks.sh</span><span class='lines'>164</span></li>
+    <li><span>tests/test_tooluse_hooks.sh</span><span class='lines'>204</span></li>
     <li><span>tests/test_working_knowledge_curation.sh</span><span class='lines'>343</span></li>
   </ul>
 </div>
@@ -225,7 +226,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 3: Hooks <span class="badge badge-green">22 files, 1,648 lines</span></h3>
+  <h3>Templates — Layer 3: Hooks <span class="badge badge-green">22 files, 1,674 lines</span></h3>
   <ul class="file-list">
     <li><span>templates/.claude/hooks/audit-log.sh</span><span class='lines'>26</span></li>
     <li><span>templates/.claude/hooks/auto-ruff-format.sh</span><span class='lines'>18</span></li>
@@ -235,7 +236,7 @@
     <li><span>templates/.claude/hooks/dev-wiki-scope-check.sh</span><span class='lines'>77</span></li>
     <li><span>templates/.claude/hooks/enforce-assumption-gate.sh</span><span class='lines'>82</span></li>
     <li><span>templates/.claude/hooks/enforce-loop.sh</span><span class='lines'>115</span></li>
-    <li><span>templates/.claude/hooks/enforce-memory.sh</span><span class='lines'>72</span></li>
+    <li><span>templates/.claude/hooks/enforce-memory.sh</span><span class='lines'>98</span></li>
     <li><span>templates/.claude/hooks/enforce-spec.sh</span><span class='lines'>90</span></li>
     <li><span>templates/.claude/hooks/post-commit.sh</span><span class='lines'>80</span></li>
     <li><span>templates/.claude/hooks/post-compact.sh</span><span class='lines'>19</span></li>
@@ -413,7 +414,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Eval Harness <span class="badge badge-green">689 files, 139,284 lines</span></h3>
+  <h3>Eval Harness <span class="badge badge-green">698 files, 139,964 lines</span></h3>
   <ul class="file-list">
     <li><span>eval/README.md</span><span class='lines'>85</span></li>
     <li><span>eval/amplifier/SCHEMA-NOTES.md</span><span class='lines'>110</span></li>
@@ -854,9 +855,9 @@
     <li><span>eval/corpus/hook-enforce-loop-pass/scenario.json</span><span class='lines'>21</span></li>
     <li><span>eval/corpus/hook-enforce-loop-pass/spec.md</span><span class='lines'>5</span></li>
     <li><span>eval/corpus/hook-enforce-memory-allow/marker</span><span class='lines'>1</span></li>
-    <li><span>eval/corpus/hook-enforce-memory-allow/scenario.json</span><span class='lines'>19</span></li>
+    <li><span>eval/corpus/hook-enforce-memory-allow/scenario.json</span><span class='lines'>20</span></li>
     <li><span>eval/corpus/hook-enforce-memory-block/marker</span><span class='lines'>1</span></li>
-    <li><span>eval/corpus/hook-enforce-memory-block/scenario.json</span><span class='lines'>19</span></li>
+    <li><span>eval/corpus/hook-enforce-memory-block/scenario.json</span><span class='lines'>21</span></li>
     <li><span>eval/corpus/hook-enforce-memory-inactive/marker</span><span class='lines'>1</span></li>
     <li><span>eval/corpus/hook-enforce-memory-inactive/scenario.json</span><span class='lines'>16</span></li>
     <li><span>eval/corpus/hook-enforce-spec-allow-gate/active-phase.md</span><span class='lines'>5</span></li>
@@ -974,7 +975,7 @@
     <li><span>eval/dogfood-round/evidence/prompts/session-2.txt</span><span class='lines'>1</span></li>
     <li><span>eval/dogfood-round/evidence/prompts/session-3.txt</span><span class='lines'>1</span></li>
     <li><span>eval/dogfood-round/evidence/sessions.md</span><span class='lines'>73</span></li>
-    <li><span>eval/dogfood-round/evidence/window-events.md</span><span class='lines'>98</span></li>
+    <li><span>eval/dogfood-round/evidence/window-events.md</span><span class='lines'>115</span></li>
     <li><span>eval/dogfood-round/pre-registration.md</span><span class='lines'>193</span></li>
     <li><span>eval/dogfood-round/rehearsals/deregister-detect-loop.jq</span><span class='lines'>19</span></li>
     <li><span>eval/dogfood-round/rehearsals/rehearsal.log</span><span class='lines'>21</span></li>
@@ -1002,7 +1003,16 @@
     <li><span>eval/install-gap/rehearsal.log</span><span class='lines'>18</span></li>
     <li><span>eval/install-gap/rehearse.sh</span><span class='lines'>94</span></li>
     <li><span>eval/install-gap/run-exit-criteria.sh</span><span class='lines'>42</span></li>
+    <li><span>eval/install-update/README.md</span><span class='lines'>76</span></li>
+    <li><span>eval/install-update/fixtures/no-hooks/manifest.json</span><span class='lines'>12</span></li>
+    <li><span>eval/install-update/fixtures/phase79-duplicate-registration/manifest.json</span><span class='lines'>12</span></li>
+    <li><span>eval/install-update/fixtures/staged-detect-loop-ghost/manifest.json</span><span class='lines'>12</span></li>
     <li><span>eval/memory-integration/results.md</span><span class='lines'>270</span></li>
+    <li><span>eval/memory-remeasure/fixtures/contamination_fixture.jsonl</span><span class='lines'>7</span></li>
+    <li><span>eval/memory-remeasure/fixtures/sub_consumer/sess-fix/subagents/agent-fix.jsonl</span><span class='lines'>3</span></li>
+    <li><span>eval/memory-remeasure/memory-demand-remeasure.md</span><span class='lines'>108</span></li>
+    <li><span>eval/memory-remeasure/tally-demand.py</span><span class='lines'>333</span></li>
+    <li><span>eval/memory-remeasure/verify-firing.sh</span><span class='lines'>97</span></li>
     <li><span>eval/prune-on-value/arming-runs.log</span><span class='lines'>9</span></li>
     <li><span>eval/prune-on-value/check-artifacts.sh</span><span class='lines'>41</span></li>
     <li><span>eval/prune-on-value/liveness-grep.log</span><span class='lines'>62</span></li>
@@ -1107,7 +1117,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Specs <span class="badge badge-green">80 files, 7,738 lines</span></h3>
+  <h3>Specs <span class="badge badge-green">82 files, 7,979 lines</span></h3>
   <ul class="file-list">
     <li><span>specs/cut-heuristic-machinery-self-dialogue.md</span><span class='lines'>79</span></li>
     <li><span>specs/domain-research-in-dev-plan.md</span><span class='lines'>81</span></li>
@@ -1187,22 +1197,24 @@
     <li><span>specs/phase-89-dogfood-demand-evidence.md</span><span class='lines'>263</span></li>
     <li><span>specs/phase-90-fable-distillation.md</span><span class='lines'>34</span></li>
     <li><span>specs/phase-91-memory-e2e-and-gate-forcing-function.md</span><span class='lines'>74</span></li>
-    <li><span>specs/phase-92-memory-layer-prune.md</span><span class='lines'>116</span></li>
+    <li><span>specs/phase-92-memory-layer-prune.md</span><span class='lines'>121</span></li>
+    <li><span>specs/phase-93-install-resync.md</span><span class='lines'>57</span></li>
+    <li><span>specs/phase-94-consumer-memory-remeasure.md</span><span class='lines'>179</span></li>
     <li><span>specs/ts-init-design.md</span><span class='lines'>252</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Other <span class="badge badge-green">54 files, 6,355 lines</span></h3>
+  <h3>Other <span class="badge badge-green">54 files, 6,357 lines</span></h3>
   <ul class="file-list">
-    <li><span>.claude/rules/active-phase.md</span><span class='lines'>18</span></li>
+    <li><span>.claude/rules/active-phase.md</span><span class='lines'>13</span></li>
     <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>203</span></li>
     <li><span>.claude/settings.json.bak-phase88</span><span class='lines'>146</span></li>
     <li><span>benchmark/README.md</span><span class='lines'>108</span></li>
     <li><span>benchmark/longmemeval.py</span><span class='lines'>302</span></li>
-    <li><span>docs/delivery-report.html</span><span class='lines'>101</span></li>
+    <li><span>docs/delivery-report.html</span><span class='lines'>96</span></li>
     <li><span>docs/memory-knowledge-architecture.md</span><span class='lines'>611</span></li>
     <li><span>docs/nanaclaw-architecture.md</span><span class='lines'>722</span></li>
-    <li><span>docs/report.html</span><span class='lines'>1285</span></li>
+    <li><span>docs/report.html</span><span class='lines'>1297</span></li>
     <li><span>docs/workflow.html</span><span class='lines'>849</span></li>
     <li><span>modules.json</span><span class='lines'>76</span></li>
     <li><span>patches/nanaclaw-sanitize-fts.patch</span><span class='lines'>23</span></li>
@@ -1271,11 +1283,11 @@
 </table>
 
 <h2>Recent Git History</h2>
-<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">01091d9 Phase 92 — delivery accepted; flip delivery gate (1dc1d80 verified)
-1dc1d80 Phase 92 — Strategic Inflection Review & Roadmap Re-sequencing: product-for-consumers frame + re-measure-once-then-shrink
-e62e4dd Phase 91 — delivery accepted; flip delivery gate (318e9b6 verified)
-318e9b6 Phase 91 — Consuming-Project Memory E2E + Assumption-Gate Forcing Function: bind the dev-plan assumption gate with enforce-assumption-gate.sh (--gate-only, hook-bound not prose — kills skip #4); fix Memory MCP firing in consuming projects via a PYTHONPATH env on the MCP registration (root cause: -m memory_server resolves only from the package-bearing kit cwd). Verified by firing a real consumer round-trip; make test ALL-PASS.
-9d8244d Record assumption-gate hardening + session follow-ons (debrief)</pre>
+<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">45cb12b Phase 94 — delivery accepted; flip delivery gate (ce9fe8e verified)
+ce9fe8e Phase 94: Clean Consumer Memory Re-measure — evidence-only re-measure reverses the consumer-demand-zero premise
+83db25a Phase 93 — delivery accepted; flip delivery gate (5f830dc verified)
+5f830dc Phase 93: install.sh idempotent update / consuming-project re-sync mode
+01091d9 Phase 92 — delivery accepted; flip delivery gate (1dc1d80 verified)</pre>
 
 <footer>
   Generated by <code>scripts/generate-report.py</code> &mdash; run <code>make report</code> to regenerate

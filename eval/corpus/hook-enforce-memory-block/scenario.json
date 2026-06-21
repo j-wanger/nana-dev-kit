@@ -1,17 +1,19 @@
 {
-  "name": "enforce-memory blocks write when memory not consulted",
+  "name": "enforce-memory blocks write when no real memory_search in the transcript",
   "category": "hook",
   "hook": "enforce-memory.sh",
   "scoring": "binary",
   "setup": {
     "cwd_files": {
-      ".dev-wiki/.gitkeep": "marker"
+      ".dev-wiki/.gitkeep": "marker",
+      ".transcript.jsonl": "{\"type\":\"assistant\",\"timestamp\":\"2026-06-20T12:00:00Z\",\"message\":{\"content\":[{\"type\":\"text\",\"text\":\"writing\"}]}}"
     },
     "home_files": {
-      ".claude/enforce-memory": "marker"
+      ".claude/enforce-memory": "marker",
+      ".claude/.session-start-ts": "0"
     }
   },
-  "input": "{\"tool_name\": \"Write\", \"input\": {\"file_path\": \"src/app.py\"}}",
+  "input": "{\"tool_name\": \"Write\", \"input\": {\"file_path\": \"src/app.py\"}, \"transcript_path\": \".transcript.jsonl\"}",
   "expected": {
     "exit_code": 2,
     "stderr_contains": ["nana:enforce-memory"]

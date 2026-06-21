@@ -116,11 +116,12 @@ teardown "$T"
 
 mk_devwiki() { local d; d=$(mktemp -d); mkdir -p "$d/.dev-wiki" "$d/.claude/rules" "$d/specs"; printf 'Phase: 65 - x\n' > "$d/.claude/rules/active-phase.md"; echo "$d"; }
 mk_spec()    { local d; d=$(mk_devwiki); touch "$d/.claude/enforce"; echo "$d"; }
-mk_memory()  { local d; d=$(mk_devwiki); touch "$d/.claude/enforce-memory"; echo "$d"; }
+mk_memory()  { local d; d=$(mk_devwiki); touch "$d/.claude/enforce-memory"; echo 0 > "$d/.claude/.session-start-ts"; printf '{"type":"assistant","timestamp":"2026-06-20T12:00:00Z","message":{"content":[{"type":"text","text":"x"}]}}\n' > "$d/.transcript.jsonl"; echo "$d"; }  # Phase 95: redesigned gate reads the transcript (no-search => block), not a marker
 mk_loop()    { local d; d=$(mk_devwiki); touch "$d/.claude/enforce"; printf '%s\n' '- [ ] `test -f /nonexistent-deliverable-xyz`' > "$d/specs/phase-65-x.md"; echo "$d"; }
 mk_checktests() { mk_devwiki; }
 
 WRITE_OOS='{"tool_name":"Write","input":{"file_path":"src/app.py"}}'
+WRITE_OOS_MEM='{"tool_name":"Write","input":{"file_path":"src/app.py"},"transcript_path":".transcript.jsonl"}'  # Phase 95: enforce-memory needs a transcript to reach the gate
 CHECKTESTS_JSON='{"tool_uses":[{"input":{"file_path":"src/x.py"}}]}'
 
 # Blocking hook: baseline block+record, then exit-2 preserved under (a) unwritable log and (b) failing date.
@@ -146,7 +147,7 @@ check_block() {  # label hook mkfx json renv
 }
 
 check_block "enforce-spec"   enforce-spec.sh         mk_spec       "$WRITE_OOS"       ""
-check_block "enforce-memory" enforce-memory.sh       mk_memory     "$WRITE_OOS"       "CI="
+check_block "enforce-memory" enforce-memory.sh       mk_memory     "$WRITE_OOS_MEM"   "CI="
 check_block "enforce-loop"   enforce-loop.sh         mk_loop       "{}"               ""
 check_block "check-tests"    check-tests-were-run.sh mk_checktests "$CHECKTESTS_JSON" ""
 

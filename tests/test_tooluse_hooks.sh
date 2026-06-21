@@ -153,10 +153,50 @@ if [ "$EC" = "0" ] && grep -q 'outside active task scope' "$T/.out" 2>/dev/null 
   test_pass; else test_fail "absolute out-of-scope path should advise (ec=$EC)"; fi
 teardown "$T"
 
-test_start "enforce-memory: .tool_input ABSOLUTE src write blocks identically to relative legacy shape"
+# Phase 95 redesign: enforce-memory asserts a REAL in-session memory_search read from the transcript
+# PreToolUse delivers, not the gameable agent-touched .claude/.memory-consulted marker. Real call =
+# type==assistant -> content[] tool_use name~memory_search, ts >= ~/.claude/.session-start-ts (freshness).
+mk_search() {   # $1=path $2=iso-ts : one real assistant tool_use memory_search
+  printf '{"type":"assistant","timestamp":"%s","message":{"content":[{"type":"tool_use","name":"mcp__memory__memory_search"}]}}\n' "$2" > "$1"; }
+mk_nosearch() { # $1=path : an assistant TEXT turn + a deferred-tool catalog mention that must NOT count
+  printf '{"type":"assistant","timestamp":"2026-06-20T12:00:00Z","message":{"content":[{"type":"text","text":"writing"}]}}\n' > "$1"
+  printf '{"type":"attachment","content":"tools: mcp__memory__memory_search, mcp__memory__memory_store"}\n' >> "$1"; }
+
+test_start "enforce-memory: transcript WITH a real memory_search -> ALLOW (exit 0, reason memory-searched)"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude"; touch "$T/.claude/enforce-memory"; echo 0 > "$T/.claude/.session-start-ts"
+mk_search "$T/.transcript.jsonl" "2026-06-20T12:00:00Z"
+EC=$(run_hook enforce-memory.sh "$T" "{\"tool_input\":{\"file_path\":\"src/app.py\"},\"transcript_path\":\"$T/.transcript.jsonl\"}")
+if [ "$EC" = "0" ] && grep -q '"reason":"memory-searched"' "$T/.dev-wiki/enforcement.log" 2>/dev/null; then
+  test_pass; else test_fail "real search should allow (ec=$EC log=$(tail -1 "$T/.dev-wiki/enforcement.log" 2>/dev/null))"; fi
+teardown "$T"
+
+test_start "enforce-memory: transcript WITHOUT a real search (only catalog) -> BLOCK (exit 2)"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude"; touch "$T/.claude/enforce-memory"; echo 0 > "$T/.claude/.session-start-ts"
+mk_nosearch "$T/.transcript.jsonl"
+EC=$(run_hook enforce-memory.sh "$T" "{\"tool_input\":{\"file_path\":\"src/app.py\"},\"transcript_path\":\"$T/.transcript.jsonl\"}")
+if [ "$EC" = "2" ] && grep -q 'nana:enforce-memory' "$T/.err"; then
+  test_pass; else test_fail "a catalog mention must not satisfy; should block (ec=$EC)"; fi
+teardown "$T"
+
+test_start "enforce-memory: no transcript_path -> FAIL-OPEN allow (never block on its own breakage)"
 T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude"; touch "$T/.claude/enforce-memory"
-A=$(run_hook enforce-memory.sh "$T" "{\"tool_input\":{\"file_path\":\"$T/src/app.py\"}}")
-B=$(run_hook enforce-memory.sh "$T" '{"input":{"file_path":"src/app.py"}}')
+EC=$(run_hook enforce-memory.sh "$T" "{\"tool_input\":{\"file_path\":\"src/app.py\"}}")
+if [ "$EC" = "0" ]; then test_pass; else test_fail "missing transcript_path must fail-open allow (ec=$EC)"; fi
+teardown "$T"
+
+test_start "enforce-memory: a search BEFORE session-start-ts does NOT satisfy (stale-pass guard)"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude"; touch "$T/.claude/enforce-memory"
+python3 -c "import datetime;print(int(datetime.datetime(2026,6,20,13,0,0,tzinfo=datetime.timezone.utc).timestamp()))" > "$T/.claude/.session-start-ts"
+mk_search "$T/.transcript.jsonl" "2026-06-20T12:00:00Z"   # search 1h BEFORE session start
+EC=$(run_hook enforce-memory.sh "$T" "{\"tool_input\":{\"file_path\":\"src/app.py\"},\"transcript_path\":\"$T/.transcript.jsonl\"}")
+if [ "$EC" = "2" ]; then test_pass; else test_fail "a pre-session-start search must not satisfy (ec=$EC)"; fi
+teardown "$T"
+
+test_start "enforce-memory: ABSOLUTE vs relative path shape parity at the block path (transcript, no search)"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude"; touch "$T/.claude/enforce-memory"; echo 0 > "$T/.claude/.session-start-ts"
+mk_nosearch "$T/.transcript.jsonl"
+A=$(run_hook enforce-memory.sh "$T" "{\"tool_input\":{\"file_path\":\"$T/src/app.py\"},\"transcript_path\":\"$T/.transcript.jsonl\"}")
+B=$(run_hook enforce-memory.sh "$T" "{\"input\":{\"file_path\":\"src/app.py\"},\"transcript_path\":\"$T/.transcript.jsonl\"}")
 if [ "$A" = "$B" ] && [ "$A" = "2" ]; then
   test_pass; else test_fail "shape/path parity broken (tool_input-abs=$A input-rel=$B, want 2=2)"; fi
 teardown "$T"

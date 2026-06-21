@@ -1,4 +1,9 @@
 <!-- nana:approved 2026-06-12 -->
+<!-- SUPERSEDED 2026-06-21 by specs/phase-95-memory-layer-disposition.md ([[memory-layer-disposition]]):
+     Phase 94's re-measure REVERSED the demand-zero premise this spec was built on (consumer coerced demand
+     is value-bearing in 2/3 consumers), so Phase 95 is a RECONCILE-AND-DISPOSE round, not the cut apparatus
+     drafted below. Outcome: memory-mcp-layer + both writers KEEP; enforce-memory REDESIGNED (assert a real
+     memory_search event); Ph88 trim-trials CONFIRMED. This file is retained for history; do not execute it. -->
 <!-- RE-SEQUENCED 2026-06-18 by the Phase-92 Strategic Inflection Review ([[strategic-inflection-review]]):
      this spec's prune work is now Phase 95 (memory-layer shrink), GATED on a Phase-94 consumer memory
      re-measure. Rationale: the Ph89 demand-zero was couldnt-fire (consumer memory was broken until Ph91);
