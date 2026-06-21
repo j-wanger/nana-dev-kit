@@ -124,7 +124,10 @@ build_synced_consumer() {
   mkdir -p "$root/.claude/hooks"
   while IFS= read -r h; do
     [ -n "$h" ] || continue
-    printf '#!/usr/bin/env bash\nexit 0\n' > "$root/.claude/hooks/$h"
+    # Ship the REAL template hook content (not an `exit 0` stub) so a "synced" consumer is content-current
+    # as well as registration-correct — check-install-drift --consumer now flags hook-FILE content drift.
+    cp "$REPO_ROOT/templates/.claude/hooks/$h" "$root/.claude/hooks/$h" 2>/dev/null \
+      || printf '#!/usr/bin/env bash\nexit 0\n' > "$root/.claude/hooks/$h"
     chmod +x "$root/.claude/hooks/$h"
   done < <(kit_project_hooks)
   python3 "$REGISTER" hooks "$root/.claude/settings.local.json" "$MODULES_JSON" --scope project-local >/dev/null 2>&1
@@ -479,6 +482,13 @@ test_start "[check-drift --consumer] clean synced consumer reports NO drift (exi
 C=$(mktemp -d); SANDBOXES+=("$C"); build_synced_consumer "$C"
 rc=0; out=$(bash "$DRIFT_SH" --consumer "$C" 2>&1) || rc=$?
 if [ "$rc" -eq 0 ] && [ -z "$out" ]; then test_pass; else test_fail "clean consumer flagged drift (rc=$rc out=[$out])"; fi
+
+test_start "[check-drift --consumer] SEEDED stale hook CONTENT flagged (exit 1, content-currency)"
+C=$(mktemp -d); SANDBOXES+=("$C"); build_synced_consumer "$C"
+printf '#!/usr/bin/env bash\n# hand-staled old version\nexit 0\n' > "$C/.claude/hooks/enforce-spec.sh"  # content != template
+rc=0; out=$(bash "$DRIFT_SH" --consumer "$C" 2>&1) || rc=$?
+if [ "$rc" -eq 1 ] && echo "$out" | grep -q '^stale: enforce-spec.sh'; then test_pass
+else test_fail "stale hook content not flagged (rc=$rc out=[$out])"; fi
 
 test_start "[check-drift --consumer] SEEDED cut hook detect-loop flagged (exit 1)"
 C=$(mktemp -d); SANDBOXES+=("$C"); build_synced_consumer "$C"; apply_mutations "$C" "$STAGED"

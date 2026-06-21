@@ -118,6 +118,19 @@ if [ "$MODE" = "consumer" ]; then
     done < <(jq -r '(.hooks // {}) | to_entries[] | .value[]? | (.hooks // [])[]? | (.command // .prompt // empty)' \
                "$C_SETTINGS_JSON" 2>/dev/null | sed 's#.*/##' | sed '/^$/d' | sort -u)
   fi
+  # Phase 96 follow-on: hook-file CONTENT currency. A consumer can hold a stale hook FILE (old code)
+  # after a kit update while its registration is perfectly correct — registration-presence checks miss
+  # this entirely (the Phase-84 'single-file currency misses content' lesson at the consumer layer). For
+  # each current kit project hook PRESENT on disk, compare bytes against templates/.claude/hooks; a
+  # mismatch is `stale: <hook>` (run install.sh --update to refresh). Absent files are already `missing:`.
+  if [ -d "$C_HOOKS" ]; then
+    while IFS= read -r h; do
+      [ -n "$h" ] || continue
+      [ -f "$C_HOOKS/$h" ] || continue                       # absent -> already reported as missing
+      [ -f "$TEMPLATES/hooks/$h" ] || continue                # no template to compare against
+      cmp -s "$C_HOOKS/$h" "$TEMPLATES/hooks/$h" || C_DRIFT+=("stale: $h")
+    done <<< "$KIT_SET"
+  fi
 
   if [ "${#C_DRIFT[@]}" -gt 0 ]; then
     printf '%s\n' "${C_DRIFT[@]}"
