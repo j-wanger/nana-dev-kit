@@ -55,7 +55,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <body>
 
 <h1>Nana Dev Kit &mdash; Workflow Breakdown</h1>
-<p class="subtitle">7-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-06-21 16:25</p>
+<p class="subtitle">7-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-06-21 16:51</p>
 
 <div class="toc">
 <h3>Contents</h3>
@@ -398,7 +398,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
 <tr><td><code>.claude/hooks/audit-log.sh</code></td><td>26</td><td>PostToolUse: JSONL audit trail of all writes</td></tr>
 <tr><td><code>.claude/hooks/auto-ruff-format.sh</code></td><td>18</td><td>PostToolUse: auto-formats Python with ruff</td></tr>
-<tr><td><code>.claude/hooks/block-dangerous-bash.sh</code></td><td>38</td><td>PreToolUse: blocks rm -rf, force-push, --no-verify</td></tr>
+<tr><td><code>.claude/hooks/block-dangerous-bash.sh</code></td><td>52</td><td>PreToolUse: blocks rm -rf, force-push, --no-verify</td></tr>
 <tr><td><code>.claude/hooks/check-tests-were-run.sh</code></td><td>66</td><td>Stop: gates completion on pytest execution</td></tr>
 <tr><td><code>.claude/hooks/context-size-check.sh</code></td><td>35</td><td></td></tr>
 <tr><td><code>.claude/hooks/dev-wiki-scope-check.sh</code></td><td>77</td><td>"Route dev wiki operations and enforce development lifecycle discipline. Use when user mentions 'dev wiki', 'project state', 'phases', 'tasks', or wants lifecycle management. Also activated by SessionStart hook when .dev-wiki/ exists. Do NOT invoke when user names a specific /dev-* command — invoke that command directly (dev-plan, dev-debrief, dev-check, etc.)."</td></tr>
@@ -637,7 +637,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>test_step_numbering.sh</code></td><td>1 assertions, 38 lines</td></tr>
 <tr><td><code>test_sync_rules.sh</code></td><td>15 assertions, 100 lines</td></tr>
 <tr><td><code>test_templates.sh</code></td><td>100 assertions, 977 lines</td></tr>
-<tr><td><code>test_tooluse_hooks.sh</code></td><td>0 assertions, 246 lines</td></tr>
+<tr><td><code>test_tooluse_hooks.sh</code></td><td>0 assertions, 269 lines</td></tr>
 <tr><td><code>test_working_knowledge_curation.sh</code></td><td>0 assertions, 343 lines</td></tr>
 </table>
 <p style="margin-top:0.5rem;font-size:0.85rem">Total: <strong>245 assertions</strong> across 29 test scripts. Run with <code>make test</code>.</p>
@@ -841,7 +841,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 </pre>
 
 <footer>
-  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-06-21 16:25<br>
+  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-06-21 16:51<br>
   <code>scripts/generate-workflow.py</code> &mdash; run <code>make workflow</code> to regenerate
 </footer>
 

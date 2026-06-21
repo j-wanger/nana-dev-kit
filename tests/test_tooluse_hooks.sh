@@ -134,6 +134,29 @@ EC=$(run_hook block-dangerous-bash.sh "$T" '{"tool_input":{"command":"ls -la"}}'
 if [ "$EC" = "0" ]; then test_pass; else test_fail "safe command must pass (ec=$EC)"; fi
 teardown "$T"
 
+# ---- Phase 96 follow-on: precise rm -rf targeting. The prior pattern matched `/` ANYWHERE after
+# `rm -rf`, so a relative subdir delete (.claude/foo, build/) was wrongly blocked; it also required
+# r-before-f, silently MISSING `rm -fr /`. Now: dangerous TARGET (root/system-dir/home/parent/cwd) as a
+# standalone arg, tied to the rm within one simple command; flag order/separation handled.
+bdb() {  # $1 = command string -> exit code from the hook
+  local T; T=$(mktemp -d); local ec; ec=$(run_hook block-dangerous-bash.sh "$T" "$(jq -nc --arg c "$1" '{tool_input:{command:$c}}')"); teardown "$T"; echo "$ec"; }
+
+# True positives that the OLD r-before-f pattern MISSED (false negatives — real safety gap):
+for c in 'rm -fr /' 'rm -r -f /' 'rm -f -r /' 'rm -R -f /' 'rm --recursive --force /'; do
+  test_start "block-dangerous-bash: blocks dangerous flag-order/separation [$c]"
+  [ "$(bdb "$c")" = "2" ] && test_pass || test_fail "must block ($c)"
+done
+# Other true positives (home/parent/cwd/system/quoted):
+for c in 'rm -rf ~' 'rm -rf $HOME' 'rm -rf "$HOME"' 'rm -rf ..' 'rm -rf .' 'rm -rf /etc' 'rm -rf /*'; do
+  test_start "block-dangerous-bash: blocks dangerous target [$c]"
+  [ "$(bdb "$c")" = "2" ] && test_pass || test_fail "must block ($c)"
+done
+# False positives the fix CLEARS — relative subdir deletes must be allowed:
+for c in 'rm -rf .claude/x' 'rm -rf build/' 'rm -rf ./build' 'rm -rf dist/assets' 'rm -rf node_modules' 'rm -rf target/debug'; do
+  test_start "block-dangerous-bash: allows relative subdir delete [$c]"
+  [ "$(bdb "$c")" = "0" ] && test_pass || test_fail "must allow ($c)"
+done
+
 # ---- Phase 82 (reviewer gap-close): pipe tests for the two hooks whose field/path fixes
 # had only grep-source or session-sandbox evidence: dev-wiki-scope-check + enforce-memory.
 
