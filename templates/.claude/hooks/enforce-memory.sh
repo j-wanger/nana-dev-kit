@@ -74,8 +74,22 @@ if [ -z "$TRANSCRIPT" ] || [ ! -r "$TRANSCRIPT" ]; then
   log_firing "allow" "no-transcript"
   exit 0
 fi
+# Freshness anchor: PER-SESSION keyed file ~/.claude/.session-start-ts-<session_id> (written by
+# session-start.sh), NOT the bare global ts. The global is mutable shared state — a CONCURRENT session's
+# session-start, or any global re-fire, advances it and falsely excludes a genuine in-session
+# memory_search (observed: a 2h-advanced global blocked a real search). Keying by session_id isolates
+# this session's bound; --resume re-fires SessionStart with the SAME session_id, so the keyed bound
+# advances on resume (resumed-session freshness preserved). Fall back to the global ts when the keyed
+# file is absent (old session / no session_id) — never stricter than before.
+SID=$(printf '%s' "$INPUT" | jq -r '.session_id // empty' 2>/dev/null || echo "")
+ANCHOR=""
+case "$SID" in
+  ''|*[!a-zA-Z0-9_-]*) ANCHOR="" ;;                                   # path-safety: only a sane id keys a file
+  *) [ -r "$HOME/.claude/.session-start-ts-$SID" ] && ANCHOR="$HOME/.claude/.session-start-ts-$SID" ;;
+esac
+[ -z "$ANCHOR" ] && [ -r "$HOME/.claude/.session-start-ts" ] && ANCHOR="$HOME/.claude/.session-start-ts"
 SINCE=0
-[ -r "$HOME/.claude/.session-start-ts" ] && SINCE=$(cat "$HOME/.claude/.session-start-ts" 2>/dev/null || echo 0)
+[ -n "$ANCHOR" ] && SINCE=$(cat "$ANCHOR" 2>/dev/null || echo 0)
 case "$SINCE" in ''|*[!0-9]*) SINCE=0 ;; esac   # guard: only a bare epoch is a valid bound
 # grep -F narrows to candidate lines cheaply; the JSON gate below is authoritative. fromjson? tolerates
 # malformed lines so the scan never aborts. Output "1" per real, in-window match; head -1 short-circuits.

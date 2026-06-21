@@ -192,6 +192,48 @@ EC=$(run_hook enforce-memory.sh "$T" "{\"tool_input\":{\"file_path\":\"src/app.p
 if [ "$EC" = "2" ]; then test_pass; else test_fail "a pre-session-start search must not satisfy (ec=$EC)"; fi
 teardown "$T"
 
+# Phase 96 follow-on: the freshness anchor is PER-SESSION keyed (~/.claude/.session-start-ts-<session_id>),
+# not the bare global ts — so a CONCURRENT session's session-start (or any global re-fire) cannot advance
+# this session's bound and falsely exclude a genuine in-session memory_search (observed live: a 2h-advanced
+# global blocked a real search). --resume re-fires SessionStart with the SAME session_id, so the keyed bound
+# still advances on resume. Fall back to the global ts when no keyed file exists (never stricter than before).
+ep() { python3 -c "import datetime,sys;print(int(datetime.datetime(2026,6,20,int(sys.argv[1]),0,0,tzinfo=datetime.timezone.utc).timestamp()))" "$1"; }
+
+test_start "enforce-memory: per-session keyed anchor isolates a CONCURRENT global advance (the fix)"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude"; touch "$T/.claude/enforce-memory"
+SID="sess-concurrent"
+ep 11 > "$T/.claude/.session-start-ts-$SID"   # THIS session started 11:00
+ep 13 > "$T/.claude/.session-start-ts"        # a CONCURRENT session advanced the GLOBAL to 13:00
+mk_search "$T/.transcript.jsonl" "2026-06-20T12:00:00Z"   # genuine in-session search at 12:00
+EC=$(run_hook enforce-memory.sh "$T" "{\"session_id\":\"$SID\",\"tool_input\":{\"file_path\":\"src/app.py\"},\"transcript_path\":\"$T/.transcript.jsonl\"}")
+if [ "$EC" = "0" ]; then test_pass; else test_fail "keyed anchor (11:00) must win over the advanced global (13:00); a real 12:00 search should ALLOW (ec=$EC)"; fi
+teardown "$T"
+
+test_start "enforce-memory: keyed anchor advanced by --resume rejects a pre-resume search (freshness kept)"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude"; touch "$T/.claude/enforce-memory"
+SID="sess-resumed"
+ep 13 > "$T/.claude/.session-start-ts-$SID"   # --resume re-fired SessionStart at 13:00 (same session_id)
+mk_search "$T/.transcript.jsonl" "2026-06-20T12:00:00Z"   # a search from the PRE-resume segment
+EC=$(run_hook enforce-memory.sh "$T" "{\"session_id\":\"$SID\",\"tool_input\":{\"file_path\":\"src/app.py\"},\"transcript_path\":\"$T/.transcript.jsonl\"}")
+if [ "$EC" = "2" ]; then test_pass; else test_fail "a pre-resume search must not satisfy the advanced keyed anchor (ec=$EC)"; fi
+teardown "$T"
+
+test_start "enforce-memory: session_id with no keyed file -> falls back to the global anchor"
+T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude"; touch "$T/.claude/enforce-memory"
+echo 0 > "$T/.claude/.session-start-ts"   # only the global exists (no keyed file for this id)
+mk_search "$T/.transcript.jsonl" "2026-06-20T12:00:00Z"
+EC=$(run_hook enforce-memory.sh "$T" "{\"session_id\":\"no-keyed-file\",\"tool_input\":{\"file_path\":\"src/app.py\"},\"transcript_path\":\"$T/.transcript.jsonl\"}")
+if [ "$EC" = "0" ]; then test_pass; else test_fail "missing keyed file must fall back to the global anchor (ec=$EC)"; fi
+teardown "$T"
+
+test_start "session-start: writes a per-session_id keyed anchor alongside the global ts"
+T=$(mktemp -d); mkdir -p "$T/.claude"
+SID="sess-write-x"
+run_hook session-start.sh "$T" "{\"session_id\":\"$SID\",\"source\":\"startup\"}" >/dev/null 2>&1 || true
+if [ -f "$T/.claude/.session-start-ts" ] && [ -f "$T/.claude/.session-start-ts-$SID" ]; then test_pass
+else test_fail "session-start must write both global ts and keyed ts-$SID (global=$([ -f "$T/.claude/.session-start-ts" ] && echo y || echo n) keyed=$([ -f "$T/.claude/.session-start-ts-$SID" ] && echo y || echo n))"; fi
+teardown "$T"
+
 test_start "enforce-memory: ABSOLUTE vs relative path shape parity at the block path (transcript, no search)"
 T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude"; touch "$T/.claude/enforce-memory"; echo 0 > "$T/.claude/.session-start-ts"
 mk_nosearch "$T/.transcript.jsonl"

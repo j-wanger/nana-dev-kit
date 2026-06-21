@@ -11,7 +11,21 @@ source "$HOOK_DIR/session-start.d/wk-prune.sh"
 source "$HOOK_DIR/session-start.d/memory-nudge.sh"
 source "$HOOK_DIR/session-start.d/cognitive-readiness.sh"
 
-date +%s > "$HOME/.claude/.session-start-ts" 2>/dev/null || true
+# Session-start freshness anchor for enforce-memory. Global (back-compat: dev-debrief cooldown advisory
+# + enforce-memory fallback) PLUS a per-session_id keyed file so a CONCURRENT session cannot advance
+# another session's bound (which falsely excludes a genuine in-session memory_search). session_id is in
+# the SessionStart event JSON on stdin — read ONLY when piped (never blocks a TTY/manual run). Every step
+# is best-effort + `|| true`: a failure here must never break SessionStart (Phase-84 machine-wide class).
+_NANA_SS_NOW=$(date +%s)
+echo "$_NANA_SS_NOW" > "$HOME/.claude/.session-start-ts" 2>/dev/null || true
+if [ ! -t 0 ]; then _NANA_SS_INPUT=$(cat 2>/dev/null || echo ""); else _NANA_SS_INPUT=""; fi
+_NANA_SID=$(printf '%s' "$_NANA_SS_INPUT" | jq -r '.session_id // empty' 2>/dev/null || echo "")
+case "$_NANA_SID" in
+  ''|*[!a-zA-Z0-9_-]*) : ;;   # no/invalid session_id -> global anchor only (enforce-memory falls back)
+  *) echo "$_NANA_SS_NOW" > "$HOME/.claude/.session-start-ts-$_NANA_SID" 2>/dev/null || true
+     # prune stale per-session anchors (>1 day) so they never accumulate
+     find "$HOME/.claude" -maxdepth 1 -name '.session-start-ts-*' -type f -mtime +1 -delete 2>/dev/null || true ;;
+esac
 
 # --- Dev-wiki lifecycle state ---
 DEVWIKI_STATE=".dev-wiki/_CURRENT_STATE.md"
