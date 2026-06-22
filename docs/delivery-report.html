@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 96</title>
+<title>Delivery Report: Phase 98</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,53 +21,47 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 96 &mdash; Phase 96</h1>
+<h1>Delivery Report: Phase 98 &mdash; Phase 98</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">6/6</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">13</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">3/3</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">7</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (51 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">50/50</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+440</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-53</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">1</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">13:49</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+57</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-24</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">4</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">22:53</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>T1 Controls-first fixtures + seeded controls for the settings.json-topology migration (RED before any --migrate-to-lo...</td></tr>
-<tr><td>&#x2705;</td><td>T2 install.sh --migrate-to-local (one-shot consolidate-to-local; existing --update UNCHANGED): RED — T1's seeded cont...</td></tr>
-<tr><td>&#x2705;</td><td>T3 Drift-comparator + docs + kit-green (HARD checkpoint precondition): GREEN — extend `scripts/check-install-drift.sh...</td></tr>
-<tr><td>&#x2705;</td><td>T4 Live rollout — ready-3 (settings.local topology) + arm signal-watch (GATED, post-checkpoint): per consumer in {sig...</td></tr>
-<tr><td>&#x2705;</td><td>T5 Live rollout — Group-B 4 (settings.json topology) via migrate-then-update + arm aml-casework (GATED): per consumer...</td></tr>
-<tr><td>&#x2705;</td><td>T6 Close-out + exit-criteria runner (GREEN): finalize `eval/consumer-resync/rollout-evidence.md` (per-consumer table:...</td></tr>
+<tr><td>&#x2705;</td><td>T1 Freeze the watch-charter (the frozen instrument, anti-retrofit): controls-first verify `companion/` still ignored ...</td></tr>
+<tr><td>&#x2705;</td><td>T2 Controls-first fast-scan detector + seeded tripwires (HEU-012 anti-dormancy): build `companion/research/watch/run-...</td></tr>
+<tr><td>&#x2705;</td><td>T3 Two-speed wiring + scheduling + close-out (anti-dormancy; don't-re-run-now): do NOT run a real sweep now (Ph97 rea...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Consumer Re-sync Rollout — consolidate-to-local + live --update across all 7 consumers</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Phase 98: Frontier Watch (rung-B) — Two-Speed Tripwire Watch</td><td>high</td></tr>
+<tr><td>Frontier Positioning Sweep — External Arm of the Shrink/Direction Decision (Phase 97)</td><td>high</td></tr>
+<tr><td>Post-Phase-96 hook hardening — per-session memory anchor, precise rm-block, content-currency drift</td><td>high</td></tr>
+<tr><td>Consumer Re-sync Rollout — consolidate-to-local + live --update across all 7 consumers</td><td>high</td></tr>
 </table>
 
 <h2>Files Changed</h2>
 <ul>
 <li><code>.claude/rules/active-phase.md</code></li>
+<li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
 <li><code>.dev-wiki/assumption-ledger.md</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
-<li><code>README.md</code></li>
-<li><code>docs/report.html</code></li>
-<li><code>docs/workflow.html</code></li>
-<li><code>eval/dogfood-round/evidence/window-events.md</code></li>
-<li><code>install.sh</code></li>
-<li><code>scripts/check-install-drift.sh</code></li>
-<li><code>tests/test_install_update.sh</code></li>
 
 
 </ul>
@@ -76,7 +70,7 @@
 <p><span class="status" style="background:#2d7d2d">PASS</span> 51 passed, 2 failed</p>
 <pre>  [check-drift --consumer] a strayed GLOBAL kit hook (context-size-check) is NOT flagged as cut OK
 
-install-update-harness: 54 run, 54 passed, 0 failed
+install-update-harness: 55 run, 55 passed, 0 failed
 
 All tests passed.</pre>
 
@@ -85,7 +79,7 @@ All tests passed.</pre>
 <pre>Score: 50/50 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-06-21 13:49:32 by generate-delivery-report.py
+  Generated 2026-06-21 22:53:38 by generate-delivery-report.py
 </div>
 </body>
 </html>
