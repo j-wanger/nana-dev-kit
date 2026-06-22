@@ -7,7 +7,7 @@ parents: [direction-dashboard]
 created: 2026-06-22
 updated: 2026-06-22
 source: plan
-status: active
+status: completed
 scope: ["scripts/generate-direction.py", "Makefile", "docs/direction.html", "tests/test_direction_dashboard.sh", "tests/fixtures/**", "templates/.claude/skills/dev-plan/**", ".dev-wiki/**"]
 entry_criteria: "Ph98 delivered + accepted (fb82864); rung-C pulled forward + dashboard-first selected by the maintainer; direction gate closed 2026-06-22 (ledger Phase-99)."
 exit_criteria: "Render-only generate-direction.py + make direction + controls-first tests (content-present + recommended-highlight + seeded-malformed fail-loud); Phase-99 dogfood brief renders; dev-plan direction-brief companion + reference; make test PASS, make eval 50/50, drift 0; A2 live-server Blockers re-trigger filed."
@@ -39,4 +39,4 @@ T1 [M] generator + brief schema · T2 [S] controls-first robustness + recommende
 
 ## Status
 
-Active — planned 2026-06-22, direction gate closed (ledger Phase-99; all_accept:false). 0/4 tasks.
+COMPLETED + DELIVERY ACCEPTED 2026-06-22 (work commit 46473a7; 4/4 tasks; review gate CLEAN + 1 LOW [esc→html.escape] fixed inline). Direction gate closed (ledger Phase-99; all_accept:false). make test PASS, make eval 50/50, drift 0.

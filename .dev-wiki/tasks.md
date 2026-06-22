@@ -1226,7 +1226,7 @@ Standard ceremony. Direction gate closed 2026-06-21 (ledger Phase-98; all_accept
 <!-- phase:phase-99-direction-dashboard -->
 ## Phase 99 — Direction Dashboard (render-only, dashboard-first)
 
-<!-- gate-log:phase-99 direction=approved delivery=pending -->
+<!-- gate-log:phase-99 direction=approved delivery=accepted -->
 
 Standard ceremony. Direction gate closed 2026-06-22 (ledger Phase-99; all_accept:false — A1 render-only accept, A2 generator-vs-server don't-know→down-scoped to generator [live-server→Blockers], A3 first-surface=direction-gate accept, A4 dev-plan brief-emission accept). Spec `specs/phase-99-direction-dashboard.md` (nana:approved). Pillar 3 (dashboard) of the rung-C contract-driven-delegation program, delivered FIRST; pillars 1–2 (contract-fidelity harness, downstream workers) are later phases. Render-only — reuses the existing `docs/` HTML-generator house style (4th member). Controls-first per [[HEU-012]]: tests assert the rendered HTML CONTAINS the brief content + a seeded malformed brief MUST fail the generator loud.
 
