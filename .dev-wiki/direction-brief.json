@@ -1,25 +1,25 @@
 {
-  "phase": 101,
-  "phase_name": "Harder-corpus contract screen on edge-screener",
+  "phase": 102,
+  "phase_name": "Pillar 2: contract-driven downstream-worker LOOP",
   "generated": "2026-06-22",
-  "objective": "Re-run the Phase-100 contract-vs-spec fidelity screen on a HARDER corpus where bare prompts plausibly FAIL — real, challenging code-development tasks grounded in edge-screener (a backtesting platform whose whole thesis is un-foolable integrity tests: no-lookahead, costs, survivorship). The Phase-100 null was ceiling-saturated (capable worker aced toy tasks); this directly attacks that limitation by giving the contract structure failure headroom to demonstrate (or not) fidelity lift on subtle-integrity tasks.",
-  "recommendation": "GATE CLOSED. Maintainer chose FROM-SCRATCH STUB (B) over bug-injection: stub a real integrity-critical FUNCTION in edge-screener (a single function with one strong, namable invariant — e.g. the decision-lag weights[k] earn returns[k+1], or cost application, or PIT survivorship), the worker re-implements it; bare = 'implement function X to do Y'; spec = + objectives prose; contract = + the named integrity invariant as a deterministic guardrail (test file HELD-OUT). Score with edge-screener's un-foolable held-out integrity tests + the cross-model judge. Function-level stubs (not whole modules) to keep floor risk manageable. CRUX (A1 accept): a MANDATORY difficulty-calibration pilot keeps only tasks where bare FAILS but isn't floored; if none land in-band, the phase reports an informative null ('no discriminating harder corpus constructible for this worker'). Reuses the frozen Phase-100 harness.",
+  "objective": "The rung-C culmination: a downstream worker (opencode) executes a delegated edge-screener task in a LOOP governed by the contract — implement → score against the contract's deterministic guardrails → feed the failing guardrail back → retry → until pass or an iteration budget. Measure whether the loop (a) RECOVERS the single-shot floors Phase 101 found (decision-lag: the worker couldn't implement the subtle pending-lag in one shot even when told the invariant) and (b) produces TRUTHFUL work vs GAMING the guardrails over iterations (passes the loop but fails a HELD-OUT validation it never sees). Connects all three pillars: the check (1) + the dashboard (3) + the loop (2).",
+  "recommendation": "Recommend a contract-driven loop where the worker iterates against the contract's VISIBLE guardrails (NOT the held-out integrity test), with RICH feedback (the failing guardrail's assertion error / counterexample — not just pass/fail), and a SEPARATE held-out validation run at the end to detect gaming. Arms: single-shot (Ph101 baseline) vs contract-loop vs bare-loop (loop on functional tests only, no named invariant) — to isolate the loop's value from the contract's. Focus on decision-lag (the floor) + ≥1 other in-band task. The crux is feedback richness: pass/fail alone likely won't recover the subtle floor; the assertion error / counterexample likely will.",
   "options": [
     {
-      "label": "A — Bug-injection-repair + calibration pilot (held-out integrity tests)",
-      "description": "Inject a subtle integrity bug into a working edge-screener module; the worker fixes it. The contract names the integrity invariant (no-lookahead / costs / survivorship) as a guardrail without the test file; held-out integrity tests score. Localized fix = best-calibrated (the worker has a working base; the contract's value is naming the invariant a bare prompt overlooks). A mandatory pilot discards floor/ceiling tasks before freezing.",
+      "label": "A — Contract-loop with rich feedback + held-out gaming validation",
+      "description": "Worker iterates against the contract's VISIBLE guardrails with rich feedback (failing assertion + counterexample); a held-out integrity test validates the converged impl (gaming = loop-pass but held-out-fail). Arms: single-shot vs contract-loop vs bare-loop. Measures floor-recovery, iterations-to-converge, gaming rate. Reuses Ph100/101 infra.",
       "recommended": true,
       "chosen": false
     },
     {
-      "label": "B — From-scratch stub-a-module",
-      "description": "Remove a real integrity-critical module; the worker re-implements it from the prompt; held-out integrity tests score. Cleaner 'fresh implementation' but HIGH floor risk — re-implementing a no-lookahead backtest engine from scratch may fail on ALL arms (too hard) → no discrimination.",
+      "label": "B — Pass/fail loop only (minimal)",
+      "description": "The loop feeds back only pass/fail of the contract check; no rich feedback. Simpler, but likely floors on decision-lag too (the worker can't tell WHY it failed) — risks an uninformative null that conflates 'loops don't help' with 'this feedback is too thin'.",
       "recommended": false,
       "chosen": false
     },
     {
-      "label": "C — Mine real git-history regressions",
-      "description": "Reconstruct real bugs from edge-screener's git history (authentic regressions a contract might have prevented). Most realistic, but heavy setup (pre-fix state + the fix's test per task) and harder to calibrate to the discrimination band.",
+      "label": "C — General downstream-worker execution (no loop focus)",
+      "description": "Build broader pillar-2 plumbing (Agent/Workflow worker orchestration) without the contract-loop experiment. Defers the agent-loop question; less directly tied to the Ph100/101 findings.",
       "recommended": false,
       "chosen": false
     }
@@ -28,38 +28,38 @@
     {
       "id": "A1",
       "cost": "high",
-      "text": "Tasks can be calibrated to the DISCRIMINATION BAND — bare fails but isn't floored (a contract has room to help) — verified by a MANDATORY difficulty-calibration pilot BEFORE freezing the corpus. If no task lands in-band (all floor or all ceiling), the phase reports an informative null ('no discriminating harder corpus constructible'), not a forced contract-vs-spec conclusion.",
+      "text": "FEEDBACK RICHNESS is the experimental variable, not loop-presence: the loop feeds back the failing guardrail's assertion error / counterexample (rich), because pass/fail alone likely won't recover the subtle decision-lag floor (single-shot WITH the invariant named already floored — the worker needs to know WHY/where it broke). Possibly a feedback-richness arm.",
       "position": "pending",
       "resolution": ""
     },
     {
       "id": "A2",
       "cost": "high",
-      "text": "Bug-injection-repair is the right construction (a localized fix to a working module — the contract's value is naming the integrity invariant the bare worker overlooks), vs from-scratch stub (floor risk) or git-mining (setup-heavy).",
+      "text": "The loop iterates against the contract's VISIBLE guardrails (not the held-out integrity test), with a SEPARATE held-out validation run at the end — else the worker iterates-to-green ON the held-out test (the Ph101 ceiling confound, now by design). Gaming = passes the visible-guardrail loop but fails the held-out validation. This split makes the loop meaningful AND detects gaming.",
       "position": "pending",
       "resolution": ""
     },
     {
       "id": "A3",
       "cost": "medium",
-      "text": "The worker can develop + be scored in a real edge-screener copy (its .venv/deps work, opencode can run pytest there), at a heavier per-run cost than Phase 100 → a smaller corpus (3-4 tasks x n=3-5). Feasibility verified in the pilot; if the env can't run, re-scope.",
+      "text": "Arms = single-shot (Ph101 baseline) vs contract-loop vs bare-loop (loop on functional tests only, no named invariant) — to isolate the LOOP's value from the contract's invariant. Corpus focuses on decision-lag (the floor) + ≥1 other in-band task. Measures: floor-recovery rate, iterations-to-converge, gaming rate.",
       "position": "pending",
       "resolution": ""
     },
     {
       "id": "A4",
       "cost": "medium",
-      "text": "edge-screener is the right base project (real, genuinely hard, un-foolable integrity tests, the maintainer's domain) vs an alternative codebase or synthetic-but-hard tasks.",
+      "text": "Worker substrate = opencode loop (opencode run --continue/--session for iteration, accumulating context — proven in Ph100/101) vs a Claude Agent/Workflow loop (Jake earlier leaned reuse-Agent/Workflow before any opencode fleet, but opencode is now the proven worker). Capped iterations (~5), smaller corpus, controls-first + byte-frozen pre-registration.",
       "position": "pending",
       "resolution": ""
     }
   ],
   "context": {
-    "active_phase": "Phase 100 — Contract-vs-Spec Fidelity Screen DELIVERED (amplifier-null → collapse-to-runner-only; ceiling-saturated corpus). Phase 101 = the harder-corpus follow-on routed forward.",
+    "active_phase": "Phase 101 — Harder-corpus contract screen DELIVERED (contract helps task-specifically; decision-lag FLOORED single-shot). Phase 102 = pillar 2, the contract-driven loop.",
     "open_decisions": [
-      "A1 (the crux): can a discriminating harder corpus even be constructed for this worker? — a pilot answers it; a clean 'no' is itself a result.",
-      "Reuses the frozen Phase-100 harness (runner/check/analyze/judge); the new design is the corpus + the worker-in-edge-screener workspace.",
-      "The contract's guardrails = edge-screener's integrity invariants named as deterministic checks; the actual test files stay HELD-OUT (Phase-100 keystone) so a worker can't iterate-to-green."
+      "The crux (A1): can a contract-driven loop recover the single-shot floor? Hinges on feedback richness, not the loop per se.",
+      "Reuses check-fidelity.py + the opencode runner + the frozen edge-screener corpus (esp. decision-lag).",
+      "Gaming detection (A2): the held-out validation catches a worker that iterates-to-green on the visible guardrails but isn't genuinely correct."
     ]
   }
 }
