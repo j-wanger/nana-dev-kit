@@ -7,7 +7,22 @@ parents: [phase-102-contract-loop]
 created: 2026-06-22
 updated: 2026-06-22
 source: plan
-confidence: medium
+confidence: high
+---
+
+## Outcome (delivered 2026-06-22)
+
+**A contract-governed LOOP recovers the Phase-101 implementation-difficulty floor — via deterministic FEEDBACK, not resampling and not naming the invariant.** 48 scored runs against a byte-frozen, adversarially-hardened instrument (`shasum -c .frozen` OK before+after; edge-screener checksum `931c0caef3742029` identical; SHIPS NOTHING).
+
+Decision-lag (the clean primary task): single-shot **0/15** recovery, best-of-N (5 attempts, no feedback) **0/3**, bare-loop **3/3**, contract-loop **3/3**. **feedback = bare-loop − best-of-N = +1.0 (SUPPORTED)** — the loop recovers via feedback, not luck-from-more-tries. **invariant-in-loop = contract − bare = +0.0** — naming the invariant is nearly inert once feedback exists (it only sped convergence ~1 iter). **gaming = 0/3** — the held-out confirms genuine recovery. Sharpens Ph101 ("naming ≠ implementing") + rhymes with the amplifier-nulls (Ph59/80): the capable worker needs to be SHOWN where its attempt broke, not TOLD the rule.
+
+pit (secondary) was CONFOUNDED — its frozen held-out included an orthogonal before-baseline policy case (the worker's impl correctly implements inclusive-through-removal but RAISES rather than returns-baseline pre-timeline); the frozen "gaming 3/3" is an instrument artifact (post-hoc invariant-focused re-score → 6/6 recovery). Reported transparently, NOT retrofitted; the headline rests on the clean decision-lag task.
+
+**Gaming: detectable in principle, NOT exhibited.** A seeded gamer + five adversary attacks all pass-visible/fail-held-out (the apparatus catches gaming), but the actual `opencode/big-pickle` worker produced genuinely-correct work on both tasks. A measured gaming rate >0 would need a deliberately weaker visible gate (future work).
+
+**Adversarial verification earned its keep:** a refutation pass found (and we closed before the freeze) a held-out LEAK (sibling docstrings + original `.pyc`) and held-out UNDER-PINNING (a do-nothing / position-localized impl passed). It also triggered (via an apparatus `cleanup()` rmtree bug run concurrently with the runner) a destructive incident that deleted edge-screener; restored intact (`.git` from p87-substrate, working tree byte-matches HEAD 4ed8071, 9/9 tests pass), the bug fixed (cleanup refuses non-tempdir paths), all subsequent work serial. Lesson: never run a mutating workflow concurrently with a runner in the same dir.
+
+Verdict: `companion/research/contract-loop/verdict.md` (gitignored).
 ---
 
 ## Context

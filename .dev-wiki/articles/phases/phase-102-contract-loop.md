@@ -7,7 +7,7 @@ parents: []
 created: 2026-06-22
 updated: 2026-06-22
 source: plan
-status: active
+status: completed
 scope: ["companion/research/contract-loop/**", ".dev-wiki/**", ".claude/rules/active-phase.md"]
 entry_criteria: "Phase 101 delivered + accepted (verdict: contracts help task-specifically on nameable semantic invariants, NOT implementation difficulty; decision-lag a genuine single-shot floor); spec specs/phase-102-contract-loop.md nana:approved 2026-06-22; direction gate closed (ledger Phase-102, all_accept:true); opencode on PATH; /Users/jwang/edge-screener present with its .venv."
 exit_criteria: "T1 controls recorded (per task: seeded gamer passes-ALL-visible + fails-held-out, honored passes both, every visible check reds on >=1 seeded defect, held-out not transitively reachable, arm-parity one-line diff); T2 pilot.md (decision-lag single-shot fail-rate >=3 seeds — floor still exists OR no-floor null; pilot-loop iterations confirmed real retries; transcript leak-grep clean); T3 analyze-loop.py --selftest exit 0 + shasum -c .frozen OK BEFORE any scored run; T4 results.md = decision-lag + >=1 task x 4 arms x n>=3 with per-iteration trace + terminal/held-out verdicts + run-status + terminal-failure bucket, transcript leak-grep clean; T5 verdict.md = mechanical per-arm-with-intervals (floor-recovery + feedback lift contract-loop-minus-best-of-N + iterations-to-converge + buckets + gaming rate; below effect floor = directional/underpowered) OR no-floor null, claim scoped + worker pinned; /Users/jwang/edge-screener checksum identical before/after + git clean; nana-dev-kit make test PASS, make eval 50/50, drift 0 (ships nothing); companion/ untracked."
@@ -26,6 +26,6 @@ Rung-C culmination (pillar 2). A MEASUREMENT phase: build a throwaway contract-d
 - **Terminal-failure bucketed** (converging-truncated / stalled / regressing); infra-fail excluded + re-rolled. **Pinned effect floor** → below it = directional/underpowered.
 - Byte-frozen before scored runs; real edge-screener never mutated; claim scoped + worker pinned (`opencode/big-pickle`, this held-out probe).
 
-## Outcome
+## Outcome (delivered 2026-06-22)
 
-(pending — implementation not started)
+A contract-governed LOOP recovers the Phase-101 implementation-difficulty floor — VIA FEEDBACK, not resampling and not naming the invariant. decision-lag (clean primary): single-shot 0/15, best-of-N 0/3, bare-loop 3/3, contract-loop 3/3 → **feedback = bare−bestofN = +1.0 (SUPPORTED)**; invariant-in-loop = contract−bare = +0.0 (naming nearly inert, only sped convergence ~1 iter); gaming 0/3 (genuine recovery, no gaming). pit (secondary) CONFOUNDED — frozen held-out included an orthogonal before-baseline case → frozen "gaming 3/3" is an artifact (post-hoc invariant-focused re-score = 6/6 recovery); reported transparently, NOT retrofitted. Gaming detectable-in-principle (seeded gamer + 5 adversary attacks caught) but NOT exhibited by `opencode/big-pickle`. An adversarial-refutation pass found+closed (pre-freeze) a held-out leak + under-pinning; an apparatus cleanup() rmtree bug (run concurrently with the runner) deleted+restored edge-screener (intact; bug fixed; all later work serial). Frozen sha-intact; edge-screener checksum 931c0caef3742029 identical; SHIPS NOTHING (make test PASS, eval 50/50, drift 0). Verdict: `companion/research/contract-loop/verdict.md` (gitignored). Decision: [[contract-loop]] (high).
