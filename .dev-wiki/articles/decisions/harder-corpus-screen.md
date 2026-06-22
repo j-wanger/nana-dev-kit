@@ -7,7 +7,7 @@ parents: [phase-101-harder-corpus-screen]
 created: 2026-06-22
 updated: 2026-06-22
 source: plan
-confidence: medium
+confidence: high
 ---
 
 ## Context
@@ -41,6 +41,24 @@ The integrity tests are **un-foolable ground truth**, so the design flips Phase 
 ## Consequences
 
 The apparatus lives entirely in gitignored `companion/research/contract-screen-hard/` (corpus stubs + held-out scorers + seeded reference/known-wrong + per-run runner + byte-frozen pre-registration + results + verdict), like Ph97/98/100. No `scripts/`/`modules.json`/hook/test/`Makefile` change; the kit ships nothing. A clean informative null is a valid success that bounds where contracts can be measured at all. Ledger Phase-101 (all_accept:false).
+
+## Verdict (Phase 101 outcome, 2026-06-22)
+
+**The corpus discriminated — Phase 100's ceiling is broken.** The mandatory pilot put all 3 tasks IN-BAND: the bare arm failed the *same integrity assertion* 3/3 on every task (a bare worker re-implementing an integrity-critical function ships functionally-running but integrity-violating code: same-bar lookahead; no long-only rejection; exclusive-not-inclusive membership). 27 scored runs (3 tasks × 3 arms × n=3), 0 infra-fail, frozen instrument sha-intact, real edge-screener src/tests unmutated.
+
+**A1 (deterministic primary) — a DIFFERENTIATED result, not Phase 100's null:**
+- **pit (membership inclusivity): contract HELPS** — det 1.00 (contract) vs 0.00 (bare/spec); non-overlapping ranges = effect by the frozen rule. Naming "membership is inclusive THROUGH the removal date" made the worker get it right 3/3 where the unnamed arms failed 3/3.
+- **decision-lag: genuine floor** — even told the invariant, the worker set new weights directly at day k instead of the reference's one-day `pending` deferral; the un-foolable behavioral test catches it. **Naming the invariant ≠ implementing it correctly when the implementation is the hard part.**
+- **leverage: a held-out-test WORDING ARTIFACT (not a floor)** — the contract worker correctly rejects negative weights + sum>1 (honors the invariant), but the test asserts `pytest.raises(ValueError, match="long-only")` — it pins error-message wording the contract-leakage rule forbids the contract from supplying, so a correct impl fails on wording.
+- Headline: **contracts CAN add real fidelity on hard delegation — but task-specifically, only where the gap is a nameable semantic invariant the worker can act on, NOT where the gap is implementation difficulty.** A genuine refinement of the Phase-100 amplifier-null (which found no contract value on *easy* tasks). NOT a blanket "contracts work."
+- (The frozen `analyze-hard.py` cross-task *headline label* prints "AMPLIFIER-NULL" because it averages the strong pit effect with the two floors; the spec's per-task **contract-floor guard** — the actual decision mechanism — records pit's lift. Reported verbatim, rule un-edited per anti-retrofit.)
+
+**A2 (deterministic vs the secondary judge) — neither scorer is a reliable sole arbiter:**
+- Judge genuinely WRONG on decision-lag (9/9 runs judge=HONORED while det=FAIL): the same-bar bug is too subtle to catch by reading source — only the generative behavioral test catches it. → **deterministic-PRIMARY VINDICATED.**
+- Deterministic test genuinely WRONG on leverage-contract (3/3 runs): the impl honors the invariant, the judge correctly said HONORED, det failed only on message wording. → the judge caught a det artifact.
+- → A robust contract-fidelity scorer needs a deterministic test that asserts **BEHAVIOR ONLY** (no message-wording), with the judge as a cross-check — the control the leverage task lacked (named follow-on).
+
+Verdict + apparatus gitignored `companion/research/contract-screen-hard/` (`verdict.md`, `pilot.md`, `results.json`, `.frozen`). Claim scoped to the 3-task corpus + `opencode/big-pickle`. Ships nothing (kit unchanged).
 
 ## Source
 

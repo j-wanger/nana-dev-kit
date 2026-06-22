@@ -7,7 +7,7 @@ parents: []
 created: 2026-06-22
 updated: 2026-06-22
 source: plan
-status: active
+status: completed
 scope: ["companion/research/contract-screen-hard/**", ".dev-wiki/**", ".claude/rules/active-phase.md"]
 entry_criteria: "Phase 100 delivered + accepted (verdict amplifier-null, ceiling-saturated → harder-corpus routed forward); spec specs/phase-101-harder-corpus-screen.md nana:approved 2026-06-22; direction gate closed (ledger Phase-101, all_accept:false); opencode on PATH; /Users/jwang/edge-screener present with its .venv."
 exit_criteria: "pilot.md records per-task held-out scorer PASSES seeded reference AND FAILS seeded known-wrong + bare failing-assertion + disposition (in-band|floor|ceiling); >=3 in-band tasks (else informative null recorded); held-out unreachable (grep gate) + contract-leakage diff + information parity (strip asserts) all recorded; analyze-hard.py --selftest exit 0; shasum -c .frozen OK BEFORE any scored run; results.md = in-band tasks x 3 arms x n=3 with per-run fields + bare integrity-failure evidence; verdict.md = mechanical det-primary contract-vs-spec verdict (+ contract-floor disposition) OR informative null, claim scoped + worker pinned; /Users/jwang/edge-screener checksum identical before/after + git status clean; nana-dev-kit make test PASS, make eval 50/50, drift 0 (ships nothing); companion/ untracked."
