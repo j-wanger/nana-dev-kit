@@ -47,7 +47,7 @@ fi
 
 # Condition 1: a Python SOURCE file was MODIFIED this session — write-class only, extension-anchored
 # (\.py$) so .pyc / app.py.bak / notes.python.md do NOT count (Ph99 false-block fix).
-HAS_PY_CHANGES=$(printf '%s' "$WRITE_ACTIVITY" | grep -qE '\.py$' && echo true || echo false)
+HAS_PY_CHANGES=$(grep -qE '\.py$' <<<"$WRITE_ACTIVITY" && echo true || echo false)
 
 # If no Python files were touched, allow stop
 if [ "$HAS_PY_CHANGES" != "true" ]; then
@@ -60,7 +60,7 @@ fi
 # projects like nana-dev-kit, which has NO pytest — Ph85/Ph99 dogfood). `make` is anchored to a
 # command position and tolerates flags/vars before the target (make -j4 test, make -C dir test) so a
 # real invocation matches while a quoted mention (git commit -m "make test") does not. COMMANDS only.
-TEST_RAN=$(printf '%s' "$CMD_ACTIVITY" | grep -Eq 'pytest|(^|[[:space:];&|])make([[:space:]]+[^[:space:]]+)*[[:space:]]+(test|eval)([[:space:]]|$)' && echo true || echo false)
+TEST_RAN=$(grep -Eq 'pytest|(^|[[:space:];&|])make([[:space:]]+[^[:space:]]+)*[[:space:]]+(test|eval)([[:space:]]|$)' <<<"$CMD_ACTIVITY" && echo true || echo false)
 
 if [ "$TEST_RAN" != "true" ]; then
   log_firing block tests-not-run || true

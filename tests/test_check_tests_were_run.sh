@@ -129,4 +129,19 @@ test_start "allow: legacy shape, .py edit + 'make test' command, exits 0"
 EC=0; echo '{"tool_uses":[{"input":{"file_path":"src/app.py"}},{"input":{"command":"make test"}}]}' | CLAUDE_PROJECT_DIR="$(mktemp -d)" bash "$HOOK" >/dev/null 2>&1 || EC=$?
 if [ "$EC" = "0" ]; then test_pass; else test_fail "expected 0, got $EC"; fi
 
+# --- ALLOW (Ph101 fix): a LARGE transcript (make test early + thousands of later commands) exits 0.
+#     Pre-fix, `set -o pipefail` + `printf '%s' "$X" | grep -q` SIGPIPE'd printf when grep matched
+#     early on a >pipe-buffer input, propagating the failure as the pipeline status -> TEST_RAN
+#     false-negative -> spurious Stop block on long sessions. `<<<` here-strings removed the pipe. ---
+test_start "allow: 'make test' + a LARGE transcript (>pipe-buffer) exits 0 (Ph101 SIGPIPE false-block fix)"
+T=$(mktemp -d)
+{ printf '%s\n' "$EDIT_PY" "$MAKE_TEST"
+  for i in $(seq 1 4000); do
+    printf '{"type":"assistant","message":{"content":[{"type":"tool_use","name":"Bash","input":{"command":"echo pad %s xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}}]}}\n' "$i"
+  done
+} > "$T/transcript.jsonl"
+EC=0; run_hook_stop "$T" "$T/transcript.jsonl" >/dev/null || EC=$?
+if [ "$EC" = "0" ]; then test_pass; else test_fail "expected 0, got $EC (large-input SIGPIPE false-block regressed)"; fi
+rm -rf "$T"
+
 test_summary "check-tests-were-run"
