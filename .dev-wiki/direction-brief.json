@@ -1,25 +1,25 @@
 {
-  "phase": 100,
-  "phase_name": "Contract-vs-Spec Fidelity Screen (rung-C pillar-1, measurement)",
+  "phase": 101,
+  "phase_name": "Harder-corpus contract screen on edge-screener",
   "generated": "2026-06-22",
-  "objective": "Resolve empirically whether a CONTRACT (outcome objectives + deterministic guardrails) keeps a real downstream worker (opencode) more on-outcome than a spec or a bare prompt, AND whether a deterministic fidelity-check suffices or a neural judge catches violations the guardrails miss. Build the deterministic fidelity-check (scoring instrument + shippable product) and use it, alongside a marked neural-judge arm, to score a pre-registered, controls-first 3-arm screen on real opencode workers. Pillar 1 of rung-C; the verdict decides the contract-schema shape.",
-  "recommendation": "GATE CLOSED. Phase 100 is a MEASUREMENT phase (rung-C analogue of the amplifier-screen lineage Ph70/71/77/78/80). Build the deterministic fidelity-check (dual-use: scorer + shippable artifact, no precommitment to A1), then run a pre-registered, controls-first screen comparing {contract, spec, bare-baseline} arms on real opencode workers (opencode run --pure --format json) in a non-leaking scratch workspace, scored by BOTH the deterministic check and a calibrated neural judge. The frozen decision rule yields the verdict; a conclusive contract-beats-spec result ships the contract schema, else it routes to a build phase.",
+  "objective": "Re-run the Phase-100 contract-vs-spec fidelity screen on a HARDER corpus where bare prompts plausibly FAIL — real, challenging code-development tasks grounded in edge-screener (a backtesting platform whose whole thesis is un-foolable integrity tests: no-lookahead, costs, survivorship). The Phase-100 null was ceiling-saturated (capable worker aced toy tasks); this directly attacks that limitation by giving the contract structure failure headroom to demonstrate (or not) fidelity lift on subtle-integrity tasks.",
+  "recommendation": "GATE CLOSED. Maintainer chose FROM-SCRATCH STUB (B) over bug-injection: stub a real integrity-critical FUNCTION in edge-screener (a single function with one strong, namable invariant — e.g. the decision-lag weights[k] earn returns[k+1], or cost application, or PIT survivorship), the worker re-implements it; bare = 'implement function X to do Y'; spec = + objectives prose; contract = + the named integrity invariant as a deterministic guardrail (test file HELD-OUT). Score with edge-screener's un-foolable held-out integrity tests + the cross-model judge. Function-level stubs (not whole modules) to keep floor risk manageable. CRUX (A1 accept): a MANDATORY difficulty-calibration pilot keeps only tasks where bare FAILS but isn't floored; if none land in-band, the phase reports an informative null ('no discriminating harder corpus constructible for this worker'). Reuses the frozen Phase-100 harness.",
   "options": [
     {
-      "label": "A' — Build-the-check + run the contract-vs-spec screen",
-      "description": "Build the deterministic fidelity-check (instrument + product). Run opencode workers on a task set under {contract, spec, bare-baseline} in a --pure / scratch-CWD non-leaking workspace; score fidelity with the deterministic check AND a marked neural-judge arm; pre-register + freeze the decision rule; seed a violating output the check MUST catch (clean-on-seed = dead). Verdict decides the contract-schema shape. Threads A4-ship with A1/A2-measure.",
+      "label": "A — Bug-injection-repair + calibration pilot (held-out integrity tests)",
+      "description": "Inject a subtle integrity bug into a working edge-screener module; the worker fixes it. The contract names the integrity invariant (no-lookahead / costs / survivorship) as a guardrail without the test file; held-out integrity tests score. Localized fix = best-calibrated (the worker has a working base; the contract's value is naming the invariant a bare prompt overlooks). A mandatory pilot discards floor/ceiling tasks before freezing.",
       "recommended": true,
-      "chosen": true
+      "chosen": false
     },
     {
-      "label": "B' — Measurement-only verdict (Ph97/98 style)",
-      "description": "Run the screen entirely in gitignored companion/research/; ship NOTHING this phase; the build becomes a verdict-gated Phase 101. Cleanest de-risking, but conflicts with A4-accept.",
+      "label": "B — From-scratch stub-a-module",
+      "description": "Remove a real integrity-critical module; the worker re-implements it from the prompt; held-out integrity tests score. Cleaner 'fresh implementation' but HIGH floor risk — re-implementing a no-lookahead backtest engine from scratch may fail on ALL arms (too hard) → no discrimination.",
       "recommended": false,
       "chosen": false
     },
     {
-      "label": "C' — Build-first (original Option A, superseded)",
-      "description": "Build + seed-test + ship the contract spine now. Rejected by A1/A2 don't-know: it ships the contract artifact before measuring whether it beats a spec.",
+      "label": "C — Mine real git-history regressions",
+      "description": "Reconstruct real bugs from edge-screener's git history (authentic regressions a contract might have prevented). Most realistic, but heavy setup (pre-fix state + the fix's test per task) and harder to calibrate to the discrimination band.",
       "recommended": false,
       "chosen": false
     }
@@ -28,59 +28,38 @@
     {
       "id": "A1",
       "cost": "high",
-      "text": "A new contract artifact earns its complexity over reusing success:/spec (the subtraction-test fork).",
-      "position": "don't-know",
-      "resolution": "CONVERTED to the phase's measurement target: the 3-arm fidelity screen on real opencode workers decides it. Not a silent pass — it is the deliverable's question."
+      "text": "Tasks can be calibrated to the DISCRIMINATION BAND — bare fails but isn't floored (a contract has room to help) — verified by a MANDATORY difficulty-calibration pilot BEFORE freezing the corpus. If no task lands in-band (all floor or all ceiling), the phase reports an informative null ('no discriminating harder corpus constructible'), not a forced contract-vs-spec conclusion.",
+      "position": "pending",
+      "resolution": ""
     },
     {
       "id": "A2",
       "cost": "high",
-      "text": "The fidelity spine is deterministic-only (no LLM judge in the acceptance path).",
-      "position": "don't-know",
-      "resolution": "CONVERTED to measurement via R1: BOTH a deterministic scorer and a marked neural-judge arm run; their agreement measures whether a judge catches fidelity violations the deterministic guardrails miss."
+      "text": "Bug-injection-repair is the right construction (a localized fix to a working module — the contract's value is naming the integrity invariant the bare worker overlooks), vs from-scratch stub (floor risk) or git-mining (setup-heavy).",
+      "position": "pending",
+      "resolution": ""
     },
     {
       "id": "A3",
-      "cost": "high",
-      "text": "Pillar 1 is validated against SEEDED worker outputs; no real worker this phase.",
-      "position": "reject",
-      "resolution": "ABSORBED: a real opencode worker IS the measurement instrument. A minimal slice of pillar-2 (real worker execution) merges in for the measurement; the 24/7 fleet stays later."
+      "cost": "medium",
+      "text": "The worker can develop + be scored in a real edge-screener copy (its .venv/deps work, opencode can run pytest there), at a heavier per-run cost than Phase 100 → a smaller corpus (3-4 tasks x n=3-5). Feasibility verified in the pilot; if the env can't run, re-scope.",
+      "position": "pending",
+      "resolution": ""
     },
     {
       "id": "A4",
       "cost": "medium",
-      "text": "Pillar 1 ships to the kit (scripts/ + Makefile + tests/), not gitignored companion/research/.",
-      "position": "accept",
-      "resolution": "Holds for the deterministic fidelity-CHECK (dual-use). Contract-SCHEMA shape deferred to the verdict (R3). The opencode harness + runs + results are measurement apparatus → companion/research/."
-    },
-    {
-      "id": "R1",
-      "cost": "high",
-      "text": "Fidelity metric: deterministic-only, vs deterministic + a marked neural-judge arm.",
-      "position": "reject",
-      "resolution": "Maintainer chose DETERMINISTIC + a marked neural-judge arm. The screen scores every run twice (machine-checkable guardrails AND a calibrated, exemplar-anchored judge per the Ph44-50 method, cross-model to avoid self-grading bias); deterministic-vs-judge agreement answers A2. Task corpus must include a subjective quality dimension so the two scorers CAN disagree."
-    },
-    {
-      "id": "R2",
-      "cost": "high",
-      "text": "Screen arms + decision rule: 3-arm {contract, spec, bare-baseline} with a frozen pre-registered rule, vs contract-vs-spec head-to-head only.",
-      "position": "accept",
-      "resolution": "Accepted: 3 arms + a frozen decision rule (contract must beat spec by a pre-stated margin on fidelity to justify a contract artifact). The bare-baseline is the amplifier-null guard — it caught every prior null."
-    },
-    {
-      "id": "R3",
-      "cost": "medium",
-      "text": "Deliverable split: ship the deterministic fidelity-CHECK; defer the contract-schema shape to the verdict.",
-      "position": "accept",
-      "resolution": "Accepted: the check ships to scripts/ + make + tests/ (instrument now, product later). The contract-schema ships in this phase only if the verdict is conclusive; else routes to a build phase."
+      "text": "edge-screener is the right base project (real, genuinely hard, un-foolable integrity tests, the maintainer's domain) vs an alternative codebase or synthetic-but-hard tasks.",
+      "position": "pending",
+      "resolution": ""
     }
   ],
   "context": {
-    "active_phase": "Phase 99 — Direction Dashboard (delivered + accepted 2026-06-22); Phase 100 = a measurement screen (gate closed 2026-06-22).",
+    "active_phase": "Phase 100 — Contract-vs-Spec Fidelity Screen DELIVERED (amplifier-null → collapse-to-runner-only; ceiling-saturated corpus). Phase 101 = the harder-corpus follow-on routed forward.",
     "open_decisions": [
-      "Method (STATED): non-leaking workspace (--pure + scratch CWD, worker sees ONLY the variant input — Ph80 leak hazard); pre-registered + byte-frozen decision rule (Ph87/97 three-tier discipline); seeded positive control for BOTH scorers; apparatus in gitignored companion/research/, shippable check in scripts/.",
-      "Judge calibration: exemplar-anchored, cross-model, self-grading-bias-aware (Ph44-50 prior art).",
-      "Pillar 2 full scope (24/7 opencode fleet) stays a later phase; minimal real worker as instrument only."
+      "A1 (the crux): can a discriminating harder corpus even be constructed for this worker? — a pilot answers it; a clean 'no' is itself a result.",
+      "Reuses the frozen Phase-100 harness (runner/check/analyze/judge); the new design is the corpus + the worker-in-edge-screener workspace.",
+      "The contract's guardrails = edge-screener's integrity invariants named as deterministic checks; the actual test files stay HELD-OUT (Phase-100 keystone) so a worker can't iterate-to-green."
     ]
   }
 }
