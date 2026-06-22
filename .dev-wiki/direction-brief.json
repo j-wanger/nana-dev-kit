@@ -1,25 +1,25 @@
 {
-  "phase": 99,
-  "phase_name": "Direction Dashboard (render-only, dashboard-first)",
+  "phase": 100,
+  "phase_name": "Contract-vs-Spec Fidelity Screen (rung-C pillar-1, measurement)",
   "generated": "2026-06-22",
-  "objective": "Make design directions legible at human pace — render the /dev-plan direction gate as a static, scannable HTML page so the maintainer reviews visually, then answers the gate in-session. Pillar 3 (the dashboard) of the rung-C contract-driven-delegation program, delivered first.",
-  "recommendation": "Recommended the thin end-to-end slice (prove the whole contract -> worker -> fidelity-check -> dashboard loop small). Maintainer chose Dashboard-first: build the render-only direction dashboard first; the contract-fidelity harness + downstream/local workers are later pillars.",
+  "objective": "Resolve empirically whether a CONTRACT (outcome objectives + deterministic guardrails) keeps a real downstream worker (opencode) more on-outcome than a spec or a bare prompt, AND whether a deterministic fidelity-check suffices or a neural judge catches violations the guardrails miss. Build the deterministic fidelity-check (scoring instrument + shippable product) and use it, alongside a marked neural-judge arm, to score a pre-registered, controls-first 3-arm screen on real opencode workers. Pillar 1 of rung-C; the verdict decides the contract-schema shape.",
+  "recommendation": "GATE CLOSED. Phase 100 is a MEASUREMENT phase (rung-C analogue of the amplifier-screen lineage Ph70/71/77/78/80). Build the deterministic fidelity-check (dual-use: scorer + shippable artifact, no precommitment to A1), then run a pre-registered, controls-first screen comparing {contract, spec, bare-baseline} arms on real opencode workers (opencode run --pure --format json) in a non-leaking scratch workspace, scored by BOTH the deterministic check and a calibrated neural judge. The frozen decision rule yields the verdict; a conclusive contract-beats-spec result ships the contract schema, else it routes to a build phase.",
   "options": [
     {
-      "label": "Dashboard-first",
-      "description": "Build the visual steering surface first; it backs onto the existing /dev-plan + specs, with the contract/worker/fidelity machinery riding on top in later phases. Solves the text-too-fast pain soonest.",
-      "recommended": false,
+      "label": "A' — Build-the-check + run the contract-vs-spec screen",
+      "description": "Build the deterministic fidelity-check (instrument + product). Run opencode workers on a task set under {contract, spec, bare-baseline} in a --pure / scratch-CWD non-leaking workspace; score fidelity with the deterministic check AND a marked neural-judge arm; pre-register + freeze the decision rule; seed a violating output the check MUST catch (clean-on-seed = dead). Verdict decides the contract-schema shape. Threads A4-ship with A1/A2-measure.",
+      "recommended": true,
       "chosen": true
     },
     {
-      "label": "Thin end-to-end slice",
-      "description": "One real contract -> a worker runs it -> a deterministic fidelity check -> a minimal dashboard. Proves the whole loop small and dogfoods the dashboard on real data.",
-      "recommended": true,
+      "label": "B' — Measurement-only verdict (Ph97/98 style)",
+      "description": "Run the screen entirely in gitignored companion/research/; ship NOTHING this phase; the build becomes a verdict-gated Phase 101. Cleanest de-risking, but conflicts with A4-accept.",
+      "recommended": false,
       "chosen": false
     },
     {
-      "label": "Fidelity-spine-first",
-      "description": "Build the contract schema + deterministic acceptance-check first (CLI/text); dashboard stays text. Strongest if proving fidelity is the real unknown.",
+      "label": "C' — Build-first (original Option A, superseded)",
+      "description": "Build + seed-test + ship the contract spine now. Rejected by A1/A2 don't-know: it ships the contract artifact before measuring whether it beats a spec.",
       "recommended": false,
       "chosen": false
     }
@@ -28,37 +28,59 @@
     {
       "id": "A1",
       "cost": "high",
-      "text": "A render-only dashboard relieves the throughput pain — the bottleneck is processing dense text, not the latency of deciding.",
-      "position": "accept",
-      "resolution": "Accepted at the gate; interactive click-to-decide deferred to a later pillar."
+      "text": "A new contract artifact earns its complexity over reusing success:/spec (the subtraction-test fork).",
+      "position": "don't-know",
+      "resolution": "CONVERTED to the phase's measurement target: the 3-arm fidelity screen on real opencode workers decides it. Not a silent pass — it is the deliverable's question."
     },
     {
       "id": "A2",
       "cost": "high",
-      "text": "A one-shot generated HTML file suffices over an always-on watching server.",
+      "text": "The fidelity spine is deterministic-only (no LLM judge in the acceptance path).",
       "position": "don't-know",
-      "resolution": "Down-scoped to the generator (a strict subset of a future watching server); live-server filed to Blockers with a re-trigger."
+      "resolution": "CONVERTED to measurement via R1: BOTH a deterministic scorer and a marked neural-judge arm run; their agreement measures whether a judge catches fidelity violations the deterministic guardrails miss."
     },
     {
       "id": "A3",
-      "cost": "medium",
-      "text": "The /dev-plan direction gate is the right first surface to render.",
-      "position": "accept",
-      "resolution": "Accepted; general project-state/roadmap is orienting context around the brief."
+      "cost": "high",
+      "text": "Pillar 1 is validated against SEEDED worker outputs; no real worker this phase.",
+      "position": "reject",
+      "resolution": "ABSORBED: a real opencode worker IS the measurement instrument. A minimal slice of pillar-2 (real worker execution) merges in for the measurement; the 24/7 fleet stays later."
     },
     {
       "id": "A4",
       "cost": "medium",
-      "text": "A small /dev-plan integration is in-scope — dev-plan emits a structured direction-brief at the gate.",
+      "text": "Pillar 1 ships to the kit (scripts/ + Makefile + tests/), not gitignored companion/research/.",
       "position": "accept",
-      "resolution": "Accepted; down-scopes to render-existing-files-only if non-trivial."
+      "resolution": "Holds for the deterministic fidelity-CHECK (dual-use). Contract-SCHEMA shape deferred to the verdict (R3). The opencode harness + runs + results are measurement apparatus → companion/research/."
+    },
+    {
+      "id": "R1",
+      "cost": "high",
+      "text": "Fidelity metric: deterministic-only, vs deterministic + a marked neural-judge arm.",
+      "position": "reject",
+      "resolution": "Maintainer chose DETERMINISTIC + a marked neural-judge arm. The screen scores every run twice (machine-checkable guardrails AND a calibrated, exemplar-anchored judge per the Ph44-50 method, cross-model to avoid self-grading bias); deterministic-vs-judge agreement answers A2. Task corpus must include a subjective quality dimension so the two scorers CAN disagree."
+    },
+    {
+      "id": "R2",
+      "cost": "high",
+      "text": "Screen arms + decision rule: 3-arm {contract, spec, bare-baseline} with a frozen pre-registered rule, vs contract-vs-spec head-to-head only.",
+      "position": "accept",
+      "resolution": "Accepted: 3 arms + a frozen decision rule (contract must beat spec by a pre-stated margin on fidelity to justify a contract artifact). The bare-baseline is the amplifier-null guard — it caught every prior null."
+    },
+    {
+      "id": "R3",
+      "cost": "medium",
+      "text": "Deliverable split: ship the deterministic fidelity-CHECK; defer the contract-schema shape to the verdict.",
+      "position": "accept",
+      "resolution": "Accepted: the check ships to scripts/ + make + tests/ (instrument now, product later). The contract-schema ships in this phase only if the verdict is conclusive; else routes to a build phase."
     }
   ],
   "context": {
-    "active_phase": "Phase 99 — Direction Dashboard (render-only, dashboard-first)",
+    "active_phase": "Phase 99 — Direction Dashboard (delivered + accepted 2026-06-22); Phase 100 = a measurement screen (gate closed 2026-06-22).",
     "open_decisions": [
-      "A2: live-server vs one-shot generator — re-trigger if regenerate-by-hand becomes a friction bottleneck",
-      "Pillars 1-2 (contract-fidelity harness, downstream/local workers) — later phases"
+      "Method (STATED): non-leaking workspace (--pure + scratch CWD, worker sees ONLY the variant input — Ph80 leak hazard); pre-registered + byte-frozen decision rule (Ph87/97 three-tier discipline); seeded positive control for BOTH scorers; apparatus in gitignored companion/research/, shippable check in scripts/.",
+      "Judge calibration: exemplar-anchored, cross-model, self-grading-bias-aware (Ph44-50 prior art).",
+      "Pillar 2 full scope (24/7 opencode fleet) stays a later phase; minimal real worker as instrument only."
     ]
   }
 }
