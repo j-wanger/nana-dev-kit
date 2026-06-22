@@ -7,7 +7,7 @@ parents: [frontier-positioning-sweep]
 created: 2026-06-21
 updated: 2026-06-21
 source: plan
-status: active
+status: completed
 scope: ["companion/research/watch/**", ".dev-wiki/**", ".claude/rules/active-phase.md"]
 entry_criteria: "Ph97 delivered + accepted (cbc057e); rung-B selected by the maintainer; direction gate closed 2026-06-21 (ledger Phase-98)."
 exit_criteria: "Frozen watch-charter + controls-validated detector + wired weekly/monthly trigger; ZERO kit code change; make test PASS + drift 0; git ls-files companion/ empty."

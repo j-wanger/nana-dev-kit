@@ -1215,7 +1215,7 @@ Standard ceremony. Direction gate closed 2026-06-21 (ledger Phase-97; all_accept
 <!-- phase:phase-98-frontier-watch -->
 ## Phase 98 — Frontier Watch (rung-B)
 
-<!-- gate-log:phase-98 direction=approved delivery=pending -->
+<!-- gate-log:phase-98 direction=approved delivery=accepted -->
 
 Standard ceremony. Direction gate closed 2026-06-21 (ledger Phase-98; all_accept:false — A1 reject→broad-source scan, A2 reject→two-speed weekly-scan+monthly-deep, A3 accept→re-run frozen on escalation). Spec = the frozen `companion/research/watch/watch-charter.md` (gitignored — Ph97 deviation precedent). Stands up the Ph97 verdict's rung-B charter as a re-runnable TWO-SPEED tripwire watch. DETECTS-AND-FLAGS only — NO cut. Research-shaped tasks: controls-first + frozen-instrument discipline replaces the TDD cycle where it doesn't map.
 
