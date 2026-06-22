@@ -7,7 +7,7 @@ parents: []
 created: 2026-06-22
 updated: 2026-06-22
 source: plan
-status: active
+status: completed
 scope: ["scripts/check-fidelity.py", "tests/test_contract_fidelity.sh", "Makefile", "companion/research/contract-screen/**", ".dev-wiki/**", ".claude/rules/active-phase.md"]
 entry_criteria: "Phase 99 delivered + accepted (work commit 46473a7); spec specs/phase-100-contract-fidelity-screen.md nana:approved 2026-06-22; direction gate closed (ledger Phase-100, all_accept:false); opencode v1.17.3 confirmed on PATH."
 exit_criteria: "tests/test_contract_fidelity.sh passes (seeded HONORED→0, per-guardrail VIOLATED→non-zero naming the guardrail, malformed contract→non-zero+stderr, determinism, AST no-LLM-import, offline runtime control); pre-registration byte-frozen before runs (sha256==.frozen, gitignored) with an information-parity note; leak-probe within the chance band; gaming control (det PASS, judge flags a citable defect) + judge-repeat-variance recorded; results.md = 3 arms x n>=3 with per-run fields + leak-probe-score (structural scan); verdict.md cites the frozen rule + per-arm distributions + the effect form + the contract-schema disposition; make test ALL-PASS, make eval 50/50, drift 0; companion/ untracked."
@@ -68,6 +68,10 @@ OUT: the contract-schema's **shipped** shape (an OUTPUT of the verdict — ship 
 - Real-worker runs at n≥3 × 3 arms are affordable. If false: drop n before the bare-baseline arm; scope the claim to the reduced power.
 - The corpus is representative enough for the claim. If below the min corpus size: the verdict is pilot-scoped and routed forward — a sub-minimum screen may NOT be reported as a contract-vs-spec conclusion.
 
+## Status
+
+COMPLETED + DELIVERED 2026-06-22 (5/5 tasks). **VERDICT = AMPLIFIER-NULL → COLLAPSE-TO-RUNNER-ONLY + DETERMINISTIC-SUFFICES** (frozen rule, instrument sha-intact). 60 runs (3 arms × 4 tasks × n=5, 0 infra-fail), deterministic AND cross-model-judge HONORED rate = 1.00 everywhere → a capable `opencode/big-pickle` worker honors every outcome unprompted; contract/spec add no fidelity over bare → ship `check-fidelity.py` as a runner, no contract schema. A2: deterministic suffices in the wild (judge proven live — caught the gaming + non-exponential controls — but 0 real det-passing violations). Limitation: ceiling-saturated corpus (no bare-arm failure headroom) → harder-corpus screen routed forward. Leak-probe deviation: probe-by-guess infeasible; isolation certified by opencode's hard external_directory block. `make test` PASS, `make eval` 50/50, drift 0. Verdict + apparatus gitignored `companion/research/contract-screen/`. See [[contract-fidelity-screen]] (high).
+
 ## Notes
 
-Reframed at the direction gate from "build the contract spine" because A1 (does a contract artifact earn its complexity over reusing `success:`/`/spec`) and A2 (is a deterministic spine enough) came back don't-know — resolvable only by running real workers. The rung-C analogue of the amplifier-screen lineage (Ph70/71/77/78/80): pre-registered, controls-first, verdict read mechanically, fair baseline arm. Pillar 3 (the dashboard, [[direction-dashboard]]) shipped first; pillar 2 (the worker fleet) is a later phase. Decision [[contract-fidelity-screen]] (medium). A null is a valid success — the controls and the freeze make it trustworthy.
+Reframed at the direction gate from "build the contract spine" because A1 (does a contract artifact earn its complexity over reusing `success:`/`/spec`) and A2 (is a deterministic spine enough) came back don't-know — resolvable only by running real workers. The rung-C analogue of the amplifier-screen lineage (Ph70/71/77/78/80): pre-registered, controls-first, verdict read mechanically, fair baseline arm. Pillar 3 (the dashboard, [[direction-dashboard]]) shipped first; pillar 2 (the worker fleet) is a later phase. Decision [[contract-fidelity-screen]] (high). A null is a valid success — the controls and the freeze make it trustworthy.

@@ -7,7 +7,7 @@ parents: [phase-100-contract-fidelity-screen]
 created: 2026-06-22
 updated: 2026-06-22
 source: plan
-confidence: medium
+confidence: high
 ---
 
 ## Context
@@ -36,6 +36,17 @@ A **null is a valid success**: "contract adds nothing over spec → collapse to 
 ## Consequences
 
 `scripts/check-fidelity.py` + `tests/test_contract_fidelity.sh` (registered in `make test`) + a `make check-fidelity` target ship to the kit; the opencode runner, dual scorer, frozen pre-registration, results, and verdict live entirely in gitignored `companion/research/contract-screen/`. The contract-schema disposition (ship in-phase | route to a gated build phase) is an OUTPUT of the verdict. No `modules.json`/hook/settings change; the judge never enters any shipped path. Ledger Phase-100 (all_accept:false).
+
+## Verdict (Phase 100 outcome, 2026-06-22)
+
+The screen ran: 60 task-arm runs (3 arms × 4 tasks × n=5), 0 infra-fail, scored by the deterministic check AND a cross-model Claude judge (3 repeats/output). Frozen instrument sha-verified intact (anti-retrofit). **Both metrics saturated at 1.00 across every arm** (det and judge HONORED rate = 1.00 for bare = spec = contract).
+
+- **A1 → AMPLIFIER-NULL → COLLAPSE TO RUNNER-ONLY.** A capable `opencode/big-pickle` worker honors every task outcome *unprompted*; neither the prose spec nor the deterministic-guardrail contract adds measurable fidelity over the bare prompt. The contract artifact is NOT justified by this corpus → ship `check-fidelity.py` as a standalone runner reusing existing `success:` criteria; **do not ship a contract schema**. Extends the amplifier-null lineage (Ph70/71/77/78/80) one level up to delegation: harness headroom isn't in re-presenting outcome structure a capable worker already delivers.
+- **A2 → DETERMINISTIC SPINE SUFFICES (in the wild).** Zero stable, citable det=1/judge=0 disagreements. The judge is proven *live and non-vacuous* — calibration caught all 4 seeded violations the deterministic check is blind to (incl. the gaming lookup-dict and the non-exponential backoff) — but no real worker produced a det-passing violation, so the deterministic check sufficed for every actual output.
+- **Key limitation (ceiling saturation):** the 4-task corpus was easy enough that a capable worker aces it regardless of structure, so the screen tested "does a contract help where a worker already succeeds?" (no) — NOT "does it help where a worker would otherwise FAIL." The instrument is proven able to discriminate (caught every seeded violation); the real runs gave it no failure headroom. **Untested avenue routed forward:** a contract's value on genuinely-hard/ambiguous delegation needs a harder corpus with bare-arm failure headroom.
+- **Leak-probe deviation:** probe-by-worker-guess was operationally infeasible (worker abstains/thrashes on factual lookups → 0 compliant samples; frozen `analyze.py` VOIDs on this); isolation certified instead by STRONGER direct evidence — opencode hard-blocks external_directory access to the repo (auto-reject, `isolation-evidence.txt`) + the per-run structural assertion. Stronger-for-weaker substitution; does not touch the A1/A2 rule.
+
+Verdict + apparatus in gitignored `companion/research/contract-screen/` (`verdict.md`, `results.md`, `.frozen`). Claim scoped to the corpus + `opencode/big-pickle`.
 
 ## Source
 
