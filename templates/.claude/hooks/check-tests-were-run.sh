@@ -25,27 +25,29 @@ command -v jq >/dev/null 2>&1 || { echo "[nana:tests] jq not found, hook skipped
 
 INPUT=$(cat)
 
-# Session tool activity: prefer the legacy/fixture .tool_uses array when present; real Stop
-# events carry transcript_path (NOT tool_uses), so fall back to scanning the transcript JSONL.
-# Phase 88 harden (HEU-007 dual-condition, Ph85 dogfood filing): in the transcript path the
-# .py condition keys on WRITE-CLASS tools only (Write/Edit/MultiEdit/NotebookEdit) — a Read
-# of a .py file during read-only analysis is NOT "Python modified" — while the pytest
-# condition scans Bash commands. The legacy .tool_uses path keeps its original shape
-# (fixtures carry no tool names; real events never use it).
+# Session activity. Real Stop events carry transcript_path (JSONL, one event per line); the legacy
+# .tool_uses array is used only by eval scenarios + tests. In BOTH shapes we separate WRITE-class
+# FILE activity (Condition 1) from Bash COMMAND activity (Condition 2): a filename must not satisfy
+# the command check, and a command string must not satisfy the .py check.
+# Phase 88 (HEU-007): the transcript .py condition keys on WRITE-CLASS tools only (a Read of a .py
+# during analysis is not "modified"). Phase 99: jq -R 'fromjson?' parses each line independently and
+# SKIPS a malformed/truncated line (a partial-flush line must not abort the scan and false-block).
 TOOL_ACTIVITY=$(echo "$INPUT" | jq -r '[.tool_uses[]?.input | (.file_path // .command // "")] | join("\n")' 2>/dev/null || echo "")
-WRITE_ACTIVITY="$TOOL_ACTIVITY"
+WRITE_ACTIVITY=$(echo "$INPUT" | jq -r '[.tool_uses[]?.input.file_path // empty] | join("\n")' 2>/dev/null || echo "")
+CMD_ACTIVITY=$(echo "$INPUT" | jq -r '[.tool_uses[]?.input.command // empty] | join("\n")' 2>/dev/null || echo "")
 if [ -z "$TOOL_ACTIVITY" ]; then
   TRANSCRIPT=$(echo "$INPUT" | jq -r '.transcript_path // empty' 2>/dev/null || echo "")
   if [ -n "$TRANSCRIPT" ] && [ -f "$TRANSCRIPT" ]; then
-    WRITE_ACTIVITY=$(jq -r 'select(.type=="assistant") | .message.content[]? | select(.type=="tool_use")
+    WRITE_ACTIVITY=$(jq -rR 'fromjson? | select(.type=="assistant") | .message.content[]? | select(.type=="tool_use")
       | select(.name == "Write" or .name == "Edit" or .name == "MultiEdit" or .name == "NotebookEdit")
       | .input.file_path // ""' "$TRANSCRIPT" 2>/dev/null || echo "")
-    TOOL_ACTIVITY=$(jq -r 'select(.type=="assistant") | .message.content[]? | select(.type=="tool_use") | .input | (.file_path // .command // "")' "$TRANSCRIPT" 2>/dev/null || echo "")
+    CMD_ACTIVITY=$(jq -rR 'fromjson? | select(.type=="assistant") | .message.content[]? | select(.type=="tool_use") | select(.name == "Bash") | .input.command // ""' "$TRANSCRIPT" 2>/dev/null || echo "")
   fi
 fi
 
-# Condition 1 (hardened): Python files MODIFIED this session — write-class activity only
-HAS_PY_CHANGES=$(printf '%s' "$WRITE_ACTIVITY" | grep -q '\.py' && echo true || echo false)
+# Condition 1: a Python SOURCE file was MODIFIED this session — write-class only, extension-anchored
+# (\.py$) so .pyc / app.py.bak / notes.python.md do NOT count (Ph99 false-block fix).
+HAS_PY_CHANGES=$(printf '%s' "$WRITE_ACTIVITY" | grep -qE '\.py$' && echo true || echo false)
 
 # If no Python files were touched, allow stop
 if [ "$HAS_PY_CHANGES" != "true" ]; then
@@ -53,12 +55,16 @@ if [ "$HAS_PY_CHANGES" != "true" ]; then
   exit 0
 fi
 
-# Check if pytest was run at any point
-PYTEST_RAN=$(printf '%s' "$TOOL_ACTIVITY" | grep -q 'pytest' && echo true || echo false)
+# Condition 2: a test command was actually RUN this session. Satisfied by pytest (consuming Python
+# projects, any form — uv run / python -m / poetry run) OR `make test`/`make eval` (shell-tested
+# projects like nana-dev-kit, which has NO pytest — Ph85/Ph99 dogfood). `make` is anchored to a
+# command position and tolerates flags/vars before the target (make -j4 test, make -C dir test) so a
+# real invocation matches while a quoted mention (git commit -m "make test") does not. COMMANDS only.
+TEST_RAN=$(printf '%s' "$CMD_ACTIVITY" | grep -Eq 'pytest|(^|[[:space:];&|])make([[:space:]]+[^[:space:]]+)*[[:space:]]+(test|eval)([[:space:]]|$)' && echo true || echo false)
 
-if [ "$PYTEST_RAN" != "true" ]; then
+if [ "$TEST_RAN" != "true" ]; then
   log_firing block tests-not-run || true
-  echo "[nana:tests] You modified Python files but haven't run the test suite yet. Run: uv run pytest -x --cov=src --cov-fail-under=85" >&2
+  echo "[nana:tests] You modified Python files but haven't run the test suite yet. Run your tests (e.g. \`uv run pytest -x --cov=src --cov-fail-under=85\`, or \`make test\` for shell-tested projects)." >&2
   exit 2
 fi
 
