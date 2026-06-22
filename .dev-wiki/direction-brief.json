@@ -1,0 +1,64 @@
+{
+  "phase": 99,
+  "phase_name": "Direction Dashboard (render-only, dashboard-first)",
+  "generated": "2026-06-22",
+  "objective": "Make design directions legible at human pace — render the /dev-plan direction gate as a static, scannable HTML page so the maintainer reviews visually, then answers the gate in-session. Pillar 3 (the dashboard) of the rung-C contract-driven-delegation program, delivered first.",
+  "recommendation": "Recommended the thin end-to-end slice (prove the whole contract -> worker -> fidelity-check -> dashboard loop small). Maintainer chose Dashboard-first: build the render-only direction dashboard first; the contract-fidelity harness + downstream/local workers are later pillars.",
+  "options": [
+    {
+      "label": "Dashboard-first",
+      "description": "Build the visual steering surface first; it backs onto the existing /dev-plan + specs, with the contract/worker/fidelity machinery riding on top in later phases. Solves the text-too-fast pain soonest.",
+      "recommended": false,
+      "chosen": true
+    },
+    {
+      "label": "Thin end-to-end slice",
+      "description": "One real contract -> a worker runs it -> a deterministic fidelity check -> a minimal dashboard. Proves the whole loop small and dogfoods the dashboard on real data.",
+      "recommended": true,
+      "chosen": false
+    },
+    {
+      "label": "Fidelity-spine-first",
+      "description": "Build the contract schema + deterministic acceptance-check first (CLI/text); dashboard stays text. Strongest if proving fidelity is the real unknown.",
+      "recommended": false,
+      "chosen": false
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "A1",
+      "cost": "high",
+      "text": "A render-only dashboard relieves the throughput pain — the bottleneck is processing dense text, not the latency of deciding.",
+      "position": "accept",
+      "resolution": "Accepted at the gate; interactive click-to-decide deferred to a later pillar."
+    },
+    {
+      "id": "A2",
+      "cost": "high",
+      "text": "A one-shot generated HTML file suffices over an always-on watching server.",
+      "position": "don't-know",
+      "resolution": "Down-scoped to the generator (a strict subset of a future watching server); live-server filed to Blockers with a re-trigger."
+    },
+    {
+      "id": "A3",
+      "cost": "medium",
+      "text": "The /dev-plan direction gate is the right first surface to render.",
+      "position": "accept",
+      "resolution": "Accepted; general project-state/roadmap is orienting context around the brief."
+    },
+    {
+      "id": "A4",
+      "cost": "medium",
+      "text": "A small /dev-plan integration is in-scope — dev-plan emits a structured direction-brief at the gate.",
+      "position": "accept",
+      "resolution": "Accepted; down-scopes to render-existing-files-only if non-trivial."
+    }
+  ],
+  "context": {
+    "active_phase": "Phase 99 — Direction Dashboard (render-only, dashboard-first)",
+    "open_decisions": [
+      "A2: live-server vs one-shot generator — re-trigger if regenerate-by-hand becomes a friction bottleneck",
+      "Pillars 1-2 (contract-fidelity harness, downstream/local workers) — later phases"
+    ]
+  }
+}

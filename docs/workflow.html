@@ -55,7 +55,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <body>
 
 <h1>Nana Dev Kit &mdash; Workflow Breakdown</h1>
-<p class="subtitle">7-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-06-21 22:55</p>
+<p class="subtitle">7-Layer Python Development Harness &mdash; v0.5.0 &mdash; Generated 2026-06-22 06:54</p>
 
 <div class="toc">
 <h3>Contents</h3>
@@ -422,7 +422,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <h3>Layer 3: Skills <span class="badge badge-blue">117 files</span></h3>
 <table>
 <tr><th>File</th><th>Lines</th><th>Purpose</th></tr>
-<tr><td><code>.claude/skills/MANIFEST</code></td><td>144</td><td></td></tr>
+<tr><td><code>.claude/skills/MANIFEST</code></td><td>145</td><td></td></tr>
 <tr><td><code>.claude/skills/dev-check/SKILL.md</code></td><td>147</td><td>"Validate dev wiki integrity and fix drift. Run when state feels stale, after long breaks, or when drift warnings appear. Do NOT use for knowledge wiki health (use wiki-lint) or for session startup (use AGENTS.md)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/SKILL.md</code></td><td>297</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
 <tr><td><code>.claude/skills/dev-debrief/architecture-staleness-check.md</code></td><td>24</td><td>"Use when a session ends with meaningful work. Tiered capture: full (30-60s) or quick (10-15s) mode. Do NOT use at session start (state auto-loads then) or to fix wiki structural issues (use dev-check)."</td></tr>
@@ -443,7 +443,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>.claude/skills/dev-plan/approach-reviewer-prompt.md</code></td><td>68</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/artifact-writer-prompt.md</code></td><td>92</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/assumption-gate-example.md</code></td><td>41</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
-<tr><td><code>.claude/skills/dev-plan/assumption-gate.md</code></td><td>91</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
+<tr><td><code>.claude/skills/dev-plan/assumption-gate.md</code></td><td>100</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/compaction-anchors-spec.md</code></td><td>65</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/implementation-guide.md</code></td><td>93</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
 <tr><td><code>.claude/skills/dev-plan/iterative-retrieval-spec.md</code></td><td>41</td><td>"Use when .dev-wiki/ exists for phase planning. MUST BE USED instead of brainstorming in .dev-wiki/ projects. Do NOT use for mid-phase task changes (edit tasks.md directly)."</td></tr>
@@ -616,6 +616,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>test_check_tests_were_run.sh</code></td><td>0 assertions, 59 lines</td></tr>
 <tr><td><code>test_cognitive_readiness.sh</code></td><td>2 assertions, 50 lines</td></tr>
 <tr><td><code>test_companions.sh</code></td><td>0 assertions, 139 lines</td></tr>
+<tr><td><code>test_direction_dashboard.sh</code></td><td>4 assertions, 78 lines</td></tr>
 <tr><td><code>test_enforce.sh</code></td><td>13 assertions, 172 lines</td></tr>
 <tr><td><code>test_enforce_assumption_gate.sh</code></td><td>0 assertions, 66 lines</td></tr>
 <tr><td><code>test_eval_hermeticity.sh</code></td><td>0 assertions, 104 lines</td></tr>
@@ -640,7 +641,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 <tr><td><code>test_tooluse_hooks.sh</code></td><td>0 assertions, 269 lines</td></tr>
 <tr><td><code>test_working_knowledge_curation.sh</code></td><td>0 assertions, 343 lines</td></tr>
 </table>
-<p style="margin-top:0.5rem;font-size:0.85rem">Total: <strong>245 assertions</strong> across 29 test scripts. Run with <code>make test</code>.</p>
+<p style="margin-top:0.5rem;font-size:0.85rem">Total: <strong>249 assertions</strong> across 30 test scripts. Run with <code>make test</code>.</p>
 <p style="font-size:0.85rem">Edge cases covered: missing source files, unwritable directories, MCP registration (no file / partial / complete), venv fallback, idempotency (diff between runs).</p>
 </div>
 
@@ -841,7 +842,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border
 </pre>
 
 <footer>
-  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-06-21 22:55<br>
+  Nana Dev Kit v0.5.0 &mdash; Workflow Breakdown &mdash; Generated 2026-06-22 06:54<br>
   <code>scripts/generate-workflow.py</code> &mdash; run <code>make workflow</code> to regenerate
 </footer>
 

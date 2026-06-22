@@ -1,0 +1,54 @@
+{
+  "phase": 99,
+  "phase_name": "Example Phase (fixture)",
+  "generated": "2026-06-22",
+  "objective": "Demonstrate the direction dashboard renderer end to end.",
+  "recommendation": "Render-only dashboard is the recommended first slice.",
+  "options": [
+    {
+      "label": "Dashboard-first",
+      "description": "Build the visual steering surface first; the worker loop rides on top later.",
+      "recommended": true,
+      "chosen": true
+    },
+    {
+      "label": "Thin end-to-end slice",
+      "description": "Run one contract through the whole loop, kept small.",
+      "recommended": false,
+      "chosen": false
+    },
+    {
+      "label": "Fidelity-spine-first",
+      "description": "Build the deterministic acceptance-check first; dashboard stays text.",
+      "recommended": false,
+      "chosen": false
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "A1",
+      "cost": "high",
+      "text": "Render-only relieves the throughput pain.",
+      "position": "accept",
+      "resolution": "Accepted at the gate."
+    },
+    {
+      "id": "A2",
+      "cost": "high",
+      "text": "A one-shot generator suffices over a live server.",
+      "position": "don't-know",
+      "resolution": "Down-scoped to the generator; live-server filed to Blockers."
+    },
+    {
+      "id": "A3",
+      "cost": "medium",
+      "text": "The direction gate is the right first surface to render.",
+      "position": "accept",
+      "resolution": "Accepted; general state is context around it."
+    }
+  ],
+  "context": {
+    "active_phase": "Phase 99 — Direction Dashboard",
+    "open_decisions": ["Live-server vs generator (A2 re-trigger)"]
+  }
+}

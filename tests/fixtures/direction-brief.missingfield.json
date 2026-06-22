@@ -1,0 +1,7 @@
+{
+  "phase": 99,
+  "phase_name": "Missing required fields (no recommendation, no options)",
+  "assumptions": [
+    {"id": "A1", "cost": "high", "text": "placeholder", "position": "accept"}
+  ]
+}

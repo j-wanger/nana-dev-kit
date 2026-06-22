@@ -40,6 +40,15 @@ you LACK (what a `don't-know` marks), not by blessing a decision you MADE — su
   fatigues the verdict into accept-spam. If genuinely fewer than 1 load-bearing assumption exists, see
   *Empty set* below.
 
+## Visual brief (render the gate before presenting it)
+
+Before taking positions, emit the **direction brief** so the maintainer can review the gate as a
+scannable HTML page instead of fast in-session text: write `.dev-wiki/direction-brief.json` (positions
+`"pending"`), run `make direction`, and point them at `docs/direction.html`. Then present the positions
+below. After the gate closes, fill positions/resolutions and re-run `make direction` to reflect the
+decided gate. Full schema + flow: [direction-brief.md](direction-brief.md). Fail-open — never block the
+gate on the dashboard.
+
 ## Positions (the gate — AskUserQuestion)
 
 Present the surfaced assumptions and take an explicit position on each via AskUserQuestion:

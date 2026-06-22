@@ -112,7 +112,7 @@ Re-run `~/nana-dev-kit/install.sh` to refresh the global install (`nana-personal
 ## Testing
 
 ```bash
-make test    # ~530 tests across 28 scripts
+make test    # ~540 tests across 29 scripts
 make eval    # 52 eval scenarios (requires jq)
 make report  # package inventory at docs/report.html
 ```

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Direction: Phase 99</title>
+<style>
+  body { font-family: -apple-system, system-ui, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.2em; color: #222; line-height: 1.55; }
+  h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; margin-bottom: 0.2em; }
+  h2 { color: #2c3e50; margin-top: 1.8em; font-size: 1.15em; text-transform: uppercase; letter-spacing: 0.04em; }
+  .meta { color: #888; font-size: 0.85em; margin-bottom: 1.5em; }
+  .objective { color: #555; }
+  .recommend { background: #eef6ee; border-left: 5px solid #2d7d2d; border-radius: 6px; padding: 1em 1.2em; margin: 1.2em 0; font-size: 1.05em; }
+  .recommend .tag { display: block; font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.08em; color: #2d7d2d; font-weight: 700; margin-bottom: 0.3em; }
+  .option { border: 1px solid #e2e2e2; border-radius: 8px; padding: 0.9em 1.1em; margin: 0.7em 0; background: #fafafa; }
+  .option.chosen-card { border-color: #2d7d2d; background: #f3faf3; }
+  .opt-head { display: flex; align-items: center; gap: 0.6em; margin-bottom: 0.3em; }
+  .opt-label { font-weight: 600; font-size: 1.02em; }
+  .opt-desc { color: #555; font-size: 0.95em; }
+  .badge { font-size: 0.68em; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.15em 0.55em; border-radius: 10px; font-weight: 700; color: #fff; }
+  .badge.rec { background: #2d7d2d; }
+  .badge.chosen { background: #2c3e50; }
+  table { width: 100%; border-collapse: collapse; margin: 0.8em 0; }
+  th, td { text-align: left; padding: 0.55em 0.7em; border-bottom: 1px solid #eee; vertical-align: top; }
+  th { background: #f0f0f0; font-weight: 600; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.03em; }
+  td.aid { font-weight: 700; color: #2c3e50; white-space: nowrap; }
+  .cost { font-weight: 700; text-transform: uppercase; font-size: 0.8em; }
+  .pos { display: inline-block; color: #fff; padding: 0.15em 0.6em; border-radius: 4px; font-size: 0.8em; font-weight: 700; white-space: nowrap; }
+  .resolution { color: #777; font-size: 0.88em; margin-top: 0.3em; font-style: italic; }
+  .context { background: #f8f9fa; border-radius: 8px; padding: 1em 1.2em; }
+  ul { padding-left: 1.3em; margin: 0.4em 0; }
+  .footer { margin-top: 3em; padding-top: 1em; border-top: 1px solid #ddd; color: #aaa; font-size: 0.8em; }
+</style>
+</head>
+<body>
+<h1>Phase 99 &mdash; Direction Dashboard (render-only, dashboard-first)</h1>
+<div class="meta">Direction gate &middot; generated 2026-06-22 &middot; render-only</div>
+
+<p class="objective">Make design directions legible at human pace — render the /dev-plan direction gate as a static, scannable HTML page so the maintainer reviews visually, then answers the gate in-session. Pillar 3 (the dashboard) of the rung-C contract-driven-delegation program, delivered first.</p>
+
+<div class="recommend"><span class="tag">Recommendation</span>Recommended the thin end-to-end slice (prove the whole contract -&gt; worker -&gt; fidelity-check -&gt; dashboard loop small). Maintainer chose Dashboard-first: build the render-only direction dashboard first; the contract-fidelity harness + downstream/local workers are later pillars.</div>
+
+<h2>Options</h2>
+<div class="option chosen-card"><div class="opt-head"><span class="opt-label">Dashboard-first</span><span class="badge chosen">Chosen</span></div><div class="opt-desc">Build the visual steering surface first; it backs onto the existing /dev-plan + specs, with the contract/worker/fidelity machinery riding on top in later phases. Solves the text-too-fast pain soonest.</div></div>
+<div class="option"><div class="opt-head"><span class="opt-label">Thin end-to-end slice</span><span class="badge rec">Recommended</span></div><div class="opt-desc">One real contract -&gt; a worker runs it -&gt; a deterministic fidelity check -&gt; a minimal dashboard. Proves the whole loop small and dogfoods the dashboard on real data.</div></div>
+<div class="option"><div class="opt-head"><span class="opt-label">Fidelity-spine-first</span></div><div class="opt-desc">Build the contract schema + deterministic acceptance-check first (CLI/text); dashboard stays text. Strongest if proving fidelity is the real unknown.</div></div>
+
+
+<h2>Assumptions (cost-sorted) &amp; positions</h2>
+<table>
+<tr><th>ID</th><th>Cost</th><th>Assumption</th><th>Position</th></tr>
+<tr><td class="aid">A1</td><td><span class="cost" style="color:#c0392b">high</span></td><td>A render-only dashboard relieves the throughput pain — the bottleneck is processing dense text, not the latency of deciding.<div class="resolution">Accepted at the gate; interactive click-to-decide deferred to a later pillar.</div></td><td><span class="pos" style="background:#2d7d2d">accept</span></td></tr>
+<tr><td class="aid">A2</td><td><span class="cost" style="color:#c0392b">high</span></td><td>A one-shot generated HTML file suffices over an always-on watching server.<div class="resolution">Down-scoped to the generator (a strict subset of a future watching server); live-server filed to Blockers with a re-trigger.</div></td><td><span class="pos" style="background:#b8860b">don&#x27;t-know</span></td></tr>
+<tr><td class="aid">A3</td><td><span class="cost" style="color:#b8860b">medium</span></td><td>The /dev-plan direction gate is the right first surface to render.<div class="resolution">Accepted; general project-state/roadmap is orienting context around the brief.</div></td><td><span class="pos" style="background:#2d7d2d">accept</span></td></tr>
+<tr><td class="aid">A4</td><td><span class="cost" style="color:#b8860b">medium</span></td><td>A small /dev-plan integration is in-scope — dev-plan emits a structured direction-brief at the gate.<div class="resolution">Accepted; down-scopes to render-existing-files-only if non-trivial.</div></td><td><span class="pos" style="background:#2d7d2d">accept</span></td></tr>
+
+</table>
+
+<h2>Orienting context</h2>
+<div class="context">
+  <p><strong>Active phase:</strong> Phase 99 — Direction Dashboard (render-only, dashboard-first)</p>
+  <p><strong>Open decisions:</strong></p>
+  <ul>
+  <li>A2: live-server vs one-shot generator — re-trigger if regenerate-by-hand becomes a friction bottleneck</li>
+<li>Pillars 1-2 (contract-fidelity harness, downstream/local workers) — later phases</li>
+
+  </ul>
+</div>
+
+<div class="footer">Generated by generate-direction.py &middot; render-only direction dashboard (Phase 99). Answer the gate in-session.</div>
+</body>
+</html>

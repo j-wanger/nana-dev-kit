@@ -40,6 +40,7 @@ test:
 	@bash "$(NANA_KIT_DIR)tests/test_assumption_ledger.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_manifest_freshness.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_scripts_smoke.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_direction_dashboard.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_eval_hermeticity.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_fixture_provenance.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_lifecycle_hooks_firing.sh"
@@ -56,3 +57,6 @@ report:
 
 workflow:
 	@python3 "$(NANA_KIT_DIR)scripts/generate-workflow.py"
+
+direction:
+	@python3 "$(NANA_KIT_DIR)scripts/generate-direction.py"
