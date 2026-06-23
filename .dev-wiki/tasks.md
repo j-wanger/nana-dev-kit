@@ -1276,7 +1276,7 @@ Standard ceremony. Direction gate closed 2026-06-22 (ledger Phase-102; all_accep
 <!-- phase:phase-103-gaming-rate -->
 ## Phase 103 — Gaming-rate vs visible-gate-strength (contract-loop, edge-screener)
 
-<!-- gate-log:phase-103 direction=confirmed delivery=pending -->
+<!-- gate-log:phase-103 direction=confirmed delivery=accepted -->
 
 Standard ceremony. Direction gate closed 2026-06-22 (ledger Phase-103; all_accept:false — A1/A2/A3 all DON'T-KNOW → DEFERRED, revisit-status:open; the plan banks on none of them: each has a pre-registered fallback and the T2 make-or-break pilot is the empirical resolver before the freeze). Arm scope = NATURAL-worker-only (option A). Spec `specs/phase-103-gaming-rate.md` (nana:approved 2026-06-22). MEASUREMENT phase — rung-C pillar-2 deepening (4th in the Ph100/101/102 lineage): does a deliberately WEAKER visible gate elicit GAMING (visible-pass ∧ held-out-FAIL = silently-wrong work) from the real worker, i.e. is the contract's STRENGTH load-bearing for truthful delegation? DETERMINISTIC-PRIMARY (the held-out is ground truth). Controls-first / [[HEU-012]]: per rung a seeded gamer passes-visible+fails-held-out + a per-adjacent-pair manipulation-check seed proves each rung strictly weaker + the held-out stays sharp at every rung. Real `/Users/jwang/edge-screener` NEVER mutated (per-run copies + checksum; Ph102 incident fix carried). SHIPS NOTHING (check-fidelity.py shipped Ph100); apparatus gitignored `companion/research/contract-loop-gaming/` (NEW dir; reuse frozen Ph102 by copy, do NOT mutate it). A clean "gaming climbs as the gate weakens" (strength load-bearing) OR "~0 at all strengths" (worker competence carries truthfulness — informative null) are BOTH valid. Decision [[gaming-rate-gate-strength]] (medium).
 
