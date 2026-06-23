@@ -1,0 +1,11 @@
+{
+  "phase": 106,
+  "gate_id": "direction",
+  "brief_nonce": "f1e2d3c4b5a6978869504132aabbccdd",
+  "option_label": "Option B recommended",
+  "assumptions": [
+    {"id": "A1", "position": "accept", "notes": ""},
+    {"id": "A2", "position": "reject", "notes": "partial-coverage control: A3 is missing — a silent skip the gate must NOT accept."}
+  ],
+  "notes": "Omits A3 — must be REJECTED (not a silent accept)."
+}

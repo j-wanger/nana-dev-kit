@@ -3,7 +3,7 @@
 
 NANA_KIT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-.PHONY: sync-rules test eval report workflow direction check-fidelity template audit
+.PHONY: sync-rules test eval report workflow direction dashboard check-fidelity template audit
 
 sync-rules:
 	@bash "$(NANA_KIT_DIR)scripts/sync-rules.sh" . .
@@ -41,6 +41,9 @@ test:
 	@bash "$(NANA_KIT_DIR)tests/test_manifest_freshness.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_scripts_smoke.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_direction_dashboard.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_dashboard.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_decision_server.sh"
+	@bash "$(NANA_KIT_DIR)tests/test_dashboard_roundtrip.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_contract_fidelity.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_eval_hermeticity.sh"
 	@bash "$(NANA_KIT_DIR)tests/test_fixture_provenance.sh"
@@ -61,6 +64,9 @@ workflow:
 
 direction:
 	@python3 "$(NANA_KIT_DIR)scripts/generate-direction.py"
+
+dashboard:
+	@python3 "$(NANA_KIT_DIR)scripts/generate-dashboard.py"
 
 # Deterministic contract fidelity-check (rung-C pillar-1).
 # Usage: make check-fidelity CONTRACT=path/to/contract.json WORKDIR=path/to/worker-output

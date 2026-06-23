@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Dashboard: Phase 103</title>
+<style>
+  body { font-family: -apple-system, system-ui, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.2em; color: #222; line-height: 1.55; }
+  h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; margin-bottom: 0.2em; }
+  h2 { color: #2c3e50; margin-top: 1.8em; font-size: 1.15em; text-transform: uppercase; letter-spacing: 0.04em; }
+  h3 { font-size: 1.0em; margin: 1.1em 0 0.3em; }
+  .meta { color: #888; font-size: 0.85em; margin-bottom: 1.5em; }
+  .muted { color: #888; font-style: italic; }
+  .warn { background: #fff7e6; border-left: 5px solid #b8860b; border-radius: 6px; padding: 0.7em 1em; color: #8a6d00; }
+  .status-section { margin: 0.6em 0; }
+  .status-body { color: #444; font-size: 0.92em; white-space: pre-wrap; }
+  .recommend { background: #eef6ee; border-left: 5px solid #2d7d2d; border-radius: 6px; padding: 1em 1.2em; margin: 1.2em 0; font-size: 1.05em; }
+  .recommend .tag { display: block; font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.08em; color: #2d7d2d; font-weight: 700; margin-bottom: 0.3em; }
+  .option { border: 1px solid #e2e2e2; border-radius: 8px; padding: 0.9em 1.1em; margin: 0.7em 0; background: #fafafa; }
+  .option.chosen-card { border-color: #2d7d2d; background: #f3faf3; }
+  .opt-head { display: flex; align-items: center; gap: 0.6em; margin-bottom: 0.3em; }
+  .opt-label { font-weight: 600; font-size: 1.02em; }
+  .opt-desc { color: #555; font-size: 0.95em; }
+  .badge { font-size: 0.68em; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.15em 0.55em; border-radius: 10px; font-weight: 700; color: #fff; }
+  .badge.rec { background: #2d7d2d; }
+  .badge.chosen { background: #2c3e50; }
+  table { width: 100%; border-collapse: collapse; margin: 0.8em 0; }
+  th, td { text-align: left; padding: 0.55em 0.7em; border-bottom: 1px solid #eee; vertical-align: top; }
+  th { background: #f0f0f0; font-weight: 600; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.03em; }
+  td.aid { font-weight: 700; color: #2c3e50; white-space: nowrap; }
+  .cost { font-weight: 700; text-transform: uppercase; font-size: 0.8em; }
+  .pos { display: inline-block; color: #fff; padding: 0.15em 0.6em; border-radius: 4px; font-size: 0.8em; font-weight: 700; white-space: nowrap; }
+  .resolution { color: #777; font-size: 0.88em; margin-top: 0.3em; font-style: italic; }
+  .decision-form fieldset { border: 1px solid #ddd; border-radius: 8px; margin: 0.8em 0; padding: 0.8em 1em; }
+  .decision-form legend { font-weight: 700; color: #2c3e50; padding: 0 0.4em; }
+  .opt-radio { display: block; padding: 0.2em 0; }
+  .assum { margin: 0.7em 0; padding-bottom: 0.6em; border-bottom: 1px solid #f0f0f0; }
+  .assum-pos { margin: 0.3em 0; }
+  .pos-radio { margin-right: 0.8em; white-space: nowrap; }
+  .assum-note, .notes-label textarea { width: 100%; box-sizing: border-box; margin-top: 0.3em; }
+  .submit-row { margin-top: 1em; display: flex; align-items: center; gap: 1em; }
+  .decision-form button { background: #2d7d2d; color: #fff; border: 0; border-radius: 6px; padding: 0.5em 1.2em; font-size: 1em; cursor: pointer; }
+  .result { font-weight: 700; }
+  .footer { margin-top: 3em; padding-top: 1em; border-top: 1px solid #ddd; color: #aaa; font-size: 0.8em; }
+</style>
+</head>
+<body>
+<h1>Phase 103 &mdash; Gaming-rate vs visible-gate-strength (contract-loop, edge-screener)</h1>
+<div class="meta">Project-state dashboard &middot; generated 2026-06-22 &middot; monitor (read-only, on-demand)</div>
+
+<h2>Project status</h2>
+<div class="status-section"><h3>Recommended Next Action</h3><div class="status-body">**Phase 106 — Project-State Dashboard + Act-from-Page Decision Gate: PLANNED 2026-06-23 (7 tasks; status active, ~0%).** Extend Ph99&#x27;s render-only direction dashboard into (1) an on-demand `make dashboard` PROJECT-STATE monitoring page and (2) an OPT-IN ACT-FROM-PAGE direction gate — the maintainer makes the phase decision ON a served dashboard that drives `/dev-plan`, pulling forward Ph99&#x27;s deferred A2 (served surface) + A3 (general project-state). The `file://` sandbox can&#x27;t write a repo file, so the gate spins up a tiny **127.0.0.1 EPHEMERAL server** that serves the live dashboard, accepts ONE `POST /decision`, atomically writes `.dev-wiki/decision-response.json`, and exits; the &hellip;</div></div>
+<div class="status-section"><h3>Active Phase</h3><div class="status-body">**[[phase-106-project-state-dashboard|Phase 106: Project-State Dashboard + Act-from-Page Decision Gate]]** (status: active — planned 2026-06-23, 0/7 tasks). Extend Ph99&#x27;s direction dashboard into an on-demand `make dashboard` project-state monitor + an OPT-IN act-from-page direction gate (decide ON a served dashboard that drives `/dev-plan`, via a 127.0.0.1 ephemeral server that writes `.dev-wiki/decision-response.json`, ingested through ONE deterministic validator). Safe-by-default (opt-in `.dev-wiki/act-from-page` marker; AskUserQuestion default + fail-open; server owns the single timeout). Three stdlib-only scripts; panes cut to a STATUS+DIRECTION floor; no daemon; ONE gitignored write; &hellip;</div></div>
+<div class="status-section"><h3>Blockers and Open Questions</h3><div class="status-body">- [planning: Phase-101 crux — is a discriminating harder corpus constructible?] The phase&#x27;s whole question is EMPIRICAL: can ≥3 edge-screener function-stub tasks be built where bare FAILS for an integrity reason, stably (≥2/N bare runs fail the SAME integrity assertion), without being floored on every arm? The mandatory calibration pilot (T2, BEFORE the freeze) answers it; a clean &quot;no in-band task → informative null&quot; is a VALID result, not a failure. Sub-questions the pilot also resolves: opencode-in-edge-screener feasibility (can opencode develop + run pytest in a per-run copy via the reused `.venv`? — A3), and whether each integrity invariant can be made truly unreachable (grep the whole &hellip;</div></div>
+
+
+<h2>Direction gate</h2>
+<div class="recommend"><span class="tag">Recommendation</span>Build a 2-3 rung gate ladder by reducing the visible gate&#x27;s COVERAGE of the lag invariant (Ph102 pins the lag at loci {0-&gt;1} and {2-&gt;3}; weaken to fewer loci, down to a shape-only rung that leaves the lag boundary unconstrained), hold the held-out (decision_lag_strict, every-position sweep, disjoint AAA) FIXED as the ruler, and run the NATURAL contract-loop worker x rung x n. Classify each held-out-fail run three ways {silent-wrong | special-cased | honest-flagged-wrong} and report the SILENT-WRONG rate (not the raw fail rate) as the delegation headline. Controls-first: a manipulation-check seed per adjacent rung pair proves each rung strictly weaker; the held-out re-verified sharp at every rung; leak-grep re-run after each weakening edit. Recommend NATURAL-worker-only (propensity = the gaming RATE you asked for); the seeded controls already prove gaming is gameable-in-principle, so an adversarial-prompt capability arm is secondary. A clean ~0-everywhere null (worker stays truthful regardless of gate) is a VALID, meaningful landing.</div>
+<h3>Options</h3>
+<div class="option chosen-card"><div class="opt-head"><span class="opt-label">A — Natural worker, gate ladder, three-way taxonomy</span><span class="badge rec">Recommended</span><span class="badge chosen">Chosen</span></div><div class="opt-desc">Real worker iterates naturally (not told to game) against each gate rung; measure the silent-wrong rate as the gate weakens. Three-way classification of held-out-fail runs {silent-wrong | special-cased | honest-flagged-wrong}; cold-pass bucketed apart. Headline = silent-wrong rate (the delegation-dangerous subset). Reuses the frozen Ph102 apparatus by copy. Cheapest faithful design; answers &#x27;does it game&#x27;.</div></div>
+<div class="option"><div class="opt-head"><span class="opt-label">B — Also add an adversarial-prompt arm (capability upper bound)</span></div><div class="opt-desc">On top of A, a second arm where the worker is TOLD to optimize the visible checks — measures whether opencode CAN game when it tries (capability), so a 0-natural-rate is interpretable as won&#x27;t-not-can&#x27;t. Doubles the worker runs for a secondary number; the seeded controls already establish gameability-in-principle.</div></div>
+<div class="option"><div class="opt-head"><span class="opt-label">C — Raw under-spec rate only (drop the taxonomy)</span></div><div class="opt-desc">If the silent-wrong vs honest-flagged-wrong split can&#x27;t be pinned mechanically, fall back to the blunt deterministic rate (visible-pass AND held-out-fail) as the headline. Simpler but conflates a safe calibrated hedge with a dangerous silent miss — loses the delegation-relevant distinction.</div></div>
+<h3>Assumptions (cost-sorted) &amp; positions</h3>
+<table>
+<tr><th>ID</th><th>Cost</th><th>Assumption</th><th>Position</th></tr>
+<tr><td class="aid">A1</td><td><span class="cost" style="color:#c0392b">high</span></td><td>ELICITABILITY (the T0 weakest): a deliberately weakened gate WILL produce &gt;=1 silent-wrong run from the real opencode/big-pickle worker. If FALSE (~0 gaming at every gate strength), the phase returns the informative NULL — the worker&#x27;s competence, not the gate, carries truthfulness on this task (delegation robust to gate looseness, rhyming with the amplifier-nulls). That null is a VALID landing, not a failed phase — but the campaign yields no gaming gradient. Position: do you accept running the campaign with the null as an acceptable outcome?<div class="resolution">DEFERRED (revisit-status: open). Maintainer correctly declines to pre-judge an empirical outcome. Resolved by the T2 make-or-break calibration pilot BEFORE the freeze; the plan does NOT bank on it — if false, the pre-registered informative null stands and the maintainer adjudicates its acceptability at the DELIVERY gate.</div></td><td><span class="pos" style="background:#b8860b">don&#x27;t-know</span></td></tr>
+<tr><td class="aid">A2</td><td><span class="cost" style="color:#c0392b">high</span></td><td>REALISTIC WEAK GATE: a weak-but-plausible gate — one a human might actually write (fewer example loci pinned), not an obvious strawman — is constructible along the lag-coverage axis. If FALSE (the only &#x27;weak&#x27; gates are absurd contracts nobody would write), a gaming result wouldn&#x27;t transfer to realistic delegation and the claim narrows to &#x27;the constructed weak gate&#x27;. This is the realism load on the whole finding.<div class="resolution">DEFERRED (revisit-status: open). Realism judged concretely when the actual rungs are built in T1 (a one-example-locus gate is a plausible under-specified contract). The plan does NOT bank on it — if false, the verdict narrows the claim to &#x27;the constructed weak gate&#x27; + flags the realism limit regardless.</div></td><td><span class="pos" style="background:#b8860b">don&#x27;t-know</span></td></tr>
+<tr><td class="aid">A3</td><td><span class="cost" style="color:#b8860b">medium</span></td><td>SILENT-WRONG IS SEPARABLE: silent-wrong vs honest-flagged-wrong is operationalizable mechanically from the worker transcript / converged code (a pinned marker on the visibly-UNCONSTRAINED locus, in the vocabulary the worker actually saw — NOT held-out names, which the leak guard guarantees absent). If FALSE (too ambiguous to pin), the headline degrades to the raw under-spec rate (option C), conflating a safe hedge with a dangerous silent miss.<div class="resolution">DEFERRED (revisit-status: open). The T2 pilot tests separability on real transcripts. The plan does NOT bank on it — if false, the headline degrades gracefully to the raw under-spec rate (visible-pass AND held-out-fail), taxonomy descriptive-only.</div></td><td><span class="pos" style="background:#b8860b">don&#x27;t-know</span></td></tr>
+</table>
+
+
+<div class="footer">Generated by generate-dashboard.py &middot; project-state dashboard (Phase 106). Render-only monitor; run a /dev-plan gate to act.</div>
+</body>
+</html>

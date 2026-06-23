@@ -1,0 +1,20 @@
+{
+  "phase": 106,
+  "phase_name": "Project-State Dashboard Test Fixture",
+  "generated": "2026-06-23",
+  "objective": "Test fixture objective for the dashboard generator and decision-server roundtrip.",
+  "recommendation": "Pick Option B for the test — it is the recommended slice.",
+  "nonce": "f1e2d3c4b5a6978869504132aabbccdd",
+  "gate_id": "direction",
+  "options": [
+    {"label": "Option A bare", "description": "The bare baseline option.", "recommended": false},
+    {"label": "Option B recommended", "description": "The recommended option for the fixture.", "recommended": true},
+    {"label": "Option C alternative", "description": "An alternative option.", "recommended": false}
+  ],
+  "assumptions": [
+    {"id": "A1", "cost": "high", "text": "The first load-bearing fixture assumption."},
+    {"id": "A2", "cost": "medium", "text": "The second fixture assumption."},
+    {"id": "A3", "cost": "low", "text": "The third fixture assumption."}
+  ],
+  "context": {"active_phase": "106 - Project-State Dashboard Test Fixture", "open_decisions": ["a test decision"]}
+}

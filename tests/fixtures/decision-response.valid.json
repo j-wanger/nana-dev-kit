@@ -1,0 +1,12 @@
+{
+  "phase": 106,
+  "gate_id": "direction",
+  "brief_nonce": "f1e2d3c4b5a6978869504132aabbccdd",
+  "option_label": "Option B recommended",
+  "assumptions": [
+    {"id": "A1", "position": "accept", "notes": ""},
+    {"id": "A2", "position": "reject", "notes": "I disagree because the fixture says so."},
+    {"id": "A3", "position": "don't-know", "notes": ""}
+  ],
+  "notes": "Going with Option B for the fixture."
+}

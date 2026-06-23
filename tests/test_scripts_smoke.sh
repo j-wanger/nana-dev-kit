@@ -60,6 +60,15 @@ else
   test_fail "generate-workflow.py failed (ec=$EC) or no HTML output"
 fi
 
+# ---- generate-dashboard.py: produces its HTML artifact (Phase 106, Makefile-sanctioned generator) ----
+test_start "generate-dashboard.py: exits 0 and writes docs/dashboard.html with HTML content"
+EC=0; python3 "$REPO_ROOT/scripts/generate-dashboard.py" >/dev/null 2>&1 || EC=$?
+if [ "$EC" = "0" ] && [ -f "$REPO_ROOT/docs/dashboard.html" ] && grep -qi '<html' "$REPO_ROOT/docs/dashboard.html"; then
+  test_pass
+else
+  test_fail "generate-dashboard.py failed (ec=$EC) or no HTML output"
+fi
+
 # ---- harness-audit.sh: wired via `make audit` (Phase 83) — emits a per-hook utilization report ----
 test_start "harness-audit: runs and emits USED/LATENT/UNCERTAIN utilization lines"
 T=$(mktemp -d)

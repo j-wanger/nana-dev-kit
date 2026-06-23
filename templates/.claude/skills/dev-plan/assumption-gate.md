@@ -59,6 +59,14 @@ step. The maintainer confirms direction by positioning, not by clicking yes.
 load-bearing assumptions surfaced" as an explicit item the maintainer must confirm (a buried assumption is
 most dangerous exactly when the agent claims there are none).
 
+**Channel (Phase 106 — opt-in):** positions are taken via AskUserQuestion by default. When
+`.dev-wiki/act-from-page` exists, the same positions may instead arrive from the served dashboard —
+ingested from `.dev-wiki/decision-response.json` through `scripts/validate-decision-response.py` (the
+deterministic boundary validator). The channel only changes *how the positions are collected*: the
+required outcome, the Resolution handling, the All-accept rule, and the Ledger row (the gate's sole
+firing evidence) are IDENTICAL in both channels, and the server path falls open to AskUserQuestion on
+any failure. See `direction-brief.md` → "Act-from-page channel".
+
 ## Resolution (before the gate closes)
 
 - **reject** → the maintainer does not believe the assumption holds. Revise the approach so it does not

@@ -1,0 +1,12 @@
+{
+  "phase": 106,
+  "gate_id": "direction",
+  "brief_nonce": "f1e2d3c4b5a6978869504132aabbccdd",
+  "option_label": "Option Z does not exist",
+  "assumptions": [
+    {"id": "A1", "position": "accept", "notes": ""},
+    {"id": "A2", "position": "accept", "notes": ""},
+    {"id": "A3", "position": "accept", "notes": ""}
+  ],
+  "notes": "option_label is not one of the brief options — must be REJECTED."
+}

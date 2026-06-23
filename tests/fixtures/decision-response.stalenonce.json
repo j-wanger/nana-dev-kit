@@ -1,0 +1,12 @@
+{
+  "phase": 106,
+  "gate_id": "direction",
+  "brief_nonce": "00000000000000000000000000000000",
+  "option_label": "Option B recommended",
+  "assumptions": [
+    {"id": "A1", "position": "accept", "notes": ""},
+    {"id": "A2", "position": "reject", "notes": "stale-nonce control: this response is for a different/old brief."},
+    {"id": "A3", "position": "don't-know", "notes": ""}
+  ],
+  "notes": "Stale nonce — must be REJECTED."
+}

@@ -233,6 +233,8 @@ Do NOT write any implementation code until the gate closes: a position taken on 
 
 All-accept is allowed but never silent — warn + track `all_accept: true` + restate how each accepted assumption shapes the approach (see the companion). **Maximum 3 revision rounds** on rejects; after 3, proceed with the best version and note unresolved concerns in the phase article.
 
+**Act-from-page (Phase 106 — opt-in):** when `.dev-wiki/act-from-page` exists, the same positions may instead be collected from the served dashboard (a 127.0.0.1 ephemeral `scripts/decision-server.py`, ingested via `scripts/validate-decision-response.py`) — an alternate INPUT channel for the identical gate; see `direction-brief.md` → "Act-from-page channel". The ledger row stays the sole firing evidence and the path falls open to AskUserQuestion on any failure (absence of the marker = today's AskUserQuestion path, server never spawned).
+
 ### Step 14: Draft Tasks and Review Plan Quality *(Lite: skip — merge into Step 13)*
 
 Read `~/.claude/skills/dev-plan/plan-review-companion.md` for the full protocol: draft tasks, dispatch plan reviewer subagent, handle verdict. This step is **agent-internal** — incorporate reviewer findings and proceed to Step 15 without blocking on user approval. The direction gate (Step 13) already confirmed the approach.

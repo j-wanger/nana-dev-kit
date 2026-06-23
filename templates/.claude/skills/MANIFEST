@@ -16,13 +16,13 @@ a91ebdae86f0742d7fe84a48807f3378  templates/.claude/skills/dev-debrief/reviewer-
 f260f68027309c17320ab4c03730137a  templates/.claude/skills/dev-init/scaffold-claude-md.md
 ad1d610e7bb6447b11b25a83980c221c  templates/.claude/skills/dev-init/templates/AGENTS.md
 a6e08c453421b01f16d2272685e0dbce  templates/.claude/skills/dev-init/templates/project-CLAUDE.md
-a42fdbac96d8ba09390f6bff0007e07b  templates/.claude/skills/dev-plan/SKILL.md
+84a6d7575829c8a5726988b9e252020e  templates/.claude/skills/dev-plan/SKILL.md
 6885f7ad0d5fd5f6858a3a1050de0466  templates/.claude/skills/dev-plan/approach-reviewer-prompt.md
 92d09542be4996e8b18d70db681ca8ad  templates/.claude/skills/dev-plan/artifact-writer-prompt.md
 ca0c150fa64c56dd728f664ceaee1e3d  templates/.claude/skills/dev-plan/assumption-gate-example.md
-0a37d5a700d0eeb555f22b87cafe30c6  templates/.claude/skills/dev-plan/assumption-gate.md
+8b6b53dd04017e59b31f6693e597b119  templates/.claude/skills/dev-plan/assumption-gate.md
 e433a2c48ce8c294413724249046ed7f  templates/.claude/skills/dev-plan/compaction-anchors-spec.md
-e10d0a7c61e98ed87dd784a42c1f6d61  templates/.claude/skills/dev-plan/direction-brief.md
+a4ae03d5ac7695633ad6114ec82393e2  templates/.claude/skills/dev-plan/direction-brief.md
 494c4932376aae8417d4315c41db2c14  templates/.claude/skills/dev-plan/implementation-guide.md
 0292ee0ac5649b100f65c8a953292f50  templates/.claude/skills/dev-plan/iterative-retrieval-spec.md
 bf7883997ac80b676ab94a473b8db11c  templates/.claude/skills/dev-plan/memory-bridge.md

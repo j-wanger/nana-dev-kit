@@ -1,0 +1,16 @@
+{
+  "phase": 106,
+  "phase_name": "Legacy Brief Without Nonce",
+  "generated": "2026-06-23",
+  "objective": "A legacy direction brief written before nonce stamping — must still render and fall open.",
+  "recommendation": "Backward-compatibility fixture: no nonce, no gate_id.",
+  "options": [
+    {"label": "Option A bare", "description": "The bare baseline option.", "recommended": false},
+    {"label": "Option B recommended", "description": "The recommended option.", "recommended": true}
+  ],
+  "assumptions": [
+    {"id": "A1", "cost": "high", "text": "A legacy assumption."},
+    {"id": "A2", "cost": "low", "text": "Another legacy assumption."}
+  ],
+  "context": {"active_phase": "legacy", "open_decisions": []}
+}

@@ -1,0 +1,12 @@
+{
+  "phase": 106,
+  "gate_id": "direction",
+  "brief_nonce": "f1e2d3c4b5a6978869504132aabbccdd",
+  "option_label": "Option B recommended",
+  "assumptions": [
+    {"id": "A1", "position": "accept", "notes": ""},
+    {"id": "A2", "position": "reject", "notes": ""},
+    {"id": "A3", "position": "unknown", "notes": "bad-position control: 'unknown' is not a valid gate position — the silent-non-position the gate exists to prevent."}
+  ],
+  "notes": "A3 position 'unknown' is invalid — must be REJECTED."
+}
