@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 98</title>
+<title>Delivery Report: Phase 103</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,53 +21,60 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 98 &mdash; Phase 98</h1>
+<h1>Delivery Report: Phase 103 &mdash; Phase 103</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">3/3</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">7</div><div class="label">Files Changed</div></div>
-  <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (51 passed)</div></div>
+  <div class="card"><div class="num">5/5</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">10</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (52 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">50/50</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+57</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-24</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">4</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">22:53</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+133</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-105</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">6</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">21:10</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>T1 Freeze the watch-charter (the frozen instrument, anti-retrofit): controls-first verify `companion/` still ignored ...</td></tr>
-<tr><td>&#x2705;</td><td>T2 Controls-first fast-scan detector + seeded tripwires (HEU-012 anti-dormancy): build `companion/research/watch/run-...</td></tr>
-<tr><td>&#x2705;</td><td>T3 Two-speed wiring + scheduling + close-out (anti-dormancy; don't-re-run-now): do NOT run a real sweep now (Ph97 rea...</td></tr>
+<tr><td>&#x2705;</td><td>T1 Gate-ladder apparatus + controls-first (the instrument): RED — a controls-first self-test fails (no `validate_cont...</td></tr>
+<tr><td>&#x2705;</td><td>T2 Calibration pilot BEFORE freeze (the make-or-break): GREEN — run the NATURAL worker (contract-loop arm) on each ga...</td></tr>
+<tr><td>&#x2705;</td><td>T3 **[SKIPPED — make-or-break informative null at T2 (cold-pass-dominated weakest rung, loop-gaming 0/6); pre-registe...</td></tr>
+<tr><td>&#x2705;</td><td>T4 **[SKIPPED — make-or-break informative null at T2; pre-registered "do NOT force a campaign"; no scored campaign ru...</td></tr>
+<tr><td>&#x2705;</td><td>T5 Mechanical verdict + close-out: GREEN — run `analyze-gaming.py` on results → `verdict.md` (per-rung under-spec + s...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Phase 98: Frontier Watch (rung-B) — Two-Speed Tripwire Watch</td><td>high</td></tr>
-<tr><td>Frontier Positioning Sweep — External Arm of the Shrink/Direction Decision (Phase 97)</td><td>high</td></tr>
-<tr><td>Post-Phase-96 hook hardening — per-session memory anchor, precise rm-block, content-currency drift</td><td>high</td></tr>
-<tr><td>Consumer Re-sync Rollout — consolidate-to-local + live --update across all 7 consumers</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Phase 103: Gaming-rate vs visible-gate-strength (rung-C pillar-2 — is the contract's STRENGTH load-bearing for truthful delegation?)</td><td>high</td></tr>
+<tr><td>Phase 102: contract-driven downstream-worker LOOP (rung-C pillar 2 — does feedback recover the Ph101 floor, and does iteration breed gaming?)</td><td>high</td></tr>
+<tr><td>Phase 101: harder-corpus contract screen on edge-screener (test the avenue Phase-100's ceiling-saturated null routed forward)</td><td>high</td></tr>
+<tr><td>Phase 100: reframe rung-C pillar-1 from build-the-spine to a contract-vs-spec fidelity SCREEN</td><td>high</td></tr>
+<tr><td>Post-Phase-99: check-tests-were-run hardening (adversarial-workflow-found false-blocks)</td><td>high</td></tr>
+<tr><td>Phase 99: Direction Dashboard — render-only visual steering surface for the /dev-plan direction gate</td><td>high</td></tr>
 </table>
 
 <h2>Files Changed</h2>
 <ul>
 <li><code>.claude/rules/active-phase.md</code></li>
-<li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
 <li><code>.dev-wiki/assumption-ledger.md</code></li>
+<li><code>.dev-wiki/direction-brief.json</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
+<li><code>docs/direction.html</code></li>
+<li><code>docs/report.html</code></li>
+<li><code>docs/workflow.html</code></li>
 
 
 </ul>
 
 <h2>Test Results</h2>
-<p><span class="status" style="background:#2d7d2d">PASS</span> 51 passed, 2 failed</p>
+<p><span class="status" style="background:#2d7d2d">PASS</span> 52 passed, 2 failed</p>
 <pre>  [check-drift --consumer] a strayed GLOBAL kit hook (context-size-check) is NOT flagged as cut OK
 
 install-update-harness: 55 run, 55 passed, 0 failed
@@ -79,7 +86,7 @@ All tests passed.</pre>
 <pre>Score: 50/50 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-06-21 22:53:38 by generate-delivery-report.py
+  Generated 2026-06-22 21:10:38 by generate-delivery-report.py
 </div>
 </body>
 </html>
