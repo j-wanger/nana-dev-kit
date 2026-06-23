@@ -216,3 +216,5 @@ eval/amplifier/skill-screen/runs/ctrl-recoverable/3.py
 [pruned 2026-06-11]   source: [[decision:memory-supersede-harness-layer]] + [[wiki:memory-mcp-api]] | activated: 2026-05-23
 [pruned 2026-06-11] - [uses: 1] Crash recovery dual condition: commits newer than _CURRENT_STATE.md mtime AND no debrief commit in recent history. Advisory only (exit 0). Guarded by test -f .dev-wiki/_CURRENT_STATE.md. Case-insensitive Debrief grep on git log.
 [pruned 2026-06-11]   source: [[decision:crash-recovery-dual-condition]] | activated: 2026-05-23
+[pruned 2026-06-23] - [uses: 1] Memory-bridge auto-supersede: search existing bridge-decisions for same phase-slug, store new, memory_forget highest-scoring conflict with superseded_by. 10-call cap per bridge run, 1 supersede per decision max. Ceiling 500.
+[pruned 2026-06-23]   source: [[decision:memory-supersede-harness-layer]] | activated: 2026-05-23

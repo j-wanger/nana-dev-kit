@@ -40,12 +40,12 @@
 <body>
 
 <h1>Nana Dev Kit</h1>
-<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-06-22 07:57</p>
+<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-06-23 09:51</p>
 
 <div class="stats">
-  <div class="stat"><div class="num">1074</div><div class="label">Files</div></div>
-  <div class="stat"><div class="num">182,824</div><div class="label">Lines of Code</div></div>
-  <div class="stat"><div class="num">599</div><div class="label">Automated Tests</div></div>
+  <div class="stat"><div class="num">1080</div><div class="label">Files</div></div>
+  <div class="stat"><div class="num">183,545</div><div class="label">Lines of Code</div></div>
+  <div class="stat"><div class="num">610</div><div class="label">Automated Tests</div></div>
   <div class="stat"><div class="num">7</div><div class="label">Harness Layers</div></div>
   <div class="stat"><div class="num">v0.5.0</div><div class="label">Latest Tag</div></div>
 </div>
@@ -134,11 +134,12 @@
 
 <h2>File Inventory</h2>
 <div class="category">
-  <h3>Core Scripts <span class="badge badge-green">13 files, 4,150 lines</span></h3>
+  <h3>Core Scripts <span class="badge badge-green">14 files, 4,268 lines</span></h3>
   <ul class="file-list">
-    <li><span>Makefile</span><span class='lines'>62</span></li>
+    <li><span>Makefile</span><span class='lines'>68</span></li>
     <li><span>install.sh</span><span class='lines'>659</span></li>
     <li><span>scripts/check-assumption-ledger.sh</span><span class='lines'>235</span></li>
+    <li><span>scripts/check-fidelity.py</span><span class='lines'>112</span></li>
     <li><span>scripts/check-install-drift.sh</span><span class='lines'>272</span></li>
     <li><span>scripts/eval-runner.sh</span><span class='lines'>345</span></li>
     <li><span>scripts/generate-delivery-report.py</span><span class='lines'>276</span></li>
@@ -152,7 +153,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Test Suite <span class="badge badge-green">38 files, 6,418 lines</span></h3>
+  <h3>Test Suite <span class="badge badge-green">39 files, 6,554 lines</span></h3>
   <ul class="file-list">
     <li><span>tests/fixtures/direction-brief.malformed.json</span><span class='lines'>5</span></li>
     <li><span>tests/fixtures/direction-brief.missingfield.json</span><span class='lines'>7</span></li>
@@ -165,9 +166,10 @@
     <li><span>tests/test_amplifier_emitter.sh</span><span class='lines'>89</span></li>
     <li><span>tests/test_assumption_ledger.sh</span><span class='lines'>178</span></li>
     <li><span>tests/test_audit_log.sh</span><span class='lines'>74</span></li>
-    <li><span>tests/test_check_tests_were_run.sh</span><span class='lines'>132</span></li>
+    <li><span>tests/test_check_tests_were_run.sh</span><span class='lines'>147</span></li>
     <li><span>tests/test_cognitive_readiness.sh</span><span class='lines'>50</span></li>
     <li><span>tests/test_companions.sh</span><span class='lines'>139</span></li>
+    <li><span>tests/test_contract_fidelity.sh</span><span class='lines'>121</span></li>
     <li><span>tests/test_direction_dashboard.sh</span><span class='lines'>78</span></li>
     <li><span>tests/test_enforce.sh</span><span class='lines'>172</span></li>
     <li><span>tests/test_enforce_assumption_gate.sh</span><span class='lines'>66</span></li>
@@ -1131,7 +1133,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Specs <span class="badge badge-green">85 files, 8,421 lines</span></h3>
+  <h3>Specs <span class="badge badge-green">89 files, 8,865 lines</span></h3>
   <ul class="file-list">
     <li><span>specs/cut-heuristic-machinery-self-dialogue.md</span><span class='lines'>79</span></li>
     <li><span>specs/domain-research-in-dev-plan.md</span><span class='lines'>81</span></li>
@@ -1140,6 +1142,10 @@
     <li><span>specs/phase-08-spec-skill.md</span><span class='lines'>113</span></li>
     <li><span>specs/phase-09-file-lifecycle-reference.md</span><span class='lines'>83</span></li>
     <li><span>specs/phase-10-memory-lifecycle-convergence.md</span><span class='lines'>81</span></li>
+    <li><span>specs/phase-100-contract-fidelity-screen.md</span><span class='lines'>90</span></li>
+    <li><span>specs/phase-101-harder-corpus-screen.md</span><span class='lines'>82</span></li>
+    <li><span>specs/phase-102-contract-loop.md</span><span class='lines'>84</span></li>
+    <li><span>specs/phase-103-gaming-rate.md</span><span class='lines'>188</span></li>
     <li><span>specs/phase-12-soul-enhancement-memory-harvest.md</span><span class='lines'>92</span></li>
     <li><span>specs/phase-13-final-polish-and-ship.md</span><span class='lines'>97</span></li>
     <li><span>specs/phase-14-adversarial-thinking-review.md</span><span class='lines'>75</span></li>
@@ -1221,19 +1227,19 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Other <span class="badge badge-green">57 files, 6,545 lines</span></h3>
+  <h3>Other <span class="badge badge-green">57 files, 6,568 lines</span></h3>
   <ul class="file-list">
-    <li><span>.claude/rules/active-phase.md</span><span class='lines'>13</span></li>
-    <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>203</span></li>
+    <li><span>.claude/rules/active-phase.md</span><span class='lines'>18</span></li>
+    <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>205</span></li>
     <li><span>.claude/settings.json.bak-phase88</span><span class='lines'>146</span></li>
     <li><span>benchmark/README.md</span><span class='lines'>108</span></li>
     <li><span>benchmark/longmemeval.py</span><span class='lines'>302</span></li>
-    <li><span>docs/delivery-report.html</span><span class='lines'>85</span></li>
-    <li><span>docs/direction.html</span><span class='lines'>72</span></li>
+    <li><span>docs/delivery-report.html</span><span class='lines'>92</span></li>
+    <li><span>docs/direction.html</span><span class='lines'>74</span></li>
     <li><span>docs/memory-knowledge-architecture.md</span><span class='lines'>611</span></li>
     <li><span>docs/nanaclaw-architecture.md</span><span class='lines'>722</span></li>
-    <li><span>docs/report.html</span><span class='lines'>1317</span></li>
-    <li><span>docs/workflow.html</span><span class='lines'>851</span></li>
+    <li><span>docs/report.html</span><span class='lines'>1323</span></li>
+    <li><span>docs/workflow.html</span><span class='lines'>852</span></li>
     <li><span>modules.json</span><span class='lines'>76</span></li>
     <li><span>patches/nanaclaw-sanitize-fts.patch</span><span class='lines'>23</span></li>
     <li><span>quarantine/README.md</span><span class='lines'>6</span></li>
@@ -1303,11 +1309,11 @@
 </table>
 
 <h2>Recent Git History</h2>
-<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">9cd4d6d Phase 99 delivery gate accepted + phase active→completed
-46473a7 Phase 99: Direction Dashboard (render-only) — render the /dev-plan direction gate as scannable HTML (rung-C pillar 3)
-e47da7a Phase 98 delivery gate accepted + phase active→completed
-fb82864 Phase 98: Frontier Watch (rung-B) — two-speed tripwire watch standing up the Ph97 rung-B charter
-315ad10 Phase 97 delivery gate accepted + phase active→completed</pre>
+<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">4525f30 Phase 104: Emerging-Agent-Tooling Landscape Survey (frontier pillar re-aimed) — DELIVERED + ACCEPTED
+fd505a1 Phase 103 delivery accepted — gate flipped (delivery=accepted)
+edc1f65 Phase 103: Gaming-rate vs visible-gate-strength — informative null + loop-forcing reframe
+9f8a6ee Phase 102 debrief: journal + session-journal + log (feedback recovers the floor)
+709ecf9 Phase 102 delivery accepted + phase active→completed (verdict: feedback recovers the floor)</pre>
 
 <footer>
   Generated by <code>scripts/generate-report.py</code> &mdash; run <code>make report</code> to regenerate
