@@ -26,6 +26,9 @@ FIX="$SCRIPT_DIR/fixtures"
 BRIEF="$FIX/dashboard-brief.valid.json"
 STATE="$FIX/dashboard-current-state.md"
 VALIDRESP="$FIX/decision-response.valid.json"
+# The served brief's phase — injected as --active-phase so the stale-gate guard (Phase 107) sees a
+# FRESH gate by construction (decoupled from the live active-phase.md, which advances each phase).
+BRIEFPHASE="$(python3 -c "import json; print(json.load(open('$BRIEF'))['phase'])")"
 
 # Portable self-watchdog (macOS has no GNU `timeout`): hard-kill this script if it overruns, so a
 # server-shutdown DEADLOCK surfaces as a failed run rather than a hang.
@@ -64,12 +67,12 @@ PY
 req()  { python3 "$CLIENT" "$@"; }
 code() { python3 "$CLIENT" "$@" | head -1; }
 
-boot() {  # boot <timeout-seconds> ; sets SCRATCH RESP URLFILE URL PID
+boot() {  # boot <timeout-seconds> [active-phase] ; sets SCRATCH RESP URLFILE URL PID
   SCRATCH="$(mktemp -d)"; mkdir -p "$SCRATCH/.dev-wiki"
   RESP="$SCRATCH/.dev-wiki/decision-response.json"
   URLFILE="$SCRATCH/.dev-wiki/.decision-server.url"
   python3 "$SERVER" --brief "$BRIEF" --state "$STATE" --response "$RESP" --timeout "$1" \
-      >/dev/null 2>"$SCRATCH/err.txt" &
+      --active-phase "${2:-$BRIEFPHASE}" >/dev/null 2>"$SCRATCH/err.txt" &
   PID=$!
   disown "$PID" 2>/dev/null  # suppress async "Terminated" job-control noise when we kill it
   local i=0
@@ -139,16 +142,18 @@ if [ "$ok" = "1" ]; then test_pass; else test_fail "valid POST did not produce a
 # already what S3 asserts). Keeping the listener up exposes the latch: correct code → 409, no latch
 # → 200 (mutation-checked). This requires its own in-process server, independent of the network one.
 test_start "S4lat: 2nd POST after an accepted decision → exactly 409 (single-accept latch)"
-c2lat="$(python3 - "$SERVER" "$BRIEF" "$STATE" "$VALIDRESP" <<'PY'
+c2lat="$(python3 - "$SERVER" "$BRIEF" "$STATE" "$VALIDRESP" "$BRIEFPHASE" <<'PY'
 import importlib.util, tempfile, os, sys, threading, http.client
 from urllib.parse import urlparse
-server, brief, state, validresp = sys.argv[1:5]
+server, brief, state, validresp, ap = sys.argv[1:6]
 spec = importlib.util.spec_from_file_location("ds", server)
 ds = importlib.util.module_from_spec(spec); spec.loader.exec_module(ds)
 ds.DecisionServer.shutdown_async = lambda self: None  # keep the listener up so the latch is reachable
 scratch = tempfile.mkdtemp(); os.makedirs(os.path.join(scratch, ".dev-wiki"), exist_ok=True)
 resp = os.path.join(scratch, ".dev-wiki", "decision-response.json")
-srv = ds.DecisionServer(brief, state, resp, 30)
+# Inject active-phase == the served brief phase so the stale-gate guard sees a fresh gate; without it
+# the latch test would pass for the wrong reason -- a stale 409 fired before the latch is reached.
+srv = ds.DecisionServer(brief, state, resp, 30, ap)
 threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.05}, daemon=True).start()
 u = urlparse(srv.url); host = "%s:%d" % (u.hostname, u.port)
 body = open(validresp, "rb").read()
@@ -177,6 +182,16 @@ ok=1
 kill -0 "$PID" 2>/dev/null && ok=0
 { [ -f "$RESP" ] && grep -q '"status"' "$RESP" && grep -q 'timeout' "$RESP"; } || ok=0
 if [ "$ok" = "1" ]; then test_pass; else test_fail "watchdog did not write a timeout sentinel + exit"; fi
+teardown
+
+# ---- S7: a STALE gate (served brief phase != active phase) → banner + NO form on GET, POST refused (Phase 107) ----
+boot 30 999   # active-phase 999 != the brief's phase => the served gate is stale
+test_start "S7a: GET / on a stale gate → served page shows the stale banner and NO <form>"
+out="$(req GET "$URL/")"
+if echo "$out" | grep -qi 'stale' && ! echo "$out" | grep -qi '<form'; then test_pass; else test_fail "stale gate must show a banner and no form"; fi
+test_start "S7b: POST a valid decision to a stale gate → non-2xx + NO write (don't drive the wrong phase)"
+c="$(code POST "$URL/decision" "$(cat "$VALIDRESP")" "$URL" "$HOSTHDR")"
+if [ "$c" != "200" ] && [ ! -f "$RESP" ]; then test_pass; else test_fail "stale gate accepted a decision (code=$c, wrote=$( [ -f "$RESP" ] && echo yes || echo no))"; fi
 teardown
 
 rm -f "$CLIENT"

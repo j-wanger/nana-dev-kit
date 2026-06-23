@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate a versioned HTML workflow breakdown of the Nana Dev Kit harness."""
 
+import html
 import json
 import subprocess
 from pathlib import Path
@@ -106,6 +107,64 @@ def get_ci_jobs():
     if current_job:
         jobs.append((current_job, steps))
     return jobs
+
+
+def _esc(s):
+    return html.escape(str(s))
+
+
+def render_fragments():
+    """Render the harness breakdown as cockpit-styled HTML fragments (Phase 107) — the Workflow tab of
+    the decisioning cockpit (generate-dashboard.py) composes these into its shared dark-console visual
+    system, rather than iframing the standalone page. Reuses the SAME data-gathering fns as the
+    standalone generate_html()/main() (get_version/get_hook_scripts/get_test_info/...), so the
+    standalone docs/workflow.html is byte-untouched. Fail-SOFT per section: a broken data source yields
+    an empty section, never an exception that blanks the tab. Emits the cockpit's classes (sec-head,
+    status-body, table, aid) so it inherits the cockpit theme — no workflow-specific CSS."""
+    def _safe(fn, default):
+        try:
+            return fn()
+        except Exception:
+            return default
+
+    version = _safe(get_version, "?")
+    hooks = _safe(get_hook_scripts, [])
+    tests = _safe(get_test_info, [])
+    templates = _safe(get_template_files, [])
+    precommit = _safe(get_precommit_hooks, [])
+    ci = _safe(get_ci_jobs, [])
+
+    out = ['<div class="workflow-native">']
+    out.append(
+        '<h3 class="sec-head">Harness</h3>'
+        f'<div class="status-body">nana-dev-kit <code>{_esc(version)}</code> &middot; '
+        f'{len(hooks)} hooks &middot; {len(tests)} test suites &middot; {len(templates)} template files</div>'
+    )
+    if hooks:
+        rows = "".join(
+            f'<tr><td class="aid">{_esc(name)}</td><td>{_esc(lines)}</td><td>{_esc(comment)}</td></tr>'
+            for (name, lines, comment, _content) in hooks
+        )
+        out.append('<h3 class="sec-head">Hooks</h3>'
+                   '<table><tr><th>Hook</th><th>Lines</th><th>Purpose</th></tr>'
+                   f'{rows}</table>')
+    if tests:
+        rows = "".join(
+            f'<tr><td class="aid">{_esc(name)}</td><td>{_esc(lines)}</td>'
+            f'<td>{_esc(asserts)}</td><td>{_esc(comment)}</td></tr>'
+            for (name, lines, asserts, comment) in tests
+        )
+        out.append('<h3 class="sec-head">Tests</h3>'
+                   '<table><tr><th>Suite</th><th>Lines</th><th>Asserts</th><th>Purpose</th></tr>'
+                   f'{rows}</table>')
+    if precommit or ci:
+        pc = ", ".join(_esc(h) for (h, _repo) in precommit) or "&mdash;"
+        jobs = ", ".join(_esc(j) for (j, _steps) in ci) or "&mdash;"
+        out.append('<h3 class="sec-head">CI &amp; pre-commit</h3>'
+                   f'<div class="status-body"><strong>pre-commit:</strong> {pc}<br>'
+                   f'<strong>CI jobs:</strong> {jobs}</div>')
+    out.append("</div>")
+    return "\n".join(out)
 
 
 CSS = """:root { --bg: #0d1117; --fg: #c9d1d9; --accent: #58a6ff; --border: #30363d;

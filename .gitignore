@@ -13,10 +13,11 @@ benchmark/.venv/
 .dev-wiki/.stale-queue
 .dev-wiki/enforcement.log
 .dev-wiki/enforcement.log.*
-# Phase 106 act-from-page decision channel — transient runtime artifacts, never committed
+# Phase 106/107 decision-cockpit channel — transient runtime artifacts + opt-in/opt-out markers, never committed
 .dev-wiki/decision-response.json
 .dev-wiki/.decision-server.url
 .dev-wiki/act-from-page
+.dev-wiki/no-act-from-page
 .claude/.context-warned
 .claude/.memory-consulted
 .claude/scheduled_tasks.lock

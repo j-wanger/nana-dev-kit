@@ -3,72 +3,158 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Project Dashboard: Phase 103</title>
+<title>Cockpit: Phase 103</title>
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.2em; color: #222; line-height: 1.55; }
-  h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; margin-bottom: 0.2em; }
-  h2 { color: #2c3e50; margin-top: 1.8em; font-size: 1.15em; text-transform: uppercase; letter-spacing: 0.04em; }
-  h3 { font-size: 1.0em; margin: 1.1em 0 0.3em; }
-  .meta { color: #888; font-size: 0.85em; margin-bottom: 1.5em; }
-  .muted { color: #888; font-style: italic; }
-  .warn { background: #fff7e6; border-left: 5px solid #b8860b; border-radius: 6px; padding: 0.7em 1em; color: #8a6d00; }
-  .status-section { margin: 0.6em 0; }
-  .status-body { color: #444; font-size: 0.92em; white-space: pre-wrap; }
-  .recommend { background: #eef6ee; border-left: 5px solid #2d7d2d; border-radius: 6px; padding: 1em 1.2em; margin: 1.2em 0; font-size: 1.05em; }
-  .recommend .tag { display: block; font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.08em; color: #2d7d2d; font-weight: 700; margin-bottom: 0.3em; }
-  .option { border: 1px solid #e2e2e2; border-radius: 8px; padding: 0.9em 1.1em; margin: 0.7em 0; background: #fafafa; }
-  .option.chosen-card { border-color: #2d7d2d; background: #f3faf3; }
-  .opt-head { display: flex; align-items: center; gap: 0.6em; margin-bottom: 0.3em; }
-  .opt-label { font-weight: 600; font-size: 1.02em; }
-  .opt-desc { color: #555; font-size: 0.95em; }
-  .badge { font-size: 0.68em; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.15em 0.55em; border-radius: 10px; font-weight: 700; color: #fff; }
-  .badge.rec { background: #2d7d2d; }
-  .badge.chosen { background: #2c3e50; }
-  table { width: 100%; border-collapse: collapse; margin: 0.8em 0; }
-  th, td { text-align: left; padding: 0.55em 0.7em; border-bottom: 1px solid #eee; vertical-align: top; }
-  th { background: #f0f0f0; font-weight: 600; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.03em; }
-  td.aid { font-weight: 700; color: #2c3e50; white-space: nowrap; }
-  .cost { font-weight: 700; text-transform: uppercase; font-size: 0.8em; }
-  .pos { display: inline-block; color: #fff; padding: 0.15em 0.6em; border-radius: 4px; font-size: 0.8em; font-weight: 700; white-space: nowrap; }
-  .resolution { color: #777; font-size: 0.88em; margin-top: 0.3em; font-style: italic; }
-  .decision-form fieldset { border: 1px solid #ddd; border-radius: 8px; margin: 0.8em 0; padding: 0.8em 1em; }
-  .decision-form legend { font-weight: 700; color: #2c3e50; padding: 0 0.4em; }
-  .opt-radio { display: block; padding: 0.2em 0; }
-  .assum { margin: 0.7em 0; padding-bottom: 0.6em; border-bottom: 1px solid #f0f0f0; }
-  .assum-pos { margin: 0.3em 0; }
-  .pos-radio { margin-right: 0.8em; white-space: nowrap; }
-  .assum-note, .notes-label textarea { width: 100%; box-sizing: border-box; margin-top: 0.3em; }
+  :root {
+    --bg: #0f1419; --surface: #161c24; --surface-2: #1b232d; --line: #2a3441;
+    --ink: #e6edf3; --ink-dim: #9aa7b6; --ink-faint: #6b7888;
+    --go: #3fb950; --go-dim: #2ea043; --caution: #d29922; --danger: #f85149;
+    --mono: "SF Mono", "JetBrains Mono", "Fira Mono", ui-monospace, Menlo, Consolas, monospace;
+    --sans: -apple-system, "Segoe UI", system-ui, Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.6; font-size: 15px; }
+  code { font-family: var(--mono); font-size: 0.9em; background: var(--surface-2); padding: 0.1em 0.35em; border-radius: 4px; }
+  .topbar { position: sticky; top: 0; z-index: 5; background: rgba(15,20,25,0.92); backdrop-filter: blur(6px);
+            border-bottom: 1px solid var(--line); padding: 0.9em 1.4em 0; }
+  .ident { display: flex; align-items: baseline; gap: 0.7em; flex-wrap: wrap; }
+  .phase-num { font-family: var(--mono); font-weight: 700; font-size: 1.05em; color: var(--go);
+               letter-spacing: 0.02em; }
+  .phase-name { font-size: 1.15em; font-weight: 600; }
+  .mode { font-family: var(--mono); font-size: 0.74em; color: var(--ink-faint); text-transform: uppercase;
+          letter-spacing: 0.08em; margin: 0.25em 0 0.7em; }
+  .tabs { display: flex; gap: 0.2em; margin-top: 0.2em; }
+  .tab { font-family: var(--mono); font-size: 0.82em; letter-spacing: 0.04em; text-transform: uppercase;
+         color: var(--ink-dim); background: none; border: 0; border-bottom: 2px solid transparent;
+         padding: 0.55em 1.1em; cursor: pointer; transition: color 0.12s, border-color 0.12s; }
+  .tab:hover { color: var(--ink); }
+  .tab.active { color: var(--ink); border-bottom-color: var(--go); }
+  main { max-width: 880px; margin: 0 auto; padding: 1.8em 1.4em 4em; }
+  .panel { display: none; }
+  .panel.active { display: block; animation: fade 0.18s ease both; }
+  @keyframes fade { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+  .sec-head { font-family: var(--mono); font-size: 0.82em; text-transform: uppercase; letter-spacing: 0.06em;
+              color: var(--ink-dim); margin: 1.8em 0 0.7em; font-weight: 600; }
+  .sec-head .sub { text-transform: none; letter-spacing: 0; color: var(--ink-faint); font-weight: 400; }
+  h3 { font-size: 1em; }
+  .muted { color: var(--ink-faint); font-style: italic; }
+  .warn { background: #2a230f; border-left: 4px solid var(--caution); border-radius: 8px; padding: 0.8em 1.1em;
+          color: #f0d38a; }
+  .banner { border-radius: 10px; padding: 1em 1.2em; margin: 0 0 1.3em; font-size: 0.96em; }
+  .banner.danger { background: #2d1314; border: 1px solid var(--danger); color: #ffb4ad; }
+  .banner-tag { display: block; font-family: var(--mono); font-size: 0.7em; text-transform: uppercase;
+                letter-spacing: 0.08em; color: var(--danger); font-weight: 700; margin-bottom: 0.25em; }
+  .recommend { background: linear-gradient(180deg, #12251a, #0f1f17); border: 1px solid #1f5132;
+               border-left: 4px solid var(--go); border-radius: 10px; padding: 1.1em 1.3em; margin: 0.3em 0 0.5em;
+               font-size: 1.05em; }
+  .recommend .tag { display: block; font-family: var(--mono); font-size: 0.7em; text-transform: uppercase;
+                    letter-spacing: 0.09em; color: var(--go); font-weight: 700; margin-bottom: 0.35em; }
+  .status-section { margin: 0.9em 0; }
+  .status-body { color: var(--ink-dim); font-size: 0.92em; white-space: pre-wrap; background: var(--surface);
+                 border: 1px solid var(--line); border-radius: 8px; padding: 0.7em 0.9em; }
+  .option { border: 1px solid var(--line); border-radius: 10px; padding: 1em 1.2em; margin: 0.8em 0;
+            background: var(--surface); }
+  .option.chosen-card { border-color: var(--go); }
+  .opt-head { display: flex; align-items: center; gap: 0.6em; margin-bottom: 0.35em; flex-wrap: wrap; }
+  .opt-label { font-family: var(--mono); font-weight: 700; font-size: 0.98em; letter-spacing: 0.01em; }
+  .opt-desc { color: var(--ink-dim); font-size: 0.95em; }
+  .opt-reasoning, .opt-consequences { font-size: 0.93em; margin-top: 0.7em; padding: 0.55em 0.8em;
+            border-radius: 7px; background: var(--surface-2); border-left: 3px solid var(--line); }
+  .opt-reasoning { border-left-color: var(--go); }
+  .opt-consequences { border-left-color: var(--caution); }
+  .opt-tag { display: block; font-family: var(--mono); font-size: 0.66em; text-transform: uppercase;
+             letter-spacing: 0.07em; font-weight: 700; margin-bottom: 0.2em; opacity: 0.85; }
+  .opt-reasoning .opt-tag { color: var(--go); }
+  .opt-consequences .opt-tag { color: var(--caution); }
+  .badge { font-family: var(--mono); font-size: 0.64em; text-transform: uppercase; letter-spacing: 0.05em;
+           padding: 0.2em 0.55em; border-radius: 20px; font-weight: 700; }
+  .badge.rec { background: #12351f; color: var(--go); border: 1px solid #1f5132; }
+  .badge.chosen { background: #1b2733; color: #9ecbff; border: 1px solid #2b4a6b; }
+  table { width: 100%; border-collapse: collapse; margin: 0.6em 0; font-size: 0.92em; }
+  th, td { text-align: left; padding: 0.55em 0.7em; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: var(--mono); color: var(--ink-dim); font-size: 0.74em; text-transform: uppercase;
+       letter-spacing: 0.05em; font-weight: 600; }
+  td.aid { font-family: var(--mono); font-weight: 700; color: var(--ink); white-space: nowrap; }
+  .cost { font-family: var(--mono); font-weight: 700; text-transform: uppercase; font-size: 0.78em; }
+  .pos { display: inline-block; color: #fff; padding: 0.15em 0.6em; border-radius: 5px; font-size: 0.78em;
+         font-weight: 700; white-space: nowrap; font-family: var(--mono); }
+  .resolution { color: var(--ink-faint); font-size: 0.88em; margin-top: 0.3em; font-style: italic; }
+  .decision-form fieldset { border: 1px solid var(--line); border-radius: 10px; margin: 0.9em 0; padding: 0.9em 1.1em;
+            background: var(--surface); }
+  .decision-form legend { font-family: var(--mono); font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.05em;
+            color: var(--ink-dim); padding: 0 0.5em; }
+  .opt-radio { display: block; padding: 0.25em 0; }
+  .assum { margin: 0.7em 0; padding-bottom: 0.6em; border-bottom: 1px solid var(--line); }
+  .assum-pos { margin: 0.35em 0; }
+  .pos-radio { margin-right: 0.9em; white-space: nowrap; font-family: var(--mono); font-size: 0.86em; }
+  .assum-note, .notes-label textarea { width: 100%; box-sizing: border-box; margin-top: 0.3em; background: var(--bg);
+            color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 0.45em 0.6em; font-family: inherit; }
+  .notes-label { display: block; margin: 0.5em 0; color: var(--ink-dim); font-size: 0.9em; }
   .submit-row { margin-top: 1em; display: flex; align-items: center; gap: 1em; }
-  .decision-form button { background: #2d7d2d; color: #fff; border: 0; border-radius: 6px; padding: 0.5em 1.2em; font-size: 1em; cursor: pointer; }
-  .result { font-weight: 700; }
-  .footer { margin-top: 3em; padding-top: 1em; border-top: 1px solid #ddd; color: #aaa; font-size: 0.8em; }
+  .decision-form button { font-family: var(--mono); background: var(--go-dim); color: #04130a; border: 0;
+            border-radius: 8px; padding: 0.6em 1.4em; font-size: 0.9em; font-weight: 700; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 0.04em; transition: background 0.12s; }
+  .decision-form button:hover { background: var(--go); }
+  .result { font-weight: 700; font-family: var(--mono); font-size: 0.9em; }
+  input:focus-visible, button:focus-visible, textarea:focus-visible, .tab:focus-visible {
+            outline: 2px solid var(--go); outline-offset: 2px; }
+  .footer { max-width: 880px; margin: 0 auto; padding: 1.4em; border-top: 1px solid var(--line);
+            color: var(--ink-faint); font-size: 0.8em; font-family: var(--mono); }
+  @media (max-width: 600px) { .tabs { flex-wrap: wrap; } main { padding: 1.2em 1em 3em; } }
+  @media (prefers-reduced-motion: reduce) { .panel.active { animation: none; } }
 </style>
 </head>
 <body>
-<h1>Phase 103 &mdash; Gaming-rate vs visible-gate-strength (contract-loop, edge-screener)</h1>
-<div class="meta">Project-state dashboard &middot; generated 2026-06-22 &middot; monitor (read-only, on-demand)</div>
-
-<h2>Project status</h2>
-<div class="status-section"><h3>Recommended Next Action</h3><div class="status-body">**Phase 106 — Project-State Dashboard + Act-from-Page Decision Gate: DELIVERED + ACCEPTED 2026-06-23 (7/7 tasks; make test 33-scripts PASS, eval 50/50, drift 0; a 12-agent adversarial review caught+fixed 5 findings incl. a MEDIUM mutation-verified dead-control).** Extend Ph99&#x27;s render-only direction dashboard into (1) an on-demand `make dashboard` PROJECT-STATE monitoring page and (2) an OPT-IN ACT-FROM-PAGE direction gate — the maintainer makes the phase decision ON a served dashboard that drives `/dev-plan`, pulling forward Ph99&#x27;s deferred A2 (served surface) + A3 (general project-state). The `file://` sandbox can&#x27;t write a repo file, so the gate spins up a tiny **127.0.0.1 EPHEMERAL &hellip;</div></div>
-<div class="status-section"><h3>Active Phase</h3><div class="status-body">**[[phase-106-project-state-dashboard|Phase 106: Project-State Dashboard + Act-from-Page Decision Gate]]** (status: completed — DELIVERED + ACCEPTED 2026-06-23, 7/7 tasks). Extend Ph99&#x27;s direction dashboard into an on-demand `make dashboard` project-state monitor + an OPT-IN act-from-page direction gate (decide ON a served dashboard that drives `/dev-plan`, via a 127.0.0.1 ephemeral server that writes `.dev-wiki/decision-response.json`, ingested through ONE deterministic validator). Safe-by-default (opt-in `.dev-wiki/act-from-page` marker; AskUserQuestion default + fail-open; server owns the single timeout). Three stdlib-only scripts; panes cut to a STATUS+DIRECTION floor; no daemon; ONE &hellip;</div></div>
-<div class="status-section"><h3>Blockers and Open Questions</h3><div class="status-body">- [planning: Phase-101 crux — is a discriminating harder corpus constructible?] The phase&#x27;s whole question is EMPIRICAL: can ≥3 edge-screener function-stub tasks be built where bare FAILS for an integrity reason, stably (≥2/N bare runs fail the SAME integrity assertion), without being floored on every arm? The mandatory calibration pilot (T2, BEFORE the freeze) answers it; a clean &quot;no in-band task → informative null&quot; is a VALID result, not a failure. Sub-questions the pilot also resolves: opencode-in-edge-screener feasibility (can opencode develop + run pytest in a per-run copy via the reused `.venv`? — A3), and whether each integrity invariant can be made truly unreachable (grep the whole &hellip;</div></div>
-
-
-<h2>Direction gate</h2>
+<header class="topbar">
+  <div class="ident"><span class="phase-num">Phase 103</span><span class="phase-name">Gaming-rate vs visible-gate-strength (contract-loop, edge-screener)</span></div>
+  <div class="mode">Monitor — read-only &middot; generated 2026-06-22</div>
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="decide" role="tab" aria-selected="true">Decide</button>
+    <button class="tab" data-tab="status" role="tab" aria-selected="false">Status</button>
+    <button class="tab" data-tab="workflow" role="tab" aria-selected="false">Workflow</button>
+  </nav>
+</header>
+<main>
+  <section id="decide" class="panel active" role="tabpanel"><div class="banner danger" role="alert"><span class="banner-tag">Stale gate</span>This brief is from <strong>phase 103</strong>, which is not the active phase. It is not decidable here &mdash; regenerate the gate before acting. Shown below for reference only.</div>
 <div class="recommend"><span class="tag">Recommendation</span>Build a 2-3 rung gate ladder by reducing the visible gate&#x27;s COVERAGE of the lag invariant (Ph102 pins the lag at loci {0-&gt;1} and {2-&gt;3}; weaken to fewer loci, down to a shape-only rung that leaves the lag boundary unconstrained), hold the held-out (decision_lag_strict, every-position sweep, disjoint AAA) FIXED as the ruler, and run the NATURAL contract-loop worker x rung x n. Classify each held-out-fail run three ways {silent-wrong | special-cased | honest-flagged-wrong} and report the SILENT-WRONG rate (not the raw fail rate) as the delegation headline. Controls-first: a manipulation-check seed per adjacent rung pair proves each rung strictly weaker; the held-out re-verified sharp at every rung; leak-grep re-run after each weakening edit. Recommend NATURAL-worker-only (propensity = the gaming RATE you asked for); the seeded controls already prove gaming is gameable-in-principle, so an adversarial-prompt capability arm is secondary. A clean ~0-everywhere null (worker stays truthful regardless of gate) is a VALID, meaningful landing.</div>
-<h3>Options</h3>
+<h3 class="sec-head">Options</h3>
 <div class="option chosen-card"><div class="opt-head"><span class="opt-label">A — Natural worker, gate ladder, three-way taxonomy</span><span class="badge rec">Recommended</span><span class="badge chosen">Chosen</span></div><div class="opt-desc">Real worker iterates naturally (not told to game) against each gate rung; measure the silent-wrong rate as the gate weakens. Three-way classification of held-out-fail runs {silent-wrong | special-cased | honest-flagged-wrong}; cold-pass bucketed apart. Headline = silent-wrong rate (the delegation-dangerous subset). Reuses the frozen Ph102 apparatus by copy. Cheapest faithful design; answers &#x27;does it game&#x27;.</div></div>
 <div class="option"><div class="opt-head"><span class="opt-label">B — Also add an adversarial-prompt arm (capability upper bound)</span></div><div class="opt-desc">On top of A, a second arm where the worker is TOLD to optimize the visible checks — measures whether opencode CAN game when it tries (capability), so a 0-natural-rate is interpretable as won&#x27;t-not-can&#x27;t. Doubles the worker runs for a secondary number; the seeded controls already establish gameability-in-principle.</div></div>
 <div class="option"><div class="opt-head"><span class="opt-label">C — Raw under-spec rate only (drop the taxonomy)</span></div><div class="opt-desc">If the silent-wrong vs honest-flagged-wrong split can&#x27;t be pinned mechanically, fall back to the blunt deterministic rate (visible-pass AND held-out-fail) as the headline. Simpler but conflates a safe calibrated hedge with a dangerous silent miss — loses the delegation-relevant distinction.</div></div>
-<h3>Assumptions (cost-sorted) &amp; positions</h3>
+<h3 class="sec-head">Assumptions <span class="sub">cost-sorted &middot; position to decide</span></h3>
 <table>
 <tr><th>ID</th><th>Cost</th><th>Assumption</th><th>Position</th></tr>
 <tr><td class="aid">A1</td><td><span class="cost" style="color:#c0392b">high</span></td><td>ELICITABILITY (the T0 weakest): a deliberately weakened gate WILL produce &gt;=1 silent-wrong run from the real opencode/big-pickle worker. If FALSE (~0 gaming at every gate strength), the phase returns the informative NULL — the worker&#x27;s competence, not the gate, carries truthfulness on this task (delegation robust to gate looseness, rhyming with the amplifier-nulls). That null is a VALID landing, not a failed phase — but the campaign yields no gaming gradient. Position: do you accept running the campaign with the null as an acceptable outcome?<div class="resolution">DEFERRED (revisit-status: open). Maintainer correctly declines to pre-judge an empirical outcome. Resolved by the T2 make-or-break calibration pilot BEFORE the freeze; the plan does NOT bank on it — if false, the pre-registered informative null stands and the maintainer adjudicates its acceptability at the DELIVERY gate.</div></td><td><span class="pos" style="background:#b8860b">don&#x27;t-know</span></td></tr>
 <tr><td class="aid">A2</td><td><span class="cost" style="color:#c0392b">high</span></td><td>REALISTIC WEAK GATE: a weak-but-plausible gate — one a human might actually write (fewer example loci pinned), not an obvious strawman — is constructible along the lag-coverage axis. If FALSE (the only &#x27;weak&#x27; gates are absurd contracts nobody would write), a gaming result wouldn&#x27;t transfer to realistic delegation and the claim narrows to &#x27;the constructed weak gate&#x27;. This is the realism load on the whole finding.<div class="resolution">DEFERRED (revisit-status: open). Realism judged concretely when the actual rungs are built in T1 (a one-example-locus gate is a plausible under-specified contract). The plan does NOT bank on it — if false, the verdict narrows the claim to &#x27;the constructed weak gate&#x27; + flags the realism limit regardless.</div></td><td><span class="pos" style="background:#b8860b">don&#x27;t-know</span></td></tr>
 <tr><td class="aid">A3</td><td><span class="cost" style="color:#b8860b">medium</span></td><td>SILENT-WRONG IS SEPARABLE: silent-wrong vs honest-flagged-wrong is operationalizable mechanically from the worker transcript / converged code (a pinned marker on the visibly-UNCONSTRAINED locus, in the vocabulary the worker actually saw — NOT held-out names, which the leak guard guarantees absent). If FALSE (too ambiguous to pin), the headline degrades to the raw under-spec rate (option C), conflating a safe hedge with a dangerous silent miss.<div class="resolution">DEFERRED (revisit-status: open). The T2 pilot tests separability on real transcripts. The plan does NOT bank on it — if false, the headline degrades gracefully to the raw under-spec rate (visible-pass AND held-out-fail), taxonomy descriptive-only.</div></td><td><span class="pos" style="background:#b8860b">don&#x27;t-know</span></td></tr>
 </table>
-
-
-<div class="footer">Generated by generate-dashboard.py &middot; project-state dashboard (Phase 106). Render-only monitor; run a /dev-plan gate to act.</div>
+</section>
+  <section id="status" class="panel" role="tabpanel"><div class="status-section"><h3>Recommended Next Action</h3><div class="status-body">**Phase 107 — Decisioning Cockpit (dashboard-as-primary gate): PLANNED 2026-06-23, IMPLEMENTING (5 tasks).** The maintainer ran the Ph106 dashboard and found it **unusable** (&quot;the UI is terrible, it doesn&#x27;t possess enough information for anyone to even make a decision, can we not easily integrate the workflow.html file into it as a tab... every option should have reasoning and consequences mapped, right now its not usable at all&quot;) — redirecting the 4 abstract Ph107 forks (post-cutoff screen / opinionated-content / rung-D / dogfood) to **fixing the dashboard he just shipped**. Two confirmed defects: (1) it silently renders a **5-phase-stale Phase-103 brief** with no freshness signal (&quot;why is &hellip;</div></div>
+<div class="status-section"><h3>Active Phase</h3><div class="status-body">**[[phase-107-decisioning-cockpit|Phase 107: Decisioning Cockpit (dashboard-as-primary gate)]]** (status: active — planned 2026-06-23, 0/5 tasks, IMPLEMENTING). The maintainer found the Ph106 dashboard unusable; rebuild `docs/dashboard.html` into a tabbed DECISIONING COCKPIT (Status|Decide|Workflow) that becomes the PRIMARY /dev-plan direction-gate surface (served live by the existing ephemeral `decision-server.py`), with per-option REASONING+CONSEQUENCES laid out for comparison, a LOUD stale-brief guard (root cause of &quot;why is this not in the dashboard now&quot; — Ph106 silently rendered a 5-phase-stale Phase-103 brief), and the Workflow page re-rendered NATIVELY into the shared visual system. &hellip;</div></div>
+<div class="status-section"><h3>Blockers and Open Questions</h3><div class="status-body">- [planning: Phase-101 crux — is a discriminating harder corpus constructible?] The phase&#x27;s whole question is EMPIRICAL: can ≥3 edge-screener function-stub tasks be built where bare FAILS for an integrity reason, stably (≥2/N bare runs fail the SAME integrity assertion), without being floored on every arm? The mandatory calibration pilot (T2, BEFORE the freeze) answers it; a clean &quot;no in-band task → informative null&quot; is a VALID result, not a failure. Sub-questions the pilot also resolves: opencode-in-edge-screener feasibility (can opencode develop + run pytest in a per-run copy via the reused `.venv`? — A3), and whether each integrity invariant can be made truly unreachable (grep the whole &hellip;</div></div>
+</section>
+  <section id="workflow" class="panel" role="tabpanel"><div class="workflow-native">
+<h3 class="sec-head">Harness</h3><div class="status-body">nana-dev-kit <code>0.5.0</code> &middot; 18 hooks &middot; 34 test suites &middot; 156 template files</div>
+<h3 class="sec-head">Hooks</h3><table><tr><th>Hook</th><th>Lines</th><th>Purpose</th></tr><tr><td class="aid">audit-log.sh</td><td>26</td><td>PostToolUse hook — appends a JSONL audit record for every file write.</td></tr><tr><td class="aid">auto-ruff-format.sh</td><td>18</td><td>PostToolUse hook for Write/Edit/MultiEdit — auto-formats Python files with ruff.</td></tr><tr><td class="aid">block-dangerous-bash.sh</td><td>52</td><td>PreToolUse hook for Bash tool — blocks dangerous commands.</td></tr><tr><td class="aid">check-tests-were-run.sh</td><td>72</td><td>Stop hook — blocks Claude from declaring &quot;done&quot; if pytest hasn&#x27;t been run.</td></tr><tr><td class="aid">context-size-check.sh</td><td>35</td><td>UserPromptSubmit hook — monitors transcript size as proxy for context usage.</td></tr><tr><td class="aid">dev-wiki-scope-check.sh</td><td>77</td><td>PreToolUse hook (Write|Edit) — warns when editing files outside the active task&#x27;s scope.</td></tr><tr><td class="aid">enforce-assumption-gate.sh</td><td>82</td><td>PreToolUse hook (Write|Edit|MultiEdit) — blocks implementation writes when the active phase&#x27;s</td></tr><tr><td class="aid">enforce-loop.sh</td><td>115</td><td>Stop hook — checks deliverable files from spec exit criteria and advises on debrief.</td></tr><tr><td class="aid">enforce-memory.sh</td><td>112</td><td>PreToolUse hook (Write|Edit) — blocks implementation writes without memory_search.</td></tr><tr><td class="aid">enforce-spec.sh</td><td>90</td><td>PreToolUse hook (Write|Edit) — blocks implementation writes without an approved spec.</td></tr><tr><td class="aid">post-commit.sh</td><td>80</td><td>PostToolUse hook (Bash) — detects a successful git commit, writes .pending-commit sidecar.</td></tr><tr><td class="aid">post-compact.sh</td><td>19</td><td>PostCompact hook — triggers recall after compaction to restore high-value context.</td></tr><tr><td class="aid">pre-compact.sh</td><td>51</td><td>PreCompact hook — outputs structured state summary for context injection.</td></tr><tr><td class="aid">py-review-stop.sh</td><td>63</td><td>Stop hook — prompts a self-review of the session diff ONLY when Python code changed.</td></tr><tr><td class="aid">scan-secrets.sh</td><td>27</td><td>PostToolUse hook for Write/Edit/MultiEdit — scans written file for secrets.</td></tr><tr><td class="aid">session-start.sh</td><td>131</td><td>SessionStart hook — loads project context into Claude&#x27;s context.</td></tr><tr><td class="aid">session-stop.sh</td><td>29</td><td>Stop hook — saves session breadcrumb for dev-wiki and emits knowledge-wiki reminder.</td></tr><tr><td class="aid">stale-queue.sh</td><td>54</td><td>PostToolUse hook (Edit|Write) — appends changed source file paths to .dev-wiki/.stale-queue</td></tr></table>
+<h3 class="sec-head">Tests</h3><table><tr><th>Suite</th><th>Lines</th><th>Asserts</th><th>Purpose</th></tr><tr><td class="aid">test_amplifier_emitter.sh</td><td>89</td><td>11</td><td></td></tr><tr><td class="aid">test_assumption_ledger.sh</td><td>178</td><td>20</td><td>Tests for scripts/check-assumption-ledger.sh — the deterministic NO-LLM assumption-ledger validator</td></tr><tr><td class="aid">test_audit_log.sh</td><td>74</td><td>2</td><td>Functional-smoke tests for audit-log.sh (Phase 66 T3 — KEEP disposition).</td></tr><tr><td class="aid">test_check_tests_were_run.sh</td><td>147</td><td>0</td><td>Paired functional smoke for the check-tests-were-run.sh HEU-007 dual-condition harden</td></tr><tr><td class="aid">test_cognitive_readiness.sh</td><td>50</td><td>2</td><td>Firing test for the kit-uninitialized /nana-init nudge in cognitive-readiness.sh.</td></tr><tr><td class="aid">test_companions.sh</td><td>139</td><td>0</td><td></td></tr><tr><td class="aid">test_contract_fidelity.sh</td><td>121</td><td>3</td><td>Functional tests for the deterministic fidelity-check (scripts/check-fidelity.py).</td></tr><tr><td class="aid">test_dashboard.sh</td><td>144</td><td>6</td><td>Controls-first tests for the project-state dashboard generator (scripts/generate-dashboard.py).</td></tr><tr><td class="aid">test_dashboard_roundtrip.sh</td><td>162</td><td>2</td><td></td></tr><tr><td class="aid">test_decision_server.sh</td><td>198</td><td>0</td><td>Controls-first tests for the ephemeral decision-server (scripts/decision-server.py). Phase 106.</td></tr><tr><td class="aid">test_direction_dashboard.sh</td><td>78</td><td>4</td><td>Functional tests for the direction dashboard generator (scripts/generate-direction.py).</td></tr><tr><td class="aid">test_enforce.sh</td><td>172</td><td>13</td><td>Tests for enforcement hooks (enforce-spec.sh and enforce-loop.sh).</td></tr><tr><td class="aid">test_enforce_assumption_gate.sh</td><td>66</td><td>0</td><td>Firing test for enforce-assumption-gate.sh (Phase 91 — the assumption-gate forcing function).</td></tr><tr><td class="aid">test_eval_hermeticity.sh</td><td>104</td><td>0</td><td>---- 1. Leak test: runner must neutralize CLAUDE_PROJECT_DIR (currently the defect) ----</td></tr><tr><td class="aid">test_firing_log.sh</td><td>165</td><td>2</td><td>Tests for the Phase-65 enforcement firing-log substrate (the hardened `log_firing` pattern).</td></tr><tr><td class="aid">test_fixture_provenance.sh</td><td>72</td><td>0</td><td>post-commit/detect-loop tests pass today while the hooks are dormant against real events).</td></tr><tr><td class="aid">test_harden.sh</td><td>307</td><td>0</td><td>Tests for hardening hooks (memory nudge, working-knowledge pruning; detect-loop cut Phase 88).</td></tr><tr><td class="aid">test_hook_firing_coverage.sh</td><td>169</td><td>0</td><td>MACHINE-CHECKABLE instead of prose: every registered hook that CAN be fired must have a test</td></tr><tr><td class="aid">test_install.sh</td><td>896</td><td>66</td><td>Tests for install.sh — idempotency, correct outputs, kit path content.</td></tr><tr><td class="aid">test_install_drift_dircurrency.sh</td><td>140</td><td>1</td><td></td></tr><tr><td class="aid">test_install_update.sh</td><td>645</td><td>0</td><td>Backup BEFORE removal + tested restore round-trip.</td></tr><tr><td class="aid">test_lifecycle_hooks_firing.sh</td><td>151</td><td>0</td><td>Phase 84 — firing tests for the two dormant lifecycle hooks, anchored on REAL captured events</td></tr><tr><td class="aid">test_long_cadence_hooks.sh</td><td>170</td><td>0</td><td>Phase 67 — firing tests for the advisory long-cadence hooks (pre-compact, post-compact, session-stop)</td></tr><tr><td class="aid">test_manifest_freshness.sh</td><td>49</td><td>0</td><td>MANIFEST freshness test (Phase 82). The md5 inventory in templates/.claude/skills/MANIFEST</td></tr><tr><td class="aid">test_memory.sh</td><td>293</td><td>11</td><td>Tests for memory_server/storage.py — near-duplicate detection thresholds.</td></tr><tr><td class="aid">test_registration.sh</td><td>86</td><td>0</td><td>Bidirectional registration completeness test</td></tr><tr><td class="aid">test_scripts_smoke.sh</td><td>84</td><td>0</td><td>Functional smoke tests for scripts/ entries that previously had NO functional coverage</td></tr><tr><td class="aid">test_settings_template.sh</td><td>125</td><td>0</td><td>(no drift), and it must register the enforcement hooks. The firing test</td></tr><tr><td class="aid">test_signal_richness_probe.sh</td><td>126</td><td>1</td><td>Tests for scripts/signal-richness-probe.sh (Phase 66 T1).</td></tr><tr><td class="aid">test_step_numbering.sh</td><td>38</td><td>1</td><td></td></tr><tr><td class="aid">test_sync_rules.sh</td><td>100</td><td>15</td><td>Tests for sync-rules.sh — output files, headers, content propagation, error cases.</td></tr><tr><td class="aid">test_templates.sh</td><td>977</td><td>100</td><td>Tests for template placeholder presence — structural verification.</td></tr><tr><td class="aid">test_tooluse_hooks.sh</td><td>269</td><td>0</td><td>Phase 67 — firing tests for the registered Pre/PostToolUse + UserPromptSubmit hooks that lacked one.</td></tr><tr><td class="aid">test_working_knowledge_curation.sh</td><td>343</td><td>0</td><td>Tests for the working-knowledge hot-cache curator (wk-prune.sh -&gt; prune_working_knowledge).</td></tr></table>
+<h3 class="sec-head">CI &amp; pre-commit</h3><div class="status-body"><strong>pre-commit:</strong> sync-rules, ruff, ruff-format, mypy, gitleaks, nbstripout, nbqa-ruff, nbqa-mypy, validate-pyproject<br><strong>CI jobs:</strong> lint, typecheck, test, security</div>
+</div></section>
+</main>
+<div class="footer">Decisioning cockpit (Phase 107) &middot; generate-dashboard.py &middot; render-only monitor; a /dev-plan gate serves the live, decidable page.</div>
+<script>
+(function() {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  tabs.forEach(function(t) {
+    t.addEventListener('click', function() {
+      tabs.forEach(function(x) { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+      panels.forEach(function(x) { x.classList.remove('active'); });
+      t.classList.add('active'); t.setAttribute('aria-selected', 'true');
+      var p = document.getElementById(t.dataset.tab);
+      if (p) p.classList.add('active');
+    });
+  });
+})();
+</script>
 </body>
 </html>

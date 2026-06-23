@@ -15,8 +15,10 @@ lets the page hand the decision back through a real channel — no clipboard, no
 Correctness load-bearing points (each has a control in tests/test_decision_server.sh):
   * 127.0.0.1 + port-0 bind ONLY (never the all-interfaces wildcard) — the readback port goes to
     .decision-server.url.
-  * POST guards: Origin == own loopback origin, Host allowlist, Content-Length cap, reject chunked,
-    and a SINGLE-ACCEPT LATCH checked before the write (a 2nd POST gets 409, never a double write).
+  * POST guards: Origin == own loopback origin, Host allowlist, a STALE-GATE refusal (409 when the
+    served brief phase != the active phase — Phase 107, checked before any body read), Content-Length
+    cap, reject chunked, and a SINGLE-ACCEPT LATCH checked before the write (a 2nd POST gets 409, never
+    a double write).
   * The decision is validated by validate-decision-response.py BEFORE it is committed; an invalid
     POST writes NOTHING and the server STAYS UP (the maintainer can fix + resubmit).
   * Atomic write: mkstemp(dir=.dev-wiki) -> fsync -> os.replace (same fs) — no torn reads.
@@ -70,12 +72,18 @@ validate = _val.validate
 
 
 class DecisionServer(HTTPServer):
-    def __init__(self, brief_path, state_path, response_path, timeout_s):
+    def __init__(self, brief_path, state_path, response_path, timeout_s, active_phase=None):
         # Bind loopback only (127.0.0.1), ephemeral port — never the all-interfaces wildcard;
         # this endpoint writes a repo file, so it must never be reachable off-host.
         super().__init__(("127.0.0.1", 0), DecisionHandler)
         self.brief_path = str(brief_path)
         self.brief_nonce = _read_nonce(self.brief_path)
+        # Active phase for the stale-gate guard (Phase 107). None => the live active-phase line; a
+        # caller/test injects it so the check is deterministic (decoupled from the live doc). A stale
+        # brief (phase != active) is NOT decidable: the served page shows a banner with no form, AND
+        # do_POST refuses (defense-in-depth — a scripted POST against a stale gate gets 409, no write).
+        self.active_phase = active_phase if active_phase is not None else (_dash.get_active_phase_line() or "")
+        self.stale = self._compute_stale()
         self.state_path = str(state_path)
         self.response_path = Path(response_path)
         self.url_path = self.response_path.parent / ".decision-server.url"
@@ -95,8 +103,17 @@ class DecisionServer(HTTPServer):
     def host_ok(self, host):
         return host in self.allowed_hosts
 
+    def _compute_stale(self):
+        """True iff the served brief's phase != the active phase. Fail-open: an unreadable/unparseable
+        brief => not stale (render rather than block — the guard never fabricates staleness)."""
+        try:
+            brief = json.loads(Path(self.brief_path).read_text())
+        except (OSError, json.JSONDecodeError):
+            return False
+        return bool(_dash.is_stale(brief, self.active_phase))
+
     def render_page(self):
-        panes = build_panes(self.state_path, self.brief_path)
+        panes = build_panes(self.state_path, self.brief_path, self.active_phase)
         return render_dashboard(panes, interactive=True)
 
     def _atomic_write(self, text):
@@ -221,6 +238,12 @@ class DecisionHandler(BaseHTTPRequestHandler):
         if not self.server.host_ok(self.headers.get("Host", "")):
             self._respond(403, "bad Host")
             return
+        # Stale-gate guard (Phase 107): a brief whose phase != the active phase is NOT decidable. The
+        # render already hides the form; refuse the POST too so a scripted/leftover client can't drive
+        # the wrong phase's gate (defense-in-depth behind the validator's nonce/phase echo check).
+        if self.server.stale:
+            self._respond(409, "stale gate — this brief is not the active phase; regenerate the gate")
+            return
         if "chunked" in self.headers.get("Transfer-Encoding", "").lower():
             self._respond(400, "chunked transfer not accepted")
             return
@@ -262,13 +285,15 @@ def main():
     parser.add_argument("--response", default=str(WIKI / "decision-response.json"))
     parser.add_argument("--timeout", type=float, default=DEFAULT_TIMEOUT,
                         help="seconds before the server writes a {status:timeout} sentinel and exits")
+    parser.add_argument("--active-phase", default=None,
+                        help="active phase for the stale-gate guard (default: the live active-phase line)")
     args = parser.parse_args()
 
     if not Path(args.brief).exists():
         print(f"Error: direction brief not found: {args.brief}", file=sys.stderr)
         sys.exit(1)
 
-    srv = DecisionServer(args.brief, args.state, args.response, args.timeout)
+    srv = DecisionServer(args.brief, args.state, args.response, args.timeout, args.active_phase)
     srv.start()
 
 

@@ -23,6 +23,7 @@ BRIEF="$FIX/dashboard-brief.valid.json"
 STATE="$FIX/dashboard-current-state.md"
 VALIDRESP="$FIX/decision-response.valid.json"
 NONCE="$(jq -r '.nonce' "$BRIEF")"
+BRIEFPHASE="$(jq -r '.phase' "$BRIEF")"   # injected as --active-phase so the stale-gate guard sees a fresh gate
 
 # Portable self-watchdog (macOS has no GNU `timeout`; R5 has a timed loop).
 MAIN_PID=$$
@@ -77,7 +78,7 @@ PY
 SCRATCH="$(mktemp -d)"; mkdir -p "$SCRATCH/.dev-wiki"
 RESP="$SCRATCH/.dev-wiki/decision-response.json"
 URLFILE="$SCRATCH/.dev-wiki/.decision-server.url"
-python3 "$SERVER" --brief "$BRIEF" --state "$STATE" --response "$RESP" --timeout 30 >/dev/null 2>"$SCRATCH/err" &
+python3 "$SERVER" --brief "$BRIEF" --state "$STATE" --response "$RESP" --timeout 30 --active-phase "$BRIEFPHASE" >/dev/null 2>"$SCRATCH/err" &
 SPID=$!; disown "$SPID" 2>/dev/null
 i=0; while [ ! -s "$URLFILE" ] && kill -0 "$SPID" 2>/dev/null && [ $i -lt 50 ]; do sleep 0.1; i=$((i+1)); done
 URL="$(cat "$URLFILE" 2>/dev/null)"

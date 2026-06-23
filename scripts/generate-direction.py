@@ -51,6 +51,12 @@ def validate_brief(b):
         for i, o in enumerate(opts):
             if not isinstance(o, dict) or not o.get("label"):
                 errors.append(f"option[{i}] missing label")
+            elif isinstance(o, dict):
+                # reasoning/consequences are OPTIONAL (Phase 107) but, when present, must be strings —
+                # a non-string would render as garbage, so fail loud rather than silently.
+                for fld in ("reasoning", "consequences"):
+                    if fld in o and not isinstance(o[fld], str):
+                        errors.append(f"option[{i}] {fld} must be a string")
     asn = b.get("assumptions")
     if not isinstance(asn, list) or not asn:
         errors.append("missing/empty required field: assumptions (non-empty list)")
@@ -83,6 +89,24 @@ def get_active_phase_line():
         return None
 
 
+def _phase_num(val):
+    """Leading integer of a phase value ('107 — Foo' or 107), or None if unparseable."""
+    m = re.match(r"\s*(\d+)", str(val))
+    return int(m.group(1)) if m else None
+
+
+def is_stale(brief, active_phase):
+    """True iff the brief's phase differs from the live active phase (Phase 107 stale-brief guard).
+    FAIL-OPEN: if either phase number is unparseable, return False — the guard never fabricates a
+    staleness it can't prove; a brief is only 'stale' when both phases parse AND differ. Shared by
+    the render layer (loud banner / no decidable form) and the served decision path."""
+    bp = _phase_num(brief.get("phase"))
+    ap = _phase_num(active_phase)
+    if bp is None or ap is None:
+        return False
+    return bp != ap
+
+
 def render_options(options):
     cards = ""
     for o in options:
@@ -94,10 +118,22 @@ def render_options(options):
         if chosen:
             badges += '<span class="badge chosen">Chosen</span>'
         cls = "option chosen-card" if chosen else "option"
+        # reasoning (the case FOR this option) + consequences (what it commits to / forecloses),
+        # rendered INSIDE this option's own card so the trade-off is comparable per-option — not a
+        # field dump elsewhere on the page (Phase 107). Both OPTIONAL: a legacy brief omits them and
+        # the card renders exactly as before (backward-compatible).
+        extra = ""
+        if o.get("reasoning"):
+            extra += (f'<div class="opt-reasoning"><span class="opt-tag">Reasoning</span>'
+                      f'{esc(o.get("reasoning", ""))}</div>')
+        if o.get("consequences"):
+            extra += (f'<div class="opt-consequences"><span class="opt-tag">Consequences</span>'
+                      f'{esc(o.get("consequences", ""))}</div>')
         cards += (
             f'<div class="{cls}">'
             f'<div class="opt-head"><span class="opt-label">{esc(o.get("label", ""))}</span>{badges}</div>'
             f'<div class="opt-desc">{esc(o.get("description", ""))}</div>'
+            f"{extra}"
             f"</div>\n"
         )
     return cards
@@ -158,6 +194,10 @@ def generate_html(brief):
   .opt-head {{ display: flex; align-items: center; gap: 0.6em; margin-bottom: 0.3em; }}
   .opt-label {{ font-weight: 600; font-size: 1.02em; }}
   .opt-desc {{ color: #555; font-size: 0.95em; }}
+  .opt-reasoning, .opt-consequences {{ font-size: 0.92em; margin-top: 0.5em; padding-left: 0.7em; border-left: 3px solid #d8d8d8; }}
+  .opt-reasoning {{ border-left-color: #2d7d2d; color: #2c4a2c; }}
+  .opt-consequences {{ border-left-color: #b8860b; color: #5a4a1a; }}
+  .opt-tag {{ display: block; font-size: 0.68em; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; opacity: 0.75; }}
   .badge {{ font-size: 0.68em; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.15em 0.55em; border-radius: 10px; font-weight: 700; color: #fff; }}
   .badge.rec {{ background: #2d7d2d; }}
   .badge.chosen {{ background: #2c3e50; }}

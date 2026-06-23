@@ -1,0 +1,20 @@
+{
+  "phase": 107,
+  "phase_name": "Decisioning Cockpit (dashboard-as-primary gate)",
+  "generated": "2026-06-23",
+  "objective": "Test fixture: a cockpit brief whose options carry per-option reasoning + consequences.",
+  "recommendation": "Pick Option B — it carries the strongest reasoning with acceptable consequences.",
+  "nonce": "00112233445566778899aabbccddeeff",
+  "gate_id": "direction",
+  "options": [
+    {"label": "Option A bare", "description": "The bare baseline option.", "reasoning": "REASONING-A: cheapest path, reuses existing scaffolding.", "consequences": "CONSEQUENCE-A: leaves the core decision friction unaddressed.", "recommended": false},
+    {"label": "Option B recommended", "description": "The recommended option for the fixture.", "reasoning": "REASONING-B: directly removes the decision friction with a comparable layout.", "consequences": "CONSEQUENCE-B: a larger build that reverses a prior subtraction.", "recommended": true},
+    {"label": "Option C alternative", "description": "An alternative option.", "reasoning": "REASONING-C: a middle path between A and B.", "consequences": "CONSEQUENCE-C: partial coverage only.", "recommended": false}
+  ],
+  "assumptions": [
+    {"id": "A1", "cost": "high", "text": "The first load-bearing fixture assumption."},
+    {"id": "A2", "cost": "medium", "text": "The second fixture assumption."},
+    {"id": "A3", "cost": "low", "text": "The third fixture assumption."}
+  ],
+  "context": {"active_phase": "107 — Decisioning Cockpit", "open_decisions": ["a test decision"]}
+}

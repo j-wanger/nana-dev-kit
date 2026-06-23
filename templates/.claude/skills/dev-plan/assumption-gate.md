@@ -40,14 +40,17 @@ you LACK (what a `don't-know` marks), not by blessing a decision you MADE — su
   fatigues the verdict into accept-spam. If genuinely fewer than 1 load-bearing assumption exists, see
   *Empty set* below.
 
-## Visual brief (render the gate before presenting it)
+## Visual brief (the cockpit is the primary gate surface — Phase 107)
 
-Before taking positions, emit the **direction brief** so the maintainer can review the gate as a
-scannable HTML page instead of fast in-session text: write `.dev-wiki/direction-brief.json` (positions
-`"pending"`), run `make direction`, and point them at `docs/direction.html`. Then present the positions
-below. After the gate closes, fill positions/resolutions and re-run `make direction` to reflect the
-decided gate. Full schema + flow: [direction-brief.md](direction-brief.md). Fail-open — never block the
-gate on the dashboard.
+Emit the **direction brief** with each option's `reasoning` + `consequences` so the maintainer reviews the
+gate as a scannable page instead of fast in-session text: write `.dev-wiki/direction-brief.json` (positions
+`"pending"`, plus a 128-bit `nonce`). By default — an interactive session with the cockpit scripts present —
+serve the live decisioning **cockpit** (`scripts/decision-server.py` → `docs/dashboard.html`) and the
+maintainer decides ON the page (positions arrive through the validator). `make dashboard` also writes the
+static, form-less cockpit for reading at any time. Full schema + flow:
+[direction-brief.md](direction-brief.md). **Fail-open — never block the gate on the cockpit;** every failure
+branch (scripts absent, headless/autonomous, the `.dev-wiki/no-act-from-page` opt-out, server/validator
+error, timeout) reverts to the in-session AskUserQuestion gate below.
 
 ## Positions (the gate — AskUserQuestion)
 
@@ -59,13 +62,14 @@ step. The maintainer confirms direction by positioning, not by clicking yes.
 load-bearing assumptions surfaced" as an explicit item the maintainer must confirm (a buried assumption is
 most dangerous exactly when the agent claims there are none).
 
-**Channel (Phase 106 — opt-in):** positions are taken via AskUserQuestion by default. When
-`.dev-wiki/act-from-page` exists, the same positions may instead arrive from the served dashboard —
+**Channel (Phase 107 — dashboard-primary):** the served decisioning **cockpit** is the DEFAULT channel
+(interactive sessions with the cockpit scripts present) — the maintainer takes positions ON the page,
 ingested from `.dev-wiki/decision-response.json` through `scripts/validate-decision-response.py` (the
-deterministic boundary validator). The channel only changes *how the positions are collected*: the
-required outcome, the Resolution handling, the All-accept rule, and the Ledger row (the gate's sole
-firing evidence) are IDENTICAL in both channels, and the server path falls open to AskUserQuestion on
-any failure. See `direction-brief.md` → "Act-from-page channel".
+deterministic boundary validator). **AskUserQuestion is the fail-open fallback** — used whenever the cockpit
+is unavailable (scripts absent, headless/autonomous, the `.dev-wiki/no-act-from-page` opt-out, or any
+server/validator/timeout failure). The channel only changes *how the positions are collected*: the required
+outcome, the Resolution handling, the All-accept rule, and the Ledger row (the gate's sole firing evidence)
+are IDENTICAL in both. See `direction-brief.md` → "Step 13 flow — dashboard-as-primary".
 
 ## Resolution (before the gate closes)
 

@@ -1,0 +1,16 @@
+{
+  "phase": 103,
+  "phase_name": "Stale Prior-Phase Brief (phase-mismatch fixture)",
+  "generated": "2026-06-22",
+  "objective": "Test fixture: a stale brief whose phase does NOT match the active phase — must not be silently decidable.",
+  "recommendation": "STALE — this brief is from a prior phase (103) and must surface a loud banner, never a silent decidable form.",
+  "nonce": "deadbeefdeadbeefdeadbeefdeadbeef",
+  "gate_id": "direction",
+  "options": [
+    {"label": "Stale Option", "description": "From a prior phase.", "reasoning": "REASONING-STALE: should not be actionable.", "consequences": "CONSEQUENCE-STALE: drives the wrong phase if ingested.", "recommended": true}
+  ],
+  "assumptions": [
+    {"id": "A1", "cost": "high", "text": "A stale assumption from a prior phase."}
+  ],
+  "context": {"active_phase": "103", "open_decisions": []}
+}
