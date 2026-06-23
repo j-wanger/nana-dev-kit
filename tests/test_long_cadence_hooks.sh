@@ -95,29 +95,37 @@ if [ "$EC" = "0" ] && printf '%s' "$LINE" | jq -e '(.action=="skipped")' >/dev/n
   test_pass; else test_fail "no skipped record (ec=$EC line=$LINE)"; fi
 teardown "$T"
 
-# ---- py-review-stop.sh: PLANNING path (no .py touched) -> exit 0, no review prompt, skipped record ----
-# (Phase 74: replaces the old unconditional py-review-stop-prompt.md prompt hook that looped during planning.)
-test_start "py-review: planning path (no .py touched) exits 0 with no review prompt"
+# ---- py-review-stop.sh: gates on the LIVE git working tree (Phase 106 fix) ----
+# WAS: scanned the whole session transcript for any .py tool_use -> re-fired on EVERY Stop for the rest
+# of a session once any .py was touched (incl. AFTER a commit + on conversational turns). NOW: fires only
+# when `git status` shows an UNCOMMITTED .py. Fixtures are isolated temp git repos (the hook cd's into the
+# fixture, so its `git status` reports the fixture, never the kit's repo).
+
+# NO uncommitted .py -> exit 0, no review, skipped record
+test_start "py-review: no uncommitted .py exits 0 with no review prompt"
 T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude/rules"; printf 'Phase: 99 - x\n' > "$T/.claude/rules/active-phase.md"
-EC=$(run_hook py-review-stop.sh "$T" '{"stop_hook_active":false,"tool_uses":[{"input":{"file_path":".dev-wiki/tasks.md"}},{"input":{"command":"uv run ruff check ."}}]}')
+( cd "$T" && git init -q ); printf 'notes\n' > "$T/notes.md"   # an uncommitted NON-.py change
+EC=$(run_hook py-review-stop.sh "$T" '{"stop_hook_active":false}')
 LINE=$(tail -n1 "$T/.dev-wiki/enforcement.log" 2>/dev/null || echo "")
 if [ "$EC" = "0" ] && ! grep -q 'nana:review' "$T/.err" && printf '%s' "$LINE" | jq -e '(.hook=="py-review") and (.action=="skipped")' >/dev/null 2>&1; then
-  test_pass; else test_fail "planning path should exit 0 silent + skipped record (ec=$EC err=$(tr '\n' '|' < "$T/.err") line=$LINE)"; fi
+  test_pass; else test_fail "no uncommitted .py should exit 0 silent + skipped record (ec=$EC err=$(tr '\n' '|' < "$T/.err") line=$LINE)"; fi
 teardown "$T"
 
-# ---- py-review-stop.sh: CODE-CHANGED path (.py touched, first stop) -> exit 2 + review prompt + block record ----
-test_start "py-review: code-changed path (.py touched, first stop) exits 2 with review prompt"
+# an UNCOMMITTED .py (untracked, in a NEW dir -> exercises --untracked-files=all) -> exit 2 + review + block
+test_start "py-review: an uncommitted .py exits 2 with review prompt"
 T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude/rules"; printf 'Phase: 99 - x\n' > "$T/.claude/rules/active-phase.md"
-EC=$(run_hook py-review-stop.sh "$T" '{"stop_hook_active":false,"tool_uses":[{"input":{"file_path":"src/pkg/loader.py"}}]}')
+( cd "$T" && git init -q ); mkdir -p "$T/src/pkg"; printf 'x = 1\n' > "$T/src/pkg/loader.py"
+EC=$(run_hook py-review-stop.sh "$T" '{"stop_hook_active":false}')
 LINE=$(tail -n1 "$T/.dev-wiki/enforcement.log" 2>/dev/null || echo "")
 if [ "$EC" = "2" ] && grep -q 'nana:review' "$T/.err" && printf '%s' "$LINE" | jq -e '(.hook=="py-review") and (.action=="block")' >/dev/null 2>&1; then
-  test_pass; else test_fail "code-changed path should exit 2 + review prompt + block record (ec=$EC err=$(tr '\n' '|' < "$T/.err") line=$LINE)"; fi
+  test_pass; else test_fail "uncommitted .py should exit 2 + review + block (ec=$EC err=$(tr '\n' '|' < "$T/.err") line=$LINE)"; fi
 teardown "$T"
 
-# ---- py-review-stop.sh: LOOP GUARD (stop_hook_active=true) -> exit 0 even with .py changed (no infinite stop loop) ----
-test_start "py-review: loop guard (stop_hook_active=true) exits 0 even with .py changed"
+# LOOP GUARD (stop_hook_active=true) -> exit 0 even with an uncommitted .py (no infinite stop loop)
+test_start "py-review: loop guard (stop_hook_active=true) exits 0 even with an uncommitted .py"
 T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude/rules"; printf 'Phase: 99 - x\n' > "$T/.claude/rules/active-phase.md"
-EC=$(run_hook py-review-stop.sh "$T" '{"stop_hook_active":true,"tool_uses":[{"input":{"file_path":"src/pkg/loader.py"}}]}')
+( cd "$T" && git init -q ); printf 'x = 1\n' > "$T/loader.py"
+EC=$(run_hook py-review-stop.sh "$T" '{"stop_hook_active":true}')
 if [ "$EC" = "0" ] && ! grep -q 'nana:review' "$T/.err"; then
   test_pass; else test_fail "loop guard should exit 0 silent (ec=$EC err=$(tr '\n' '|' < "$T/.err"))"; fi
 teardown "$T"
@@ -148,12 +156,15 @@ EC=$(run_hook check-tests-were-run.sh "$T" "{\"stop_hook_active\":false,\"transc
 if [ "$EC" = "0" ]; then test_pass; else test_fail "pytest in transcript should allow (ec=$EC)"; fi
 teardown "$T"
 
-test_start "py-review: REAL shape — py edit in transcript -> review requested (exit 2)"
+# REGRESSION (the noise Jake hit): a .py edit IN the transcript but a CLEAN working tree must stay
+# SILENT — the gate keys off `git status`, not the session payload, so it no longer re-fires after the
+# diff is committed or on conversational turns.
+test_start "py-review: .py in transcript but a CLEAN tree -> silent (post-commit/every-stop noise fixed)"
 T=$(mktemp -d); mkdir -p "$T/.dev-wiki" "$T/.claude/rules"; printf 'Phase: 99 - x\n' > "$T/.claude/rules/active-phase.md"
-make_transcript "$T"
+( cd "$T" && git init -q ); make_transcript "$T"   # transcript references src/mod.py, but nothing .py is uncommitted
 EC=$(run_hook py-review-stop.sh "$T" "{\"stop_hook_active\":false,\"transcript_path\":\"$T/transcript.jsonl\"}")
-if [ "$EC" = "2" ] && grep -q 'nana:review' "$T/.err"; then
-  test_pass; else test_fail "real Stop shape should request review (ec=$EC)"; fi
+if [ "$EC" = "0" ] && ! grep -q 'nana:review' "$T/.err"; then
+  test_pass; else test_fail "clean tree (.py only in transcript) must exit 0 silent (ec=$EC err=$(tr '\n' '|' < "$T/.err"))"; fi
 teardown "$T"
 
 test_summary "long-cadence-hooks"

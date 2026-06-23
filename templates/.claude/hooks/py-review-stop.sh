@@ -32,19 +32,16 @@ if [ "$STOP_ACTIVE" = "true" ]; then
   exit 0
 fi
 
-# Planning guard: only review when Python files were actually touched this session.
-# Prefer the legacy/fixture .tool_uses array; real Stop events carry transcript_path instead,
-# so fall back to scanning the transcript JSONL for tool_use inputs (parity with check-tests-were-run.sh).
-TOOL_ACTIVITY=$(echo "$INPUT" | jq -r '[.tool_uses[]?.input | (.file_path // .command // "")] | join("\n")' 2>/dev/null || echo "")
-if [ -z "$TOOL_ACTIVITY" ]; then
-  TRANSCRIPT=$(echo "$INPUT" | jq -r '.transcript_path // empty' 2>/dev/null || echo "")
-  if [ -n "$TRANSCRIPT" ] && [ -f "$TRANSCRIPT" ]; then
-    TOOL_ACTIVITY=$(jq -r 'select(.type=="assistant") | .message.content[]? | select(.type=="tool_use") | .input | (.file_path // .command // "")' "$TRANSCRIPT" 2>/dev/null || echo "")
-  fi
-fi
-HAS_PY_CHANGES=$(printf '%s' "$TOOL_ACTIVITY" | grep -q '\.py' && echo true || echo false)
-if [ "$HAS_PY_CHANGES" != "true" ]; then
-  log_firing skipped no-py-changes || true
+# Code guard: only review when there is UNCOMMITTED Python in the working tree RIGHT NOW.
+# The old gate scanned the whole session transcript for any .py tool_use, so once a single .py was
+# touched it re-fired on EVERY subsequent Stop for the rest of the session — including AFTER the work
+# was committed (clean tree) and on purely conversational turns that touched no code. Gating on the
+# live working tree (git status) makes it silent the moment the diff is committed, and on turns with
+# no uncommitted Python. `--untracked-files=all` lists individual new files (the default collapses a
+# new directory to its name, hiding a new .py inside it). Non-git dir -> git errors -> skip (fail-open).
+PY_CHANGED=$(git status --porcelain --untracked-files=all 2>/dev/null | grep -E '\.py"?$' || true)
+if [ -z "$PY_CHANGED" ]; then
+  log_firing skipped no-uncommitted-py || true
   exit 0
 fi
 

@@ -40,11 +40,11 @@
 <body>
 
 <h1>Nana Dev Kit</h1>
-<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-06-23 12:01</p>
+<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-06-23 12:27</p>
 
 <div class="stats">
-  <div class="stat"><div class="num">1080</div><div class="label">Files</div></div>
-  <div class="stat"><div class="num">183,614</div><div class="label">Lines of Code</div></div>
+  <div class="stat"><div class="num">1097</div><div class="label">Files</div></div>
+  <div class="stat"><div class="num">185,028</div><div class="label">Lines of Code</div></div>
   <div class="stat"><div class="num">646</div><div class="label">Automated Tests</div></div>
   <div class="stat"><div class="num">7</div><div class="label">Harness Layers</div></div>
   <div class="stat"><div class="num">v0.5.0</div><div class="label">Latest Tag</div></div>
@@ -134,14 +134,16 @@
 
 <h2>File Inventory</h2>
 <div class="category">
-  <h3>Core Scripts <span class="badge badge-green">14 files, 4,274 lines</span></h3>
+  <h3>Core Scripts <span class="badge badge-green">17 files, 4,987 lines</span></h3>
   <ul class="file-list">
     <li><span>Makefile</span><span class='lines'>74</span></li>
     <li><span>install.sh</span><span class='lines'>659</span></li>
     <li><span>scripts/check-assumption-ledger.sh</span><span class='lines'>235</span></li>
     <li><span>scripts/check-fidelity.py</span><span class='lines'>112</span></li>
     <li><span>scripts/check-install-drift.sh</span><span class='lines'>272</span></li>
+    <li><span>scripts/decision-server.py</span><span class='lines'>276</span></li>
     <li><span>scripts/eval-runner.sh</span><span class='lines'>345</span></li>
+    <li><span>scripts/generate-dashboard.py</span><span class='lines'>318</span></li>
     <li><span>scripts/generate-delivery-report.py</span><span class='lines'>276</span></li>
     <li><span>scripts/generate-direction.py</span><span class='lines'>239</span></li>
     <li><span>scripts/generate-report.py</span><span class='lines'>328</span></li>
@@ -150,11 +152,21 @@
     <li><span>scripts/register-settings.py</span><span class='lines'>269</span></li>
     <li><span>scripts/signal-richness-probe.sh</span><span class='lines'>96</span></li>
     <li><span>scripts/sync-rules.sh</span><span class='lines'>71</span></li>
+    <li><span>scripts/validate-decision-response.py</span><span class='lines'>119</span></li>
   </ul>
 </div>
 <div class="category">
-  <h3>Test Suite <span class="badge badge-green">39 files, 6,563 lines</span></h3>
+  <h3>Test Suite <span class="badge badge-green">51 files, 7,117 lines</span></h3>
   <ul class="file-list">
+    <li><span>tests/fixtures/dashboard-brief.nononce.json</span><span class='lines'>16</span></li>
+    <li><span>tests/fixtures/dashboard-brief.valid.json</span><span class='lines'>20</span></li>
+    <li><span>tests/fixtures/dashboard-current-state-restructured.md</span><span class='lines'>12</span></li>
+    <li><span>tests/fixtures/dashboard-current-state.md</span><span class='lines'>13</span></li>
+    <li><span>tests/fixtures/decision-response.badposition.json</span><span class='lines'>12</span></li>
+    <li><span>tests/fixtures/decision-response.partialcoverage.json</span><span class='lines'>11</span></li>
+    <li><span>tests/fixtures/decision-response.phantomoption.json</span><span class='lines'>12</span></li>
+    <li><span>tests/fixtures/decision-response.stalenonce.json</span><span class='lines'>12</span></li>
+    <li><span>tests/fixtures/decision-response.valid.json</span><span class='lines'>12</span></li>
     <li><span>tests/fixtures/direction-brief.malformed.json</span><span class='lines'>5</span></li>
     <li><span>tests/fixtures/direction-brief.missingfield.json</span><span class='lines'>7</span></li>
     <li><span>tests/fixtures/direction-brief.valid.json</span><span class='lines'>54</span></li>
@@ -170,6 +182,9 @@
     <li><span>tests/test_cognitive_readiness.sh</span><span class='lines'>50</span></li>
     <li><span>tests/test_companions.sh</span><span class='lines'>139</span></li>
     <li><span>tests/test_contract_fidelity.sh</span><span class='lines'>121</span></li>
+    <li><span>tests/test_dashboard.sh</span><span class='lines'>79</span></li>
+    <li><span>tests/test_dashboard_roundtrip.sh</span><span class='lines'>161</span></li>
+    <li><span>tests/test_decision_server.sh</span><span class='lines'>183</span></li>
     <li><span>tests/test_direction_dashboard.sh</span><span class='lines'>78</span></li>
     <li><span>tests/test_enforce.sh</span><span class='lines'>172</span></li>
     <li><span>tests/test_enforce_assumption_gate.sh</span><span class='lines'>66</span></li>
@@ -182,7 +197,7 @@
     <li><span>tests/test_install_drift_dircurrency.sh</span><span class='lines'>140</span></li>
     <li><span>tests/test_install_update.sh</span><span class='lines'>645</span></li>
     <li><span>tests/test_lifecycle_hooks_firing.sh</span><span class='lines'>151</span></li>
-    <li><span>tests/test_long_cadence_hooks.sh</span><span class='lines'>159</span></li>
+    <li><span>tests/test_long_cadence_hooks.sh</span><span class='lines'>170</span></li>
     <li><span>tests/test_manifest_freshness.sh</span><span class='lines'>49</span></li>
     <li><span>tests/test_memory.sh</span><span class='lines'>293</span></li>
     <li><span>tests/test_registration.sh</span><span class='lines'>86</span></li>
@@ -233,7 +248,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Templates — Layer 3: Hooks <span class="badge badge-green">22 files, 1,722 lines</span></h3>
+  <h3>Templates — Layer 3: Hooks <span class="badge badge-green">22 files, 1,719 lines</span></h3>
   <ul class="file-list">
     <li><span>templates/.claude/hooks/audit-log.sh</span><span class='lines'>26</span></li>
     <li><span>templates/.claude/hooks/auto-ruff-format.sh</span><span class='lines'>18</span></li>
@@ -248,7 +263,7 @@
     <li><span>templates/.claude/hooks/post-commit.sh</span><span class='lines'>80</span></li>
     <li><span>templates/.claude/hooks/post-compact.sh</span><span class='lines'>19</span></li>
     <li><span>templates/.claude/hooks/pre-compact.sh</span><span class='lines'>51</span></li>
-    <li><span>templates/.claude/hooks/py-review-stop.sh</span><span class='lines'>66</span></li>
+    <li><span>templates/.claude/hooks/py-review-stop.sh</span><span class='lines'>63</span></li>
     <li><span>templates/.claude/hooks/scan-secrets.sh</span><span class='lines'>27</span></li>
     <li><span>templates/.claude/hooks/session-start.d/cognitive-readiness.sh</span><span class='lines'>129</span></li>
     <li><span>templates/.claude/hooks/session-start.d/memory-nudge.sh</span><span class='lines'>35</span></li>
@@ -1133,7 +1148,7 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Specs <span class="badge badge-green">89 files, 8,865 lines</span></h3>
+  <h3>Specs <span class="badge badge-green">90 files, 8,941 lines</span></h3>
   <ul class="file-list">
     <li><span>specs/cut-heuristic-machinery-self-dialogue.md</span><span class='lines'>79</span></li>
     <li><span>specs/domain-research-in-dev-plan.md</span><span class='lines'>81</span></li>
@@ -1146,6 +1161,7 @@
     <li><span>specs/phase-101-harder-corpus-screen.md</span><span class='lines'>82</span></li>
     <li><span>specs/phase-102-contract-loop.md</span><span class='lines'>84</span></li>
     <li><span>specs/phase-103-gaming-rate.md</span><span class='lines'>188</span></li>
+    <li><span>specs/phase-106-project-state-dashboard.md</span><span class='lines'>76</span></li>
     <li><span>specs/phase-12-soul-enhancement-memory-harvest.md</span><span class='lines'>92</span></li>
     <li><span>specs/phase-13-final-polish-and-ship.md</span><span class='lines'>97</span></li>
     <li><span>specs/phase-14-adversarial-thinking-review.md</span><span class='lines'>75</span></li>
@@ -1227,13 +1243,14 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Other <span class="badge badge-green">57 files, 6,568 lines</span></h3>
+  <h3>Other <span class="badge badge-green">58 files, 6,642 lines</span></h3>
   <ul class="file-list">
     <li><span>.claude/rules/active-phase.md</span><span class='lines'>17</span></li>
     <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>203</span></li>
     <li><span>.claude/settings.json.bak-phase88</span><span class='lines'>146</span></li>
     <li><span>benchmark/README.md</span><span class='lines'>108</span></li>
     <li><span>benchmark/longmemeval.py</span><span class='lines'>302</span></li>
+    <li><span>docs/dashboard.html</span><span class='lines'>74</span></li>
     <li><span>docs/delivery-report.html</span><span class='lines'>92</span></li>
     <li><span>docs/direction.html</span><span class='lines'>74</span></li>
     <li><span>docs/memory-knowledge-architecture.md</span><span class='lines'>611</span></li>
@@ -1309,11 +1326,11 @@
 </table>
 
 <h2>Recent Git History</h2>
-<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">a3657e6 Phase 105: Code-Retrieval Adopt-Scout (code-KG / tool-reach) — PLANNING-STAGE NULL, DELIVERED + ACCEPTED
+<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">0e6607c Phase 106: Project-State Dashboard + Act-from-Page Decision Gate — DELIVERED + ACCEPTED
+a3657e6 Phase 105: Code-Retrieval Adopt-Scout (code-KG / tool-reach) — PLANNING-STAGE NULL, DELIVERED + ACCEPTED
 4525f30 Phase 104: Emerging-Agent-Tooling Landscape Survey (frontier pillar re-aimed) — DELIVERED + ACCEPTED
 fd505a1 Phase 103 delivery accepted — gate flipped (delivery=accepted)
-edc1f65 Phase 103: Gaming-rate vs visible-gate-strength — informative null + loop-forcing reframe
-9f8a6ee Phase 102 debrief: journal + session-journal + log (feedback recovers the floor)</pre>
+edc1f65 Phase 103: Gaming-rate vs visible-gate-strength — informative null + loop-forcing reframe</pre>
 
 <footer>
   Generated by <code>scripts/generate-report.py</code> &mdash; run <code>make report</code> to regenerate
