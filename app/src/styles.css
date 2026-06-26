@@ -1,0 +1,441 @@
+/*
+ * Nana dev-harness surface (Phase 109, T5). A dark "control-instrument" console:
+ * slate (not pure black), MONOSPACE for structure + tool/command output, system
+ * SANS for prose, and SEMANTIC color (green = allow/go, amber = pending/cost,
+ * red = deny/blocked). One :root token block so a reskin is one place — felt
+ * quality is the maintainer's call (UI carve-out, Ph59/80). System fonts only
+ * (no remote — CSP font-src 'self').
+ */
+
+:root {
+  /* surface layers — slate, layered for depth (not flat black) */
+  --bg-0: #0f1115;
+  --bg-1: #161922;
+  --bg-2: #1d2130;
+  --bg-3: #262b3d;
+  --line: #2c3242;
+  --line-strong: #3a4259;
+
+  /* text */
+  --fg-0: #e6e9f0;
+  --fg-1: #aab2c5;
+  --fg-2: #6f7890;
+
+  /* semantic accents */
+  --go: #4ade80; /* allow / pass / connected */
+  --go-dim: #1c3a2a;
+  --warn: #fbbf24; /* pending / cost / gate-hold */
+  --warn-dim: #3a3115;
+  --stop: #f87171; /* deny / blocked / fail */
+  --stop-dim: #3a1f22;
+  --accent: #7aa2f7; /* interactive / brand */
+
+  /* type */
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+
+  --r: 8px;
+  --r-sm: 5px;
+  --sp: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+body {
+  background: var(--bg-0);
+  color: var(--fg-0);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ── header ──────────────────────────────────────────────── */
+.app__header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 10px 16px;
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--line);
+  flex: 0 0 auto;
+}
+.app__brand {
+  font-family: var(--mono);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--fg-0);
+}
+.app__tagline {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fg-2);
+}
+.app__status {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+}
+.app__status--connected {
+  color: var(--go);
+  border-color: var(--go-dim);
+  background: var(--go-dim);
+}
+.app__status--offline {
+  color: var(--stop);
+  border-color: var(--stop-dim);
+  background: var(--stop-dim);
+}
+.app__status--connecting {
+  color: var(--warn);
+}
+
+/* ── surface layout: chat + side panel ───────────────────── */
+.surface {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
+}
+.surface__chat {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--line);
+}
+.surface__side {
+  background: var(--bg-1);
+  padding: var(--sp);
+  overflow: auto;
+}
+
+/* ── thread / messages / composer ────────────────────────── */
+.thread {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.thread__viewport {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: var(--sp) 16px;
+}
+.thread__empty {
+  color: var(--fg-2);
+  font-style: italic;
+}
+.message {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+.message__text {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.composer {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--line);
+  background: var(--bg-1);
+  flex: 0 0 auto;
+}
+.composer__input {
+  flex: 1 1 auto;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  color: var(--fg-0);
+  padding: 8px 10px;
+  font-family: var(--sans);
+  resize: none;
+}
+.composer__input:focus {
+  outline: 1px solid var(--accent);
+}
+.composer__send {
+  background: var(--accent);
+  color: var(--bg-0);
+  border: 0;
+  border-radius: var(--r-sm);
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ── tool calls (monospace, semantic states) ─────────────── */
+.tool-call {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  margin: 4px 0;
+  padding: 4px 8px;
+  border-left: 2px solid var(--line-strong);
+  background: var(--bg-1);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.tool-call__name {
+  color: var(--accent);
+  font-weight: 600;
+}
+.tool-call__args,
+.tool-call__result {
+  color: var(--fg-1);
+  white-space: pre-wrap;
+}
+.tool-call--done {
+  border-left-color: var(--go);
+}
+.tool-call--denied {
+  border-left-color: var(--stop);
+  background: var(--stop-dim);
+}
+.tool-call--denied .tool-call__result {
+  color: var(--stop);
+}
+
+/* ── diff (semantic add/del) ─────────────────────────────── */
+.diff {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  margin: 0;
+  background: var(--bg-0);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  overflow: auto;
+  max-height: 260px;
+}
+.diff__line {
+  padding: 0 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.diff__add {
+  background: var(--go-dim);
+  color: var(--go);
+}
+.diff__del {
+  background: var(--stop-dim);
+  color: var(--stop);
+}
+.diff__meta {
+  color: var(--fg-2);
+}
+.diff__ctx {
+  color: var(--fg-1);
+}
+
+/* ── gate-confirm (the blocking approve-loop, axis 1) ────── */
+.gate-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 9, 12, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 10;
+}
+.gate-confirm {
+  width: min(620px, 100%);
+  max-height: 80%;
+  overflow: auto;
+  background: var(--bg-2);
+  border: 1px solid var(--warn-dim);
+  border-top: 3px solid var(--warn);
+  border-radius: var(--r);
+  padding: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+.gate-confirm__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.gate-confirm__badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--warn);
+  background: var(--warn-dim);
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+.gate-confirm__tool {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--fg-0);
+}
+.gate-confirm__summary {
+  color: var(--fg-1);
+  margin: 8px 0;
+}
+.gate-confirm__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+.gate-confirm__deny,
+.gate-confirm__approve {
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.gate-confirm__deny {
+  background: transparent;
+  color: var(--fg-1);
+}
+.gate-confirm__approve {
+  background: var(--go-dim);
+  color: var(--go);
+  border-color: var(--go);
+}
+
+/* ── side panel: recent edits / revert ───────────────────── */
+.panel__title {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg-2);
+  margin: 0 0 10px;
+}
+.panel__empty {
+  color: var(--fg-2);
+  font-size: 13px;
+}
+.revert-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.revert {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 6px 10px;
+  cursor: pointer;
+  text-align: left;
+}
+.revert__label {
+  font-weight: 600;
+  color: var(--accent);
+}
+.revert__path {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-2);
+  word-break: break-all;
+}
+.revert[data-state='done'] .revert__label {
+  color: var(--go);
+}
+.revert[data-state='error'] .revert__label {
+  color: var(--stop);
+}
+
+/* ── test results / terminal ─────────────────────────────── */
+.test-results {
+  font-size: 13px;
+}
+.test-results__summary {
+  font-family: var(--mono);
+  font-weight: 600;
+}
+.test-results__summary.is-passing {
+  color: var(--go);
+}
+.test-results__summary.is-failing {
+  color: var(--stop);
+}
+.test-results__list {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+}
+.test-results__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  padding: 2px 0;
+}
+.test-results__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+.test-results__row--pass .test-results__dot {
+  background: var(--go);
+}
+.test-results__row--fail .test-results__dot {
+  background: var(--stop);
+}
+.test-results__msg {
+  color: var(--stop);
+}
+.terminal {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: var(--bg-0);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 8px 10px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+  color: var(--fg-1);
+}
+
+/* ── disconnected state ──────────────────────────────────── */
+.disconnected {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+.disconnected__msg {
+  color: var(--fg-2);
+  font-family: var(--mono);
+  font-size: 13px;
+  text-align: center;
+  max-width: 460px;
+}

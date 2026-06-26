@@ -97,16 +97,6 @@
   source: [[active-knowledge:phase-45]] | activated: 2026-05-27
 - [uses: 2] Heuristic article format requires 6 sections: When this applies, Always, Never, Why, Anti-pattern, Source. YAML frontmatter carries: id, trigger, domain, source_phase, confidence, helpful (counter), harmful (counter), status.
   source: [[active-knowledge:phase-44]] | activated: 2026-05-26
-- [uses: 1] Cooldown advisory in debrief: fires when >=2 Phase commits since .session-start-ts (written by session-start.sh). Falls back to "last 4 hours" if timestamp missing. Advisory only (never blocks). Placed in debrief SKILL.md after executor returns, outside delivery-flow.md.
-  source: [[decision:cooldown-advisory-placement]] | activated: 2026-05-25
-- [uses: 1] Session timestamp: session-start.sh writes `date +%s` to $HOME/.claude/.session-start-ts in init block. Consumed by cooldown advisory in debrief SKILL.md.
-  source: [[active-knowledge:phase-41]] | activated: 2026-05-25
-- [uses: 1] modules.json is single source of truth for 5 module groups (core, python, typescript, dev-wiki, knowledge-wiki). Defines skill lists, hook registrations, MCP config. Consumed by install.sh (jq), register-settings.py (Python), tests (filesystem consistency), MANIFEST, README.
-  source: [[decision:install-sh-extraction-approach]] | activated: 2026-05-25
-- [uses: 1] Functional smoke invariant: every component registered in settings.json or install.sh must have at least one functional test (pipe input, check output). Codified in spec SKILL.md Step 2.6 + dev-plan implementation-guide.md integration checklist. Evidence: 4 silent breakages lasting 8-33 phases.
-  source: [[decision:functional-smoke-invariant-rule]] | activated: 2026-05-25
-- [uses: 1] install.sh CORE_SKILLS: nana + memory-consolidate + init (language-agnostic). PYTHON_SKILLS: py-lint + py-review + py-test (excluded by --no-python, --core-only). Module assignment determines which skills install under each flag combination. 26 total skill dirs.
-  source: [[decision:install-skill-module-assignment]] + [[decision:init-router-in-core]] | activated: 2026-05-25
 - [uses: 1] session-start.sh MCP health probe uses 3 layers: jq config read (settings.json .mcpServers.memory), $MCP_CMD import check, sqlite3 entry count. Emits 3-state output: healthy (N entries) / broken (reason) / not configured. All hooks now use jq for JSON parsing (python3 eliminated).
   source: [[decision:health-probe-3-layer]] | activated: 2026-05-25
 - [uses: 1] /init router skill (44 lines) in CORE_SKILLS: detects pyproject.toml/setup.py → Python, package.json/tsconfig.json → TypeScript. Handles polyglot (both → user choice) and empty (no markers → prompt). Dispatches via Skill(skill="py-init") or Skill(skill="ts-init").

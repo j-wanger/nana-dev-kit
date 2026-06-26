@@ -226,8 +226,15 @@ export class PiAdapter implements EngineAdapter {
       else options.signal.addEventListener('abort', onAbort, { once: true });
     }
 
+    // Project context (A2): Pi's session.prompt has no separate system-prompt
+    // seam here, so prepend the assembled context as a marked preamble. undefined
+    // => the prompt is unchanged (existing live tests pass no systemContext).
+    const turnPrompt = options.systemContext
+      ? `<project-context>\n${options.systemContext}\n</project-context>\n\n${prompt}`
+      : prompt;
+
     void session
-      .prompt(prompt)
+      .prompt(turnPrompt)
       .then(() => queue.close())
       .catch((err: unknown) => {
         queue.push({ type: 'error', error: err instanceof Error ? err.message : String(err) });

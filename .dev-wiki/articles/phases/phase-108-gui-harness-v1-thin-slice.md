@@ -7,7 +7,7 @@ parents: []
 created: 2026-06-26
 updated: 2026-06-26
 source: plan
-status: active
+status: completed
 scope: ["app/**", "specs/gui-harness-architecture.md"]
 entry_criteria: "Spec specs/gui-harness-architecture.md APPROVED (nana:approved 2026-06-26, Rev 2); external-boundary alternatives (ACP/opencode-HTTP/Goose/Paseo) verified against primary sources as unable to own a pre-execution gate; assumption positions taken 2026-06-26 (A1/A2/A4 accept, A3 keyring-rs deferred don't-know); ledger Phase-108 appended + validated."
 exit_criteria: "A running v1 thin slice makes the 14 machine-checkable spec criteria pass (Tauri bundle launches; Pi-adapter provider round-trip; second-adapter (Claude SDK) through the same gate; MCP memory write→restart→read-back; in-process destructive-gate denial; gate-bypass-resistance; checkpoint revert-to-exact-bytes; key-store read-deny; inert CSP render; ≤2s hard interrupt; spend-ceiling hard pause; loud memory-unavailable; external-modification detected+held; tool-call normalization byte-identical across ≥2 adapters)."

@@ -103,6 +103,8 @@ export class VercelAdapter implements EngineAdapter {
     const result = streamText({
       model,
       prompt,
+      // Project context (A2) as the native system prompt; undefined => omitted.
+      system: options.systemContext,
       tools,
       stopWhen: stepCountIs(4),
       abortSignal: options.signal,

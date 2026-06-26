@@ -15,3 +15,6 @@ src-tauri/icons/ios
 
 # Logs
 *.log
+
+# Engine-host sidecar bundle (T6, built by build:host)
+dist-host/

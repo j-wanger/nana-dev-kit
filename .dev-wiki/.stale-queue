@@ -238,3 +238,13 @@ eval/amplifier/skill-screen/runs/ctrl-recoverable/3.py
 [pruned 2026-06-26]   source: [[decision:jq-guard-fail-stop]] | activated: 2026-05-25
 [pruned 2026-06-26] - [uses: 1] Companion metadata: every companion .md file has YAML frontmatter with parent (owning skill dir name) + referenced_at (step in parent SKILL.md). 92 files covered. test_companions.sh validates bidirectionally: Direction A (parent matches dir) + Direction B (SKILL.md Read paths resolve). Future companions must include frontmatter.
 [pruned 2026-06-26]   source: [[decision:companion-metadata-format]] | activated: 2026-05-25
+[pruned 2026-06-26] - [uses: 1] Cooldown advisory in debrief: fires when >=2 Phase commits since .session-start-ts (written by session-start.sh). Falls back to "last 4 hours" if timestamp missing. Advisory only (never blocks). Placed in debrief SKILL.md after executor returns, outside delivery-flow.md.
+[pruned 2026-06-26]   source: [[decision:cooldown-advisory-placement]] | activated: 2026-05-25
+[pruned 2026-06-26] - [uses: 1] Session timestamp: session-start.sh writes `date +%s` to $HOME/.claude/.session-start-ts in init block. Consumed by cooldown advisory in debrief SKILL.md.
+[pruned 2026-06-26]   source: [[active-knowledge:phase-41]] | activated: 2026-05-25
+[pruned 2026-06-26] - [uses: 1] modules.json is single source of truth for 5 module groups (core, python, typescript, dev-wiki, knowledge-wiki). Defines skill lists, hook registrations, MCP config. Consumed by install.sh (jq), register-settings.py (Python), tests (filesystem consistency), MANIFEST, README.
+[pruned 2026-06-26]   source: [[decision:install-sh-extraction-approach]] | activated: 2026-05-25
+[pruned 2026-06-26] - [uses: 1] Functional smoke invariant: every component registered in settings.json or install.sh must have at least one functional test (pipe input, check output). Codified in spec SKILL.md Step 2.6 + dev-plan implementation-guide.md integration checklist. Evidence: 4 silent breakages lasting 8-33 phases.
+[pruned 2026-06-26]   source: [[decision:functional-smoke-invariant-rule]] | activated: 2026-05-25
+[pruned 2026-06-26] - [uses: 1] install.sh CORE_SKILLS: nana + memory-consolidate + init (language-agnostic). PYTHON_SKILLS: py-lint + py-review + py-test (excluded by --no-python, --core-only). Module assignment determines which skills install under each flag combination. 26 total skill dirs.
+[pruned 2026-06-26]   source: [[decision:install-skill-module-assignment]] + [[decision:init-router-in-core]] | activated: 2026-05-25

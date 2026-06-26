@@ -6,6 +6,14 @@ export interface SendPromptOptions {
    * control (T8, ≤2s) drives this; adapters must observe it promptly.
    */
   signal?: AbortSignal;
+
+  /**
+   * Per-turn system context assembled from the active workspace (Phase 109 / A2):
+   * the project's AGENTS.md/CLAUDE.md + .claude/rules/*.md. When set, the adapter
+   * injects it as the engine's system instructions so the agent is not
+   * project-blind. When undefined, behavior is unchanged (no system context).
+   */
+  systemContext?: string;
 }
 
 /**
