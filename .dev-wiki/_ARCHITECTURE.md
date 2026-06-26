@@ -1,6 +1,6 @@
 # Architecture: nana-dev-kit
 
-> Last updated: 2026-06-21 by /dev-debrief (Phase 97 — Frontier Positioning Sweep: NEW gitignored, local-only `companion/research/` apparatus [rung A of the de-risking ladder] — the FROZEN decision instrument [pre-registration.md, serves the spec function], a SHA256 freeze-attestation seal [.frozen], cited sweep-findings.md + convergence-map.md, and verdict.md. NEVER shipped/installed; `git ls-files companion/` empty by invariant. `.gitignore` gained `companion/`. VERDICT-only phase — ZERO shippable-kit code/config change. Prior, still current: Phase 93 — install.sh idempotent re-sync: NEW `install.sh --update [--arm]` mode reconciles a consumer's project-local hooks + settings.local.json to the current kit [ADD/UPDATE + dedupe-by-basename + automated cut-hook dereg behind timestamped backup → survivor smoke → revert-on-failure; arming DECOUPLED]; register-settings.py gains the FIRST deregistration mechanism the kit ships — `--dedupe`/`dedupe_by_basename` on `hooks` + a `deregister` subcommand, both basename-normalized [DRQ-1]; check-install-drift.sh gains `--consumer <root>` read-only detection; modules.json gains `cut_hooks` ["detect-loop"]; tests 28 scripts [+test_install_update.sh, 37] / eval 50 stable. BUILD + SANDBOX-VERIFY ONLY — no live consumer write. Prior: Phase 91 enforce-assumption-gate.sh [18th project hook] + memory MCP PYTHONPATH env fix. Broader file inventory may be stale, run /dev-scan to refresh)
+> Last updated: 2026-06-26 by /dev-debrief (Phase 108 — GUI Dev-Harness v1 Thin Slice: NEW top-level `app/` subsystem — a Tauri (Rust) desktop shell embedding a model-agnostic agent engine IN-PROCESS behind an app-owned `EngineAdapter` interface, the security gate at the in-process tool-call site. Pi SDK + Vercel AI SDK adapters drive the SAME host gate (engine-neutral); checkpoint/external-mod file rails; spend-ceiling + ≤2s hard interrupt; tool-call normalization to one internal representation. Surface = a TS/React app (Vite) with strict CSP + inert rendering. The Python MCP memory server is mounted UNCHANGED via MCP stdio. Keychain custody via keyring-rs (standalone `keyhelper` crate) + an audited Tauri capability manifest. NEW toolchain: Node (Vite/Vitest/TypeScript) + Rust 1.96.0 (Tauri 2 + keyring 3 apple-native) + a LOCAL OpenAI-compatible model backend (no key/billing/ToS — subscription-OAuth ruled out). 63/63 app tests green; `cargo build` exit 0. Status active, delivery gate pending. Prior: Phase 97 — Frontier Positioning Sweep: NEW gitignored, local-only `companion/research/` apparatus [rung A of the de-risking ladder] — the FROZEN decision instrument [pre-registration.md, serves the spec function], a SHA256 freeze-attestation seal [.frozen], cited sweep-findings.md + convergence-map.md, and verdict.md. NEVER shipped/installed; `git ls-files companion/` empty by invariant. `.gitignore` gained `companion/`. VERDICT-only phase — ZERO shippable-kit code/config change. Prior, still current: Phase 93 — install.sh idempotent re-sync: NEW `install.sh --update [--arm]` mode reconciles a consumer's project-local hooks + settings.local.json to the current kit [ADD/UPDATE + dedupe-by-basename + automated cut-hook dereg behind timestamped backup → survivor smoke → revert-on-failure; arming DECOUPLED]; register-settings.py gains the FIRST deregistration mechanism the kit ships — `--dedupe`/`dedupe_by_basename` on `hooks` + a `deregister` subcommand, both basename-normalized [DRQ-1]; check-install-drift.sh gains `--consumer <root>` read-only detection; modules.json gains `cut_hooks` ["detect-loop"]; tests 28 scripts [+test_install_update.sh, 37] / eval 50 stable. BUILD + SANDBOX-VERIFY ONLY — no live consumer write. Prior: Phase 91 enforce-assumption-gate.sh [18th project hook] + memory MCP PYTHONPATH env fix. Broader file inventory may be stale, run /dev-scan to refresh)
 
 ## Project Shape
 
@@ -9,6 +9,11 @@ Shell/Markdown/Python scaffolding kit (260+ files: 21 .sh hooks (18 + 3 session-
 ## Directory Layout
 
 nana-dev-kit/
+  app/                                 # NEW (Phase 108) — the GUI dev-harness (Tauri desktop app). The PIVOT: GUI-primary, model-agnostic, engine embedded IN-PROCESS behind an app-owned adapter; security gate at the tool-call site
+    src/                               # TS/React surface: engine/ (EngineAdapter + types + Noop/Pi/Vercel adapters + normalize + event-queue), gate/ (host-gate + pi/gate-bridge + checkpoint/external-mod), memory/ (MCP stdio mount of the Python server), security/ (secret-deny + redact + keystore), fs/ (agent-file-tool), ui/ (inert + runtime + CSP), control/ (spend + interrupt)
+    src-tauri/                         # Rust shell (Tauri 2): src/lib.rs+main.rs (keyring commands), capabilities/default.json (audited manifest), tauri.conf.json (strict CSP), keyhelper/ (standalone keyring-rs custody crate)
+    tests/                             # 15 Vitest files (adapter-contract, security/*, e2e/*, checkpoint/*, safety/*, control/*, adapters/*, integrity/*, ui/*) — 63 tests incl. live provider/gate/memory round-trips
+    package.json, vite.config.ts       # Node deps: @earendil-works/pi-coding-agent, @modelcontextprotocol/sdk, ai, @ai-sdk/openai-compatible, react/react-dom; dev: vite, vitest, typescript, jsdom, @tauri-apps/{cli,api}
   install.sh                           # Module-group installer (318 lines, zero inline Python, reads modules.json via jq, delegates JSON merges to register-settings.py)
   modules.json                         # Declarative module manifest (5 modules: core, python, typescript, dev-wiki, knowledge-wiki; Phase 85 hook_dirs map; Phase 91 mcp block gains `env` {PYTHONPATH:$HOME/.claude})
   Makefile, VERSION, README.md         # Build targets, v0.5.0, docs (~95 lines, 7 sections)
@@ -94,6 +99,20 @@ Bash + jq (hooks + eval). memory_server requires python3 + pip deps (mcp, pydant
 | pre-compact.sh | _CURRENT_STATE.md, tasks.md, active-phase.md | stdout | Structured summary |
 ## Test Organization
 ~500 automated tests (28 scripts) + 50 eval scenarios (4 categories) + 25 reasoning eval scenarios. `make test` runs regression tests (incl. test_enforce_assumption_gate.sh — Phase 91 the gate hook's firing test; test_check_tests_were_run.sh — Phase 88 paired block/allow smoke; test_amplifier_emitter.sh — the Phase-68 ruler's own test; test_assumption_ledger.sh — the Phase-81 ledger validator's test; test_manifest_freshness.sh + test_scripts_smoke.sh — Phase 82; test_eval_hermeticity.sh + test_fixture_provenance.sh + test_lifecycle_hooks_firing.sh — Phase 84, real-event anchored). `make eval` runs scored eval (jq); eval/amplifier/ is repo-only measurement infra, NOT part of `make eval`. `make dashboard` shows heuristic counter stats. Reasoning eval: `python3 eval/reasoning/run-eval.py` (subagent-based, non-deterministic, judge v2 exemplar-based; 9 modes including --ablation, --analyze, --selective for LOO trace analysis and heuristic coverage).
+
+## Development Toolchain
+
+| Category | Tool | Config Path | Status |
+|----------|------|-------------|--------|
+| Build System (kit) | GNU Make + bash + jq | `Makefile` | detected |
+| Testing (kit) | bash test suite + eval-runner | `tests/`, `eval/` | detected |
+| Build System (app) | Vite + Tauri CLI (Tauri 2) | `app/vite.config.ts`, `app/src-tauri/tauri.conf.json` | detected (Phase 108) |
+| Testing (app) | Vitest (+ jsdom) | `app/package.json` | detected (Phase 108) |
+| Type Checking (app) | TypeScript (`tsc --noEmit`) | `app/tsconfig.json` | detected (Phase 108) |
+| Dependency Management (app) | npm (Node) | `app/package.json` | detected (Phase 108) |
+| Native Shell (app) | Rust 1.96.0 + Cargo (Tauri 2, keyring 3 apple-native) | `app/src-tauri/Cargo.toml`, `app/src-tauri/keyhelper/Cargo.toml` | detected (Phase 108) |
+| Model Backend (app, default) | LOCAL OpenAI-compatible (e.g. llama.cpp @ localhost:8080); Console API key optional | runtime config | configured (no files) |
+| Memory (app) | Python MCP memory server mounted UNCHANGED via MCP stdio | `memory_server/` (untouched) | detected |
 
 ## Known Issues
 

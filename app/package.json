@@ -1,0 +1,35 @@
+{
+  "name": "nana-harness",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Nana GUI Dev-Harness — GUI-primary, model-agnostic desktop dev harness (Phase 108 v1 thin slice)",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@ai-sdk/openai-compatible": "^3.0.0",
+    "@earendil-works/pi-coding-agent": "^0.80.2",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "ai": "^7.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@tauri-apps/api": "^2.11.1",
+    "@tauri-apps/cli": "^2.11.3",
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^29.1.1",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7",
+    "vitest": "^2.1.8"
+  }
+}

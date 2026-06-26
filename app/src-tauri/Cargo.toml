@@ -1,0 +1,32 @@
+[package]
+name = "nana-harness"
+version = "0.1.0"
+description = "Nana GUI Dev-Harness"
+authors = ["Jake Wang"]
+edition = "2021"
+rust-version = "1.77"
+
+# The Rust shell stays deliberately thin: it owns the window, the strict CSP,
+# the capability manifest, and (T2) keyring-rs key custody. The agent engine
+# runs in the app's TS/Node layer behind the EngineAdapter; the shell does not
+# embed the loop.
+[lib]
+name = "nana_harness_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Key custody (T2): API keys live only in the OS keychain, never a plaintext
+# file. apple-native = macOS Keychain backend (macOS-first per the spec). The
+# round-trip is proven empirically by src-tauri/keyhelper against this same crate.
+keyring = { version = "3", features = ["apple-native"] }
+
+[features]
+# this feature is used for production builds or when a dev server is not specified,
+# DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]

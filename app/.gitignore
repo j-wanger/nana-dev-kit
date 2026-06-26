@@ -1,0 +1,17 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+
+# Tauri / Rust build output
+src-tauri/target
+src-tauri/keyhelper/target
+src-tauri/gen/schemas
+
+# Generated mobile icon scaffolds (desktop-only v1)
+src-tauri/icons/android
+src-tauri/icons/ios
+
+# Logs
+*.log

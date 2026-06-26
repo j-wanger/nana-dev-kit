@@ -30,3 +30,7 @@ wiki/.wiki-resolved
 
 # Local-only research companion (Phase 97+) — never shipped
 companion/
+
+# Stray Node caches at repo root (the kit is Python+shell; app/ has its own)
+node_modules/
+.vite/

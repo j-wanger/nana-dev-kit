@@ -1,0 +1,19 @@
+[package]
+name = "keyhelper"
+version = "0.1.0"
+edition = "2021"
+
+# Standalone crate for the A3 keyring-rs spike (T2) and for the app's key-custody
+# command. Kept out of the tauri package's build graph so the empirical keychain
+# round-trip can be exercised without compiling the full Tauri shell (webkit/
+# tauri-build). The trailing [workspace] makes this its own workspace root so
+# cargo never tries to attach it to ../Cargo.toml.
+
+[[bin]]
+name = "keyhelper"
+path = "src/main.rs"
+
+[dependencies]
+keyring = { version = "3", features = ["apple-native"] }
+
+[workspace]
