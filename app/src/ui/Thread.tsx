@@ -22,10 +22,23 @@ export function Thread({ runtime }: { runtime: AssistantRuntime }) {
             <p className="thread__empty">Message the harness to begin.</p>
           </ThreadPrimitive.Empty>
           <ThreadPrimitive.Messages components={{ Message: MessageView }} />
+          <ThreadPrimitive.If running>
+            <div className="thread__working" aria-live="polite">
+              <span className="thread__working-dot" aria-hidden="true" />
+              working… (local models are slow — this can take a few minutes)
+            </div>
+          </ThreadPrimitive.If>
         </ThreadPrimitive.Viewport>
         <ComposerPrimitive.Root className="composer">
           <ComposerPrimitive.Input className="composer__input" placeholder="Message the harness…" />
-          <ComposerPrimitive.Send className="composer__send">Send</ComposerPrimitive.Send>
+          {/* While a turn runs the agent is busy: swap Send for a Stop that
+              interrupts the in-flight turn (composer cancel -> bridge -> host abort). */}
+          <ThreadPrimitive.If running={false}>
+            <ComposerPrimitive.Send className="composer__send">Send</ComposerPrimitive.Send>
+          </ThreadPrimitive.If>
+          <ThreadPrimitive.If running>
+            <ComposerPrimitive.Cancel className="composer__cancel">Stop</ComposerPrimitive.Cancel>
+          </ThreadPrimitive.If>
         </ComposerPrimitive.Root>
       </ThreadPrimitive.Root>
     </AssistantRuntimeProvider>

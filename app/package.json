@@ -12,7 +12,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "tauri": "tauri",
-    "app": "npm run build:host && NANA_ENGINE_HOST_JS=\"$PWD/dist-host/engine-host.mjs\" npm run tauri dev"
+    "app": "npm run build:host && PATH=\"$HOME/.cargo/bin:$PATH\" NANA_ENGINE_HOST_JS=\"$PWD/dist-host/engine-host.mjs\" npm run tauri dev"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^3.0.0",
