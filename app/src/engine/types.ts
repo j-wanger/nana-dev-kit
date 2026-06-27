@@ -52,7 +52,18 @@ export type EngineEvent =
   // ToolExecutionEndEvent.result, Vercel forwards the AI-SDK part.output). A
   // tool EXECUTION error (distinct from a host-gate `tool-denied`) rides the
   // additive optional `isError` — adapters that don't distinguish it omit it.
-  | { type: 'tool-result'; id: string; result: unknown; isError?: boolean }
+  // Ph111: `details` carries a NORMALIZED, engine-neutral view of a tool's typed
+  // result (Pi's AgentToolResult.details → e.g. EditToolDetails.diff). Kept to a
+  // whitelisted JSON shape so NO engine type crosses the boundary
+  // ([[engine-adapter-in-process-gate]]); the UI's mapToArtifact still owns the
+  // VIEW-kind decision. Additive: adapters with no typed details omit it.
+  | {
+      type: 'tool-result';
+      id: string;
+      result: unknown;
+      isError?: boolean;
+      details?: { diff?: string };
+    }
   // Ph110: partial/streaming output while a tool is still executing (Pi's
   // tool_execution_update.partialResult), folded into the in-flight call so a
   // long local-model tool run streams per-step instead of looking frozen.

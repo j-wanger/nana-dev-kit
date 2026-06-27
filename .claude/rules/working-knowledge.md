@@ -23,16 +23,6 @@
   source: [[decision:bidirectional-registration-invariant]] | activated: 2026-05-28
 - [uses: 1] Session-start.sh line cap (70 lines, Phase 22) eroded to 137 lines over Phases 23-54 without any test catching it. Cognitive-readiness.sh extraction fixed it. Pattern: caps need test assertions, not just documentation.
   source: [[journal:2026-05-28-phase-55-harness-activation-overhaul-complete]] | activated: 2026-05-28
-- [uses: 1] Ground-truth heuristic mapping: 84% scenario coverage (21/25 have at least 1 matching heuristic). 4 blind-spot scenarios (011, 019, 020, 023) in organizational/distributed-systems domains. IRON-004 most broadly applicable (6/25) but known harmful on 018.
-  source: [[active-knowledge:phase-51]] | activated: 2026-05-27
-- [uses: 1] Two-phase eval methodology: single-call eval (agent sees expert answers) produces 100% ceiling (20/20 at 5/5/5). Two-phase (agent blind, separate judge) produces meaningful differentiation. Essential for all future eval runs.
-  source: [[decision:two-phase-eval-methodology]] | activated: 2026-05-27
-- [uses: 1] Filler text actively discarded by model: irrelevant content (cooking/gardening) is judged for content-relevance before application. Length-sensitivity experiment doesn't cleanly isolate length variable. NEGATIVE RESULT for length-as-driver hypothesis.
-  source: [[active-knowledge:phase-50]] | activated: 2026-05-27
-- [uses: 1] Haiku judge passes calibration: mean=4.07, 37.8% below 5 (self-judge: mean 4.83, fails). High inter-run variance (mean ranges 2.97-4.85) needs investigation. Sonnet not tested (jumped to Haiku per fallback sequence).
-  source: [[active-knowledge:phase-50]] | activated: 2026-05-27
-- [uses: 1] Harder scenarios don't reduce ceiling if model gets them right. Ceiling is about correct-answer frequency, not scenario difficulty. 5 new scenarios (021-025) scored 15/15 with self-judge. Ceiling reduction requires wrong answers OR stricter judge.
-  source: [[active-knowledge:phase-50]] | activated: 2026-05-27
 - [uses: 1] Conditional injection negative result: scenario-type classification (suppress IRON RULES for risk-dominant) provides zero delta vs always-inject. Stochastic interference from Phase 48 did not reproduce in fresh runs. Baseline divergence, not rule-induced interference.
   source: [[journal:2026-05-27-phase-49-conditional-heuristic-injection-complete]] | activated: 2026-05-27
 - [uses: 1] Fresh runs methodology: cross-round absolute scores diverge (baseline variance). All conditions for a comparison must run fresh in the same evaluation round. Within-round deltas valid, cross-round comparisons invalid.

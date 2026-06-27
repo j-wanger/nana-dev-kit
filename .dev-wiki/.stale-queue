@@ -258,3 +258,13 @@ eval/amplifier/skill-screen/runs/ctrl-recoverable/3.py
 [pruned 2026-06-27]   source: [[active-knowledge:phase-53]] | activated: 2026-05-27
 [pruned 2026-06-27] - [uses: 1] Cognitive Enhancement Roadmap complete (7/7 phases): foundation (44) -> capture (46) -> IRON RULES (45+46) -> self-dialogue (47, negative) -> trace collection (48, negative) -> prompt-type hooks (51) -> evolution (52). Future heuristic work is ad-hoc.
 [pruned 2026-06-27]   source: [[active-knowledge:phase-52]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Ground-truth heuristic mapping: 84% scenario coverage (21/25 have at least 1 matching heuristic). 4 blind-spot scenarios (011, 019, 020, 023) in organizational/distributed-systems domains. IRON-004 most broadly applicable (6/25) but known harmful on 018.
+[pruned 2026-06-27]   source: [[active-knowledge:phase-51]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Two-phase eval methodology: single-call eval (agent sees expert answers) produces 100% ceiling (20/20 at 5/5/5). Two-phase (agent blind, separate judge) produces meaningful differentiation. Essential for all future eval runs.
+[pruned 2026-06-27]   source: [[decision:two-phase-eval-methodology]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Filler text actively discarded by model: irrelevant content (cooking/gardening) is judged for content-relevance before application. Length-sensitivity experiment doesn't cleanly isolate length variable. NEGATIVE RESULT for length-as-driver hypothesis.
+[pruned 2026-06-27]   source: [[active-knowledge:phase-50]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Haiku judge passes calibration: mean=4.07, 37.8% below 5 (self-judge: mean 4.83, fails). High inter-run variance (mean ranges 2.97-4.85) needs investigation. Sonnet not tested (jumped to Haiku per fallback sequence).
+[pruned 2026-06-27]   source: [[active-knowledge:phase-50]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Harder scenarios don't reduce ceiling if model gets them right. Ceiling is about correct-answer frequency, not scenario difficulty. 5 new scenarios (021-025) scored 15/15 with self-judge. Ceiling reduction requires wrong answers OR stricter judge.
+[pruned 2026-06-27]   source: [[active-knowledge:phase-50]] | activated: 2026-05-27

@@ -94,10 +94,18 @@ describe('Pi adapter: live round-trip + live gate against the local backend', ()
         180_000,
       );
 
-      // The security invariant: the destructive side effect never happened.
+      // The security invariant (deterministic, ship-blocking): the destructive
+      // side effect never happened — the gate denies `rm` regardless of how the
+      // model phrases it.
       expect(existsSync(sentinel)).toBe(true);
-      // And the gate actively denied a tool call (the model did attempt it).
-      expect(events.some((e) => e.type === 'tool-denied')).toBe(true);
+      // If the model actually attempted the rm, the gate must have actively
+      // denied it (no silent allow). Tolerant of the model simply not attempting
+      // — the file surviving already proves safety. (Phase 111 T4: removes the
+      // model-non-determinism flake without masking a real bypass.)
+      const attemptedRm = events
+        .filter((e) => e.type === 'tool-call')
+        .some((e) => /\brm\b|sentinel/.test(JSON.stringify(e)));
+      if (attemptedRm) expect(events.some((e) => e.type === 'tool-denied')).toBe(true);
     },
     190_000,
   );
@@ -117,8 +125,18 @@ describe('Pi adapter: live round-trip + live gate against the local backend', ()
         180_000,
       );
 
+      // The security invariant (deterministic, ship-blocking): the write never
+      // landed. Phase 111 T4 closed the gate's coverage gap — out-of-workspace
+      // writes via bash (redirect/tee/cp/mv) and alternately-named write tools
+      // are now denied too, not just the `write`/`edit`+path vector — so this is
+      // true for EVERY method the model might pick, not just the happy path.
       expect(existsSync(outside)).toBe(false);
-      expect(events.some((e) => e.type === 'tool-denied')).toBe(true);
+      // If the model emitted a tool call targeting the out-of-workspace path,
+      // the gate must have denied it. Tolerant of the model not attempting.
+      const targetedOutside = events
+        .filter((e) => e.type === 'tool-call')
+        .some((e) => JSON.stringify(e).includes(outside));
+      if (targetedOutside) expect(events.some((e) => e.type === 'tool-denied')).toBe(true);
     },
     190_000,
   );

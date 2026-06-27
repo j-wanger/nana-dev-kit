@@ -76,3 +76,63 @@ describe('artifact routing (Ph110 T5)', () => {
     expect(list.map((a) => a.kind)).toEqual(['terminal', 'diff']);
   });
 });
+
+// Ph111 T3 — typed details.diff WINS over the looksLikeDiff heuristic. Pi's real
+// EditToolDetails.diff is a line-number-prefixed +/-/space format with NO
+// ---/+++/@@ header (live-confirmed in the T1 spike), so the heuristic MISSES it
+// — the typed channel is strictly better. The diff is untrusted → redact + cap.
+describe('artifact routing — typed details win over the heuristic (Ph111 T3)', () => {
+  const withDetails = (name: string, output: unknown, diff: string, id = 'a'): SurfaceToolCall => ({
+    id,
+    name,
+    status: 'done',
+    output,
+    details: { diff },
+  });
+
+  it('routes an edit with typed details.diff to a STRUCTURED diff regardless of output-text shape', () => {
+    const diff = '-1 hello world\n+1 goodbye world\n 2 second line'; // Pi's real format
+    // output text is a plain success message (NOT diff-shaped) — typed path wins.
+    expect(toArtifact(withDetails('edit', 'Edited greeting.txt', diff))).toMatchObject({
+      kind: 'diff',
+      name: 'edit',
+      diff,
+    });
+  });
+
+  it('the typed path wins on Pi\'s header-less diff that the heuristic would MISS', () => {
+    const diff = '-3 foo\n+3 bar';
+    // Without details the heuristic misses it (no ---/+++/@@) → terminal …
+    expect(toArtifact(done('edit', diff))).toMatchObject({ kind: 'terminal' });
+    // … with typed details it is a real diff.
+    expect(toArtifact(withDetails('edit', diff, diff))).toMatchObject({ kind: 'diff', diff });
+  });
+
+  it('details absent + output IS a unified diff → heuristic still routes diff (Ph110 path preserved)', () => {
+    expect(toArtifact(done('edit', '--- a\n+++ b\n@@ -1 +1 @@\n-x\n+y'))).toMatchObject({ kind: 'diff' });
+  });
+
+  it('neither typed details nor diff-shaped output → terminal', () => {
+    expect(toArtifact(done('bash', 'total 0\nfile.txt'))).toMatchObject({ kind: 'terminal' });
+  });
+
+  it('redacts a secret inside the typed diff', () => {
+    const secret = 'AKIAIOSFODNN7EXAMPLE';
+    const art = toArtifact(withDetails('edit', 'edited', `-1 OLD\n+1 ${secret}`));
+    expect(JSON.stringify(art)).not.toContain(secret);
+    expect(JSON.stringify(art)).toContain('«redacted»');
+  });
+
+  it('caps an oversized typed diff so the panel render is bounded', () => {
+    const big = '+building module here\n'.repeat(2000); // ~44KB
+    const art = toArtifact(withDetails('edit', 'edited', big));
+    expect(art?.kind).toBe('diff');
+    expect((art as { diff: string }).diff.length).toBeLessThan(big.length);
+  });
+
+  it('an empty details.diff falls back to the heuristic/terminal path (robustness)', () => {
+    expect(
+      toArtifact({ id: 'a', name: 'edit', status: 'done', output: 'edited 1 file', details: { diff: '' } }),
+    ).toMatchObject({ kind: 'terminal' });
+  });
+});

@@ -20,6 +20,10 @@ export interface SurfaceToolCall {
   args?: Record<string, unknown>;
   output?: unknown;
   isError?: boolean;
+  // Ph111: the NORMALIZED typed result (e.g. an edit's structured diff). The
+  // UI's mapToArtifact reads this to render a real DiffView instead of guessing
+  // from the output text. Engine-neutral + JSON-serializable, like the rest.
+  details?: { diff?: string };
 }
 
 export interface SurfaceMessage {
@@ -54,6 +58,7 @@ export function applyEngineEvent(msg: SurfaceMessage, ev: EngineEvent): SurfaceM
         t.status = 'done';
         t.output = ev.result;
         if (ev.isError !== undefined) t.isError = ev.isError;
+        if (ev.details !== undefined) t.details = ev.details;
       }
       break;
     }

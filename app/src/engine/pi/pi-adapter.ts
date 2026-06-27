@@ -95,6 +95,24 @@ function extractToolText(result: unknown): unknown {
 }
 
 /**
+ * Ph111: NORMALIZE Pi's typed `AgentToolResult.details` to a whitelisted,
+ * engine-neutral `{ diff }` (A3) — for the edit tool that is `EditToolDetails`
+ * ({ diff, patch, firstChangedLine }; pi edit.d.ts). We lift ONLY the
+ * display-oriented `diff` string (what DiffView consumes), so no Pi type crosses
+ * the boundary. The diff is untrusted model-adjacent content (it embeds file
+ * bytes) → redact BEFORE cap, the same rail as the text result. Returns
+ * undefined when there is no usable diff so the surface falls back cleanly.
+ */
+function extractToolDetails(result: unknown): { diff?: string } | undefined {
+  if (result == null || typeof result !== 'object') return undefined;
+  const details = (result as { details?: unknown }).details;
+  if (details == null || typeof details !== 'object') return undefined;
+  const diff = (details as { diff?: unknown }).diff;
+  if (typeof diff !== 'string' || diff.length === 0) return undefined;
+  return { diff: capOutput(redactSecrets(diff)) as string };
+}
+
+/**
  * Pure mapping from one Pi subscribe event to one engine-neutral EngineEvent
  * (or null to skip). Extracted as a seam so it is unit-testable without a live
  * Pi session (Ph110 T1). It forwards the REAL args (tool_execution_start.args)
@@ -120,11 +138,13 @@ export function mapPiStreamEvent(event: PiStreamEvent): EngineEvent | null {
     }
     case 'tool_execution_end': {
       const e = event as Extract<PiStreamEvent, { type: 'tool_execution_end' }>;
+      const details = extractToolDetails(e.result);
       return {
         type: 'tool-result',
         id: e.toolCallId ?? '',
         result: extractToolText(e.result),
         isError: Boolean(e.isError),
+        ...(details ? { details } : {}),
       };
     }
     case 'tool_execution_update': {

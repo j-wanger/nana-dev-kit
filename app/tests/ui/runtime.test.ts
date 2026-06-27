@@ -78,4 +78,35 @@ describe('engine -> surface message reduction', () => {
     expect(msg.error).toBe('boom');
     expect(msg.done).toBe(false);
   });
+
+  it('threads typed details (the structured diff) onto the surface call (Ph111 T2)', () => {
+    const diff = '-1 old line\n+1 new line';
+    const msg = reduceEngineEvents([
+      { type: 'tool-call', call: { id: 'e', name: 'edit', args: { path: 'f.txt' } } },
+      { type: 'tool-result', id: 'e', result: 'edited f.txt', isError: false, details: { diff } },
+      { type: 'done' },
+    ]);
+    const call = msg.toolCalls.find((c) => c.id === 'e')!;
+    expect(call.details).toEqual({ diff });
+    expect(call.output).toBe('edited f.txt'); // result still threaded alongside
+  });
+
+  it('a tool-result without details leaves details undefined (Ph111 T2)', () => {
+    const msg = reduceEngineEvents([
+      { type: 'tool-call', call: { id: 'a', name: 'bash', args: { command: 'ls' } } },
+      { type: 'tool-result', id: 'a', result: 'a.txt', isError: false },
+      { type: 'done' },
+    ]);
+    expect(msg.toolCalls[0].details).toBeUndefined();
+  });
+
+  it('a reduced message carrying details stays JSON-serializable round-trip (Ph111 T2)', () => {
+    const msg = reduceEngineEvents([
+      { type: 'tool-call', call: { id: 'e', name: 'edit', args: { path: 'f.txt' } } },
+      { type: 'tool-result', id: 'e', result: 'edited', details: { diff: '-1 a\n+1 b' } },
+      { type: 'done' },
+    ]);
+    expect(() => JSON.stringify(msg)).not.toThrow();
+    expect(JSON.parse(JSON.stringify(msg))).toEqual(msg);
+  });
 });

@@ -138,3 +138,97 @@ describe('mapPiStreamEvent — forwards real Pi tool args + output (Ph110 T1)', 
     ).toBeNull();
   });
 });
+
+// Ph111 T1 — typed `details` → a normalized engine-neutral {diff}. Pi's
+// AgentToolResult wrapper carries a per-tool typed `details`; for the edit tool
+// that is EditToolDetails = { diff: string; patch: string; firstChangedLine?: number }
+// (pi edit.d.ts:18-25). The adapter NORMALIZES it to a whitelisted {diff?: string}
+// (A3 — no Pi EditToolDetails type crosses the boundary; the UI's mapToArtifact
+// still owns the VIEW-kind decision, A4). The diff is untrusted model-adjacent
+// content → redact-then-cap at the boundary, same rail as the text result.
+describe('mapPiStreamEvent — typed details → normalized {diff} (Ph111 T1)', () => {
+  it('extracts EditToolDetails.diff into a normalized {diff} (the typed path)', () => {
+    const diff = '--- a/file.txt\n+++ b/file.txt\n@@ -1,1 +1,1 @@\n-old line\n+new line';
+    const ev = mapPiStreamEvent({
+      type: 'tool_execution_end',
+      toolName: 'edit',
+      toolCallId: 'e1',
+      result: {
+        content: [{ type: 'text', text: 'Edited file.txt' }],
+        details: { diff, patch: 'unified-patch-form', firstChangedLine: 1 },
+      },
+      isError: false,
+    }) as ToolResult;
+    expect(ev.details).toEqual({ diff });
+    // The text summary is unchanged (additive — details rides alongside result).
+    expect(ev.result).toBe('Edited file.txt');
+  });
+
+  it('omits details when the wrapper has a non-diff details (bash exitCode) — falls back cleanly', () => {
+    const ev = mapPiStreamEvent({
+      type: 'tool_execution_end',
+      toolName: 'bash',
+      toolCallId: 'b1',
+      result: { content: [{ type: 'text', text: 'ok' }], details: { exitCode: 0 } },
+      isError: false,
+    }) as ToolResult;
+    expect(ev.details).toBeUndefined();
+  });
+
+  it('omits details for a plain string result (no wrapper)', () => {
+    const ev = mapPiStreamEvent({
+      type: 'tool_execution_end',
+      toolName: 'bash',
+      toolCallId: 'b2',
+      result: 'plain string output',
+      isError: false,
+    }) as ToolResult;
+    expect(ev.details).toBeUndefined();
+  });
+
+  it('redacts a secret inside the diff (untrusted model-adjacent content)', () => {
+    const diff = '--- a/.env\n+++ b/.env\n@@ -1 +1 @@\n-OLD\n+AKIAIOSFODNN7EXAMPLE';
+    const ev = mapPiStreamEvent({
+      type: 'tool_execution_end',
+      toolName: 'edit',
+      toolCallId: 'e2',
+      result: {
+        content: [{ type: 'text', text: 'edited' }],
+        details: { diff, patch: '', firstChangedLine: 1 },
+      },
+      isError: false,
+    }) as ToolResult;
+    expect(ev.details?.diff).not.toContain('AKIAIOSFODNN7EXAMPLE');
+    expect(ev.details?.diff).toContain('«redacted»');
+  });
+
+  it('caps an oversized diff at the adapter boundary', () => {
+    const diff = '+building module '.repeat(2000); // ~34KB, no long token run → truncated not redacted
+    const ev = mapPiStreamEvent({
+      type: 'tool_execution_end',
+      toolName: 'edit',
+      toolCallId: 'e3',
+      result: {
+        content: [{ type: 'text', text: 'edited' }],
+        details: { diff, patch: '', firstChangedLine: 1 },
+      },
+      isError: false,
+    }) as ToolResult;
+    expect((ev.details?.diff ?? '').length).toBeLessThan(diff.length);
+    expect(ev.details?.diff).toMatch(/truncated/i);
+  });
+
+  it('omits details when details.diff is present but empty (no-op edit)', () => {
+    const ev = mapPiStreamEvent({
+      type: 'tool_execution_end',
+      toolName: 'edit',
+      toolCallId: 'e4',
+      result: {
+        content: [{ type: 'text', text: 'no-op' }],
+        details: { diff: '', patch: '', firstChangedLine: 0 },
+      },
+      isError: false,
+    }) as ToolResult;
+    expect(ev.details).toBeUndefined();
+  });
+});
