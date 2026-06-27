@@ -2,6 +2,8 @@ import type { EngineAdapter } from '../engine/adapter';
 import type { EngineEvent, ToolCallGate, NormalizedToolCall } from '../engine/types';
 import { ConfirmationBroker } from '../gate/confirm/broker';
 import { createConfirmingGate } from '../gate/confirm/confirming-gate';
+import { bashOutOfWorkspaceWriteTargets } from '../gate/host-gate';
+import { recordApprovedWrites } from '../gate/sandbox/approved-writes';
 import { assembleContext } from '../context/assembly';
 
 // The Node engine-HOST (Phase 109, T6). It runs in the Node layer (NOT the
@@ -56,6 +58,15 @@ export class EngineHost {
         // single target path here.
         const path = typeof call.args.path === 'string' ? call.args.path : undefined;
         if (path) this.deps.snapshot?.(path);
+        // Phase 112 C1-preserve: an APPROVED out-of-workspace bash write must
+        // also be permitted by the OS sandbox for this one command — record its
+        // target(s) so the bash executor folds them into the per-command profile.
+        if (call.name === 'bash' && typeof call.args.command === 'string') {
+          recordApprovedWrites(
+            call.args.command,
+            bashOutOfWorkspaceWriteTargets(call.args.command, this.deps.workspaceRoot),
+          );
+        }
       },
     });
     deps.adapter.setToolCallGate(this.gate);

@@ -1,11 +1,12 @@
 import { resolve } from 'node:path';
-import { execSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 import { streamText, tool, stepCountIs, jsonSchema } from 'ai';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
 import type { EngineAdapter, SendPromptOptions } from '../adapter';
 import type { EngineEvent, ToolCallGate } from '../types';
 import { createHostGate } from '../../gate/host-gate';
+import { resolveSandboxMode, runSandboxedBash, type SandboxMode } from '../../gate/sandbox/seatbelt';
+import { consumeApprovedWrites } from '../../gate/sandbox/approved-writes';
 import { EventQueue } from '../event-queue';
 import { createGatedToolExecute } from './gated-tools';
 
@@ -22,6 +23,8 @@ export interface VercelAdapterOptions {
   /** Dummy key for keyless local servers. Default 'local'. */
   apiKey?: string;
   providerName?: string;
+  /** Sandbox profile for bash (Phase 112). Default: NANA_SANDBOX_MODE or 'strict'. */
+  sandboxMode?: SandboxMode;
 }
 
 export class VercelAdapter implements EngineAdapter {
@@ -32,6 +35,7 @@ export class VercelAdapter implements EngineAdapter {
   private readonly modelId: string;
   private readonly apiKey: string;
   private readonly providerName: string;
+  private readonly sandboxMode: SandboxMode;
 
   constructor(opts: VercelAdapterOptions) {
     this.workspaceRoot = resolve(opts.workspaceRoot ?? process.cwd());
@@ -39,6 +43,7 @@ export class VercelAdapter implements EngineAdapter {
     this.modelId = opts.modelId;
     this.apiKey = opts.apiKey ?? 'local';
     this.providerName = opts.providerName ?? 'local';
+    this.sandboxMode = resolveSandboxMode(opts.sandboxMode);
   }
 
   setToolCallGate(gate: ToolCallGate): void {
@@ -49,13 +54,25 @@ export class VercelAdapter implements EngineAdapter {
     return this.gate ?? createHostGate({ workspaceRoot: this.workspaceRoot });
   }
 
-  // Real tool side effects — reached ONLY when the gate allows.
+  // Real tool side effects — reached ONLY when the gate allows. Phase 112: bash
+  // runs through the seatbelt chokepoint (argv form, no quoting hole) so a
+  // gate-allowed command is STILL OS-confined to the workspace on darwin (the
+  // string-gate's evasion residual closed); off-darwin it executes unwrapped
+  // (string-gate is the only boundary — documented residual). Non-zero exit
+  // surfaces as a thrown tool error (the model sees stderr), as execSync did.
   private runBash(args: Record<string, unknown>): string {
-    return execSync(String(args.command ?? ''), {
+    const command = String(args.command ?? '');
+    const r = runSandboxedBash(command, {
       cwd: this.workspaceRoot,
+      workspaceRoot: this.workspaceRoot,
+      mode: this.sandboxMode,
+      // Phase 112 T4: fold any human-approved out-of-workspace target for this
+      // command into the per-command profile (consume-once).
+      extraWrites: consumeApprovedWrites(command),
       timeout: 10_000,
-      encoding: 'utf8',
     });
+    if (r.status !== 0) throw new Error(r.stderr || r.stdout || `command exited with status ${r.status}`);
+    return r.stdout;
   }
 
   private runWrite(args: Record<string, unknown>): string {

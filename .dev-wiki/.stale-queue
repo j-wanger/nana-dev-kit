@@ -268,3 +268,13 @@ eval/amplifier/skill-screen/runs/ctrl-recoverable/3.py
 [pruned 2026-06-27]   source: [[active-knowledge:phase-50]] | activated: 2026-05-27
 [pruned 2026-06-27] - [uses: 1] Harder scenarios don't reduce ceiling if model gets them right. Ceiling is about correct-answer frequency, not scenario difficulty. 5 new scenarios (021-025) scored 15/15 with self-judge. Ceiling reduction requires wrong answers OR stricter judge.
 [pruned 2026-06-27]   source: [[active-knowledge:phase-50]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Conditional injection negative result: scenario-type classification (suppress IRON RULES for risk-dominant) provides zero delta vs always-inject. Stochastic interference from Phase 48 did not reproduce in fresh runs. Baseline divergence, not rule-induced interference.
+[pruned 2026-06-27]   source: [[journal:2026-05-27-phase-49-conditional-heuristic-injection-complete]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Fresh runs methodology: cross-round absolute scores diverge (baseline variance). All conditions for a comparison must run fresh in the same evaluation round. Within-round deltas valid, cross-round comparisons invalid.
+[pruned 2026-06-27]   source: [[decision:fresh-runs-deviation]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Early falsification checkpoint: run cheapest falsification test first before committing to expensive eval. Phase 49: 3 no-inject runs on 015 before 180 full-eval invocations. Saved nothing here (passed), but design pattern is sound.
+[pruned 2026-06-27]   source: [[decision:early-falsification-checkpoint]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Three-type scenario taxonomy: risk-dominant, capacity-constraint, domain-nuance. Property-based (transferable to new scenarios), not outcome-based (ceiling is an eval property, not a scenario property). No 4th type.
+[pruned 2026-06-27]   source: [[decision:three-type-taxonomy-only]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Conditional injection template: gates on scenario_type field in JSON metadata. risk-dominant suppresses IRON RULES, all others inject. Metadata-based lookup, not runtime inference.
+[pruned 2026-06-27]   source: [[active-knowledge:phase-49]] | activated: 2026-05-27

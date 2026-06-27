@@ -23,16 +23,6 @@
   source: [[decision:bidirectional-registration-invariant]] | activated: 2026-05-28
 - [uses: 1] Session-start.sh line cap (70 lines, Phase 22) eroded to 137 lines over Phases 23-54 without any test catching it. Cognitive-readiness.sh extraction fixed it. Pattern: caps need test assertions, not just documentation.
   source: [[journal:2026-05-28-phase-55-harness-activation-overhaul-complete]] | activated: 2026-05-28
-- [uses: 1] Conditional injection negative result: scenario-type classification (suppress IRON RULES for risk-dominant) provides zero delta vs always-inject. Stochastic interference from Phase 48 did not reproduce in fresh runs. Baseline divergence, not rule-induced interference.
-  source: [[journal:2026-05-27-phase-49-conditional-heuristic-injection-complete]] | activated: 2026-05-27
-- [uses: 1] Fresh runs methodology: cross-round absolute scores diverge (baseline variance). All conditions for a comparison must run fresh in the same evaluation round. Within-round deltas valid, cross-round comparisons invalid.
-  source: [[decision:fresh-runs-deviation]] | activated: 2026-05-27
-- [uses: 1] Early falsification checkpoint: run cheapest falsification test first before committing to expensive eval. Phase 49: 3 no-inject runs on 015 before 180 full-eval invocations. Saved nothing here (passed), but design pattern is sound.
-  source: [[decision:early-falsification-checkpoint]] | activated: 2026-05-27
-- [uses: 1] Three-type scenario taxonomy: risk-dominant, capacity-constraint, domain-nuance. Property-based (transferable to new scenarios), not outcome-based (ceiling is an eval property, not a scenario property). No 4th type.
-  source: [[decision:three-type-taxonomy-only]] | activated: 2026-05-27
-- [uses: 1] Conditional injection template: gates on scenario_type field in JSON metadata. risk-dominant suppresses IRON RULES, all others inject. Metadata-based lookup, not runtime inference.
-  source: [[active-knowledge:phase-49]] | activated: 2026-05-27
 - [uses: 2] Stochastic heuristic interference (negative result): LOO ablation showed scenario 015 interference is stochastic (~1/3 of runs), not attributable to any specific IRON RULE. Removing IRON-004 does NOT fix it. IRON-001 is load-bearing for scenario 020. Per-rule selection not viable; scenario-type classification (all-or-nothing injection) is the right framing.
   source: [[decision:stochastic-heuristic-interference]] | activated: 2026-05-27
 - [uses: 1] LOO ablation methodology: remove one IRON RULE at a time, compare to full-set across training scenarios x 3 runs. Classification: delta >= 0.5 with variance < 0.5 = helped/hurt; else "uncertain". Baseline-first checkpoint required. Judge v2 (exemplar-based), same judge for all conditions.

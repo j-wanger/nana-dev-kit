@@ -96,6 +96,28 @@ function extractBashWriteTargets(command: string): string[] {
   return targets;
 }
 
+/** Resolve `p` against `root`; true if it escapes the workspace tree. */
+function isOutsidePath(p: string, root: string): boolean {
+  const abs = resolve(root, p);
+  return abs !== root && !abs.startsWith(root + sep);
+}
+
+/**
+ * The out-of-workspace bash WRITE targets in `command` (resolved absolute),
+ * excluding /dev sinks — the SAME detection the gate's bash branch uses to
+ * require confirmation. Reused by the Phase 112 C1-preserve channel: when the
+ * human approves such a write, these are the paths the per-command sandbox
+ * profile must additionally allow. Empty when there is no detectable
+ * out-of-workspace write.
+ */
+export function bashOutOfWorkspaceWriteTargets(command: string, workspaceRoot: string): string[] {
+  const root = resolve(workspaceRoot);
+  return extractBashWriteTargets(command)
+    .filter((t) => !DEV_SINK.test(t))
+    .filter((t) => isOutsidePath(t, root))
+    .map((t) => resolve(root, t));
+}
+
 function deny(reason: string): GateDecision {
   return { action: 'deny', reason };
 }
@@ -109,10 +131,7 @@ export function createHostGate(config: HostGateConfig): ToolCallGate {
   const root = resolve(config.workspaceRoot);
   const home = config.home ?? homedir();
 
-  const isOutsideWorkspace = (p: string): boolean => {
-    const abs = resolve(root, p);
-    return abs !== root && !abs.startsWith(root + sep);
-  };
+  const isOutsideWorkspace = (p: string): boolean => isOutsidePath(p, root);
 
   return (call: NormalizedToolCall): GateDecision => {
     const { name, args } = call;

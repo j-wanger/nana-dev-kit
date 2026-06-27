@@ -3,6 +3,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import {
   AuthStorage,
   createAgentSession,
+  createBashToolDefinition,
   DefaultResourceLoader,
   getAgentDir,
   ModelRegistry,
@@ -15,6 +16,14 @@ import { createHostGate } from '../../gate/host-gate';
 import { applyHostGate, type PiToolCallEvent } from './gate-bridge';
 import { getSecret } from '../../security/keystore';
 import { redactSecrets } from '../../security/redact';
+import {
+  buildProfile,
+  isSandboxAvailable,
+  resolveSandboxMode,
+  wrapBashCommandString,
+  type SandboxMode,
+} from '../../gate/sandbox/seatbelt';
+import { consumeApprovedWrites } from '../../gate/sandbox/approved-writes';
 import { EventQueue } from '../event-queue';
 
 // Minimal view of the Pi subscribe events the adapter consumes. The full
@@ -156,6 +165,57 @@ export function mapPiStreamEvent(event: PiStreamEvent): EngineEvent | null {
   }
 }
 
+// Phase 112 T2 — OS-sandbox the Pi bash tool. Pi runs bash inside the SDK, but
+// it lets us SUBSTITUTE a custom tool named 'bash' via createAgentSession's
+// `customTools` (a custom 'bash' deterministically overrides the builtin —
+// verified by probe). The wrap lives in the bash tool's `spawnHook`, which fires
+// INSIDE the tool's execute() — strictly DOWNSTREAM of `pi.on('tool_call')` (the
+// host gate) and `tool_execution_start` (the Ph110/111 visibility surface). So
+// the gate + the UI feed see the ORIGINAL command; only the actual spawn is
+// sandbox-wrapped. NOTE: `baseToolsOverride` is NOT the seam — it is on the
+// low-level AgentSession ctor (not createAgentSession) and replaces the WHOLE
+// base tool set.
+
+// Structural shape of Pi's BashSpawnContext (bash.d.ts) — kept local so no Pi
+// type is required at this seam. The hook is SYNCHRONOUS (a pure transform).
+export type SandboxSpawnContext = { command: string; cwd: string; env: NodeJS.ProcessEnv };
+
+/** The synchronous spawnHook: rewrite the command to run under a workspace-
+ *  confined seatbelt profile. Returns a NEW context (never mutates the input), so
+ *  it cannot retroactively change what the gate/visibility already observed. */
+export function makeSandboxSpawnHook(
+  workspaceRoot: string,
+  mode: SandboxMode,
+): (ctx: SandboxSpawnContext) => SandboxSpawnContext {
+  return (ctx) => ({
+    ...ctx,
+    command: wrapBashCommandString(
+      ctx.command,
+      // Phase 112 T4: fold any human-APPROVED out-of-workspace target for THIS
+      // command into the per-command profile (consume-once) — approve-then-succeed.
+      buildProfile({ workspaceRoot, mode, extraWrites: consumeApprovedWrites(ctx.command) }),
+    ),
+  });
+}
+
+// The element type createAgentSession's `customTools` accepts (Pi erases the
+// per-tool schema to TSchema/unknown/any). createBashToolDefinition returns a
+// CONCRETELY-typed bash ToolDefinition; handing it back to Pi is sound at runtime
+// (probe-verified) but TS rejects the assignment on renderCall's contravariant
+// arg type — bridge with a single typed cast, no `any` leak past this seam.
+type PiCustomTool = NonNullable<NonNullable<Parameters<typeof createAgentSession>[0]>['customTools']>[number];
+
+/** The customTools entry that OS-sandboxes bash — empty off-darwin / when
+ *  sandbox-exec is absent (the host-gate string layer remains the only boundary
+ *  there; documented residual). */
+export function piSandboxCustomTools(workspaceRoot: string, mode: SandboxMode): PiCustomTool[] {
+  if (!isSandboxAvailable()) return [];
+  const bash = createBashToolDefinition(workspaceRoot, {
+    spawnHook: makeSandboxSpawnHook(workspaceRoot, mode),
+  });
+  return [bash as unknown as PiCustomTool];
+}
+
 /**
  * A local / self-hosted OpenAI-compatible provider (llama.cpp, vLLM, Ollama,
  * LM Studio, ...). When set, the adapter registers it via a models.json and
@@ -189,6 +249,8 @@ export interface PiAdapterOptions {
   getApiKey?: () => string | undefined | Promise<string | undefined>;
   /** When set, use a local OpenAI-compatible backend instead of a hosted provider. */
   local?: LocalProviderConfig;
+  /** Sandbox profile for bash (Phase 112). Default: NANA_SANDBOX_MODE or 'strict'. */
+  sandboxMode?: SandboxMode;
 }
 
 /**
@@ -206,6 +268,7 @@ export class PiAdapter implements EngineAdapter {
   private readonly modelId?: string;
   private readonly getApiKey?: PiAdapterOptions['getApiKey'];
   private readonly local?: LocalProviderConfig;
+  private readonly sandboxMode: SandboxMode;
 
   constructor(opts: PiAdapterOptions = {}) {
     this.workspaceRoot = resolve(opts.workspaceRoot ?? process.cwd());
@@ -214,6 +277,7 @@ export class PiAdapter implements EngineAdapter {
     this.modelId = opts.modelId;
     this.getApiKey = opts.getApiKey;
     this.local = opts.local;
+    this.sandboxMode = resolveSandboxMode(opts.sandboxMode);
   }
 
   setToolCallGate(gate: ToolCallGate): void {
@@ -315,6 +379,9 @@ export class PiAdapter implements EngineAdapter {
       agentDir: this.agentDir,
       sessionManager: SessionManager.inMemory(this.workspaceRoot),
       resourceLoader: loader,
+      // Phase 112: OS-sandbox bash by overriding the builtin with a seatbelt-
+      // wrapped 'bash' tool (empty off-darwin → builtin bash + string-gate only).
+      customTools: piSandboxCustomTools(this.workspaceRoot, this.sandboxMode),
     });
 
     const unsubscribe = session.subscribe((raw: unknown) => {
