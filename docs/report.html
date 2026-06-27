@@ -40,11 +40,11 @@
 <body>
 
 <h1>Nana Dev Kit</h1>
-<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-06-23 13:53</p>
+<p class="subtitle">7-Layer Claude Code Development Harness &mdash; Package Report v0.5.0 &mdash; Generated 2026-06-27 14:13</p>
 
 <div class="stats">
-  <div class="stat"><div class="num">1097</div><div class="label">Files</div></div>
-  <div class="stat"><div class="num">185,500</div><div class="label">Lines of Code</div></div>
+  <div class="stat"><div class="num">1205</div><div class="label">Files</div></div>
+  <div class="stat"><div class="num">205,577</div><div class="label">Lines of Code</div></div>
   <div class="stat"><div class="num">652</div><div class="label">Automated Tests</div></div>
   <div class="stat"><div class="num">7</div><div class="label">Harness Layers</div></div>
   <div class="stat"><div class="num">v0.5.0</div><div class="label">Latest Tag</div></div>
@@ -134,16 +134,16 @@
 
 <h2>File Inventory</h2>
 <div class="category">
-  <h3>Core Scripts <span class="badge badge-green">17 files, 5,263 lines</span></h3>
+  <h3>Core Scripts <span class="badge badge-green">17 files, 5,266 lines</span></h3>
   <ul class="file-list">
     <li><span>Makefile</span><span class='lines'>74</span></li>
     <li><span>install.sh</span><span class='lines'>659</span></li>
     <li><span>scripts/check-assumption-ledger.sh</span><span class='lines'>235</span></li>
     <li><span>scripts/check-fidelity.py</span><span class='lines'>112</span></li>
     <li><span>scripts/check-install-drift.sh</span><span class='lines'>272</span></li>
-    <li><span>scripts/decision-server.py</span><span class='lines'>299</span></li>
+    <li><span>scripts/decision-server.py</span><span class='lines'>301</span></li>
     <li><span>scripts/eval-runner.sh</span><span class='lines'>345</span></li>
-    <li><span>scripts/generate-dashboard.py</span><span class='lines'>472</span></li>
+    <li><span>scripts/generate-dashboard.py</span><span class='lines'>473</span></li>
     <li><span>scripts/generate-delivery-report.py</span><span class='lines'>276</span></li>
     <li><span>scripts/generate-direction.py</span><span class='lines'>279</span></li>
     <li><span>scripts/generate-report.py</span><span class='lines'>328</span></li>
@@ -156,9 +156,11 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Test Suite <span class="badge badge-green">51 files, 7,198 lines</span></h3>
+  <h3>Test Suite <span class="badge badge-green">53 files, 7,234 lines</span></h3>
   <ul class="file-list">
+    <li><span>tests/fixtures/dashboard-brief.cockpit.json</span><span class='lines'>20</span></li>
     <li><span>tests/fixtures/dashboard-brief.nononce.json</span><span class='lines'>16</span></li>
+    <li><span>tests/fixtures/dashboard-brief.stale.json</span><span class='lines'>16</span></li>
     <li><span>tests/fixtures/dashboard-brief.valid.json</span><span class='lines'>20</span></li>
     <li><span>tests/fixtures/dashboard-current-state-restructured.md</span><span class='lines'>12</span></li>
     <li><span>tests/fixtures/dashboard-current-state.md</span><span class='lines'>13</span></li>
@@ -430,10 +432,10 @@
   </ul>
 </div>
 <div class="category">
-  <h3>CI & Build <span class="badge badge-green">2 files, 52 lines</span></h3>
+  <h3>CI & Build <span class="badge badge-green">2 files, 56 lines</span></h3>
   <ul class="file-list">
     <li><span>.github/workflows/kit-ci.yml</span><span class='lines'>20</span></li>
-    <li><span>.gitignore</span><span class='lines'>32</span></li>
+    <li><span>.gitignore</span><span class='lines'>36</span></li>
   </ul>
 </div>
 <div class="category">
@@ -1148,10 +1150,11 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Specs <span class="badge badge-green">90 files, 8,941 lines</span></h3>
+  <h3>Specs <span class="badge badge-green">92 files, 9,146 lines</span></h3>
   <ul class="file-list">
     <li><span>specs/cut-heuristic-machinery-self-dialogue.md</span><span class='lines'>79</span></li>
     <li><span>specs/domain-research-in-dev-plan.md</span><span class='lines'>81</span></li>
+    <li><span>specs/gui-harness-architecture.md</span><span class='lines'>122</span></li>
     <li><span>specs/harden-hot-cache-curation.md</span><span class='lines'>64</span></li>
     <li><span>specs/harness-assessment-eval-validity.md</span><span class='lines'>85</span></li>
     <li><span>specs/phase-08-spec-skill.md</span><span class='lines'>113</span></li>
@@ -1162,6 +1165,7 @@
     <li><span>specs/phase-102-contract-loop.md</span><span class='lines'>84</span></li>
     <li><span>specs/phase-103-gaming-rate.md</span><span class='lines'>188</span></li>
     <li><span>specs/phase-106-project-state-dashboard.md</span><span class='lines'>76</span></li>
+    <li><span>specs/phase-107-decisioning-cockpit.md</span><span class='lines'>83</span></li>
     <li><span>specs/phase-12-soul-enhancement-memory-harvest.md</span><span class='lines'>92</span></li>
     <li><span>specs/phase-13-final-polish-and-ship.md</span><span class='lines'>97</span></li>
     <li><span>specs/phase-14-adversarial-thinking-review.md</span><span class='lines'>75</span></li>
@@ -1243,15 +1247,119 @@
   </ul>
 </div>
 <div class="category">
-  <h3>Other <span class="badge badge-green">58 files, 6,751 lines</span></h3>
+  <h3>Other <span class="badge badge-green">162 files, 26,580 lines</span></h3>
   <ul class="file-list">
-    <li><span>.claude/rules/active-phase.md</span><span class='lines'>19</span></li>
-    <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>203</span></li>
+    <li><span>.claude/rules/active-phase.md</span><span class='lines'>22</span></li>
+    <li><span>.claude/rules/working-knowledge.md</span><span class='lines'>163</span></li>
     <li><span>.claude/settings.json.bak-phase88</span><span class='lines'>146</span></li>
+    <li><span>app/.gitignore</span><span class='lines'>20</span></li>
+    <li><span>app/README.md</span><span class='lines'>47</span></li>
+    <li><span>app/index.html</span><span class='lines'>12</span></li>
+    <li><span>app/package-lock.json</span><span class='lines'>9626</span></li>
+    <li><span>app/package.json</span><span class='lines'>39</span></li>
+    <li><span>app/src-tauri/.gitignore</span><span class='lines'>3</span></li>
+    <li><span>app/src-tauri/Cargo.lock</span><span class='lines'>4455</span></li>
+    <li><span>app/src-tauri/Cargo.toml</span><span class='lines'>32</span></li>
+    <li><span>app/src-tauri/build.rs</span><span class='lines'>3</span></li>
+    <li><span>app/src-tauri/capabilities/AUDIT.md</span><span class='lines'>34</span></li>
+    <li><span>app/src-tauri/capabilities/default.json</span><span class='lines'>7</span></li>
+    <li><span>app/src-tauri/icons/128x128.png</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/128x128@2x.png</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/32x32.png</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/64x64.png</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/Square107x107Logo.png</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/Square142x142Logo.png</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/Square150x150Logo.png</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/Square284x284Logo.png</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/Square30x30Logo.png</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/Square310x310Logo.png</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/Square44x44Logo.png</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/Square71x71Logo.png</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/Square89x89Logo.png</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/StoreLogo.png</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/icon.icns</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/icon.ico</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/icons/icon.png</span><span class='lines'>0</span></li>
+    <li><span>app/src-tauri/keyhelper/Cargo.lock</span><span class='lines'>108</span></li>
+    <li><span>app/src-tauri/keyhelper/Cargo.toml</span><span class='lines'>19</span></li>
+    <li><span>app/src-tauri/keyhelper/src/main.rs</span><span class='lines'>88</span></li>
+    <li><span>app/src-tauri/src/lib.rs</span><span class='lines'>105</span></li>
+    <li><span>app/src-tauri/src/main.rs</span><span class='lines'>6</span></li>
+    <li><span>app/src-tauri/tauri.conf.json</span><span class='lines'>36</span></li>
+    <li><span>app/src/App.tsx</span><span class='lines'>109</span></li>
+    <li><span>app/src/context/assembly.ts</span><span class='lines'>78</span></li>
+    <li><span>app/src/control/index.ts</span><span class='lines'>4</span></li>
+    <li><span>app/src/control/interrupt.ts</span><span class='lines'>35</span></li>
+    <li><span>app/src/control/spend.ts</span><span class='lines'>61</span></li>
+    <li><span>app/src/engine/adapter.ts</span><span class='lines'>50</span></li>
+    <li><span>app/src/engine/event-queue.ts</span><span class='lines'>39</span></li>
+    <li><span>app/src/engine/index.ts</span><span class='lines'>9</span></li>
+    <li><span>app/src/engine/noop-adapter.ts</span><span class='lines'>81</span></li>
+    <li><span>app/src/engine/normalize.ts</span><span class='lines'>46</span></li>
+    <li><span>app/src/engine/pi/gate-bridge.ts</span><span class='lines'>46</span></li>
+    <li><span>app/src/engine/pi/pi-adapter.ts</span><span class='lines'>334</span></li>
+    <li><span>app/src/engine/types.ts</span><span class='lines'>63</span></li>
+    <li><span>app/src/engine/vercel/gated-tools.ts</span><span class='lines'>37</span></li>
+    <li><span>app/src/engine/vercel/index.ts</span><span class='lines'>4</span></li>
+    <li><span>app/src/engine/vercel/vercel-adapter.ts</span><span class='lines'>150</span></li>
+    <li><span>app/src/fs/agent-file-tool.ts</span><span class='lines'>24</span></li>
+    <li><span>app/src/gate/checkpoint/checkpoint.ts</span><span class='lines'>65</span></li>
+    <li><span>app/src/gate/checkpoint/external-mod.ts</span><span class='lines'>52</span></li>
+    <li><span>app/src/gate/checkpoint/index.ts</span><span class='lines'>3</span></li>
+    <li><span>app/src/gate/confirm/broker.ts</span><span class='lines'>71</span></li>
+    <li><span>app/src/gate/confirm/confirming-gate.ts</span><span class='lines'>58</span></li>
+    <li><span>app/src/gate/confirm/diff.ts</span><span class='lines'>56</span></li>
+    <li><span>app/src/gate/host-gate.ts</span><span class='lines'>103</span></li>
+    <li><span>app/src/host/engine-host.ts</span><span class='lines'>131</span></li>
+    <li><span>app/src/host/main.ts</span><span class='lines'>65</span></li>
+    <li><span>app/src/main.tsx</span><span class='lines'>10</span></li>
+    <li><span>app/src/memory/mcp-memory.ts</span><span class='lines'>163</span></li>
+    <li><span>app/src/security/keystore.ts</span><span class='lines'>40</span></li>
+    <li><span>app/src/security/redact.ts</span><span class='lines'>38</span></li>
+    <li><span>app/src/security/secret-deny.ts</span><span class='lines'>27</span></li>
+    <li><span>app/src/styles.css</span><span class='lines'>504</span></li>
+    <li><span>app/src/ui/Thread.tsx</span><span class='lines'>69</span></li>
+    <li><span>app/src/ui/artifacts.tsx</span><span class='lines'>108</span></li>
+    <li><span>app/src/ui/chat-binding.ts</span><span class='lines'>118</span></li>
+    <li><span>app/src/ui/chat-runtime.ts</span><span class='lines'>73</span></li>
+    <li><span>app/src/ui/diff-view.tsx</span><span class='lines'>27</span></li>
+    <li><span>app/src/ui/engine-bridge.ts</span><span class='lines'>160</span></li>
+    <li><span>app/src/ui/gate-confirm.tsx</span><span class='lines'>78</span></li>
+    <li><span>app/src/ui/index.ts</span><span class='lines'>11</span></li>
+    <li><span>app/src/ui/inert.ts</span><span class='lines'>35</span></li>
+    <li><span>app/src/ui/runtime.ts</span><span class='lines'>92</span></li>
+    <li><span>app/src/ui/tool-call-view.tsx</span><span class='lines'>38</span></li>
+    <li><span>app/tests/adapter-contract.test.ts</span><span class='lines'>103</span></li>
+    <li><span>app/tests/adapters/normalize-identical.test.ts</span><span class='lines'>37</span></li>
+    <li><span>app/tests/checkpoint/revert-bytes.test.ts</span><span class='lines'>63</span></li>
+    <li><span>app/tests/context/assembly.test.ts</span><span class='lines'>79</span></li>
+    <li><span>app/tests/control/interrupt-hung-tool.test.ts</span><span class='lines'>34</span></li>
+    <li><span>app/tests/control/spend-ceiling.test.ts</span><span class='lines'>41</span></li>
+    <li><span>app/tests/e2e/memory-roundtrip.test.ts</span><span class='lines'>42</span></li>
+    <li><span>app/tests/e2e/provider-roundtrip.test.ts</span><span class='lines'>125</span></li>
+    <li><span>app/tests/e2e/second-adapter.test.ts</span><span class='lines'>101</span></li>
+    <li><span>app/tests/gate/confirming-gate.test.ts</span><span class='lines'>90</span></li>
+    <li><span>app/tests/host/engine-host-protocol.test.ts</span><span class='lines'>168</span></li>
+    <li><span>app/tests/integrity/memory-unavailable.test.ts</span><span class='lines'>36</span></li>
+    <li><span>app/tests/safety/external-modification.test.ts</span><span class='lines'>68</span></li>
+    <li><span>app/tests/security/destructive-gate.test.ts</span><span class='lines'>70</span></li>
+    <li><span>app/tests/security/gate-bypass-resistance.test.ts</span><span class='lines'>46</span></li>
+    <li><span>app/tests/security/inert-render.test.ts</span><span class='lines'>55</span></li>
+    <li><span>app/tests/security/key-store-deny.test.ts</span><span class='lines'>68</span></li>
+    <li><span>app/tests/setup.ts</span><span class='lines'>3</span></li>
+    <li><span>app/tests/ui/app-smoke.test.tsx</span><span class='lines'>35</span></li>
+    <li><span>app/tests/ui/artifacts-revert.test.tsx</span><span class='lines'>79</span></li>
+    <li><span>app/tests/ui/bridge-adapter.test.ts</span><span class='lines'>141</span></li>
+    <li><span>app/tests/ui/chat-stream.test.ts</span><span class='lines'>138</span></li>
+    <li><span>app/tests/ui/gate-confirm.test.tsx</span><span class='lines'>116</span></li>
+    <li><span>app/tests/ui/runtime.test.ts</span><span class='lines'>81</span></li>
+    <li><span>app/tsconfig.json</span><span class='lines'>22</span></li>
+    <li><span>app/vite.config.ts</span><span class='lines'>10</span></li>
+    <li><span>app/vitest.config.ts</span><span class='lines'>11</span></li>
     <li><span>benchmark/README.md</span><span class='lines'>108</span></li>
     <li><span>benchmark/longmemeval.py</span><span class='lines'>302</span></li>
     <li><span>docs/dashboard.html</span><span class='lines'>160</span></li>
-    <li><span>docs/delivery-report.html</span><span class='lines'>92</span></li>
+    <li><span>docs/delivery-report.html</span><span class='lines'>91</span></li>
     <li><span>docs/direction.html</span><span class='lines'>78</span></li>
     <li><span>docs/memory-knowledge-architecture.md</span><span class='lines'>611</span></li>
     <li><span>docs/nanaclaw-architecture.md</span><span class='lines'>722</span></li>
@@ -1326,11 +1434,11 @@
 </table>
 
 <h2>Recent Git History</h2>
-<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">33c32e8 Fix py-review Stop hook: gate on the live git diff, not the session transcript
-0e6607c Phase 106: Project-State Dashboard + Act-from-Page Decision Gate — DELIVERED + ACCEPTED
-a3657e6 Phase 105: Code-Retrieval Adopt-Scout (code-KG / tool-reach) — PLANNING-STAGE NULL, DELIVERED + ACCEPTED
-4525f30 Phase 104: Emerging-Agent-Tooling Landscape Survey (frontier pillar re-aimed) — DELIVERED + ACCEPTED
-fd505a1 Phase 103 delivery accepted — gate flipped (delivery=accepted)</pre>
+<pre style="background: var(--card); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">16c6adf Phase 109 follow-up: launch fix + first dogfood UX quick-wins
+a78f1f5 Phase 109: Felt-Quality Surface + Branding — DELIVERED + ACCEPTED (live verification deferred)
+b4244d3 Phase 108: GUI Dev-Harness v1 Thin Slice — DELIVERED + ACCEPTED
+9804e44 Phase 107: Decisioning Cockpit (dashboard-as-primary gate) — DELIVERED + ACCEPTED
+33c32e8 Fix py-review Stop hook: gate on the live git diff, not the session transcript</pre>
 
 <footer>
   Generated by <code>scripts/generate-report.py</code> &mdash; run <code>make report</code> to regenerate

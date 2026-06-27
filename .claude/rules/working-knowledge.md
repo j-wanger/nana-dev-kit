@@ -23,16 +23,6 @@
   source: [[decision:bidirectional-registration-invariant]] | activated: 2026-05-28
 - [uses: 1] Session-start.sh line cap (70 lines, Phase 22) eroded to 137 lines over Phases 23-54 without any test catching it. Cognitive-readiness.sh extraction fixed it. Pattern: caps need test assertions, not just documentation.
   source: [[journal:2026-05-28-phase-55-harness-activation-overhaul-complete]] | activated: 2026-05-28
-- [uses: 1] Clean baseline solves scenario 020 correctly (5/5/5). The "8/9 wrong" finding (Phase 50) was from IRON-RULES-injected conditions — IRON-005 biases toward dependency upgrade over capacity multiplier. HEU-011's value is as IRON-005 counterweight, not standalone improvement. IRON-RULES-condition eval deferred.
-  source: [[active-knowledge:phase-53]] | activated: 2026-05-27
-- [uses: 1] MCP memory CWD mismatch: Claude Code ignores settings.json cwd, uses project directory. DB at <project_root>/.memory/memory.db, not ~/.claude/.memory/. Health probe (memory-nudge.sh) checks wrong path + wrong column (is_active vs active). Phase 19-48 entries irrecoverable. 11 current entries from Phase 49+.
-  source: [[active-knowledge:phase-53]] | activated: 2026-05-27
-- [uses: 1] IRON-004/015 concern resolved by selective injection (Phase 51). Ground-truth maps 015 to IRON-005 only. IRON-004 would give correct answer on 015 anyway (reasoning framing issue, not decision quality). No IRON-004 content change needed.
-  source: [[active-knowledge:phase-53]] | activated: 2026-05-27
-- [uses: 1] Verification-first pattern: run cheapest check before committing to expensive work. Phase 53: matcher check (~1 call) before 6 eval runs (~30 min). Closed IRON-004 question without any eval runs. Generalizes early-falsification-checkpoint (Phase 49).
-  source: [[active-knowledge:phase-53]] | activated: 2026-05-27
-- [uses: 1] Cognitive Enhancement Roadmap complete (7/7 phases): foundation (44) -> capture (46) -> IRON RULES (45+46) -> self-dialogue (47, negative) -> trace collection (48, negative) -> prompt-type hooks (51) -> evolution (52). Future heuristic work is ad-hoc.
-  source: [[active-knowledge:phase-52]] | activated: 2026-05-27
 - [uses: 1] Ground-truth heuristic mapping: 84% scenario coverage (21/25 have at least 1 matching heuristic). 4 blind-spot scenarios (011, 019, 020, 023) in organizational/distributed-systems domains. IRON-004 most broadly applicable (6/25) but known harmful on 018.
   source: [[active-knowledge:phase-51]] | activated: 2026-05-27
 - [uses: 1] Two-phase eval methodology: single-call eval (agent sees expert answers) produces 100% ceiling (20/20 at 5/5/5). Two-phase (agent blind, separate judge) produces meaningful differentiation. Essential for all future eval runs.

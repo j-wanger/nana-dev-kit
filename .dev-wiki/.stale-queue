@@ -248,3 +248,13 @@ eval/amplifier/skill-screen/runs/ctrl-recoverable/3.py
 [pruned 2026-06-26]   source: [[decision:functional-smoke-invariant-rule]] | activated: 2026-05-25
 [pruned 2026-06-26] - [uses: 1] install.sh CORE_SKILLS: nana + memory-consolidate + init (language-agnostic). PYTHON_SKILLS: py-lint + py-review + py-test (excluded by --no-python, --core-only). Module assignment determines which skills install under each flag combination. 26 total skill dirs.
 [pruned 2026-06-26]   source: [[decision:install-skill-module-assignment]] + [[decision:init-router-in-core]] | activated: 2026-05-25
+[pruned 2026-06-27] - [uses: 1] Clean baseline solves scenario 020 correctly (5/5/5). The "8/9 wrong" finding (Phase 50) was from IRON-RULES-injected conditions — IRON-005 biases toward dependency upgrade over capacity multiplier. HEU-011's value is as IRON-005 counterweight, not standalone improvement. IRON-RULES-condition eval deferred.
+[pruned 2026-06-27]   source: [[active-knowledge:phase-53]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] MCP memory CWD mismatch: Claude Code ignores settings.json cwd, uses project directory. DB at <project_root>/.memory/memory.db, not ~/.claude/.memory/. Health probe (memory-nudge.sh) checks wrong path + wrong column (is_active vs active). Phase 19-48 entries irrecoverable. 11 current entries from Phase 49+.
+[pruned 2026-06-27]   source: [[active-knowledge:phase-53]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] IRON-004/015 concern resolved by selective injection (Phase 51). Ground-truth maps 015 to IRON-005 only. IRON-004 would give correct answer on 015 anyway (reasoning framing issue, not decision quality). No IRON-004 content change needed.
+[pruned 2026-06-27]   source: [[active-knowledge:phase-53]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Verification-first pattern: run cheapest check before committing to expensive work. Phase 53: matcher check (~1 call) before 6 eval runs (~30 min). Closed IRON-004 question without any eval runs. Generalizes early-falsification-checkpoint (Phase 49).
+[pruned 2026-06-27]   source: [[active-knowledge:phase-53]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Cognitive Enhancement Roadmap complete (7/7 phases): foundation (44) -> capture (46) -> IRON RULES (45+46) -> self-dialogue (47, negative) -> trace collection (48, negative) -> prompt-type hooks (51) -> evolution (52). Future heuristic work is ad-hoc.
+[pruned 2026-06-27]   source: [[active-knowledge:phase-52]] | activated: 2026-05-27

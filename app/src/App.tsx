@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Thread } from './ui/Thread';
 import { useChatRuntime } from './ui/chat-runtime';
 import { useGatePending, GateConfirmView } from './ui/gate-confirm';
-import { RevertControl } from './ui/artifacts';
+import { RevertControl, ArtifactPanel } from './ui/artifacts';
 import { BridgeClient, createBridgeClient } from './ui/engine-bridge';
 
 // The composed harness surface (Phase 109, T5). Wires the webview BridgeClient
@@ -50,7 +50,7 @@ export function App() {
 }
 
 function HarnessSurface({ bridge }: { bridge: BridgeClient }) {
-  const runtime = useChatRuntime(bridge);
+  const { runtime, artifacts } = useChatRuntime(bridge);
   const { current, approve, deny } = useGatePending(bridge);
   const [reverts, setReverts] = useState<string[]>([]);
 
@@ -68,6 +68,10 @@ function HarnessSurface({ bridge }: { bridge: BridgeClient }) {
         <Thread runtime={runtime} />
       </main>
       <aside className="surface__side">
+        <section className="panel">
+          <h2 className="panel__title">Artifacts</h2>
+          <ArtifactPanel artifacts={artifacts} />
+        </section>
         <section className="panel">
           <h2 className="panel__title">Recent edits</h2>
           {reverts.length === 0 ? (

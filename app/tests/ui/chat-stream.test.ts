@@ -80,17 +80,17 @@ describe('chat surface binding (T1)', () => {
 
     it('tracks tool-call -> done -> denied with cloned toolCalls, prior snapshots intact', () => {
       let msgs: UiMessage[] = [emptySurfaceMessage()];
-      msgs = commitEvent(msgs, { type: 'tool-call', call: { id: 'a', name: 'read', args: {} } });
+      msgs = commitEvent(msgs, { type: 'tool-call', call: { id: 'a', name: 'read', args: { path: 'x.ts' } } });
       const afterCall = msgs[0];
-      msgs = commitEvent(msgs, { type: 'tool-result', id: 'a', result: {} });
-      msgs = commitEvent(msgs, { type: 'tool-call', call: { id: 'b', name: 'bash', args: {} } });
+      msgs = commitEvent(msgs, { type: 'tool-result', id: 'a', result: 'contents' });
+      msgs = commitEvent(msgs, { type: 'tool-call', call: { id: 'b', name: 'bash', args: { command: 'rm -rf /' } } });
       msgs = commitEvent(msgs, { type: 'tool-denied', id: 'b', reason: 'destructive' });
       msgs = commitEvent(msgs, { type: 'done' });
 
       const m = msgs[0] as { toolCalls: unknown[]; done: boolean };
       expect(m.toolCalls).toEqual([
-        { id: 'a', name: 'read', status: 'done' },
-        { id: 'b', name: 'bash', status: 'denied', reason: 'destructive' },
+        { id: 'a', name: 'read', status: 'done', args: { path: 'x.ts' }, output: 'contents' },
+        { id: 'b', name: 'bash', status: 'denied', reason: 'destructive', args: { command: 'rm -rf /' } },
       ]);
       expect(m.done).toBe(true);
       // the earlier snapshot was not mutated by later events

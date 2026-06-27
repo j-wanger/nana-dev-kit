@@ -12,6 +12,14 @@ export interface SurfaceToolCall {
   name: string;
   status: 'called' | 'done' | 'denied';
   reason?: string;
+  // Ph110: the real args (from the tool-call) + output (from the tool-result)
+  // threaded through so the surface shows WHAT ran and its result, not the
+  // name only. `output` is the raw tool output; `isError` flags an execution
+  // error (distinct from a host-gate `denied`). All JSON-serializable — the
+  // host relays the reduced message over the stdin/stdout line protocol.
+  args?: Record<string, unknown>;
+  output?: unknown;
+  isError?: boolean;
 }
 
 export interface SurfaceMessage {
@@ -33,11 +41,27 @@ export function applyEngineEvent(msg: SurfaceMessage, ev: EngineEvent): SurfaceM
       msg.text += ev.delta;
       break;
     case 'tool-call':
-      msg.toolCalls.push({ id: ev.call.id, name: ev.call.name, status: 'called' });
+      msg.toolCalls.push({
+        id: ev.call.id,
+        name: ev.call.name,
+        status: 'called',
+        args: ev.call.args,
+      });
       break;
     case 'tool-result': {
       const t = msg.toolCalls.find((c) => c.id === ev.id);
-      if (t) t.status = 'done';
+      if (t) {
+        t.status = 'done';
+        t.output = ev.result;
+        if (ev.isError !== undefined) t.isError = ev.isError;
+      }
+      break;
+    }
+    case 'tool-progress': {
+      // stream the latest partial into the still-running call so a long tool
+      // run isn't a frozen "working…"; the final tool-result supersedes it.
+      const t = msg.toolCalls.find((c) => c.id === ev.id);
+      if (t && t.status === 'called') t.output = ev.partial;
       break;
     }
     case 'tool-denied': {

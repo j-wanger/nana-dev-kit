@@ -1,5 +1,7 @@
 import { useCallback, useState, type ReactElement } from 'react';
+import { DiffView } from './diff-view';
 import type { RevertResult } from './engine-bridge';
+import type { Artifact } from './artifact-feed';
 
 // Artifact preview + one-action revert (Phase 109, T4 / axes 5 + 2). Custom,
 // owned components (NOT AI Elements — it covers 1/4 of these and forces a
@@ -41,6 +43,34 @@ export function TerminalOutput({ text }: { text: string }): ReactElement {
     <pre className="terminal" data-testid="terminal">
       {text}
     </pre>
+  );
+}
+
+/**
+ * The live artifact panel (Ph110 T6): each completed tool call's REAL output
+ * rendered by its typed view — a unified diff via DiffView, everything else as
+ * inert terminal text (the generic-text fallback, ledger A3). Owned components
+ * over AI Elements (Ph109). The tool name heads each entry so the maintainer
+ * sees WHICH call produced it. All dynamic content is a React string child
+ * (escaped → inert); the artifact text is already redacted upstream (T5).
+ */
+export function ArtifactPanel({ artifacts }: { artifacts: Artifact[] }): ReactElement {
+  if (artifacts.length === 0) {
+    return (
+      <p className="panel__empty">
+        Tool outputs — diffs and command results — appear here as the agent works.
+      </p>
+    );
+  }
+  return (
+    <ul className="artifact-list">
+      {artifacts.map((a) => (
+        <li key={a.id} className="artifact" data-kind={a.kind}>
+          <span className="artifact__name">{a.name}</span>
+          {a.kind === 'diff' ? <DiffView diff={a.diff} /> : <TerminalOutput text={a.text} />}
+        </li>
+      ))}
+    </ul>
   );
 }
 

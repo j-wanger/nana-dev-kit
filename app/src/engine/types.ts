@@ -48,7 +48,16 @@ export type ToolCallGate = (
 export type EngineEvent =
   | { type: 'text-delta'; delta: string }
   | { type: 'tool-call'; call: NormalizedToolCall }
-  | { type: 'tool-result'; id: string; result: unknown }
+  // `result` is the raw tool output (consistent across adapters: Pi forwards
+  // ToolExecutionEndEvent.result, Vercel forwards the AI-SDK part.output). A
+  // tool EXECUTION error (distinct from a host-gate `tool-denied`) rides the
+  // additive optional `isError` — adapters that don't distinguish it omit it.
+  | { type: 'tool-result'; id: string; result: unknown; isError?: boolean }
+  // Ph110: partial/streaming output while a tool is still executing (Pi's
+  // tool_execution_update.partialResult), folded into the in-flight call so a
+  // long local-model tool run streams per-step instead of looking frozen.
+  // Additive: adapters that don't stream simply never emit it.
+  | { type: 'tool-progress'; id: string; partial: unknown }
   | { type: 'tool-denied'; id: string; reason: string }
   | { type: 'error'; error: string }
   | { type: 'done' };

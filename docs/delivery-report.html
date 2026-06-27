@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 108</title>
+<title>Delivery Report: Phase 110</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,40 +21,44 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 108 &mdash; Phase 108</h1>
+<h1>Delivery Report: Phase 110 &mdash; Phase 110</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">8/8</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">9</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">14/14</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">37</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (52 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">50/50</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+121</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-50</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">3</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">15:32</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+453</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-91</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">1</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">14:14</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>T1 App scaffold + the app-owned `EngineAdapter` interface (the swappable boundary): [DONE 2026-06-26 — success: `npm ...</td></tr>
-<tr><td>&#x2705;</td><td>T2 keyring-rs spike + key-store deny (resolves the A3 don't-know; EARLY, before the key rail is built on it): [DONE 2...</td></tr>
-<tr><td>&#x2705;</td><td>T3 Pi adapter + in-process tool_call gate + one-provider end-to-end (front-loaded, highest-risk): [DONE 2026-06-26 — ...</td></tr>
-<tr><td>&#x2705;</td><td>T4 MCP memory mount + round-trip + loud-on-unavailable: [DONE 2026-06-26 — success: `npm test -- e2e/memory-roundtrip...</td></tr>
-<tr><td>&#x2705;</td><td>T5 File-mutation rails: per-turn checkpoint/one-action revert + soft-delete + shared-tree detection: [DONE 2026-06-26...</td></tr>
-<tr><td>&#x2705;</td><td>T6 Surface: assistant-ui custom runtime → adapter + AI Elements + inert-CSP rendering + capability-manifest audit: [D...</td></tr>
-<tr><td>&#x2705;</td><td>T7 Second-adapter (Vercel AI SDK — SUBSTITUTED for Claude Agent SDK by maintainer decision 2026-06-26) through the sa...</td></tr>
-<tr><td>&#x2705;</td><td>T8 Spend ceiling + hard interrupt + tool-call normalization: [DONE 2026-06-26 — success: `npm test -- control/spend-c...</td></tr>
+<tr><td>&#x2705;</td><td>T1 (DONE 2026-06-27 — `mapPiStreamEvent` pure seam forwards real args + capped output + additive `isError`; details d...</td></tr>
+<tr><td>&#x2705;</td><td>T2 (DONE 2026-06-27 — SurfaceToolCall gained args?/output?/isError?; applyEngineEvent threads ev.call.args + ev.resul...</td></tr>
+<tr><td>&#x2705;</td><td>T3 (DONE 2026-06-27 — chat-binding emits real argsText [bash→command, else JSON] + real result via redactSecrets()+tr...</td></tr>
+<tr><td>&#x2705;</td><td>T4 (DONE 2026-06-27 — added additive EngineEvent 'tool-progress'; mapPiStreamEvent maps tool_execution_update.partial...</td></tr>
+<tr><td>&#x2705;</td><td>T5 (DONE 2026-06-27 — pure ui/artifact-feed.ts: toArtifact(tc) routes edit/write-with-diff-output→{kind:diff}, else→{...</td></tr>
+<tr><td>&#x2705;</td><td>T6 (DONE 2026-06-27 — ArtifactPanel in artifacts.tsx renders diff→DiffView / terminal→TerminalOutput inert; useChatRu...</td></tr>
+<tr><td>&#x2705;</td><td>T7 (DONE 2026-06-27 — no SVG rasterizer/image lib available, so a dependency-free Node zlib PNG encoder [scratchpad g...</td></tr>
+<tr><td>&#x2705;</td><td>T8 (DONE 2026-06-27 — tool-visibility-e2e.test.ts asserts a tool-call→tool-progress→tool-result round-trip surfaces r...</td></tr>
+<tr><td>&#x2705;</td><td>R1 (DONE 2026-06-27) redact.ts reworked — CATCH AWS-secret (40-char base64 with `/`) / GCP `AIza…` / JWT shapes now r...</td></tr>
+<tr><td>&#x2705;</td><td>R2 (DONE 2026-06-27) extractToolText AgentToolResult→text normalization at the Pi adapter boundary — Pi's real tool_e...</td></tr>
+<tr><td>&#x2705;</td><td>R3 (DONE 2026-06-27) artifact-feed hardening — looksLikeDiff tightened to require diff-header structure (no false-pos...</td></tr>
+<tr><td>&#x2705;</td><td>R4 (DONE 2026-06-27) full-Pi-path regression test in tool-visibility-e2e.test.ts — pins ≥1 test against the REAL upst...</td></tr>
+<tr><td>&#x2705;</td><td>R5 (DONE 2026-06-27) inert-render/CSP rail assertions extended to the new args/output fields (the enriched untrusted ...</td></tr>
+<tr><td>&#x2705;</td><td>R6 (DONE 2026-06-27) removed a stray agent-written dupkey-repro.test.tsx (the duplicate-React-key finding was correct...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Second adapter = Vercel AI SDK (substituted for the spec's Claude Agent SDK)</td><td>high</td></tr>
-<tr><td>Provider defaults to a local OpenAI-compatible model; Claude subscription-OAuth ruled out</td><td>high</td></tr>
-<tr><td>Embed the agent engine in-process behind an app-owned adapter; the security gate lives at the tool-call site</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Thread real tool args/output/details source→surface (the Ph109 #1 dogfood gap)</td><td>high</td></tr>
 </table>
 
 <h2>Files Changed</h2>
@@ -68,6 +72,34 @@
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
+<li><code>app/src-tauri/icons/128x128.png</code></li>
+<li><code>app/src-tauri/icons/128x128@2x.png</code></li>
+<li><code>app/src-tauri/icons/32x32.png</code></li>
+<li><code>app/src-tauri/icons/64x64.png</code></li>
+<li><code>app/src-tauri/icons/Square107x107Logo.png</code></li>
+<li><code>app/src-tauri/icons/Square142x142Logo.png</code></li>
+<li><code>app/src-tauri/icons/Square150x150Logo.png</code></li>
+<li><code>app/src-tauri/icons/Square284x284Logo.png</code></li>
+<li><code>app/src-tauri/icons/Square30x30Logo.png</code></li>
+<li><code>app/src-tauri/icons/Square310x310Logo.png</code></li>
+<li><code>app/src-tauri/icons/Square44x44Logo.png</code></li>
+<li><code>app/src-tauri/icons/Square71x71Logo.png</code></li>
+<li><code>app/src-tauri/icons/Square89x89Logo.png</code></li>
+<li><code>app/src-tauri/icons/StoreLogo.png</code></li>
+<li><code>app/src-tauri/icons/icon.icns</code></li>
+<li><code>app/src-tauri/icons/icon.ico</code></li>
+<li><code>app/src-tauri/icons/icon.png</code></li>
+<li><code>app/src/App.tsx</code></li>
+<li><code>app/src/engine/pi/pi-adapter.ts</code></li>
+<li><code>app/src/engine/types.ts</code></li>
+<li><code>app/src/security/redact.ts</code></li>
+<li><code>app/src/styles.css</code></li>
+<li><code>app/src/ui/artifacts.tsx</code></li>
+<li><code>app/src/ui/chat-binding.ts</code></li>
+<li><code>app/src/ui/chat-runtime.ts</code></li>
+<li><code>app/src/ui/runtime.ts</code></li>
+<li><code>app/tests/ui/chat-stream.test.ts</code></li>
+<li><code>app/tests/ui/runtime.test.ts</code></li>
 
 
 </ul>
@@ -85,7 +117,7 @@ All tests passed.</pre>
 <pre>Score: 50/50 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-06-26 15:32:58 by generate-delivery-report.py
+  Generated 2026-06-27 14:14:25 by generate-delivery-report.py
 </div>
 </body>
 </html>

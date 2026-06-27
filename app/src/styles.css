@@ -369,6 +369,31 @@ body {
   color: var(--fg-2);
   font-size: 13px;
 }
+/* Ph110: the live artifact panel — typed tool outputs (diff / terminal). */
+.artifact-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.artifact {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 8px 10px;
+  overflow: hidden;
+}
+.artifact__name {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-2);
+  margin-bottom: 6px;
+}
 .revert-list {
   list-style: none;
   margin: 0;
