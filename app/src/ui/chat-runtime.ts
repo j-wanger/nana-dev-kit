@@ -20,6 +20,18 @@ import { toArtifacts, type Artifact } from './artifact-feed';
 export function useChatRuntime(engine: EngineAdapter): {
   runtime: AssistantRuntime;
   artifacts: Artifact[];
+  /** A turn is streaming (a tool/model run is in flight) — drives the `stop` command's enablement. */
+  isRunning: boolean;
+  /** Hard-interrupt the in-flight turn (axis 3 — same path as the composer Stop). */
+  stop: () => void;
+  /**
+   * Start a fresh conversation: abort any in-flight turn and clear the message
+   * store (which the artifact feed derives from). Conversation state is UI-side
+   * only — both adapters are stateless across sendPrompt — so this needs NO host
+   * reset and adds NO new bridge message (the no-bypass invariant, T5). The shell
+   * composes any additional surface reset (e.g. the revert list) at the call site.
+   */
+  newConversation: () => void;
 } {
   const [messages, setMessages] = useState<UiMessage[]>([]);
   const [running, setRunning] = useState(false);
@@ -50,6 +62,11 @@ export function useChatRuntime(engine: EngineAdapter): {
     abortRef.current?.abort();
   }, []);
 
+  const newConversation = useCallback(() => {
+    abortRef.current?.abort();
+    setMessages([]);
+  }, []);
+
   const adapter: ExternalStoreAdapter<UiMessage> = {
     messages,
     isRunning: running,
@@ -69,5 +86,5 @@ export function useChatRuntime(engine: EngineAdapter): {
     [messages],
   );
 
-  return { runtime, artifacts };
+  return { runtime, artifacts, isRunning: running, stop: onCancel, newConversation };
 }

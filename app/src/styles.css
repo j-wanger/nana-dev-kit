@@ -502,3 +502,75 @@ body {
   text-align: center;
   max-width: 460px;
 }
+
+/* Command palette (axis 3) — a top-aligned Cmd+K overlay, control-instrument
+   vernacular: mono structure, accent = the focused row. */
+.command-palette {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 9, 12, 0.6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh 24px 24px;
+  z-index: 20;
+}
+.command-palette__panel {
+  width: min(560px, 100%);
+  background: var(--bg-2);
+  border: 1px solid var(--line-strong);
+  border-top: 3px solid var(--accent);
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55);
+}
+.command-palette__input {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--bg-1);
+  border: none;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg-0);
+  font-family: var(--sans);
+  font-size: 15px;
+  padding: 14px 16px;
+  outline: none;
+}
+.command-palette__input::placeholder {
+  color: var(--fg-2);
+}
+.command-palette__list {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  max-height: 50vh;
+  overflow: auto;
+}
+.command-palette__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: var(--r-sm);
+  color: var(--fg-0);
+  cursor: pointer;
+}
+.command-palette__item--selected {
+  background: var(--bg-3);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+.command-palette__title {
+  font-size: 13px;
+}
+.command-palette__shortcut {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-2);
+}
+.command-palette__empty {
+  padding: 14px 12px;
+  color: var(--fg-2);
+  font-family: var(--mono);
+  font-size: 12px;
+}

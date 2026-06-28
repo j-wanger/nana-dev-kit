@@ -4,11 +4,16 @@ import { useChatRuntime } from './ui/chat-runtime';
 import { useGatePending, GateConfirmView } from './ui/gate-confirm';
 import { RevertControl, ArtifactPanel } from './ui/artifacts';
 import { BridgeClient, createBridgeClient } from './ui/engine-bridge';
+import { buildCommands, type CommandContext } from './ui/commands';
+import { CommandPalette } from './ui/command-palette';
+import { useCommandShortcuts } from './ui/use-command-shortcuts';
 
 // The composed harness surface (Phase 109, T5). Wires the webview BridgeClient
-// (T6) to the chat (axis 4), the gate-confirm approve-loop (axis 1), and a
-// one-action revert strip (axis 2). Degrades gracefully when no engine host is
-// connected (e.g. `vite dev` in a plain browser) so the window still renders.
+// (T6) to the chat (axis 4), the gate-confirm approve-loop (axis 1), a one-action
+// revert strip (axis 2), and (Phase 113, T5 / axis 3) the Cmd+K command palette +
+// keyboard shortcut layer — every action reachable by button, shortcut, or palette
+// search. Degrades gracefully when no engine host is connected (e.g. `vite dev` in
+// a plain browser) so the window still renders.
 
 type ConnState = 'connecting' | 'connected' | 'offline';
 
@@ -49,10 +54,11 @@ export function App() {
   );
 }
 
-function HarnessSurface({ bridge }: { bridge: BridgeClient }) {
-  const { runtime, artifacts } = useChatRuntime(bridge);
+export function HarnessSurface({ bridge }: { bridge: BridgeClient }) {
+  const { runtime, artifacts, isRunning, stop, newConversation } = useChatRuntime(bridge);
   const { current, approve, deny } = useGatePending(bridge);
   const [reverts, setReverts] = useState<string[]>([]);
+  const [paletteOpen, setPaletteOpen] = useState(false);
 
   const onApprove = useCallback(() => {
     const p = current?.path;
@@ -61,6 +67,29 @@ function HarnessSurface({ bridge }: { bridge: BridgeClient }) {
     }
     approve();
   }, [current, approve]);
+
+  // The command registry (axis 3) bound to live state. Every command re-dispatches
+  // an EXISTING action — no new privileged path (the no-bypass invariant). The
+  // shell composes the cross-cutting resets (revert list, composer focus) here.
+  const ctx: CommandContext = {
+    gateHeld: current != null,
+    isRunning,
+    revertiblePaths: reverts,
+    stop,
+    approveGate: onApprove,
+    denyGate: deny,
+    revertLast: () => {
+      const last = reverts[reverts.length - 1];
+      if (last) void bridge.revert(last);
+    },
+    newConversation: () => {
+      newConversation();
+      setReverts([]);
+    },
+    focusComposer: () => document.querySelector<HTMLElement>('.composer__input')?.focus(),
+  };
+  const commands = buildCommands(ctx);
+  useCommandShortcuts({ commands, onOpenPalette: () => setPaletteOpen(true), paletteOpen });
 
   return (
     <div className="surface">
@@ -92,6 +121,7 @@ function HarnessSurface({ bridge }: { bridge: BridgeClient }) {
           <GateConfirmView pending={current} onApprove={onApprove} onDeny={deny} />
         </div>
       ) : null}
+      <CommandPalette commands={commands} open={paletteOpen} onClose={() => setPaletteOpen(false)} />
     </div>
   );
 }

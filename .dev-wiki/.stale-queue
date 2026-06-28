@@ -278,3 +278,13 @@ eval/amplifier/skill-screen/runs/ctrl-recoverable/3.py
 [pruned 2026-06-27]   source: [[decision:three-type-taxonomy-only]] | activated: 2026-05-27
 [pruned 2026-06-27] - [uses: 1] Conditional injection template: gates on scenario_type field in JSON metadata. risk-dominant suppresses IRON RULES, all others inject. Metadata-based lookup, not runtime inference.
 [pruned 2026-06-27]   source: [[active-knowledge:phase-49]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] LOO ablation methodology: remove one IRON RULE at a time, compare to full-set across training scenarios x 3 runs. Classification: delta >= 0.5 with variance < 0.5 = helped/hurt; else "uncertain". Baseline-first checkpoint required. Judge v2 (exemplar-based), same judge for all conditions.
+[pruned 2026-06-27]   source: [[decision:full-spec-ablation-scope]] + [[decision:sequential-baseline-verification]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Prompt-length confound control: no padding text (padding introduces its own confound). Scenario 012 as diagnostic: uniform improvement when ANY rule removed = length effect; specific = content attribution.
+[pruned 2026-06-27]   source: [[decision:no-prompt-length-padding]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Self-dialogue negative result: devil's advocate with IRON RULE citations does not improve reasoning quality. Inline is net negative (adds hedging), subagent is net neutral. Technique generates shallow counterarguments without novel insights when same-context agent plays both sides.
+[pruned 2026-06-27]   source: [[journal:2026-05-27-phase-47-self-dialogue-in-dev-plan-complete]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Adversarial subagent pattern (prior art): adversarial-constraints-prompt.md (spec skill) is the established clean-context subagent pattern. Subagent receives only objective + context (no approach/decisions).
+[pruned 2026-06-27]   source: [[active-knowledge:phase-47]] | activated: 2026-05-27
+[pruned 2026-06-27] - [uses: 1] Context dilution checkpoint protocol: 200-word cap on self-dialogue output, checkpoint after condition A run 1 — if scenario 012 mean < 4.0, compress injection before continuing. Applied successfully in Phase 47 eval.
+[pruned 2026-06-27]   source: [[active-knowledge:phase-47]] | activated: 2026-05-27

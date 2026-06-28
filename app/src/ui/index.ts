@@ -9,3 +9,6 @@ export type { SurfaceMessage, SurfaceToolCall } from './runtime';
 // React-coupled Thread/useChatRuntime are imported directly by the app shell.
 export { surfaceToThreadMessage, commitEvent, appendMessageText } from './chat-binding';
 export type { UiMessage } from './chat-binding';
+// The command registry (axis 3) — pure, node-safe; consumed by the palette + shortcuts.
+export { buildCommands } from './commands';
+export type { Command, CommandContext } from './commands';

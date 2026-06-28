@@ -1,60 +1,63 @@
 {
-  "phase": 103,
-  "phase_name": "Gaming-rate vs visible-gate-strength (contract-loop, edge-screener)",
-  "generated": "2026-06-22",
-  "objective": "Measure how often the contract-loop downstream worker (opencode/big-pickle) converges to a PASS on the visible gate while the HELD-OUT integrity test FAILS — ships silently-wrong work — as a function of how strongly the visible gate pins the integrity invariant. Ph102 found the loop recovers the Ph101 floor truthfully (gaming 0/3) but only under a STRONG gate; its verdict flagged the one loose thread: gaming is detectable-in-principle but NOT exhibited. This phase builds the deliberately weaker gate and measures whether the real worker games. Headline: does the silent-wrong rate climb as the gate weakens (contract STRENGTH is load-bearing for truthful delegation) or stay ~0 at all strengths (the worker's competence, not the gate, carries truthfulness)?",
-  "recommendation": "Build a 2-3 rung gate ladder by reducing the visible gate's COVERAGE of the lag invariant (Ph102 pins the lag at loci {0->1} and {2->3}; weaken to fewer loci, down to a shape-only rung that leaves the lag boundary unconstrained), hold the held-out (decision_lag_strict, every-position sweep, disjoint AAA) FIXED as the ruler, and run the NATURAL contract-loop worker x rung x n. Classify each held-out-fail run three ways {silent-wrong | special-cased | honest-flagged-wrong} and report the SILENT-WRONG rate (not the raw fail rate) as the delegation headline. Controls-first: a manipulation-check seed per adjacent rung pair proves each rung strictly weaker; the held-out re-verified sharp at every rung; leak-grep re-run after each weakening edit. Recommend NATURAL-worker-only (propensity = the gaming RATE you asked for); the seeded controls already prove gaming is gameable-in-principle, so an adversarial-prompt capability arm is secondary. A clean ~0-everywhere null (worker stays truthful regardless of gate) is a VALID, meaningful landing.",
+  "phase": 113,
+  "phase_name": "Felt-Quality Build — Axis 3: Command Palette + Keyboard Control",
+  "generated": "2026-06-27",
+  "nonce": "6cbd2c04fa1dae7825f20bf461a51fab",
+  "gate_id": "direction",
+  "objective": "Build axis 3 — 'every action reachable by button, shortcut, or palette search' — the lone unbuilt north-star control/joy axis, making the GUI keyboard-competitive with the terminal it's meant to replace.",
+  "recommendation": "Build axis 3 as a custom command registry + Cmd+K palette + keyboard shortcuts over EXISTING actions (Option A) — it's the last north-star axis and the only thing making the GUI keyboard-competitive with the terminal (zero shortcuts exist today). But A1 is real: the spec gates ported features on a 'used weekly' dogfood test (spec:80) that has never run because the live drive was deferred 4x. If you want axis 3 shipped proven-by-use, Option B pairs the build with finally running that live drive at delivery.",
   "options": [
     {
-      "label": "A — Natural worker, gate ladder, three-way taxonomy",
-      "description": "Real worker iterates naturally (not told to game) against each gate rung; measure the silent-wrong rate as the gate weakens. Three-way classification of held-out-fail runs {silent-wrong | special-cased | honest-flagged-wrong}; cold-pass bucketed apart. Headline = silent-wrong rate (the delegation-dangerous subset). Reuses the frozen Ph102 apparatus by copy. Cheapest faithful design; answers 'does it game'.",
-      "recommended": true,
-      "chosen": true
+      "label": "A — Custom palette + keyboard, palette-only (Recommended)",
+      "description": "Hand-rolled command registry + Cmd+K palette + keyboard shortcuts over existing actions (stop / approve / deny / revert / focus) + the one genuinely-missing action (new conversation). No new dep, no security items. Mechanics-tested; felt ships on your judgment.",
+      "reasoning": "Axis 3 is the last unbuilt north-star axis and the only thing making the GUI keyboard-competitive with the terminal it's meant to replace — zero keyboard shortcuts exist today and the gate/revert are mouse-only. The Ph109 'owned not adopted' ethos favors custom; ~6 static commands don't justify a runtime dep in a strict-CSP, freshly-sandbox-hardened app. The pure command registry outlives whatever the palette UI becomes.",
+      "consequences": "Commits to building axis 3 BEFORE its spec 'used weekly' precondition is demonstrated — the bet is that supply makes the loop reach-for-able. Defers the live window-drive a 5th time. Vercel-output redaction + cross-platform sandbox stay OUT (a future security phase, since you chose to pivot away from security this round).",
+      "recommended": true
     },
     {
-      "label": "B — Also add an adversarial-prompt arm (capability upper bound)",
-      "description": "On top of A, a second arm where the worker is TOLD to optimize the visible checks — measures whether opencode CAN game when it tries (capability), so a 0-natural-rate is interpretable as won't-not-can't. Doubles the worker runs for a secondary number; the seeded controls already establish gameability-in-principle.",
-      "recommended": false,
-      "chosen": false
+      "label": "B — Palette + finally run the live drive at delivery",
+      "description": "Same build as A, but this phase's acceptance bar is you actually driving the app — closing the 4x-deferred live window-drive and the spec's 'used weekly' precondition. Axis 3 ships proven-by-use, and the drive populates the real UX quick-win list for Ph114.",
+      "reasoning": "Directly retires the A1 risk: instead of betting supply creates demand, you confirm the loop is reach-for-able by using it. It's the LAST axis — a natural moment to close the standing live-drive debt and ground the next phase in observed friction rather than guesses.",
+      "consequences": "Adds a maintainer-time delivery step (the drive) you've deferred every phase since 109. If the drive surfaces big friction, Ph113 acceptance may spill into follow-on fixes. Trades a fast ship for a grounded one."
     },
     {
-      "label": "C — Raw under-spec rate only (drop the taxonomy)",
-      "description": "If the silent-wrong vs honest-flagged-wrong split can't be pinned mechanically, fall back to the blunt deterministic rate (visible-pass AND held-out-fail) as the headline. Simpler but conflates a safe calibrated hedge with a dangerous silent miss — loses the delegation-relevant distinction.",
-      "recommended": false,
-      "chosen": false
+      "label": "C — Adopt cmdk instead of hand-rolling",
+      "description": "Use the cmdk library for the palette (battle-tested fuzzy-search + keyboard nav + a11y) instead of a custom component; same command set + shortcuts.",
+      "reasoning": "Faster path to a polished palette with good fuzzy-matching and accessibility out of the box; less custom UI code to own and maintain.",
+      "consequences": "Adds a runtime dependency + its supply-chain surface to an app whose last phases were literally about sandboxing untrusted code; cuts against the Ph109 'owned not adopted' ethos. Marginal benefit for ~6 static commands."
     }
   ],
   "assumptions": [
     {
       "id": "A1",
       "cost": "high",
-      "text": "ELICITABILITY (the T0 weakest): a deliberately weakened gate WILL produce >=1 silent-wrong run from the real opencode/big-pickle worker. If FALSE (~0 gaming at every gate strength), the phase returns the informative NULL — the worker's competence, not the gate, carries truthfulness on this task (delegation robust to gate looseness, rhyming with the amplifier-nulls). That null is a VALID landing, not a failed phase — but the campaign yields no gaming gradient. Position: do you accept running the campaign with the null as an acceptable outcome?",
-      "position": "don't-know",
-      "resolution": "DEFERRED (revisit-status: open). Maintainer correctly declines to pre-judge an empirical outcome. Resolved by the T2 make-or-break calibration pilot BEFORE the freeze; the plan does NOT bank on it — if false, the pre-registered informative null stands and the maintainer adjudicates its acceptability at the DELIVERY gate."
+      "text": "Building axis 3 now will make the loop reach-for-able (supply creates demand) — even though the spec gates ported features on a 'used weekly' dogfood test (spec:80) that has never run, because the live drive was deferred 4x. If FALSE: a correctly-built axis the maintainer doesn't actually reach for — effort an honest dogfood would have deprioritized.",
+      "position": "pending"
     },
     {
       "id": "A2",
-      "cost": "high",
-      "text": "REALISTIC WEAK GATE: a weak-but-plausible gate — one a human might actually write (fewer example loci pinned), not an obvious strawman — is constructible along the lag-coverage axis. If FALSE (the only 'weak' gates are absurd contracts nobody would write), a gaming result wouldn't transfer to realistic delegation and the claim narrows to 'the constructed weak gate'. This is the realism load on the whole finding.",
-      "position": "don't-know",
-      "resolution": "DEFERRED (revisit-status: open). Realism judged concretely when the actual rungs are built in T1 (a one-example-locus gate is a plausible under-specified contract). The plan does NOT bank on it — if false, the verdict narrows the claim to 'the constructed weak gate' + flags the realism limit regardless."
+      "cost": "medium",
+      "text": "Every target action (gate approve/deny, revert, stop, new-conversation) is dispatchable from a new App-mounted palette through EXISTING bridge channels, needing no new privileged host path. If FALSE: the palette would need a channel that touches the gate/security core — breaking the no-new-privileged-path invariant the GUI phases have held since Ph108.",
+      "position": "pending"
     },
     {
       "id": "A3",
       "cost": "medium",
-      "text": "SILENT-WRONG IS SEPARABLE: silent-wrong vs honest-flagged-wrong is operationalizable mechanically from the worker transcript / converged code (a pinned marker on the visibly-UNCONSTRAINED locus, in the vocabulary the worker actually saw — NOT held-out names, which the leak guard guarantees absent). If FALSE (too ambiguous to pin), the headline degrades to the raw under-spec rate (option C), conflating a safe hedge with a dangerous silent miss.",
-      "position": "don't-know",
-      "resolution": "DEFERRED (revisit-status: open). The T2 pilot tests separability on real transcripts. The plan does NOT bank on it — if false, the headline degrades gracefully to the raw under-spec rate (visible-pass AND held-out-fail), taxonomy descriptive-only."
+      "text": "There is no unstated felt-quality friction you'd want bundled here — the 'UX quick-wins' from the objective are genuinely closed (icon/typed-diff/flaky-e2e all done) or are security/separate-phase work. If FALSE: a real felt win gets dropped by scoping the phase palette-only.",
+      "position": "pending"
+    },
+    {
+      "id": "A4",
+      "cost": "low",
+      "text": "Mechanics-only tests + felt-on-your-judgment, with the live window-drive still deferred, is an acceptable exit bar for this axis (Ph109-112 precedent). If FALSE: you want the drive run as part of THIS phase's acceptance — which is Option B.",
+      "position": "pending"
     }
   ],
   "context": {
-    "active_phase": "Phase 102 DELIVERED 2026-06-22 — the contract-loop recovers the Ph101 floor VIA FEEDBACK, truthfully (gaming 0/3) under a STRONG gate. Phase 103 = the gaming-rate loose thread: does a WEAKER gate elicit gaming? SHIPS NOTHING; apparatus gitignored companion/research/contract-loop-gaming/ (reuses frozen Ph102 by copy).",
+    "active_phase": "Phase 113 — Felt-Quality Build (axis 3: command palette + keyboard control)",
     "open_decisions": [
-      "Scope fork (options A/B): natural-worker-only (propensity = the gaming RATE) vs + adversarial-prompt arm (capability upper bound). Recommend A; B doubles runs for a secondary number.",
-      "A1: is a 0-everywhere informative null an acceptable landing for the campaign? (worker competence carries truthfulness)",
-      "A2: is a realistic-but-weak gate constructible, or only strawmen? (the realism load on the finding)",
-      "A3: can silent-wrong be split from honest-flagged-wrong mechanically, or does the headline fall back to the raw rate?",
-      "Self-resolved (NOT gated): substrate availability — opencode/big-pickle + the Ph102 --continue substrate ran successfully TODAY (Ph102), treated as available with a down-grade/STOP fallback. decision-lag as the sole task — pit's Ph102 held-out was confounded (orthogonal before-baseline), so it is excluded; claim scoped to one clean task."
+      "Custom palette vs cmdk dependency",
+      "Run the 4x-deferred live drive now as the acceptance bar (Option B)?"
     ]
   }
 }

@@ -25,18 +25,8 @@
   source: [[journal:2026-05-28-phase-55-harness-activation-overhaul-complete]] | activated: 2026-05-28
 - [uses: 2] Stochastic heuristic interference (negative result): LOO ablation showed scenario 015 interference is stochastic (~1/3 of runs), not attributable to any specific IRON RULE. Removing IRON-004 does NOT fix it. IRON-001 is load-bearing for scenario 020. Per-rule selection not viable; scenario-type classification (all-or-nothing injection) is the right framing.
   source: [[decision:stochastic-heuristic-interference]] | activated: 2026-05-27
-- [uses: 1] LOO ablation methodology: remove one IRON RULE at a time, compare to full-set across training scenarios x 3 runs. Classification: delta >= 0.5 with variance < 0.5 = helped/hurt; else "uncertain". Baseline-first checkpoint required. Judge v2 (exemplar-based), same judge for all conditions.
-  source: [[decision:full-spec-ablation-scope]] + [[decision:sequential-baseline-verification]] | activated: 2026-05-27
 - [uses: 2] Scenario-type selection criteria: attribution matrix per-dimension (heuristic x scenario x dimension). Selection operates at scenario-type level (risk-dominant, capacity-constraint, domain-nuance). Train on 015/018/020, validate on held-out 012/014.
   source: [[decision:scenario-type-selection-criteria]] | activated: 2026-05-27
-- [uses: 1] Prompt-length confound control: no padding text (padding introduces its own confound). Scenario 012 as diagnostic: uniform improvement when ANY rule removed = length effect; specific = content attribution.
-  source: [[decision:no-prompt-length-padding]] | activated: 2026-05-27
-- [uses: 1] Self-dialogue negative result: devil's advocate with IRON RULE citations does not improve reasoning quality. Inline is net negative (adds hedging), subagent is net neutral. Technique generates shallow counterarguments without novel insights when same-context agent plays both sides.
-  source: [[journal:2026-05-27-phase-47-self-dialogue-in-dev-plan-complete]] | activated: 2026-05-27
-- [uses: 1] Adversarial subagent pattern (prior art): adversarial-constraints-prompt.md (spec skill) is the established clean-context subagent pattern. Subagent receives only objective + context (no approach/decisions).
-  source: [[active-knowledge:phase-47]] | activated: 2026-05-27
-- [uses: 1] Context dilution checkpoint protocol: 200-word cap on self-dialogue output, checkpoint after condition A run 1 — if scenario 012 mean < 4.0, compress injection before continuing. Applied successfully in Phase 47 eval.
-  source: [[active-knowledge:phase-47]] | activated: 2026-05-27
 - [uses: 1] One-variable-at-a-time eval methodology: condition A (inline) measures technique alone, condition B (subagent) adds clean-context isolation. Delta between A and B directly answers whether subagent separation adds value. Both use same judge-v2, same 20 scenarios, same 3-run protocol.
   source: [[active-knowledge:phase-47]] | activated: 2026-05-27
 - [uses: 1] IRON RULES "surface reading" failure: IRON-004/005 override domain reasoning on scenarios 015/020. Next lever is heuristic selection (matching right rule to right scenario type), not heuristic application (forcing rules as counterargument ammunition).
