@@ -59,7 +59,10 @@ export function App() {
 }
 
 export function HarnessSurface({ bridge }: { bridge: BridgeClient }) {
-  const { runtime, artifacts, isRunning, stop, newConversation } = useChatRuntime(bridge);
+  // The bridge is BOTH the engine adapter and the workspace source (Ph115): it
+  // supplies currentWorkspace + onWorkspace, so the conversation persists per
+  // workspace and restores on the next ready.
+  const { runtime, artifacts, isRunning, stop, newConversation } = useChatRuntime(bridge, bridge);
   const { current, approve, deny } = useGatePending(bridge);
   const [reverts, setReverts] = useState<string[]>([]);
   const [paletteOpen, setPaletteOpen] = useState(false);
