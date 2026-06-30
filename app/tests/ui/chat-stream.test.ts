@@ -135,4 +135,46 @@ describe('chat surface binding (T1)', () => {
       }
     });
   });
+
+  // Dogfound fix #5: a failed turn must be VISIBLE (was status-only → empty bubble).
+  describe('failed-turn surfacing', () => {
+    it('renders a turn error as a visible, redacted text part', () => {
+      const tm = surfaceToThreadMessage({
+        role: 'assistant',
+        text: 'partial output',
+        toolCalls: [],
+        done: false,
+        error: 'connect ECONNREFUSED 127.0.0.1:8080 (key sk-ant-abcdefABCDEF0123456789)',
+      });
+      const parts = tm.content as unknown as Array<{ type: string; text?: string }>;
+      const errPart = parts.find((p) => p.type === 'text' && (p.text ?? '').includes('Turn failed'));
+      expect(errPart, 'a visible error part is appended').toBeTruthy();
+      expect(errPart!.text).not.toContain('sk-ant-abcdefABCDEF0123456789'); // routed through redactSecrets
+      expect((tm.status as { type: string }).type).toBe('incomplete');
+    });
+
+    it('adds no error part on a clean (done) turn', () => {
+      const tm = surfaceToThreadMessage({ role: 'assistant', text: 'ok', toolCalls: [], done: true });
+      const parts = tm.content as unknown as Array<{ type: string; text?: string }>;
+      expect(parts.some((p) => (p.text ?? '').includes('Turn failed'))).toBe(false);
+    });
+  });
+
+  // Dogfound fix #4: an in-flight tool call shows a progress cue (looked frozen before).
+  describe('in-flight tool spinner', () => {
+    it('renders a spinner for a called tool, not for a done or denied one', () => {
+      const calling = renderToStaticMarkup(
+        createElement(ToolCallView, { toolName: 'bash', status: { type: 'running' } }),
+      );
+      expect(calling).toContain('tool-call__spinner');
+      const done = renderToStaticMarkup(
+        createElement(ToolCallView, { toolName: 'bash', status: { type: 'complete' } }),
+      );
+      expect(done).not.toContain('tool-call__spinner');
+      const denied = renderToStaticMarkup(
+        createElement(ToolCallView, { toolName: 'bash', isError: true, result: 'destructive', status: { type: 'complete' } }),
+      );
+      expect(denied).not.toContain('tool-call__spinner');
+    });
+  });
 });

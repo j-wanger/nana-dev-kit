@@ -80,6 +80,12 @@ export function surfaceToThreadMessage(m: UiMessage): ThreadMessageLike {
       isError: tc.status === 'denied',
       result: toolResultText(tc),
     })),
+    // A turn-level failure was previously stored on `status` only — which the
+    // MessageView never renders, so a failed turn looked like a silent no-op
+    // (empty bubble). Surface it as a visible part. The error string is
+    // model/tool-adjacent (may echo a key/stack trace) → redact + plain string
+    // (inert). Conditional spread (content is a readonly array — no push).
+    ...(m.error ? [{ type: 'text' as const, text: `⚠ Turn failed: ${redactSecrets(m.error)}` }] : []),
   ];
   const status: ThreadMessageLike['status'] = m.error
     ? { type: 'incomplete', reason: 'error', error: m.error }

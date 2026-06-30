@@ -141,6 +141,25 @@ describe('engine-host protocol (T6)', () => {
     expect(sent).toContainEqual({ type: 'revert-result', path: '/ws/a.ts', ok: false, error: 'no checkpoint' });
   });
 
+  it('a context-assembly failure surfaces as a turn error, not a rejected/hung turn (dogfood fix #5)', async () => {
+    const sent: HostOutbound[] = [];
+    const host = new EngineHost({
+      adapter: new FakeAdapter(async function* () { yield { type: 'done' }; }),
+      workspaceRoot: '/ws',
+      baseGate: createHostGate({ workspaceRoot: '/ws' }),
+      send: (m) => sent.push(m),
+      assemble: () => { throw new Error('cannot read project context'); },
+    });
+    // Must RESOLVE, not reject — a rejection would leave the UI hung on "working…"
+    // forever (no done/error ever reaches the turn).
+    await expect(host.handle({ type: 'prompt', turnId: 't1', text: 'hi' })).resolves.toBeUndefined();
+    const errEvt = sent.find(
+      (m) => m.type === 'engine-event' && (m as Extract<HostOutbound, { type: 'engine-event' }>).event.type === 'error',
+    ) as Extract<HostOutbound, { type: 'engine-event' }> | undefined;
+    expect(errEvt, 'an error engine-event is surfaced for the turn').toBeTruthy();
+    expect((errEvt!.event as { error: string }).error).toContain('cannot read project context');
+  });
+
   it('interrupt aborts the turn signal and releases any held gate', async () => {
     const sent: HostOutbound[] = [];
     let sawAbort = false;

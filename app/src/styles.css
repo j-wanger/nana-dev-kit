@@ -193,15 +193,21 @@ body {
   cursor: pointer;
 }
 
-/* "working…" activity indicator (shown while a turn runs) */
+/* "working…" activity indicator (shown while a turn runs). Sticky to the
+   viewport bottom so it stays visible when scrolled up reading output. */
 .thread__working {
+  position: sticky;
+  bottom: 0;
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 8px 0;
+  margin-top: 4px;
   font-family: var(--mono);
   font-size: 12.5px;
   color: var(--warn);
+  background: var(--bg-0);
+  border-top: 1px solid var(--line);
 }
 .thread__working-dot {
   width: 8px;
@@ -243,6 +249,23 @@ body {
 .tool-call__result {
   color: var(--fg-1);
   white-space: pre-wrap;
+}
+.tool-call--called {
+  border-left-color: var(--warn);
+}
+/* in-flight spinner — static dot by default; spins ONLY while the turn runs
+   (.surface--running), so a dangling 'called' call after done/abort can't spin
+   forever (the stuck-spinner edge the review flagged). */
+.tool-call__spinner {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--warn);
+  flex: 0 0 auto;
+  align-self: center;
+}
+.surface--running .tool-call--called .tool-call__spinner {
+  animation: nana-pulse 1.1s ease-in-out infinite;
 }
 .tool-call--done {
   border-left-color: var(--go);

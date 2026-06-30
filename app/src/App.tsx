@@ -92,7 +92,7 @@ export function HarnessSurface({ bridge }: { bridge: BridgeClient }) {
   useCommandShortcuts({ commands, onOpenPalette: () => setPaletteOpen(true), paletteOpen });
 
   return (
-    <div className="surface">
+    <div className={isRunning ? 'surface surface--running' : 'surface'}>
       <main className="surface__chat">
         <Thread runtime={runtime} />
       </main>

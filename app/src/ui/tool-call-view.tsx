@@ -27,6 +27,11 @@ export function ToolCallView(props: ToolCallViewProps): ReactElement {
   return (
     <div className={`tool-call tool-call--${status}`} data-status={status}>
       <span className="tool-call__name">{props.toolName}</span>
+      {/* In-flight cue: a tool executing on a slow local model is the longest
+          wait and used to look frozen. Static markup (inert); the spin animates
+          only while the turn is running (.surface--running) so a dangling
+          'called' call after done/abort shows a static dot, never spins forever. */}
+      {status === 'called' ? <span className="tool-call__spinner" aria-hidden="true" /> : null}
       {props.argsText ? <code className="tool-call__args">{props.argsText}</code> : null}
       {props.result != null ? (
         <span className="tool-call__result">

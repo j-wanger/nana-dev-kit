@@ -25,6 +25,19 @@ export interface VercelAdapterOptions {
   providerName?: string;
   /** Sandbox profile for bash (Phase 112). Default: NANA_SANDBOX_MODE or 'strict'. */
   sandboxMode?: SandboxMode;
+  /** Max agent-loop steps per turn. Default: NANA_MAX_STEPS or 64. */
+  maxSteps?: number;
+}
+
+/**
+ * The per-turn agent-loop ceiling. Was a hard-coded 4 (Ph108) — far too low: a
+ * real task halts mid-work after ~3 tool rounds. Default 64, env-overridable.
+ * Never 0/negative (stepCountIs(0) would halt immediately).
+ */
+export function resolveMaxSteps(opt?: number): number {
+  if (opt != null && Number.isFinite(opt) && opt > 0) return Math.floor(opt);
+  const env = Number(process.env.NANA_MAX_STEPS);
+  return Number.isFinite(env) && env > 0 ? Math.floor(env) : 64;
 }
 
 export class VercelAdapter implements EngineAdapter {
@@ -36,6 +49,7 @@ export class VercelAdapter implements EngineAdapter {
   private readonly apiKey: string;
   private readonly providerName: string;
   private readonly sandboxMode: SandboxMode;
+  private readonly maxSteps: number;
 
   constructor(opts: VercelAdapterOptions) {
     this.workspaceRoot = resolve(opts.workspaceRoot ?? process.cwd());
@@ -44,6 +58,7 @@ export class VercelAdapter implements EngineAdapter {
     this.apiKey = opts.apiKey ?? 'local';
     this.providerName = opts.providerName ?? 'local';
     this.sandboxMode = resolveSandboxMode(opts.sandboxMode);
+    this.maxSteps = resolveMaxSteps(opts.maxSteps);
   }
 
   setToolCallGate(gate: ToolCallGate): void {
@@ -123,7 +138,7 @@ export class VercelAdapter implements EngineAdapter {
       // Project context (A2) as the native system prompt; undefined => omitted.
       system: options.systemContext,
       tools,
-      stopWhen: stepCountIs(4),
+      stopWhen: stepCountIs(this.maxSteps),
       abortSignal: options.signal,
     });
 
@@ -147,6 +162,28 @@ export class VercelAdapter implements EngineAdapter {
             case 'tool-result':
               queue.push({ type: 'tool-result', id: String(part.toolCallId ?? ''), result: part.output });
               break;
+            case 'finish':
+              // Make a cut-off VISIBLE — a silent "done" mid-task is exactly the
+              // dogfood bug this raise is fixing. Distinguish the two causes:
+              // 'tool-calls' = hit the agent-loop step ceiling; 'length' = hit the
+              // model's output-token limit (a different fix knob).
+              if (part.finishReason === 'tool-calls') {
+                queue.push({
+                  type: 'text-delta',
+                  delta: `\n\n⚠ Stopped at the ${this.maxSteps}-step limit — the task may be unfinished.`,
+                });
+              } else if (part.finishReason === 'length') {
+                queue.push({
+                  type: 'text-delta',
+                  delta: `\n\n⚠ Output hit the model's token limit — the response may be unfinished.`,
+                });
+              }
+              break;
+            case 'abort':
+              // User-initiated stop: a clean end, NOT an error (so the new
+              // error-surfacing never renders a deliberate Stop as a failure).
+              queue.close();
+              return;
             case 'error':
               queue.push({ type: 'error', error: String(part.error) });
               break;
@@ -156,6 +193,11 @@ export class VercelAdapter implements EngineAdapter {
         }
         queue.close();
       } catch (e) {
+        // An aborted turn throws here — that's a user Stop, not a failure.
+        if (options.signal?.aborted) {
+          queue.close();
+          return;
+        }
         queue.push({ type: 'error', error: e instanceof Error ? e.message : String(e) });
         queue.close();
       }

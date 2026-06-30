@@ -137,8 +137,18 @@ export class BridgeClient implements EngineAdapter {
         }
         break;
       }
+      case 'error': {
+        // A top-level host error is not tied to a turnId. Surface it on every
+        // in-flight turn and close them, so the UI never hangs on "working…"
+        // (the assemble-in-try fix makes most errors turn-scoped; this is the
+        // backstop for a genuinely host-level failure).
+        for (const q of this.turns.values()) {
+          q.push({ type: 'error', error: msg.message });
+          q.close();
+        }
+        break;
+      }
       case 'ready':
-      case 'error':
         break;
     }
   }

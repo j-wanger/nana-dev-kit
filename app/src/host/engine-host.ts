@@ -105,8 +105,11 @@ export class EngineHost {
     const ac = new AbortController();
     this.turns.set(turnId, ac);
     const assemble = this.deps.assemble ?? assembleContext;
-    const { systemContext } = assemble(this.deps.workspaceRoot);
     try {
+      // INSIDE the try: a context-assembly failure must surface as a turn error
+      // (a visible engine-event), not reject host.handle() — which would leave the
+      // UI hung on "working…" forever (no done/error ever reaches the turn).
+      const { systemContext } = assemble(this.deps.workspaceRoot);
       for await (const event of this.deps.adapter.sendPrompt(text, {
         signal: ac.signal,
         systemContext,
