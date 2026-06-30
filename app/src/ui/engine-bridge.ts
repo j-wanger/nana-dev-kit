@@ -25,6 +25,18 @@ export interface RevertResult {
   error?: string;
 }
 
+/**
+ * The active workspace + project-blind state, surfaced from the host `ready`
+ * (Phase 114, T5). `available` is false when no AGENTS.md/CLAUDE.md/.claude/rules
+ * context was found — the agent is running project-blind. `sources` lists the
+ * contributing files + sizes only; the systemContext CONTENTS never cross.
+ */
+export interface WorkspaceInfo {
+  root: string;
+  available: boolean;
+  sources: { path: string; bytes: number }[];
+}
+
 /** The minimal Tauri surface the bridge needs; injected so it is testable without a window. */
 export interface TauriBridge {
   invoke(cmd: string, args: Record<string, unknown>): Promise<unknown>;
@@ -34,6 +46,7 @@ export interface TauriBridge {
 
 const HOST_EVENT = 'host-message';
 const SEND_CMD = 'engine_send';
+const PICK_WORKSPACE_CMD = 'pick_workspace';
 
 export class BridgeClient implements EngineAdapter {
   readonly id = 'bridge';
@@ -42,6 +55,13 @@ export class BridgeClient implements EngineAdapter {
   private readonly gateListeners = new Set<(p: GatePending) => void>();
   private readonly revertWaiters = new Map<string, (r: RevertResult) => void>();
   private unlisten?: () => void;
+  /** Armed during changeWorkspace; resolved by the fresh sidecar's `ready` (T4). */
+  private readyWaiter?: () => void;
+  /** Guards against a re-entrant changeWorkspace clobbering readyWaiter (T6 review). */
+  private changing = false;
+  /** Active workspace + project-blind state from the latest `ready` (T5). */
+  private workspace?: WorkspaceInfo;
+  private readonly workspaceListeners = new Set<(w: WorkspaceInfo) => void>();
 
   constructor(private readonly tauri: TauriBridge) {}
 
@@ -79,6 +99,18 @@ export class BridgeClient implements EngineAdapter {
     }
   }
 
+  /** The active workspace + project-blind state, or null before the first ready (T5). */
+  get currentWorkspace(): WorkspaceInfo | null {
+    return this.workspace ?? null;
+  }
+
+  /** Subscribe to workspace changes; fires immediately with the current value if known (T5). */
+  onWorkspace(listener: (w: WorkspaceInfo) => void): () => void {
+    this.workspaceListeners.add(listener);
+    if (this.workspace) listener(this.workspace);
+    return () => this.workspaceListeners.delete(listener);
+  }
+
   /** Surface a held destructive call to the gate-confirm UI (T3). Returns an unsubscribe. */
   onGatePending(listener: (p: GatePending) => void): () => void {
     this.gateListeners.add(listener);
@@ -88,6 +120,53 @@ export class BridgeClient implements EngineAdapter {
   /** Post the human's verdict for a held call (T3). */
   respondGate(callId: string, approved: boolean): Promise<void> {
     return this.send({ type: 'gate-verdict', callId, approved });
+  }
+
+  /**
+   * Change the active workspace (Phase 114, T4). Rust opens the native folder
+   * dialog and, if a folder is chosen, kills + re-spawns the Node sidecar with
+   * NANA_WORKSPACE=<chosen> — a fresh process, so a fresh createHostGate(root) and
+   * a fresh approved-writes Map: the new gate boundary is the chosen folder and no
+   * prior in-workspace approval carries over. The webview supplies NO path (it
+   * cannot relocate the gate root); the choice is made only in the native dialog.
+   *
+   * The old sidecar is dead, so its in-flight turns and revert waiters will never
+   * settle — we tear them down (ending their streams) so the UI never hangs, then
+   * reconnect to the fresh sidecar by resolving on its `ready` handshake. The
+   * host-message subscription itself is stable across the respawn (same Tauri
+   * AppHandle + event name; Rust re-wires the new child's stdout to it), so it is
+   * not re-listened. Resolves with the chosen root, or null if the user cancelled
+   * (no respawn — the running session is left untouched).
+   */
+  async changeWorkspace(): Promise<string | null> {
+    // Re-entrancy guard: a second call while one is in flight would overwrite the
+    // single readyWaiter, orphaning the first promise (and double-spawning the
+    // sidecar). Ignore overlapping calls (Ph114 review, F2).
+    if (this.changing) return null;
+    this.changing = true;
+    try {
+      const chosen = (await this.tauri.invoke(PICK_WORKSPACE_CMD, {})) as string | null;
+      if (chosen == null) return null;
+      this.teardown('workspace changed');
+      const ready = new Promise<void>((resolve) => {
+        this.readyWaiter = resolve;
+      });
+      await ready;
+      return chosen;
+    } finally {
+      this.changing = false;
+    }
+  }
+
+  /** Close every in-flight turn + revert waiter so a dead sidecar can't hang them. */
+  private teardown(reason: string): void {
+    for (const q of this.turns.values()) {
+      q.push({ type: 'error', error: reason });
+      q.close();
+    }
+    this.turns.clear();
+    for (const w of this.revertWaiters.values()) w({ ok: false, error: reason });
+    this.revertWaiters.clear();
   }
 
   /** Request a one-action revert and await the host's result (T4). */
@@ -148,8 +227,23 @@ export class BridgeClient implements EngineAdapter {
         }
         break;
       }
-      case 'ready':
+      case 'ready': {
+        // Surface the active workspace + project-blind state to the header (T5).
+        this.workspace = {
+          root: msg.workspaceRoot,
+          available: msg.available,
+          sources: msg.sources,
+        };
+        for (const l of this.workspaceListeners) l(this.workspace);
+        // The first sidecar's ready is otherwise unobserved; a re-spawn (T4) arms
+        // a waiter so changeWorkspace resolves once the fresh sidecar is live.
+        const w = this.readyWaiter;
+        if (w) {
+          this.readyWaiter = undefined;
+          w();
+        }
         break;
+      }
     }
   }
 }

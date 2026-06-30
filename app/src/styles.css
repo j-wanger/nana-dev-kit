@@ -109,6 +109,38 @@ body {
   color: var(--warn);
 }
 
+/* active workspace + project-blind chip (Phase 114, T5) */
+.app__workspace {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  max-width: 40ch;
+}
+.app__workspace-name {
+  color: var(--fg-0);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.app__workspace-ctx {
+  color: var(--fg-2);
+}
+.app__workspace-blind {
+  color: var(--warn);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.app__workspace[data-blind='true'] {
+  border-color: var(--warn);
+}
+
 /* ── surface layout: chat + side panel ───────────────────── */
 .surface {
   display: grid;

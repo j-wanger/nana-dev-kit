@@ -25,3 +25,24 @@ export function isDeniedPath(target: string, home: string = homedir()): boolean 
     (prefix) => abs === prefix || abs.startsWith(prefix + sep),
   );
 }
+
+/**
+ * True if a RECURSIVE search/list rooted at `target` could REACH a denied secret
+ * path — i.e. `target` is, lives under, OR is an ANCESTOR of any denied prefix.
+ *
+ * `isDeniedPath` (self-or-descendant) is correct for a single-file `read`. But the
+ * recursive tools (grep/find/ls — activated in Phase 114, and NOT seatbelt-confined
+ * the way bash is) ALSO reach a secret when rooted ABOVE one: `grep --hidden` at
+ * `~`, or `ls ~/.aws`, enumerates `~/.ssh` / `~/.aws/credentials` even though those
+ * paths are merely descendants of the search root. So those tools consult this
+ * stricter, containment-symmetric check (ancestor included). Found by the Phase-114
+ * adversarial pre-commit review.
+ */
+export function pathReachesDeniedPath(target: string, home: string = homedir()): boolean {
+  const abs = resolve(target);
+  if (isDeniedPath(abs, home)) return true;
+  // `abs` is an ancestor of a denied prefix (a recursive walk from here hits it).
+  // Normalize a trailing sep so `/Users/a` does not "contain" `/Users/ab`.
+  const base = abs.endsWith(sep) ? abs : abs + sep;
+  return deniedPathPrefixes(home).some((prefix) => prefix.startsWith(base));
+}

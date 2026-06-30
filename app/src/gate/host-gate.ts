@@ -1,6 +1,6 @@
 import { resolve, sep } from 'node:path';
 import { homedir } from 'node:os';
-import { isDeniedPath } from '../security/secret-deny';
+import { isDeniedPath, pathReachesDeniedPath } from '../security/secret-deny';
 import type { GateDecision, NormalizedToolCall, ToolCallGate } from '../engine/types';
 
 // The host-owned, engine-NEUTRAL pre-execution gate (Phase 108, T3). It runs at
@@ -173,6 +173,31 @@ export function createHostGate(config: HostGateConfig): ToolCallGate {
         const path = asString(args.path);
         if (path === undefined) return deny('malformed read call: missing string `path`');
         if (isDeniedPath(path, home)) return deny('read of a secret/key-store path is denied');
+        return { action: 'allow' };
+      }
+
+      case 'grep':
+      case 'find':
+      case 'glob':
+      case 'ls': {
+        // Pi's read-only search/list tools (Phase 114 — activated alongside the
+        // Pi-default switch). Handle them like `read`: deny secret/key-store paths,
+        // allow otherwise. Crucially they must NOT fall through to the `default`
+        // branch, which runs EVERY string arg through the destructive-bash check —
+        // that would falsely deny a grep PATTERN of "rm"/"git push"/"--force" (a
+        // search is not a destructive action) and treat the search path as a write
+        // target. Out-of-workspace reads stay the pre-existing Ph112 residual
+        // (uniform with `read`/bash); these tools cannot write or execute.
+        //
+        // Unlike `read` (a single file), these tools RECURSE, so the secret check
+        // is ancestor-aware (pathReachesDeniedPath): a search rooted at or ABOVE a
+        // secret dir (`grep ~`, `ls ~/.aws`) reaches it. When no path is given the
+        // tool defaults to the workspace cwd, so the workspace root is the implicit
+        // search root. (Found by the Phase-114 adversarial pre-commit review.)
+        const searchRoot = asString(args.path) ?? root;
+        if (pathReachesDeniedPath(searchRoot, home)) {
+          return deny(`${name} of a path that can reach a secret/key-store location is denied`);
+        }
         return { action: 'allow' };
       }
 

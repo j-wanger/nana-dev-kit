@@ -7,6 +7,8 @@ import { BridgeClient, createBridgeClient } from './ui/engine-bridge';
 import { buildCommands, type CommandContext } from './ui/commands';
 import { CommandPalette } from './ui/command-palette';
 import { useCommandShortcuts } from './ui/use-command-shortcuts';
+import { WorkspaceIndicator } from './ui/workspace-indicator';
+import { useWorkspace } from './ui/use-workspace';
 
 // The composed harness surface (Phase 109, T5). Wires the webview BridgeClient
 // (T6) to the chat (axis 4), the gate-confirm approve-loop (axis 1), a one-action
@@ -20,6 +22,7 @@ type ConnState = 'connecting' | 'connected' | 'offline';
 export function App() {
   const [bridge, setBridge] = useState<BridgeClient | null>(null);
   const [conn, setConn] = useState<ConnState>('connecting');
+  const workspace = useWorkspace(bridge);
 
   useEffect(() => {
     let cancelled = false;
@@ -45,6 +48,7 @@ export function App() {
       <header className="app__header">
         <span className="app__brand">nana</span>
         <span className="app__tagline">dev-harness</span>
+        <WorkspaceIndicator info={workspace} />
         <span className={`app__status app__status--${conn}`} data-conn={conn}>
           {conn === 'connected' ? 'engine connected' : conn === 'offline' ? 'engine offline' : 'connecting…'}
         </span>
@@ -87,6 +91,19 @@ export function HarnessSurface({ bridge }: { bridge: BridgeClient }) {
       setReverts([]);
     },
     focusComposer: () => document.querySelector<HTMLElement>('.composer__input')?.focus(),
+    // The native folder picker + sidecar re-spawn run Rust/host-side; the bridge
+    // tears down the dead session and reconnects on the fresh `ready` (T4). A new
+    // workspace means a fresh gate, so the local revert list no longer applies.
+    changeWorkspace: () => {
+      bridge.changeWorkspace().then(
+        (root) => {
+          if (root) setReverts([]);
+        },
+        // A dialog/respawn failure leaves the prior session intact; surface it
+        // rather than letting it become a silent unhandled rejection (Ph114 review, F4).
+        (e: unknown) => console.warn('workspace change failed', e),
+      );
+    },
   };
   const commands = buildCommands(ctx);
   useCommandShortcuts({ commands, onOpenPalette: () => setPaletteOpen(true), paletteOpen });

@@ -17,6 +17,7 @@ function makeCtx(over: Partial<CommandContext> = {}): CommandContext {
     revertLast: vi.fn(),
     newConversation: vi.fn(),
     focusComposer: vi.fn(),
+    changeWorkspace: vi.fn(),
     ...over,
   };
 }

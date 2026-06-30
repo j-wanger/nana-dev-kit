@@ -25,6 +25,12 @@ serde_json = "1"
 # file. apple-native = macOS Keychain backend (macOS-first per the spec). The
 # round-trip is proven empirically by src-tauri/keyhelper against this same crate.
 keyring = { version = "3", features = ["apple-native"] }
+# Workspace picker (Phase 114, T3): the native folder dialog is opened from RUST
+# (the `pick_workspace` command), never from the webview. A Rust-side call bypasses
+# the webview ACL, so the renderer is granted NO dialog capability — it can only
+# invoke `pick_workspace`, which takes no path argument (it cannot relocate the
+# gate root). The chosen folder becomes the re-spawned sidecar's NANA_WORKSPACE (T4).
+tauri-plugin-dialog = "2"
 
 [features]
 # this feature is used for production builds or when a dev server is not specified,

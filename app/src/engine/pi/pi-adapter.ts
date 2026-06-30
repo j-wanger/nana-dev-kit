@@ -236,6 +236,25 @@ export interface LocalProviderConfig {
   maxTokens?: number;
 }
 
+// Phase 114: the active builtin tool set for the Pi session. The SDK registers all
+// 7 but defaults to activating only read/bash/edit/write — leaving grep/find/ls
+// DORMANT, so the model had to shell out to bash for search. Activating the full
+// set gives it ripgrep/fd/ls with paginated, capped output. `bash` stays in the
+// list but is OS-sandbox-overridden by piSandboxCustomTools (Ph112) — the custom
+// definition wins by name, so this does NOT re-expose an unsandboxed bash.
+export const PI_TOOL_ALLOWLIST = ['read', 'bash', 'edit', 'write', 'grep', 'find', 'ls'] as const;
+
+/**
+ * Per-turn output-token ceiling for the local model. Pi's local path defaults to
+ * 2048 (LocalProviderConfig), which truncates real responses; raise it (env-
+ * overridable). Never 0/negative.
+ */
+export function resolveMaxTokens(opt?: number): number {
+  if (opt != null && Number.isFinite(opt) && opt > 0) return Math.floor(opt);
+  const env = Number(process.env.NANA_MAX_TOKENS);
+  return Number.isFinite(env) && env > 0 ? Math.floor(env) : 8192;
+}
+
 export interface PiAdapterOptions {
   /** Working tree the agent operates on (gate's workspace root). Default: process.cwd(). */
   workspaceRoot?: string;
@@ -251,6 +270,8 @@ export interface PiAdapterOptions {
   local?: LocalProviderConfig;
   /** Sandbox profile for bash (Phase 112). Default: NANA_SANDBOX_MODE or 'strict'. */
   sandboxMode?: SandboxMode;
+  /** Active builtin tool allowlist. Default: PI_TOOL_ALLOWLIST (Phase 114). */
+  tools?: readonly string[];
 }
 
 /**
@@ -269,6 +290,7 @@ export class PiAdapter implements EngineAdapter {
   private readonly getApiKey?: PiAdapterOptions['getApiKey'];
   private readonly local?: LocalProviderConfig;
   private readonly sandboxMode: SandboxMode;
+  private readonly toolNames: readonly string[];
 
   constructor(opts: PiAdapterOptions = {}) {
     this.workspaceRoot = resolve(opts.workspaceRoot ?? process.cwd());
@@ -278,6 +300,7 @@ export class PiAdapter implements EngineAdapter {
     this.getApiKey = opts.getApiKey;
     this.local = opts.local;
     this.sandboxMode = resolveSandboxMode(opts.sandboxMode);
+    this.toolNames = opts.tools ?? PI_TOOL_ALLOWLIST;
   }
 
   setToolCallGate(gate: ToolCallGate): void {
@@ -379,6 +402,11 @@ export class PiAdapter implements EngineAdapter {
       agentDir: this.agentDir,
       sessionManager: SessionManager.inMemory(this.workspaceRoot),
       resourceLoader: loader,
+      // Phase 114: activate the full builtin tool set (grep/find/ls were dormant)
+      // so the model gets paginated read + ripgrep/fd/ls + surgical edit. `bash`
+      // here is OS-sandbox-overridden by customTools below (the custom definition
+      // wins by name — Ph112), so listing it does NOT re-expose unsandboxed bash.
+      tools: [...this.toolNames],
       // Phase 112: OS-sandbox bash by overriding the builtin with a seatbelt-
       // wrapped 'bash' tool (empty off-darwin → builtin bash + string-gate only).
       customTools: piSandboxCustomTools(this.workspaceRoot, this.sandboxMode),

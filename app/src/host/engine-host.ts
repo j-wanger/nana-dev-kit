@@ -4,7 +4,7 @@ import { ConfirmationBroker } from '../gate/confirm/broker';
 import { createConfirmingGate } from '../gate/confirm/confirming-gate';
 import { bashOutOfWorkspaceWriteTargets } from '../gate/host-gate';
 import { recordApprovedWrites } from '../gate/sandbox/approved-writes';
-import { assembleContext } from '../context/assembly';
+import { assembleContext, type ContextSource } from '../context/assembly';
 
 // The Node engine-HOST (Phase 109, T6). It runs in the Node layer (NOT the
 // webview) and composes the whole daily loop behind a line-oriented JSON
@@ -24,7 +24,12 @@ export type HostInbound =
 
 /** Host -> webview. */
 export type HostOutbound =
-  | { type: 'ready' }
+  // `ready` carries the active workspace + the PROJECT-BLIND state (T5): which
+  // project-instruction files were found (sources) and whether any were
+  // (available). It deliberately does NOT carry the assembled `systemContext`
+  // string — that holds the full AGENTS.md/CLAUDE.md/rules CONTENTS and must never
+  // leak into the webview chrome; only the root + per-file sizes cross.
+  | { type: 'ready'; workspaceRoot: string; available: boolean; sources: ContextSource[] }
   | { type: 'engine-event'; turnId: string; event: EngineEvent }
   | { type: 'gate-pending'; callId: string; toolName: string; diff: string; summary: string; path?: string }
   | { type: 'revert-result'; path: string; ok: boolean; error?: string }

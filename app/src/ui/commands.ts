@@ -25,6 +25,8 @@ export interface CommandContext {
   revertLast: () => void;
   newConversation: () => void;
   focusComposer: () => void;
+  /** Open the native folder picker + re-spawn the sidecar at the chosen root (T5). */
+  changeWorkspace: () => void;
 }
 
 /** One palette/shortcut action. `enabled`/`run` are bound to a ctx snapshot. */
@@ -98,6 +100,16 @@ export function buildCommands(ctx: CommandContext): Command[] {
       keywords: ['focus', 'compose', 'input', 'prompt', 'type'],
       enabled: () => true,
       run: () => ctx.focusComposer(),
+    },
+    {
+      id: 'change-workspace',
+      title: 'Change workspace…',
+      keywords: ['workspace', 'folder', 'directory', 'project', 'open', 'switch', 'change', 'root', 'cwd'],
+      // Not dangerous: it only opens the native folder dialog — the user must pick
+      // a folder for anything to happen, and the re-spawn rebuilds a fresh gate at
+      // the chosen root. So it stays in the palette (unlike approve-gate).
+      enabled: () => true,
+      run: () => ctx.changeWorkspace(),
     },
   ];
 }
