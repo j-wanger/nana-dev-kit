@@ -9,16 +9,6 @@
   source: [[decision:stochastic-heuristic-interference]] | activated: 2026-05-27
 - [uses: 2] Scenario-type selection criteria: attribution matrix per-dimension (heuristic x scenario x dimension). Selection operates at scenario-type level (risk-dominant, capacity-constraint, domain-nuance). Train on 015/018/020, validate on held-out 012/014.
   source: [[decision:scenario-type-selection-criteria]] | activated: 2026-05-27
-- [uses: 1] IRON RULES "surface reading" failure: IRON-004/005 override domain reasoning on scenarios 015/020. Next lever is heuristic selection (matching right rule to right scenario type), not heuristic application (forcing rules as counterargument ammunition).
-  source: [[journal:2026-05-27-phase-47-self-dialogue-in-dev-plan-complete]] | activated: 2026-05-27
-- [uses: 1] Anti-pattern table format: structured table (Failure Mode | Detection Signal | Why It Fails) within existing ## Anti-pattern H2 header. 3-5 rows per heuristic. SCHEMA.md defines format. H2 header preserved for wiki-query compatibility.
-  source: [[active-knowledge:phase-46]] | activated: 2026-05-27
-- [uses: 1] IRON-004 regression fix: Never clause distinguishing "less effort now" from "simpler system" via total lifecycle complexity. Must stay domain-agnostic (transferability test). Scenario 018 improved +2.67 after fix.
-  source: [[decision:iron-004-lifecycle-complexity-fix]] | activated: 2026-05-27
-- [uses: 1] Dev-debrief companion file pattern: at 315/350 lines, new features require companion files (not inline); e.g. memory-harvest.md. Companions read standalone.
-  source: [[active-knowledge:phase-46]] | activated: 2026-05-27
-- [uses: 1] Context dilution from expanded injection payload: scenario 012 consistently dropped from 5/5/5 to 5/4/4 across 3 runs when anti-pattern tables added. Detection signal: when injection text grows, check for non-target scenario regressions.
-  source: [[active-knowledge:phase-46]] | activated: 2026-05-27
 - [uses: 1] Exemplar-based judge anchoring breaks self-grading ceiling: concrete response examples at score levels 3 and 5 per dimension. Same judge prompt for both baselines. Descriptive rubrics alone allow score inflation.
   source: [[decision:eval-calibration-exemplar-based-judge-anchoring]] | activated: 2026-05-27
 - [uses: 1] IRON RULES reuse heuristic format with status: iron, confidence: absolute. Selection: universal (every decision), unconditional (no exceptions), prevents known failure mode. Discoverable via same wiki-query/indexing.

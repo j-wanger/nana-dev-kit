@@ -308,3 +308,13 @@ eval/amplifier/skill-screen/runs/ctrl-recoverable/3.py
 [pruned 2026-06-30]   source: [[journal:2026-05-28-phase-55-harness-activation-overhaul-complete]] | activated: 2026-05-28
 [pruned 2026-06-30] - [uses: 1] One-variable-at-a-time eval methodology: condition A (inline) measures technique alone, condition B (subagent) adds clean-context isolation. Delta between A and B directly answers whether subagent separation adds value. Both use same judge-v2, same 20 scenarios, same 3-run protocol.
 [pruned 2026-06-30]   source: [[active-knowledge:phase-47]] | activated: 2026-05-27
+[pruned 2026-06-30] - [uses: 1] IRON RULES "surface reading" failure: IRON-004/005 override domain reasoning on scenarios 015/020. Next lever is heuristic selection (matching right rule to right scenario type), not heuristic application (forcing rules as counterargument ammunition).
+[pruned 2026-06-30]   source: [[journal:2026-05-27-phase-47-self-dialogue-in-dev-plan-complete]] | activated: 2026-05-27
+[pruned 2026-06-30] - [uses: 1] Anti-pattern table format: structured table (Failure Mode | Detection Signal | Why It Fails) within existing ## Anti-pattern H2 header. 3-5 rows per heuristic. SCHEMA.md defines format. H2 header preserved for wiki-query compatibility.
+[pruned 2026-06-30]   source: [[active-knowledge:phase-46]] | activated: 2026-05-27
+[pruned 2026-06-30] - [uses: 1] IRON-004 regression fix: Never clause distinguishing "less effort now" from "simpler system" via total lifecycle complexity. Must stay domain-agnostic (transferability test). Scenario 018 improved +2.67 after fix.
+[pruned 2026-06-30]   source: [[decision:iron-004-lifecycle-complexity-fix]] | activated: 2026-05-27
+[pruned 2026-06-30] - [uses: 1] Dev-debrief companion file pattern: at 315/350 lines, new features require companion files (not inline); e.g. memory-harvest.md. Companions read standalone.
+[pruned 2026-06-30]   source: [[active-knowledge:phase-46]] | activated: 2026-05-27
+[pruned 2026-06-30] - [uses: 1] Context dilution from expanded injection payload: scenario 012 consistently dropped from 5/5/5 to 5/4/4 across 3 runs when anti-pattern tables added. Detection signal: when injection text grows, check for non-target scenario regressions.
+[pruned 2026-06-30]   source: [[active-knowledge:phase-46]] | activated: 2026-05-27
