@@ -123,6 +123,10 @@ function makeCtx(over: Partial<CommandContext> = {}): CommandContext {
     newConversation: vi.fn(),
     focusComposer: vi.fn(),
     changeWorkspace: vi.fn(),
+    compact: vi.fn(),
+    cycleModel: vi.fn(),
+    cycleThinking: vi.fn(),
+    submitPrompt: vi.fn(),
     ...over,
   };
 }

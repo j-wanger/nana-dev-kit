@@ -37,6 +37,17 @@ export class SpendCeiling {
     this.spent += (inputTokens / 1e6) * price.input + (outputTokens / 1e6) * price.output;
   }
 
+  /**
+   * Phase 119 T2 — reconcile against an AUTHORITATIVE cumulative cost the engine
+   * already computed (Pi's `getSessionStats().cost`), rather than re-deriving it
+   * from a second price table. Monotonic (never lowers `spent`), so a late/lower
+   * reading can't un-pause a ceiling that was already tripped. This is how the
+   * host wires the meter feed into the ceiling — local is $0, so it never trips.
+   */
+  noteCumulativeCost(spentUsd: number): void {
+    if (Number.isFinite(spentUsd) && spentUsd > this.spent) this.spent = spentUsd;
+  }
+
   get spentUsd(): number {
     return this.spent;
   }

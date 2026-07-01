@@ -3,6 +3,7 @@ import { EngineHost, type HostOutbound } from '../../src/host/engine-host';
 import type { EngineAdapter, SendPromptOptions } from '../../src/engine/adapter';
 import type { EngineEvent, ToolCallGate } from '../../src/engine/types';
 import { createHostGate } from '../../src/gate/host-gate';
+import { SpendCeiling } from '../../src/control/spend';
 
 // T6: the webview<->Node-engine bridge PROTOCOL, tested transport-free. A fake
 // adapter drives scripted turns and actually CALLS the injected gate, so the
@@ -158,6 +159,281 @@ describe('engine-host protocol (T6)', () => {
     ) as Extract<HostOutbound, { type: 'engine-event' }> | undefined;
     expect(errEvt, 'an error engine-event is surfaced for the turn').toBeTruthy();
     expect((errEvt!.event as { error: string }).error).toContain('cannot read project context');
+  });
+
+  it('routes a compact inbound to adapter.compact (Ph119 T2)', async () => {
+    let compacted = 0;
+    const adapter: EngineAdapter = {
+      id: 'fake',
+      setToolCallGate() {},
+      async *sendPrompt() {
+        yield { type: 'done' };
+      },
+      async compact() {
+        compacted++;
+      },
+    };
+    const host = new EngineHost({
+      adapter,
+      workspaceRoot: '/ws',
+      baseGate: createHostGate({ workspaceRoot: '/ws' }),
+      send: () => {},
+    });
+    await host.handle({ type: 'compact' });
+    expect(compacted).toBe(1);
+  });
+
+  it('cycle-model / set-model route to the adapter and re-emit session-info (Ph119 T4)', async () => {
+    const sent: HostOutbound[] = [];
+    const calls: string[] = [];
+    const adapter: EngineAdapter = {
+      id: 'fake',
+      setToolCallGate() {},
+      async *sendPrompt() {
+        yield { type: 'done' };
+      },
+      async cycleModel() {
+        calls.push('cycle');
+        return { providerId: 'anthropic', modelId: 'claude', label: 'claude', isLocal: false, active: true };
+      },
+      async setModel(p, m) {
+        calls.push(`set:${p}/${m}`);
+        return true;
+      },
+      async currentModel() {
+        return { providerId: 'local', modelId: 'qwen', label: 'qwen', isLocal: true, active: true };
+      },
+      async listModels() {
+        return [
+          { providerId: 'local', modelId: 'qwen', label: 'qwen', isLocal: true, active: true },
+          { providerId: 'anthropic', modelId: 'claude', label: 'claude', isLocal: false, active: false },
+        ];
+      },
+    };
+    const host = new EngineHost({
+      adapter,
+      workspaceRoot: '/ws',
+      baseGate: createHostGate({ workspaceRoot: '/ws' }),
+      send: (m) => sent.push(m),
+    });
+
+    await host.handle({ type: 'cycle-model' });
+    await host.handle({ type: 'set-model', providerId: 'anthropic', modelId: 'claude' });
+    await host.handle({ type: 'request-session-info' });
+
+    expect(calls).toEqual(['cycle', 'set:anthropic/claude']);
+    const infos = sent.filter((m) => m.type === 'session-info') as Extract<HostOutbound, { type: 'session-info' }>[];
+    expect(infos).toHaveLength(3); // one per cycle/set/request
+    expect(infos[0].models.map((m) => m.modelId)).toEqual(['qwen', 'claude']);
+    expect(infos[0].model?.modelId).toBe('qwen');
+  });
+
+  it('cycle-thinking / set-thinking route to the adapter and re-emit session-info with thinking (Ph119 T5)', async () => {
+    const sent: HostOutbound[] = [];
+    const calls: string[] = [];
+    const adapter: EngineAdapter = {
+      id: 'fake',
+      setToolCallGate() {},
+      async *sendPrompt() {
+        yield { type: 'done' };
+      },
+      async cycleThinkingLevel() {
+        calls.push('cycle');
+        return 'high';
+      },
+      async setThinkingLevel(l) {
+        calls.push(`set:${l}`);
+      },
+      async thinkingInfo() {
+        return { level: 'high', levels: ['low', 'medium', 'high'], supported: true };
+      },
+    };
+    const host = new EngineHost({
+      adapter,
+      workspaceRoot: '/ws',
+      baseGate: createHostGate({ workspaceRoot: '/ws' }),
+      send: (m) => sent.push(m),
+    });
+
+    await host.handle({ type: 'cycle-thinking' });
+    await host.handle({ type: 'set-thinking', level: 'low' });
+
+    expect(calls).toEqual(['cycle', 'set:low']);
+    const infos = sent.filter((m) => m.type === 'session-info') as Extract<HostOutbound, { type: 'session-info' }>[];
+    expect(infos).toHaveLength(2);
+    expect(infos[0].thinking).toEqual({ level: 'high', levels: ['low', 'medium', 'high'], supported: true });
+  });
+
+  it('session-info carries the loaded prompt templates + skills (Ph119 T7)', async () => {
+    const sent: HostOutbound[] = [];
+    const adapter: EngineAdapter = {
+      id: 'fake',
+      setToolCallGate() {},
+      async *sendPrompt() {
+        yield { type: 'done' };
+      },
+      async listPromptTemplates() {
+        return [{ name: 'review', description: 'code review', content: 'Review the diff.' }];
+      },
+      async listSkills() {
+        return [{ name: 'deploy', description: 'deploy helper' }];
+      },
+    };
+    const host = new EngineHost({
+      adapter,
+      workspaceRoot: '/ws',
+      baseGate: createHostGate({ workspaceRoot: '/ws' }),
+      send: (m) => sent.push(m),
+    });
+    await host.handle({ type: 'request-session-info' });
+    const info = sent.find((m) => m.type === 'session-info') as Extract<HostOutbound, { type: 'session-info' }>;
+    expect(info.templates.map((t) => t.name)).toEqual(['review']);
+    expect(info.skills.map((s) => s.name)).toEqual(['deploy']);
+  });
+
+  it('emitSessionInfo is resilient — an adapter without model support sends nulls (Ph119 T4)', async () => {
+    const sent: HostOutbound[] = [];
+    const host = new EngineHost({
+      adapter: new FakeAdapter(async function* () {
+        yield { type: 'done' };
+      }),
+      workspaceRoot: '/ws',
+      baseGate: createHostGate({ workspaceRoot: '/ws' }),
+      send: (m) => sent.push(m),
+    });
+    await host.handle({ type: 'request-session-info' });
+    const info = sent.find((m) => m.type === 'session-info') as Extract<HostOutbound, { type: 'session-info' }>;
+    expect(info).toMatchObject({ model: null, models: [] });
+  });
+
+  it('a session-mutation FAILURE (compact throws) does NOT propagate out of handle() — no turn-nuke (review nit 1)', async () => {
+    const adapter: EngineAdapter = {
+      id: 'fake',
+      setToolCallGate() {},
+      async *sendPrompt() {
+        yield { type: 'done' };
+      },
+      async compact() {
+        throw new Error('pi refused to compact mid-generation');
+      },
+    };
+    const host = new EngineHost({
+      adapter,
+      workspaceRoot: '/ws',
+      baseGate: createHostGate({ workspaceRoot: '/ws' }),
+      send: () => {},
+    });
+    // Must RESOLVE (the failure is caught + logged), not reject — a rejection would
+    // become main.ts's top-level `error` that the bridge broadcasts to every turn.
+    await expect(host.handle({ type: 'compact' })).resolves.toBeUndefined();
+  });
+
+  it('a new-conversation inbound resets the engine and releases held gate awaits (Ph119 T1)', async () => {
+    let reset = 0;
+    const adapter: EngineAdapter = {
+      id: 'fake',
+      setToolCallGate() {},
+      async *sendPrompt() {
+        yield { type: 'done' };
+      },
+      async newConversation() {
+        reset++;
+      },
+    };
+    const host = new EngineHost({
+      adapter,
+      workspaceRoot: '/ws',
+      baseGate: createHostGate({ workspaceRoot: '/ws' }),
+      send: () => {},
+    });
+    await host.handle({ type: 'new-conversation' });
+    expect(reset).toBe(1);
+  });
+
+  it('hard-pauses a new turn (error event) when the spend ceiling is exceeded, without running the engine (Ph119 T2)', async () => {
+    const sent: HostOutbound[] = [];
+    let ran = false;
+    const adapter = new FakeAdapter(async function* () {
+      ran = true;
+      yield { type: 'done' };
+    });
+    const ceiling = new SpendCeiling(0.01, {});
+    ceiling.noteCumulativeCost(1.0); // already over
+    const host = new EngineHost({
+      adapter,
+      workspaceRoot: '/ws',
+      baseGate: createHostGate({ workspaceRoot: '/ws' }),
+      send: (m) => sent.push(m),
+      spendCeiling: ceiling,
+      assemble: () => ({ systemContext: '' }),
+    });
+    await host.handle({ type: 'prompt', turnId: 't1', text: 'hi' });
+    expect(ran).toBe(false); // the engine was never reached
+    const err = sent.find(
+      (m) => m.type === 'engine-event' && (m as Extract<HostOutbound, { type: 'engine-event' }>).event.type === 'error',
+    ) as Extract<HostOutbound, { type: 'engine-event' }> | undefined;
+    expect(err, 'a spend-ceiling pause surfaces as a turn error').toBeTruthy();
+    expect((err!.event as { error: string }).error).toMatch(/spend ceiling/i);
+  });
+
+  it('notes the engine cumulative cost from the context-usage meter feed (Ph119 T2)', async () => {
+    const adapter = new FakeAdapter(async function* () {
+      yield { type: 'context-usage', percent: 10, tokens: 100, contextWindow: 1000, costUsd: 0.7 };
+      yield { type: 'done' };
+    });
+    const ceiling = new SpendCeiling(0.5, {});
+    const host = new EngineHost({
+      adapter,
+      workspaceRoot: '/ws',
+      baseGate: createHostGate({ workspaceRoot: '/ws' }),
+      send: () => {},
+      spendCeiling: ceiling,
+      assemble: () => ({ systemContext: '' }),
+    });
+    await host.handle({ type: 'prompt', turnId: 't1', text: 'hi' });
+    expect(ceiling.spentUsd).toBeCloseTo(0.7, 5);
+    expect(ceiling.exceeded()).toBe(true); // the next turn would pause
+  });
+
+  it('injects HOST-ORCHESTRATED memory into the turn context (Ph119 T8, A3)', async () => {
+    const adapter = new FakeAdapter(async function* () {
+      yield { type: 'done' };
+    });
+    const host = new EngineHost({
+      adapter,
+      workspaceRoot: '/ws',
+      baseGate: createHostGate({ workspaceRoot: '/ws' }),
+      send: () => {},
+      assemble: () => ({ systemContext: 'BASE CONTEXT' }),
+      memory: { retrieve: async (q) => `# Retrieved memory\n- relevant to: ${q}` },
+    });
+    await host.handle({ type: 'prompt', turnId: 't1', text: 'fix the auth bug' });
+    // The turn's context is base + the retrieved memory (host-side; not a model tool).
+    expect(adapter.lastSystemContext).toContain('BASE CONTEXT');
+    expect(adapter.lastSystemContext).toContain('relevant to: fix the auth bug');
+  });
+
+  it('a memory retrieval FAILURE does not break the turn — it runs memoryless (fail-open, Ph119 T8)', async () => {
+    const sent: HostOutbound[] = [];
+    const adapter = new FakeAdapter(async function* () {
+      yield { type: 'text-delta', delta: 'hi' };
+      yield { type: 'done' };
+    });
+    const host = new EngineHost({
+      adapter,
+      workspaceRoot: '/ws',
+      baseGate: createHostGate({ workspaceRoot: '/ws' }),
+      send: (m) => sent.push(m),
+      assemble: () => ({ systemContext: 'BASE CONTEXT' }),
+      memory: {
+        retrieve: async () => {
+          throw new Error('memory server down');
+        },
+      },
+    });
+    await host.handle({ type: 'prompt', turnId: 't1', text: 'go' });
+    expect(evtTypes(sent)).toEqual(['text-delta', 'done']); // the turn completed normally
+    expect(adapter.lastSystemContext).toBe('BASE CONTEXT'); // memoryless, no injection
   });
 
   it('interrupt aborts the turn signal and releases any held gate', async () => {

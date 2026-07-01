@@ -629,3 +629,104 @@ body {
   font-family: var(--mono);
   font-size: 12px;
 }
+
+/* Phase 119 T3 — the restart-divergence marker (restore is display-only; the
+   engine started fresh, so the restored history is not in the model's memory). */
+.restore-marker {
+  margin: 8px 12px 0;
+  padding: 6px 10px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-sm);
+  background: var(--warn-dim);
+  color: var(--fg-1);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* Phase 119 T2 — the context/cost meter (bottom bar, spans both columns).
+   T4 — the model chip shares the bar. */
+.surface__meter {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid var(--line);
+  background: var(--bg-1);
+}
+.surface__meter .meter {
+  flex: 1 1 auto;
+}
+.surface__chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 12px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--bg-2);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-1);
+}
+.chip--button {
+  cursor: pointer;
+}
+.chip--button:hover {
+  border-color: var(--accent);
+}
+.chip__label {
+  color: var(--fg-2);
+}
+.chip__value {
+  color: var(--fg-0);
+}
+.app__warn {
+  color: var(--warn);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+.meter {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 5px 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-2);
+}
+.meter__context {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.meter__bar {
+  width: 120px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--bg-3);
+  overflow: hidden;
+}
+.meter__fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+.meter__pct {
+  color: var(--fg-1);
+  min-width: 2.5em;
+}
+.meter__tokens {
+  color: var(--fg-2);
+}
+.meter__cost {
+  margin-left: auto;
+  color: var(--warn);
+}

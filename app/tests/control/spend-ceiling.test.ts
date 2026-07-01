@@ -38,4 +38,35 @@ describe('spend ceiling: enforced hard pause', () => {
     expect(ceiling.exceeded()).toBe(true);
     expect(() => ceiling.guardSpend()).toThrow();
   });
+
+  // Phase 119 T2 — the host reconciles the ceiling against the engine's
+  // authoritative cumulative cost (the meter feed) rather than a second token
+  // model, so the number matches what the meter shows.
+  describe('noteCumulativeCost — reconcile against the engine cost (Ph119 T2)', () => {
+    it('pauses once the authoritative cumulative cost crosses the ceiling', () => {
+      const ceiling = new SpendCeiling(1.0, {});
+      ceiling.noteCumulativeCost(0.5);
+      expect(ceiling.exceeded()).toBe(false);
+      ceiling.noteCumulativeCost(1.25);
+      expect(ceiling.spentUsd).toBeCloseTo(1.25, 5);
+      expect(ceiling.exceeded()).toBe(true);
+      expect(() => ceiling.guardSpend()).toThrow(SpendCeilingExceededError);
+    });
+
+    it('is monotonic — a lower late reading cannot un-pause a tripped ceiling', () => {
+      const ceiling = new SpendCeiling(1.0, {});
+      ceiling.noteCumulativeCost(2.0);
+      expect(ceiling.exceeded()).toBe(true);
+      ceiling.noteCumulativeCost(0.1); // a stale/lower reading
+      expect(ceiling.spentUsd).toBeCloseTo(2.0, 5); // held
+      expect(ceiling.exceeded()).toBe(true);
+    });
+
+    it('$0 (local) never trips it', () => {
+      const ceiling = new SpendCeiling(0.01, {});
+      ceiling.noteCumulativeCost(0);
+      expect(ceiling.exceeded()).toBe(false);
+      expect(() => ceiling.guardSpend()).not.toThrow();
+    });
+  });
 });

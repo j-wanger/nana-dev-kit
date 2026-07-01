@@ -11,6 +11,7 @@ import { type UiMessage, surfaceToThreadMessage, commitEvent, appendMessageText 
 import { toArtifacts, type Artifact } from './artifact-feed';
 import { loadConversation, saveConversation, clearConversation } from './conversation-store';
 import type { WorkspaceInfo } from './engine-bridge';
+import type { MeterUsage } from './meter';
 
 /**
  * The workspace source the runtime persists against (Phase 115) — structurally
@@ -56,17 +57,39 @@ export function useChatRuntime(
    * invariant, T5). The shell composes any additional surface reset at the call site.
    */
   newConversation: () => void;
+  /** Ph119 T2: the latest context/cost meter reading (null before the first turn end). */
+  meter: MeterUsage | null;
+  /** Ph119 T2: manually compact the engine context (a gated session mutation). No-op if unsupported. */
+  compact: () => void;
+  /**
+   * Ph119 T7: submit `text` as a prompt through the SAME gated turn path as the
+   * composer (used by prompt-template / skill palette commands). No un-gated path.
+   */
+  submitPrompt: (text: string) => void;
+  /**
+   * Ph119 T3 (A2): a NON-EMPTY thread was RESTORED against a fresh engine session
+   * (the persistent engine starts empty on every app launch / workspace-change
+   * respawn), so the model does not remember the displayed history. The surface
+   * shows a "restored — model context reset" marker. Restore stays DISPLAY-ONLY —
+   * this flag is set from a localStorage load, never from an engine send.
+   */
+  restoredNotice: boolean;
 } {
   const [messages, setMessages] = useState<UiMessage[]>([]);
   const [running, setRunning] = useState(false);
+  const [meter, setMeter] = useState<MeterUsage | null>(null);
+  const [restoredNotice, setRestoredNotice] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   // The active persistence key — the workspace root, or null before the first
   // ready / when no workspace source is supplied (persistence then no-ops).
   const keyRef = useRef<string | null>(null);
 
-  const onNew = useCallback(
-    async (message: AppendMessage) => {
-      const text = appendMessageText(message);
+  // The one gated turn-runner: append the user message, then pump the adapter's
+  // events. EVERY prompt path (the composer, and Ph119 T7 prompt-template / skill
+  // palette commands) goes THROUGH here → engine.sendPrompt → the host gate. There
+  // is no un-gated submit path (the no-bypass invariant).
+  const runPrompt = useCallback(
+    async (text: string) => {
       if (!text || running) return;
       const ac = new AbortController();
       abortRef.current = ac;
@@ -74,6 +97,17 @@ export function useChatRuntime(
       setRunning(true);
       try {
         for await (const ev of engine.sendPrompt(text, { signal: ac.signal })) {
+          // Ph119 T2: the meter feed rides the same stream but is NOT a message —
+          // route it to the meter store, never to the message reducer.
+          if (ev.type === 'context-usage') {
+            setMeter({
+              percent: ev.percent,
+              tokens: ev.tokens,
+              contextWindow: ev.contextWindow,
+              costUsd: ev.costUsd,
+            });
+            continue;
+          }
           setMessages((prev) => commitEvent(prev, ev));
           if (ev.type === 'done' || ev.type === 'error') break;
         }
@@ -85,13 +119,29 @@ export function useChatRuntime(
     [engine, running],
   );
 
+  const onNew = useCallback(
+    async (message: AppendMessage) => {
+      await runPrompt(appendMessageText(message));
+    },
+    [runPrompt],
+  );
+
   const onCancel = useCallback(async () => {
     abortRef.current?.abort();
   }, []);
 
+  // Ph119 T2: manual /compact — a gated session mutation dispatched through the
+  // engine (BridgeClient.compact → host `compact` inbound → adapter.compact).
+  // No-op on adapters that don't expose it.
+  const compact = useCallback(() => {
+    void engine.compact?.();
+  }, [engine]);
+
   const newConversation = useCallback(() => {
     abortRef.current?.abort();
     setMessages([]);
+    setMeter(null); // Ph119 T2: a fresh thread starts with a fresh meter
+    setRestoredNotice(false); // Ph119 T3: engine + display both reset — no divergence
     const key = keyRef.current;
     if (key) clearConversation(key);
   }, []);
@@ -117,7 +167,15 @@ export function useChatRuntime(
     if (incoming === prev) return;
     if (prev) saveConversation(prev, messagesRef.current);
     keyRef.current = incoming;
-    setMessages(loadConversation(incoming));
+    const loaded = loadConversation(incoming);
+    setMessages(loaded);
+    // Ph119 T3 (A2): a restored NON-EMPTY thread displays against a FRESH engine
+    // session — the engine starts empty on every app launch and every workspace-
+    // change respawn — so the model does not remember it. Surface the divergence
+    // marker. An empty restore (a workspace with no prior thread) has no divergence.
+    // This whole path is a localStorage read — DISPLAY-ONLY, ZERO engine sends.
+    setRestoredNotice(loaded.length > 0);
+    setMeter(null); // the (respawned/fresh) engine starts with a fresh meter until its next turn
   }, []);
 
   // Persist on settle (Ph115): when a turn finishes (running true -> false), save
@@ -175,5 +233,15 @@ export function useChatRuntime(
     [messages],
   );
 
-  return { runtime, artifacts, isRunning: running, stop: onCancel, newConversation };
+  return {
+    runtime,
+    artifacts,
+    isRunning: running,
+    stop: onCancel,
+    newConversation,
+    meter,
+    compact,
+    submitPrompt: runPrompt,
+    restoredNotice,
+  };
 }

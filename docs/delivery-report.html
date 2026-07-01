@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Delivery Report: Phase 111</title>
+<title>Delivery Report: Phase 119</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; color: #333; line-height: 1.5; }
   h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 0.3em; }
@@ -21,37 +21,40 @@
 </style>
 </head>
 <body>
-<h1>Delivery Report: Phase 111 &mdash; Phase 111</h1>
+<h1>Delivery Report: Phase 119 &mdash; Phase 119</h1>
 
 <div class="summary">
-  <div class="card"><div class="num">5/5</div><div class="label">Tasks (100%)</div></div>
-  <div class="card"><div class="num">18</div><div class="label">Files Changed</div></div>
+  <div class="card"><div class="num">9/9</div><div class="label">Tasks (100%)</div></div>
+  <div class="card"><div class="num">28</div><div class="label">Files Changed</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">PASS</div><div class="label">Tests (52 passed)</div></div>
   <div class="card"><div class="num" style="color:#2d7d2d">50/50</div><div class="label">Eval</div></div>
 </div>
 
 <div class="summary">
-  <div class="card"><div class="num" style="color:#2d7d2d">+439</div><div class="label">Lines Added</div></div>
-  <div class="card"><div class="num" style="color:#c0392b">-61</div><div class="label">Lines Removed</div></div>
-  <div class="card"><div class="num">3</div><div class="label">Decisions</div></div>
-  <div class="card"><div class="num">16:39</div><div class="label">Generated</div></div>
+  <div class="card"><div class="num" style="color:#2d7d2d">+1904</div><div class="label">Lines Added</div></div>
+  <div class="card"><div class="num" style="color:#c0392b">-126</div><div class="label">Lines Removed</div></div>
+  <div class="card"><div class="num">2</div><div class="label">Decisions</div></div>
+  <div class="card"><div class="num">12:41</div><div class="label">Generated</div></div>
 </div>
 
 <h2>Tasks</h2>
 <table>
 <tr><th width="30"></th><th>Description</th></tr>
-<tr><td>&#x2705;</td><td>T1 Adapter normalizes + forwards typed `details` (FRONT-LOADED live spike; resolves A1): [DONE 2026-06-27 — types.ts ...</td></tr>
-<tr><td>&#x2705;</td><td>T2 Reduction threads `details` onto SurfaceToolCall (additive; JSON round-trip): [DONE 2026-06-27 — SurfaceToolCall g...</td></tr>
-<tr><td>&#x2705;</td><td>T3 Router: structured diff from typed `details`, heuristic as fallback (A3 + the no-heuristic win): [DONE 2026-06-27 ...</td></tr>
-<tr><td>&#x2705;</td><td>T4 Host-gate out-of-workspace HARDENING (SECURITY escape hatch — maintainer-directed fold-in; DO FIRST — deterministi...</td></tr>
-<tr><td>&#x2705;</td><td>T5 Integration + adversarial pre-commit review + full gate: [DONE 2026-06-27 — (a) deterministic e2e tests/ui/typed-d...</td></tr>
+<tr><td>&#x2705;</td><td>T1 Persistent-session foundation + A1 gate-survival VERIFICATION CHECKPOINT [CHECKPOINT — STOP + report after T1 befo...</td></tr>
+<tr><td>&#x2705;</td><td>T2 Context/cost meter + manual /compact command: [DONE 2026-07-01 — 404/404 (incl. live) + build + cargo green. Added...</td></tr>
+<tr><td>&#x2705;</td><td>T3 Ph115 restart-divergence [A2] — restore DISPLAY-ONLY + reset marker: [DONE 2026-07-01 — 407/407 + build + cargo gr...</td></tr>
+<tr><td>&#x2705;</td><td>T4 Model switcher — GATED on T1's (d) setModel-survival verdict: [DONE 2026-07-01 — 424/424 + build + cargo green. T1...</td></tr>
+<tr><td>&#x2705;</td><td>T5 Thinking-level toggle (SELF-VERIFIED — setThinkingLevel synchronous): [DONE 2026-07-01 — 433/433 + build + cargo g...</td></tr>
+<tr><td>&#x2705;</td><td>T6 nana conventions via context (safe A4 default) + AGENTS.md dedup: [DONE 2026-07-01 — 437/437 + build + cargo green...</td></tr>
+<tr><td>&#x2705;</td><td>T7 Prompt-templates + skills as palette commands: [DONE 2026-07-01 — 444/444 + build + cargo green. Engine-neutral Te...</td></tr>
+<tr><td>&#x2705;</td><td>T8 Host-orchestrated memory retrieval (safe A3 default) + CLI-over-MCP stance doc: [DONE 2026-07-01 — 453/453 + build...</td></tr>
+<tr><td>&#x2705;</td><td>T9 Hosted maxTokens verify + fix-if-real: [DONE 2026-07-01 — VERDICT: NOT A BUG, no fix. Verified by source inspectio...</td></tr>
 
 </table>
 
 <h2>Decisions</h2>
-<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Typed artifact fidelity — structured diff from Pi's typed details</td><td>high</td></tr>
-<tr><td>Host-gate out-of-workspace hardening (bash + alt-named write coverage)</td><td>high</td></tr>
-<tr><td>Thread real tool args/output/details source→surface (the Ph109 #1 dogfood gap)</td><td>high</td></tr>
+<table><tr><th>Decision</th><th>Confidence</th></tr><tr><td>Pi-UX persistent-session foundation + Tier 1/3 slice (Ph119)</td><td>high</td></tr>
+<tr><td>Pi GUI-harness setup improvements (research-spike finding)</td><td>medium</td></tr>
 </table>
 
 <h2>Files Changed</h2>
@@ -59,21 +62,31 @@
 <li><code>.claude/rules/active-phase.md</code></li>
 <li><code>.claude/rules/working-knowledge.md</code></li>
 <li><code>.dev-wiki/.stale-queue</code></li>
-<li><code>.dev-wiki/_ARCHITECTURE.md</code></li>
 <li><code>.dev-wiki/_CURRENT_STATE.md</code></li>
 <li><code>.dev-wiki/assumption-ledger.md</code></li>
 <li><code>.dev-wiki/index.md</code></li>
 <li><code>.dev-wiki/log.md</code></li>
 <li><code>.dev-wiki/tasks.md</code></li>
+<li><code>app/src/App.tsx</code></li>
+<li><code>app/src/context/assembly.ts</code></li>
+<li><code>app/src/control/spend.ts</code></li>
+<li><code>app/src/engine/adapter.ts</code></li>
 <li><code>app/src/engine/pi/pi-adapter.ts</code></li>
 <li><code>app/src/engine/types.ts</code></li>
-<li><code>app/src/gate/host-gate.ts</code></li>
-<li><code>app/src/ui/artifact-feed.ts</code></li>
-<li><code>app/src/ui/runtime.ts</code></li>
-<li><code>app/tests/adapters/pi-event-mapping.test.ts</code></li>
+<li><code>app/src/host/engine-host.ts</code></li>
+<li><code>app/src/host/main.ts</code></li>
+<li><code>app/src/styles.css</code></li>
+<li><code>app/src/ui/chat-runtime.ts</code></li>
+<li><code>app/src/ui/commands.ts</code></li>
+<li><code>app/src/ui/engine-bridge.ts</code></li>
+<li><code>app/tests/control/spend-ceiling.test.ts</code></li>
 <li><code>app/tests/e2e/provider-roundtrip.test.ts</code></li>
-<li><code>app/tests/ui/artifact-feed.test.ts</code></li>
-<li><code>app/tests/ui/runtime.test.ts</code></li>
+<li><code>app/tests/host/engine-host-protocol.test.ts</code></li>
+<li><code>app/tests/host/palette-no-bypass.test.ts</code></li>
+<li><code>app/tests/ui/commands.test.ts</code></li>
+<li><code>app/tests/ui/conversation-persist.test.tsx</code></li>
+<li><code>app/tests/ui/use-command-shortcuts.test.tsx</code></li>
+<li><code>app/tests/ui/workspace-surface.test.tsx</code></li>
 
 
 </ul>
@@ -91,7 +104,7 @@ All tests passed.</pre>
 <pre>Score: 50/50 (100%)</pre>
 
 <div class="footer">
-  Generated 2026-06-27 16:39:33 by generate-delivery-report.py
+  Generated 2026-07-01 12:41:16 by generate-delivery-report.py
 </div>
 </body>
 </html>

@@ -16,7 +16,7 @@ function read(rel: string): string {
 }
 
 describe('palette no-bypass invariant (T5)', () => {
-  it('HostInbound union is unchanged (or grew only by a benign non-gate `reset`)', () => {
+  it('HostInbound union grew only by benign non-gate members (session lifecycle / model / meter)', () => {
     const src = read('host/engine-host.ts');
     // Bound the union by the next declaration so the `;` field-separators inside
     // each member object don't truncate the capture.
@@ -28,8 +28,25 @@ describe('palette no-bypass invariant (T5)', () => {
     const ORIGINAL = ['prompt', 'gate-verdict', 'revert', 'interrupt'];
     // every original inbound message still present
     for (const t of ORIGINAL) expect(types).toContain(t);
-    // nothing outside the allowed set (the only permitted growth is a benign `reset`)
-    const ALLOWED = new Set([...ORIGINAL, 'reset']);
+    // Permitted growth is BENIGN, non-gate session-lifecycle / model / meter
+    // members only: `reset`; (Ph119 T1) `new-conversation` — crash-isolation
+    // recovery / fresh thread; (Ph119 T2) `compact` — manual compaction; (Ph119 T4)
+    // `cycle-model` / `set-model` — the gate-surviving model switch; and
+    // `request-session-info` — a read of the current model for the chip. All either
+    // reset/mutate the session (the gate survives / re-attaches) or are pure reads —
+    // NONE add a privileged/approval path (the gateLike guard below enforces that).
+    const ALLOWED = new Set([
+      ...ORIGINAL,
+      'reset',
+      'new-conversation',
+      'compact',
+      'cycle-model',
+      'set-model',
+      'request-session-info',
+      // Ph119 T5: the thinking-level toggle — a gate-surviving session mutation.
+      'cycle-thinking',
+      'set-thinking',
+    ]);
     for (const t of types) expect(ALLOWED.has(t), `unexpected HostInbound member: ${t}`).toBe(true);
     // the ONLY gate/approval inbound is the pre-existing gate-verdict — no new one
     const gateLike = types.filter((t) => /gate|approv|verdict|allow|deny|confirm/i.test(t));

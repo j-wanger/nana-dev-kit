@@ -1,4 +1,4 @@
-import type { EngineEvent, ToolCallGate } from './types';
+import type { EngineEvent, ModelInfo, SkillInfo, TemplateInfo, ThinkingInfo, ToolCallGate } from './types';
 
 export interface SendPromptOptions {
   /**
@@ -47,4 +47,41 @@ export interface EngineAdapter {
    * The returned async iterable completes with a terminal `done` (or `error`).
    */
   sendPrompt(prompt: string, options?: SendPromptOptions): AsyncIterable<EngineEvent>;
+
+  /**
+   * Optional (Phase 119 T1): reset the engine's cross-turn conversation and
+   * rebuild a fresh session with the gate re-attached. Adapters that hold a
+   * PERSISTENT session (Pi) expose this as the crash-isolation recovery and the
+   * "new conversation" action; stateless/per-turn adapters omit it. The host
+   * calls it if present.
+   */
+  newConversation?(): Promise<void>;
+
+  /**
+   * Optional (Phase 119 T2): manually compact the engine's context. A session
+   * mutation; the gate survives it. Adapters with a persistent, compactable
+   * session (Pi) expose it; others omit it. The host calls it if present.
+   */
+  compact?(): Promise<void>;
+
+  /** Optional (Phase 119 T4): the models available to switch to (local + hosted). */
+  listModels?(): Promise<ModelInfo[]>;
+  /** Optional (Phase 119 T4): the active model. */
+  currentModel?(): Promise<ModelInfo | undefined>;
+  /** Optional (Phase 119 T4): switch to a specific model (a gate-surviving mutation). */
+  setModel?(providerId: string, modelId: string): Promise<boolean>;
+  /** Optional (Phase 119 T4): cycle to the next available model (a gate-surviving mutation). */
+  cycleModel?(): Promise<ModelInfo | undefined>;
+
+  /** Optional (Phase 119 T5): the active thinking level + the ones the model offers. */
+  thinkingInfo?(): Promise<ThinkingInfo>;
+  /** Optional (Phase 119 T5): set the thinking level (a gate-surviving mutation). */
+  setThinkingLevel?(level: string): Promise<void>;
+  /** Optional (Phase 119 T5): cycle to the next thinking level (a gate-surviving mutation). */
+  cycleThinkingLevel?(): Promise<string | undefined>;
+
+  /** Optional (Phase 119 T7): the loaded prompt templates (palette slash-commands). */
+  listPromptTemplates?(): Promise<TemplateInfo[]>;
+  /** Optional (Phase 119 T7): the loaded skills (palette slash-commands). */
+  listSkills?(): Promise<SkillInfo[]>;
 }

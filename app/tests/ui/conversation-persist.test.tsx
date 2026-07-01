@@ -55,6 +55,18 @@ function oneToolCallAdapter(): EngineAdapter {
   };
 }
 
+/** An adapter that COUNTS every sendPrompt — proves restore issues zero engine sends. */
+function countingAdapter(counter: { sends: number }): EngineAdapter {
+  return {
+    id: 'fake',
+    setToolCallGate() {},
+    async *sendPrompt(): AsyncIterable<EngineEvent> {
+      counter.sends++;
+      yield { type: 'done' };
+    },
+  };
+}
+
 const wsInfo = (root: string): WorkspaceInfo => ({ root, available: true, sources: [] });
 
 /** A source that emits a known root immediately (like the bridge after a ready). */
@@ -160,6 +172,67 @@ describe('conversation persistence wiring (T3)', () => {
     });
     await flush();
     expect(convKeys()).toEqual([]);
+    act(() => root.unmount());
+  });
+});
+
+describe('restart-divergence marker — restore DISPLAY-ONLY + reset marker (Ph119 T3, A2)', () => {
+  beforeEach(() => localStorage.clear());
+
+  const seeded: UiMessage[] = [{ role: 'assistant', text: 'prior thread', done: true, toolCalls: [] }];
+
+  it('restoring a NON-EMPTY thread issues ZERO engine sends and flags the divergence marker', async () => {
+    saveConversation('/ws/a', seeded);
+    const counter = { sends: 0 };
+    const sink = { current: null as HookValue | null };
+    const { root } = mountHook(countingAdapter(counter), staticWorkspace('/ws/a'), sink);
+    await flush();
+    // The load-bearing no-bypass invariant: a restore is a localStorage read, never
+    // an engine send. The persistent engine is fresh, so nothing replays into it.
+    expect(counter.sends).toBe(0);
+    // The thread is displayed against that fresh engine → the marker is shown.
+    expect(sink.current!.restoredNotice).toBe(true);
+    act(() => root.unmount());
+  });
+
+  it('restoring an EMPTY workspace (no prior thread) shows NO marker — there is no divergence', async () => {
+    const sink = { current: null as HookValue | null };
+    const { root } = mountHook(oneToolCallAdapter(), staticWorkspace('/ws/empty'), sink);
+    await flush();
+    expect(sink.current!.restoredNotice).toBe(false);
+    act(() => root.unmount());
+  });
+
+  it('newConversation clears the marker (engine + display both reset — no divergence)', async () => {
+    saveConversation('/ws/a', seeded);
+    const sink = { current: null as HookValue | null };
+    const { root } = mountHook(oneToolCallAdapter(), staticWorkspace('/ws/a'), sink);
+    await flush();
+    expect(sink.current!.restoredNotice).toBe(true);
+    await act(async () => {
+      sink.current!.newConversation();
+    });
+    await flush(2);
+    expect(sink.current!.restoredNotice).toBe(false);
+    act(() => root.unmount());
+  });
+});
+
+describe('submitPrompt goes through the gated turn path (Ph119 T7 no-bypass)', () => {
+  beforeEach(() => localStorage.clear());
+
+  it('a prompt-template submit drives engine.sendPrompt (the gated path), like the composer', async () => {
+    const counter = { sends: 0 };
+    const sink = { current: null as HookValue | null };
+    const { root } = mountHook(countingAdapter(counter), staticWorkspace('/ws/a'), sink);
+    await flush();
+    // submitPrompt is what a prompt-template / skill palette command calls.
+    await act(async () => {
+      sink.current!.submitPrompt('Please review the diff.');
+    });
+    await flush();
+    // It ran a real turn THROUGH engine.sendPrompt — no un-gated side channel.
+    expect(counter.sends).toBe(1);
     act(() => root.unmount());
   });
 });

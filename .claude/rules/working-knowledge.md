@@ -9,30 +9,10 @@
   source: [[decision:stochastic-heuristic-interference]] | activated: 2026-05-27
 - [uses: 2] Scenario-type selection criteria: attribution matrix per-dimension (heuristic x scenario x dimension). Selection operates at scenario-type level (risk-dominant, capacity-constraint, domain-nuance). Train on 015/018/020, validate on held-out 012/014.
   source: [[decision:scenario-type-selection-criteria]] | activated: 2026-05-27
-- [uses: 1] Heuristic rules can have unintended negative effects: IRON-004 (simpler system) caused regression on scenario 018 (pushed toward incremental cleanup when expert recommends dedicated sprint). Per-rule regression analysis should be standard eval practice.
-  source: [[active-knowledge:phase-45]] | activated: 2026-05-27
-- [uses: 1] Harder reasoning scenarios need genuine ambiguity (multi-stakeholder tradeoffs, no single right answer) to differentiate quality. Easy scenarios with clear answers score at ceiling regardless of judge calibration.
-  source: [[active-knowledge:phase-45]] | activated: 2026-05-27
-- [uses: 1] Conflict detection between heuristic rules: systematic clause-by-clause comparison of Always/Never sections. No prior art found — developed from first principles in Phase 45 crossref methodology.
-  source: [[active-knowledge:phase-45]] | activated: 2026-05-27
 - [uses: 2] Heuristic article format requires 6 sections: When this applies, Always, Never, Why, Anti-pattern, Source. YAML frontmatter carries: id, trigger, domain, source_phase, confidence, helpful (counter), harmful (counter), status.
   source: [[active-knowledge:phase-44]] | activated: 2026-05-26
-- [uses: 1] session-start.sh MCP health probe uses 3 layers: jq config read (settings.json .mcpServers.memory), $MCP_CMD import check, sqlite3 entry count. Emits 3-state output: healthy (N entries) / broken (reason) / not configured. All hooks now use jq for JSON parsing (python3 eliminated).
-  source: [[decision:health-probe-3-layer]] | activated: 2026-05-25
-- [uses: 1] /init router skill (44 lines) in CORE_SKILLS: detects pyproject.toml/setup.py → Python, package.json/tsconfig.json → TypeScript. Handles polyglot (both → user choice) and empty (no markers → prompt). Dispatches via Skill(skill="py-init") or Skill(skill="ts-init").
-  source: [[decision:init-router-in-core]] | activated: 2026-05-25
-- [uses: 1] MCP memory server CWD must point to ~/.claude (parent), not ~/.claude/memory_server (package dir). Was broken since Phase 4. install.sh now has import-check verification after MCP registration.
-  source: [[decision:mcp-memory-server-cwd-fix]] | activated: 2026-05-25
 - [uses: 2] PostToolUse canonical field path is .tool_input (verified via live stale-queue.sh production evidence). All 5 PostToolUse Edit/Write hooks normalized to .tool_input.file_path // .input.file_path defensive fallback. PreToolUse uses .input.file_path. 6 eval fixtures updated.
   source: [[decision:posttooluse-normalize-after-verification]] | activated: 2026-05-25
-- [uses: 1] 2-gate ceremony model: direction gate (Step 7, user confirms intent/scope) + delivery gate (HTML report before commit, user accepts/rejects). Agent operates autonomously between gates. Subagent reviewers still execute but findings auto-incorporated.
-  source: [[decision:ceremony-streamlining-2-gate-model]] | activated: 2026-05-25
-- [uses: 1] Spec --internal mode: when invoked with --internal, auto-runs Steps 2-4 + Tier 0/1, incorporates findings, persists with marker, skips Step 5 user approval. Direct /spec unchanged. Honors spec-always-mandatory.
-  source: [[decision:spec-internal-mode]] | activated: 2026-05-25
-- [uses: 1] Delivery report generated BEFORE commit via scripts/generate-delivery-report.py (196 lines). Reads git diff + tasks.md + decisions, runs make test/eval, produces HTML. Auto-commit + push only after user acceptance.
-  source: [[decision:delivery-report-before-commit]] | activated: 2026-05-25
-- [uses: 1] install.sh hook schema uses nested format: {matcher, hooks:[{type:"command", command:"..."}]} per Claude Code /doctor validation. Legacy flat {matcher, command} triggers /doctor errors. Flat-to-nested migration logic in install.sh Python JSON merge block.
-  source: [[decision:hook-error-evidence]] + [[decision:hook-reconciliation]] | activated: 2026-05-25
 - [uses: 1] Kit hooks: 17 scripts in templates/.claude/hooks/; 11 installed globally by install.sh (enforce-spec, enforce-loop, enforce-memory, detect-loop, post-commit, pre-compact, context-size-check, dev-wiki-scope-check, post-compact, session-stop, stale-queue); 6 available via --project-local (audit-log, auto-ruff-format, block-dangerous-bash, check-tests-were-run, scan-secrets, session-start).
   source: [[decision:hook-reconciliation]] | activated: 2026-05-25
 - [uses: 1] Hook fixes require tmpdir testing (mktemp -d) before touching live state — prevents self-lockout via enforce-spec.sh regression. Evidence-pinned: every fix needs quoted error string or lint finding in commit message.

@@ -18,6 +18,10 @@ function makeCtx(over: Partial<CommandContext> = {}): CommandContext {
     newConversation: vi.fn(),
     focusComposer: vi.fn(),
     changeWorkspace: vi.fn(),
+    compact: vi.fn(),
+    cycleModel: vi.fn(),
+    cycleThinking: vi.fn(),
+    submitPrompt: vi.fn(),
     ...over,
   };
 }
@@ -65,6 +69,21 @@ describe('command registry (T1)', () => {
       expect(cmd(ctx, 'new-conversation').enabled()).toBe(true);
       expect(cmd(ctx, 'focus-composer').enabled()).toBe(true);
     });
+
+    it('compact is not dangerous (stays in the palette) and DISABLED while a turn runs', () => {
+      const c = cmd(makeCtx(), 'compact');
+      expect(c.enabled()).toBe(true);
+      expect(c.dangerous).toBeFalsy();
+    });
+
+    it('compact / cycle-model / cycle-thinking are DISABLED while a turn is running (review nit 1)', () => {
+      // Pi's compact ABORTS the in-flight op; a mid-stream model/thinking switch is
+      // undefined — so these session mutations are gated on !isRunning.
+      for (const id of ['compact', 'cycle-model', 'cycle-thinking']) {
+        expect(cmd(makeCtx({ isRunning: false }), id).enabled()).toBe(true);
+        expect(cmd(makeCtx({ isRunning: true }), id).enabled()).toBe(false);
+      }
+    });
   });
 
   describe('run() dispatches to the matching ctx callback', () => {
@@ -95,6 +114,68 @@ describe('command registry (T1)', () => {
       cmd(ctx, 'focus-composer').run();
       expect(ctx.newConversation).toHaveBeenCalledOnce();
       expect(ctx.focusComposer).toHaveBeenCalledOnce();
+    });
+
+    it('compact -> ctx.compact', () => {
+      const ctx = makeCtx();
+      cmd(ctx, 'compact').run();
+      expect(ctx.compact).toHaveBeenCalledOnce();
+    });
+
+    it('cycle-model -> ctx.cycleModel (not dangerous, stays in the palette)', () => {
+      const ctx = makeCtx();
+      const c = cmd(ctx, 'cycle-model');
+      expect(c.dangerous).toBeFalsy();
+      c.run();
+      expect(ctx.cycleModel).toHaveBeenCalledOnce();
+    });
+
+    it('cycle-thinking -> ctx.cycleThinking (not dangerous)', () => {
+      const ctx = makeCtx();
+      const c = cmd(ctx, 'cycle-thinking');
+      expect(c.dangerous).toBeFalsy();
+      c.run();
+      expect(ctx.cycleThinking).toHaveBeenCalledOnce();
+    });
+  });
+
+  describe('dynamic prompt-template + skill commands (Ph119 T7)', () => {
+    const sources = {
+      templates: [{ name: 'review', description: 'code review', content: 'Please review the diff.' }],
+      skills: [{ name: 'deploy', description: 'deploy helper' }],
+    };
+
+    it('surfaces templates + skills as non-dangerous palette commands (they render as commands)', () => {
+      const cmds = buildCommands(makeCtx(), sources);
+      const t = cmds.find((c) => c.id === 'template:review');
+      const s = cmds.find((c) => c.id === 'skill:deploy');
+      expect(t).toBeDefined();
+      expect(s).toBeDefined();
+      expect(t!.dangerous).toBeFalsy(); // shows in the palette (dangerous-exclusion honored)
+      expect(s!.dangerous).toBeFalsy();
+      expect(t!.title).toContain('/review');
+      expect(t!.keywords).toContain('template');
+    });
+
+    it('a prompt-template command SUBMITS its content through the gated prompt path — NO bypass', () => {
+      const ctx = makeCtx();
+      const t = buildCommands(ctx, sources).find((c) => c.id === 'template:review')!;
+      t.run();
+      // The ONLY effect is a gated submit (ctx.submitPrompt → engine.sendPrompt →
+      // the host gate). The command touches no engine/gate directly.
+      expect(ctx.submitPrompt).toHaveBeenCalledWith('Please review the diff.');
+    });
+
+    it('a skill command submits a gated prompt naming the skill', () => {
+      const ctx = makeCtx();
+      const s = buildCommands(ctx, sources).find((c) => c.id === 'skill:deploy')!;
+      s.run();
+      expect(ctx.submitPrompt).toHaveBeenCalledWith(expect.stringContaining('deploy'));
+    });
+
+    it('with no sources, only the static commands are present (unchanged)', () => {
+      const cmds = buildCommands(makeCtx());
+      expect(cmds.some((c) => c.id.startsWith('template:') || c.id.startsWith('skill:'))).toBe(false);
     });
   });
 });

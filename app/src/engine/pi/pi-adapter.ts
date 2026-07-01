@@ -11,7 +11,7 @@ import {
 } from '@earendil-works/pi-coding-agent';
 import type { ExtensionAPI } from '@earendil-works/pi-coding-agent';
 import type { EngineAdapter, SendPromptOptions } from '../adapter';
-import type { EngineEvent, ToolCallGate } from '../types';
+import type { EngineEvent, ModelInfo, SkillInfo, TemplateInfo, ThinkingInfo, ToolCallGate } from '../types';
 import { createHostGate } from '../../gate/host-gate';
 import { applyHostGate, type PiToolCallEvent } from './gate-bridge';
 import { getSecret } from '../../security/keystore';
@@ -245,14 +245,69 @@ export interface LocalProviderConfig {
 export const PI_TOOL_ALLOWLIST = ['read', 'bash', 'edit', 'write', 'grep', 'find', 'ls'] as const;
 
 /**
- * Per-turn output-token ceiling for the local model. Pi's local path defaults to
- * 2048 (LocalProviderConfig), which truncates real responses; raise it (env-
+ * Per-turn output-token ceiling for the LOCAL model ONLY. Pi's local path defaults
+ * to 2048 (LocalProviderConfig), which truncates real responses; raise it (env-
  * overridable). Never 0/negative.
+ *
+ * Ph119 T9 — HOSTED-PATH maxTokens VERIFICATION (verdict: NOT A BUG, no fix). The
+ * research finding flagged "hosted path maxTokens UNSET = truncation bug." Verified
+ * by source inspection: nana overrides maxTokens ONLY on the local path (this
+ * function feeds buildLocalModelsJson). The HOSTED path uses the model straight
+ * from Pi's ModelRegistry, and Pi's generated registry carries each model's REAL
+ * max-output (anthropic.models.js: 8192 older Claude, 64000 / 128000 Claude 4.x
+ * extended output, 4096 legacy; other providers 131072 / 262144 / …). So "unset by
+ * nana" means "uses the model's real limit" — correct, not truncated. Overriding it
+ * would be the actual bug: a uniform cap would clamp a 128000-max model down to
+ * 8192. Hence NO hosted-path override, and NO regression test (there is no
+ * truncation to pin). The local override exists only because nana authors that
+ * models.json and its default is low.
  */
 export function resolveMaxTokens(opt?: number): number {
   if (opt != null && Number.isFinite(opt) && opt > 0) return Math.floor(opt);
   const env = Number(process.env.NANA_MAX_TOKENS);
   return Number.isFinite(env) && env > 0 ? Math.floor(env) : 8192;
+}
+
+/** The launch-time local-endpoint capability check result (Ph119 T4). */
+export interface LocalEndpointProbe {
+  /** The OpenAI-compatible server answered GET /models. */
+  ok: boolean;
+  /** The model ids the server reports (for a "weak default?" nudge). */
+  models: string[];
+  /** A human reason when !ok (unreachable / non-200), for the header warning. */
+  detail?: string;
+}
+
+/**
+ * Ph119 T4 — probe the local OpenAI-compatible endpoint at launch so the surface
+ * can warn when the default local model is DOWN (the #1 "why is nothing happening"
+ * failure on the local $0 default). "Weak" is a judgment call (the local default is
+ * deliberately modest) — we surface the model list so the maintainer can see what
+ * is loaded, but only DOWN is a hard warning. Never throws; a fetch failure is a
+ * clean `{ ok: false }`. `fetchImpl` is injectable for tests.
+ */
+export async function probeLocalEndpoint(
+  baseUrl: string,
+  opts: { timeoutMs?: number; fetchImpl?: typeof fetch } = {},
+): Promise<LocalEndpointProbe> {
+  const doFetch = opts.fetchImpl ?? fetch;
+  try {
+    const res = await doFetch(`${baseUrl.replace(/\/$/, '')}/models`, {
+      signal: AbortSignal.timeout(opts.timeoutMs ?? 2000),
+    });
+    if (!res.ok) return { ok: false, models: [], detail: `local model endpoint returned HTTP ${res.status}` };
+    const body = (await res.json()) as { data?: Array<{ id?: unknown }> };
+    const models = Array.isArray(body?.data)
+      ? body.data.map((m) => (typeof m?.id === 'string' ? m.id : '')).filter(Boolean)
+      : [];
+    return { ok: true, models };
+  } catch (err) {
+    return {
+      ok: false,
+      models: [],
+      detail: `local model endpoint unreachable (${err instanceof Error ? err.message : String(err)})`,
+    };
+  }
 }
 
 export interface PiAdapterOptions {
@@ -272,6 +327,135 @@ export interface PiAdapterOptions {
   sandboxMode?: SandboxMode;
   /** Active builtin tool allowlist. Default: PI_TOOL_ALLOWLIST (Phase 114). */
   tools?: readonly string[];
+  /**
+   * Phase 119 T1 seam: build the ONE persistent session. Default embeds Pi
+   * (buildDefaultSession). Tests inject a fake to drive the build-once / reuse /
+   * dispose-and-rebuild lifecycle without a live model. Advanced/internal — the
+   * real app never sets this.
+   */
+  sessionBuilder?: PiSessionBuilder;
+}
+
+/**
+ * The minimal persistent-session surface the adapter drives across turns (Phase
+ * 119 T1). Pi's `AgentSession` structurally satisfies it; a fake satisfies it in
+ * the lifecycle unit tests. Only the methods the adapter actually calls are
+ * declared, so no broad Pi type crosses this seam.
+ */
+export interface PiSessionHandle {
+  /** Run one turn. Resolves when the turn completes, rejects on a session error. */
+  prompt(text: string): Promise<void>;
+  /** Interrupt the in-flight turn and return to idle; the session stays usable. */
+  abort(): Promise<void>;
+  /** Tear down the session (Pi clears its extension host + the gate hook here). */
+  dispose(): void;
+  /** Fold auto-compaction into the persistent session (the correctness dependency). */
+  setAutoCompactionEnabled(enabled: boolean): void;
+  /** Ph119 T2: the current context%/cost snapshot for the meter, or undefined if
+   *  unavailable. Engine-neutral (no Pi type crosses the seam). */
+  meterSnapshot(): MeterSnapshot | undefined;
+  /** Ph119 T2: manually compact the session context. A session mutation — the gate
+   *  survives it (A1 verdict); shipped with a gate-survives-after-compact check. */
+  compact(): Promise<void>;
+  /** Ph119 T4: the models available to switch to (local + any hosted with auth). */
+  listModels(): ModelInfo[];
+  /** Ph119 T4: the active model, or undefined before the session is built. */
+  currentModel(): ModelInfo | undefined;
+  /** Ph119 T4: switch to a specific model (a session mutation — the gate survives).
+   *  Returns false if the id is unknown (no change). */
+  setModel(providerId: string, modelId: string): Promise<boolean>;
+  /** Ph119 T4: cycle to the next available model (a session mutation). Returns the
+   *  new model, or undefined when only one model is available (no-op). */
+  cycleModel(): Promise<ModelInfo | undefined>;
+  /** Ph119 T5: the active thinking level + the ones this model offers. */
+  thinkingInfo(): ThinkingInfo;
+  /** Ph119 T5: set the thinking level (synchronous in Pi; the gate survives). */
+  setThinkingLevel(level: string): void;
+  /** Ph119 T5: cycle to the next thinking level (delegates to the setter). Returns
+   *  the new level, or undefined when the model does not support thinking. */
+  cycleThinkingLevel(): string | undefined;
+  /** Ph119 T7: the loaded prompt templates (surfaced as palette commands). */
+  listPromptTemplates(): TemplateInfo[];
+  /** Ph119 T7: the loaded skills (surfaced as palette commands). */
+  listSkills(): SkillInfo[];
+}
+
+/** Engine-neutral context/cost snapshot for the meter (Ph119 T2). Mirrors the
+ *  `context-usage` event fields minus `type`. `percent`/`tokens` are null in the
+ *  post-compaction window; `costUsd` is $0 on the local model. */
+export interface MeterSnapshot {
+  percent: number | null;
+  tokens: number | null;
+  contextWindow: number;
+  costUsd: number;
+}
+
+/**
+ * What the adapter hands a session builder (Phase 119 T1). The gate is resolved
+ * at CALL time (`getGate`, never captured), and denials + mapped stream events
+ * flow through `onDenied`/`onEvent` — which push to whatever the CURRENT turn's
+ * sink is. That call-time indirection is the C1 decouple: a denial on turn N
+ * reaches turn N's stream even though the gate hook was wired once at build.
+ */
+export interface PiSessionBuildArgs {
+  workspaceRoot: string;
+  /** Resolve the live host gate at call time — mirrors Pi's own call-time `_extensionRunner` read. */
+  getGate: () => ToolCallGate;
+  /** Route a host-gate denial to the current turn's stream. */
+  onDenied: (id: string, reason: string) => void;
+  /** Route a mapped engine event (from Pi's subscribe) to the current turn's stream. */
+  onEvent: (event: EngineEvent) => void;
+}
+
+/** Builds ONE persistent Pi session with the host-gate `tool_call` hook wired. */
+export type PiSessionBuilder = (args: PiSessionBuildArgs) => Promise<PiSessionHandle>;
+
+/**
+ * Ph119 T2: Pi's `session.compact()` THROWS on the two benign "nothing to do"
+ * conditions — the session is too small to compact, or it was already compacted
+ * (agent-session.js:1291-1293, plain `Error` with a message string; no typed
+ * error). A MANUAL /compact on a small session must be a graceful no-op, not a
+ * surfaced crash — so we classify those messages and swallow ONLY them. Any other
+ * compaction failure (summarizer/network) still propagates. Exported so the
+ * classification is unit-tested without a live model (the live C3 test caught the
+ * raw throw; this keeps the fix pinned).
+ */
+export function isBenignCompactError(err: unknown): boolean {
+  const msg = err instanceof Error ? err.message : String(err);
+  return /nothing to compact|already compacted/i.test(msg);
+}
+
+/**
+ * Ph119 T6 (A4) — the DefaultResourceLoader options with nana's context policy.
+ * `noContextFiles: true` turns OFF Pi's NATIVE context-file load (AGENTS.md etc.),
+ * so nana's assembly.ts is the SOLE injector of project context (via the
+ * <project-context> preamble). Without this, AGENTS.md reaches the model TWICE
+ * (Pi native + nana). Extracted + exported so the policy is host-testable — a
+ * regression that re-enables the native load (double injection) trips the test.
+ * NOTE: this only disables native CONTEXT FILES; extensions (the gate),
+ * skills, and prompt-templates still load.
+ */
+export function piLoaderOptions(
+  cwd: string,
+  agentDir: string,
+  extensionFactories: Array<(pi: ExtensionAPI) => void>,
+): { cwd: string; agentDir: string; extensionFactories: Array<(pi: ExtensionAPI) => void>; noContextFiles: true } {
+  return { cwd, agentDir, extensionFactories, noContextFiles: true };
+}
+
+/** Project a Pi model (read structurally — no Pi type crosses) to ModelInfo (T4). */
+function modelInfoOf(
+  m: { id: string; name?: string; provider: string },
+  active: { id: string; provider: string } | undefined,
+  localProviderId: string | undefined,
+): ModelInfo {
+  return {
+    providerId: m.provider,
+    modelId: m.id,
+    label: m.name ?? m.id,
+    isLocal: localProviderId != null && m.provider === localProviderId,
+    active: active != null && active.provider === m.provider && active.id === m.id,
+  };
 }
 
 /**
@@ -279,6 +463,17 @@ export interface PiAdapterOptions {
  * routes every tool call through the host gate via Pi's `tool_call` hook —
  * registered by the HOST as an extension factory, with no model-facing removal
  * path. This is the make-or-break gate spike (Phase 108, T3).
+ *
+ * Phase 119 T1: the session is now PERSISTENT — built once and reused across
+ * turns (felt-quality items need a session that lives across turns). The host
+ * gate SURVIVES that persistence and every session mutation: Pi installs
+ * `beforeToolCall` once in the AgentSession ctor and reads `this._extensionRunner`
+ * at call time, and only `_buildRuntime` (ctor + reload()) ever reassigns it —
+ * none of setModel/cycleModel/compact/setThinkingLevel/setAutoCompactionEnabled
+ * do (A1 verification checkpoint, verdict SURVIVES; see the Phase-119 checkpoint
+ * report). new-conversation = dispose + rebuild (the gate re-attaches via a fresh
+ * loader factory run); workspace change stays a sidecar respawn that rebinds the
+ * gate to the new root.
  */
 export class PiAdapter implements EngineAdapter {
   readonly id = 'pi';
@@ -292,6 +487,18 @@ export class PiAdapter implements EngineAdapter {
   private readonly sandboxMode: SandboxMode;
   private readonly toolNames: readonly string[];
 
+  // Phase 119 T1 — the persistent session + its per-turn sink.
+  /** The ONE persistent session; built lazily on the first turn, reused after. */
+  private session: PiSessionHandle | null = null;
+  /** The CURRENT turn's event sink. Swapped each turn; read at call time by the
+   *  gate-denial hook and the subscribe callback (the C1 decouple). null between turns. */
+  private currentTurn: EventQueue | null = null;
+  /** In-flight build guard so two racing turns share one session, not two. */
+  private buildPromise: Promise<PiSessionHandle> | null = null;
+  /** Memoized fail-closed gate (only used if the host never wired one). */
+  private failClosed: ToolCallGate | null = null;
+  private readonly builder: PiSessionBuilder;
+
   constructor(opts: PiAdapterOptions = {}) {
     this.workspaceRoot = resolve(opts.workspaceRoot ?? process.cwd());
     this.agentDir = opts.agentDir ?? getAgentDir();
@@ -301,6 +508,7 @@ export class PiAdapter implements EngineAdapter {
     this.local = opts.local;
     this.sandboxMode = resolveSandboxMode(opts.sandboxMode);
     this.toolNames = opts.tools ?? PI_TOOL_ALLOWLIST;
+    this.builder = opts.sessionBuilder ?? ((args) => this.buildDefaultSession(args));
   }
 
   setToolCallGate(gate: ToolCallGate): void {
@@ -338,21 +546,57 @@ export class PiAdapter implements EngineAdapter {
     };
   }
 
-  async *sendPrompt(prompt: string, options: SendPromptOptions = {}): AsyncIterable<EngineEvent> {
-    // Fail-closed: if the host never registered a gate, build the default
-    // deny-destructive gate rather than run ungated.
-    const gate = this.gate ?? createHostGate({ workspaceRoot: this.workspaceRoot });
-    const queue = new EventQueue();
+  /** Resolve the live host gate at CALL time (fail-closed if the host never wired
+   *  one). Read inside the tool_call hook so a gate set after build still governs. */
+  private resolveGate(): ToolCallGate {
+    return this.gate ?? (this.failClosed ??= createHostGate({ workspaceRoot: this.workspaceRoot }));
+  }
 
+  /** Build (once) or return the persistent session. A concurrent caller shares the
+   *  same in-flight build. Auto-compaction is folded in here — a persistent
+   *  `inMemory` session would otherwise grow unbounded and exhaust context. */
+  private async ensureSession(): Promise<PiSessionHandle> {
+    if (this.session) return this.session;
+    if (this.buildPromise) return this.buildPromise;
+    this.buildPromise = this.builder({
+      workspaceRoot: this.workspaceRoot,
+      getGate: () => this.resolveGate(),
+      // C1: both sinks read `this.currentTurn` at call time, so a denial / event
+      // reaches whatever turn is live now — not the turn that was live at build.
+      onDenied: (id, reason) => this.currentTurn?.push({ type: 'tool-denied', id, reason }),
+      onEvent: (event) => this.currentTurn?.push(event),
+    });
+    try {
+      const session = await this.buildPromise;
+      session.setAutoCompactionEnabled(true);
+      this.session = session;
+      return session;
+    } finally {
+      this.buildPromise = null;
+    }
+  }
+
+  /** The default builder: embed Pi and wire the host-gate `tool_call` hook + the
+   *  subscribe stream, both routing through the adapter-provided call-time sinks. */
+  private async buildDefaultSession(args: PiSessionBuildArgs): Promise<PiSessionHandle> {
+    const { workspaceRoot, getGate, onDenied, onEvent } = args;
     mkdirSync(this.agentDir, { recursive: true });
     const authStorage = AuthStorage.create(join(this.agentDir, 'auth.json'));
     let modelRegistry: ModelRegistry;
     if (this.local) {
       // Local OpenAI-compatible backend: describe it in a models.json and point
-      // the registry at it. No key, no billing.
+      // the registry at it. No key, no billing. ModelRegistry.create MERGES the
+      // custom local model into the built-in provider list, so hosted models are
+      // ALSO present — but only "available" (switchable) when auth is configured.
       const modelsJsonPath = join(this.agentDir, 'models.json');
       writeFileSync(modelsJsonPath, JSON.stringify(this.buildLocalModelsJson(this.local), null, 2));
       modelRegistry = ModelRegistry.create(authStorage, modelsJsonPath);
+      // Ph119 T4 — local↔hosted keeping the LOCAL DEFAULT: best-effort, ENV-ONLY
+      // hosted auth so hosted models become switchable in the picker when a key is
+      // present. Env-only (no keychain prompt) keeps local startup fast + silent;
+      // the active model still starts on local below.
+      const hostedKey = process.env[`${this.provider.toUpperCase()}_API_KEY`];
+      if (hostedKey) authStorage.setRuntimeApiKey(this.provider, hostedKey);
     } else {
       const apiKey = await this.resolveApiKey();
       if (apiKey) authStorage.setRuntimeApiKey(this.provider, apiKey);
@@ -360,28 +604,24 @@ export class PiAdapter implements EngineAdapter {
     }
 
     // The host gate, wired as a Pi extension hook. The host registers this; the
-    // model has no channel to deregister it. On deny we also surface a
-    // tool-denied event to the UI stream.
-    const loader = new DefaultResourceLoader({
-      cwd: this.workspaceRoot,
-      agentDir: this.agentDir,
-      extensionFactories: [
-        (pi: ExtensionAPI) => {
-          pi.on('tool_call', async (event) => {
-            const piEvent = event as unknown as PiToolCallEvent;
-            const result = await applyHostGate(piEvent, gate);
-            if (result?.block) {
-              queue.push({
-                type: 'tool-denied',
-                id: piEvent.toolCallId,
-                reason: result.reason ?? 'denied by host gate',
-              });
-            }
-            return result;
-          });
-        },
-      ],
-    });
+    // model has no channel to deregister it, and Pi keeps the hook attached across
+    // every session mutation (A1 verdict). On deny we surface a tool-denied event
+    // to the CURRENT turn's stream (C1 — the sink is resolved at call time).
+    const gateFactory = (pi: ExtensionAPI) => {
+      pi.on('tool_call', async (event) => {
+        const piEvent = event as unknown as PiToolCallEvent;
+        const result = await applyHostGate(piEvent, getGate());
+        if (result?.block) {
+          onDenied(piEvent.toolCallId, result.reason ?? 'denied by host gate');
+        }
+        return result;
+      });
+    };
+    // Ph119 T6: noContextFiles:true — nana's assembly.ts is the SOLE context
+    // injector (AGENTS.md reaches the model exactly once, not Pi-native + nana).
+    const loader = new DefaultResourceLoader(
+      piLoaderOptions(workspaceRoot, this.agentDir, [gateFactory]),
+    );
     await loader.reload();
 
     let model: ReturnType<ModelRegistry['find']>;
@@ -398,9 +638,9 @@ export class PiAdapter implements EngineAdapter {
       model,
       authStorage,
       modelRegistry,
-      cwd: this.workspaceRoot,
+      cwd: workspaceRoot,
       agentDir: this.agentDir,
-      sessionManager: SessionManager.inMemory(this.workspaceRoot),
+      sessionManager: SessionManager.inMemory(workspaceRoot),
       resourceLoader: loader,
       // Phase 114: activate the full builtin tool set (grep/find/ls were dormant)
       // so the model gets paginated read + ripgrep/fd/ls + surgical edit. `bash`
@@ -409,18 +649,113 @@ export class PiAdapter implements EngineAdapter {
       tools: [...this.toolNames],
       // Phase 112: OS-sandbox bash by overriding the builtin with a seatbelt-
       // wrapped 'bash' tool (empty off-darwin → builtin bash + string-gate only).
-      customTools: piSandboxCustomTools(this.workspaceRoot, this.sandboxMode),
+      customTools: piSandboxCustomTools(workspaceRoot, this.sandboxMode),
     });
 
     const unsubscribe = session.subscribe((raw: unknown) => {
       const mapped = mapPiStreamEvent(raw as PiStreamEvent);
-      if (mapped) queue.push(mapped);
+      if (mapped) onEvent(mapped);
     });
 
-    if (options.signal) {
-      const onAbort = () => void session.abort();
-      if (options.signal.aborted) onAbort();
-      else options.signal.addEventListener('abort', onAbort, { once: true });
+    // Return the neutral handle. dispose() releases OUR subscription too (Pi's
+    // dispose clears its own extension host + listeners; the unsubscribe handle
+    // is ours to release).
+    return {
+      prompt: (text) => session.prompt(text),
+      abort: () => session.abort(),
+      setAutoCompactionEnabled: (enabled) => session.setAutoCompactionEnabled(enabled),
+      // Ph119 T2: project Pi's ContextUsage + SessionStats.cost to the engine-
+      // neutral snapshot. getContextUsage() is undefined before the first response;
+      // normalize to a zero-usage reading so the meter still shows the window + cost.
+      meterSnapshot: () => {
+        const usage = session.getContextUsage();
+        const cost = session.getSessionStats().cost;
+        return {
+          percent: usage?.percent ?? null,
+          tokens: usage?.tokens ?? null,
+          contextWindow: usage?.contextWindow ?? 0,
+          costUsd: typeof cost === 'number' ? cost : 0,
+        };
+      },
+      // Ph119 T2: manual compaction. The gate hook survives it (A1 verdict) — Pi
+      // does not rebuild the extension host on compact; only the low-level agent
+      // event subscription is bounced, not `beforeToolCall` or our subscribe. A
+      // too-small / already-compacted session is a benign no-op (Pi throws for it),
+      // not a failure to surface; every other error propagates.
+      compact: async () => {
+        try {
+          await session.compact();
+        } catch (err) {
+          if (!isBenignCompactError(err)) throw err;
+        }
+      },
+      // Ph119 T4 — model switcher. `active` is recomputed per call from the live
+      // session.model (a getter), so a chip stays correct after setModel/cycleModel.
+      // The gate hook survives these mutations (A1 verdict); C3 test ships with it.
+      listModels: () => {
+        const active = session.model;
+        return modelRegistry.getAvailable().map((m) => modelInfoOf(m, active, this.local?.providerId));
+      },
+      currentModel: () =>
+        session.model ? modelInfoOf(session.model, session.model, this.local?.providerId) : undefined,
+      setModel: async (providerId, modelId) => {
+        const m = modelRegistry.find(providerId, modelId);
+        if (!m) return false;
+        await session.setModel(m);
+        return true;
+      },
+      cycleModel: async () => {
+        const result = await session.cycleModel();
+        return result ? modelInfoOf(result.model, result.model, this.local?.providerId) : undefined;
+      },
+      // Ph119 T5 — thinking-level toggle. session.thinkingLevel is a getter; the
+      // levels/supported come from the active model. setThinkingLevel is SYNCHRONOUS
+      // (a plain field set + event) and cycleThinkingLevel DELEGATES to it, so the
+      // gate hook is never touched (self-verified against the SDK; no T1 dependency).
+      thinkingInfo: () => ({
+        level: session.thinkingLevel,
+        levels: session.getAvailableThinkingLevels(),
+        supported: session.supportsThinking(),
+      }),
+      setThinkingLevel: (level) => {
+        (session.setThinkingLevel as (l: string) => void)(level);
+      },
+      cycleThinkingLevel: () => session.cycleThinkingLevel(),
+      // Ph119 T7: project Pi's prompt templates + loaded skills to the engine-
+      // neutral shapes (no Pi type crosses). A template surfaces as a palette
+      // command whose run SUBMITS `content` through the gated prompt path.
+      listPromptTemplates: () =>
+        session.promptTemplates.map((t) => ({
+          name: t.name,
+          description: t.description ?? '',
+          content: t.content,
+          ...(t.argumentHint ? { argumentHint: t.argumentHint } : {}),
+        })),
+      listSkills: () =>
+        session.resourceLoader.getSkills().skills.map((s) => ({
+          name: s.name,
+          description: s.description ?? '',
+        })),
+      dispose: () => {
+        unsubscribe();
+        session.dispose();
+      },
+    };
+  }
+
+  async *sendPrompt(prompt: string, options: SendPromptOptions = {}): AsyncIterable<EngineEvent> {
+    const session = await this.ensureSession();
+    // Swap in this turn's sink. The persistent gate hook + subscribe callback both
+    // read `this.currentTurn`, so from here their output flows to THIS turn (C1).
+    const turn = new EventQueue();
+    this.currentTurn = turn;
+
+    const signal = options.signal;
+    let onAbort: (() => void) | undefined;
+    if (signal) {
+      onAbort = () => void session.abort();
+      if (signal.aborted) onAbort();
+      else signal.addEventListener('abort', onAbort, { once: true });
     }
 
     // Project context (A2): Pi's session.prompt has no separate system-prompt
@@ -432,18 +767,128 @@ export class PiAdapter implements EngineAdapter {
 
     void session
       .prompt(turnPrompt)
-      .then(() => queue.close())
+      .then(() => {
+        // Ph119 T2: emit the updated context/cost meter at turn end (Pi's usage is
+        // current once the response lands), just before the turn closes.
+        const snap = session.meterSnapshot();
+        if (snap) {
+          turn.push({
+            type: 'context-usage',
+            percent: snap.percent,
+            tokens: snap.tokens,
+            contextWindow: snap.contextWindow,
+            costUsd: snap.costUsd,
+          });
+        }
+        turn.close();
+      })
       .catch((err: unknown) => {
-        queue.push({ type: 'error', error: err instanceof Error ? err.message : String(err) });
-        queue.close();
+        turn.push({ type: 'error', error: err instanceof Error ? err.message : String(err) });
+        turn.close();
       });
 
     try {
-      for await (const ev of queue.stream()) yield ev;
+      for await (const ev of turn.stream()) yield ev;
     } finally {
-      unsubscribe();
-      session.dispose();
+      if (signal && onAbort) signal.removeEventListener('abort', onAbort);
+      // The session PERSISTS across turns — only detach this turn's sink so a
+      // late/stray event from a settled turn is dropped, never misrouted.
+      if (this.currentTurn === turn) this.currentTurn = null;
     }
     yield { type: 'done' };
+  }
+
+  /**
+   * Crash-isolation recovery + explicit reset. Disposes the persistent session
+   * (tearing down Pi's extension host, incl. the gate hook) and rebuilds a fresh
+   * one — the rebuild re-runs the loader's extensionFactory, so the host gate is
+   * RE-ATTACHED. Engine cross-turn memory is intra-run only; this is the
+   * documented recovery from a mid-turn session error. Call it between turns.
+   */
+  async newConversation(): Promise<void> {
+    this.disposeSession();
+    await this.ensureSession();
+  }
+
+  /**
+   * Ph119 T2: manually compact the persistent session's context. A session
+   * MUTATION — the gate hook survives it (A1 verdict; Pi installs beforeToolCall
+   * once and never rebuilds the extension host on compact). The C3 discipline: a
+   * gate-survives-after-compact check ships with this surface (unit + live).
+   */
+  async compact(): Promise<void> {
+    const session = await this.ensureSession();
+    await session.compact();
+  }
+
+  /** Ph119 T4: the models available to switch to (local + hosted-with-auth). */
+  async listModels(): Promise<ModelInfo[]> {
+    const session = await this.ensureSession();
+    return session.listModels();
+  }
+
+  /** Ph119 T4: the active model. */
+  async currentModel(): Promise<ModelInfo | undefined> {
+    const session = await this.ensureSession();
+    return session.currentModel();
+  }
+
+  /**
+   * Ph119 T4: switch to a specific model (a session MUTATION — the gate survives
+   * it, A1 verdict; C3 gate-survives-after-setModel test ships with this surface).
+   * Returns false if the id is unknown.
+   */
+  async setModel(providerId: string, modelId: string): Promise<boolean> {
+    const session = await this.ensureSession();
+    return session.setModel(providerId, modelId);
+  }
+
+  /** Ph119 T4: cycle to the next available model (a session mutation). */
+  async cycleModel(): Promise<ModelInfo | undefined> {
+    const session = await this.ensureSession();
+    return session.cycleModel();
+  }
+
+  /** Ph119 T5: the active thinking level + the ones the model offers. */
+  async thinkingInfo(): Promise<ThinkingInfo> {
+    const session = await this.ensureSession();
+    return session.thinkingInfo();
+  }
+
+  /** Ph119 T5: set the thinking level (synchronous; the gate survives). */
+  async setThinkingLevel(level: string): Promise<void> {
+    const session = await this.ensureSession();
+    session.setThinkingLevel(level);
+  }
+
+  /** Ph119 T5: cycle to the next thinking level (delegates to the setter). */
+  async cycleThinkingLevel(): Promise<string | undefined> {
+    const session = await this.ensureSession();
+    return session.cycleThinkingLevel();
+  }
+
+  /** Ph119 T7: the loaded prompt templates (palette slash-commands). */
+  async listPromptTemplates(): Promise<TemplateInfo[]> {
+    const session = await this.ensureSession();
+    return session.listPromptTemplates();
+  }
+
+  /** Ph119 T7: the loaded skills (palette slash-commands). */
+  async listSkills(): Promise<SkillInfo[]> {
+    const session = await this.ensureSession();
+    return session.listSkills();
+  }
+
+  /** Tear down the persistent session (idempotent). Used by newConversation and
+   *  by a clean sidecar shutdown. */
+  dispose(): void {
+    this.disposeSession();
+  }
+
+  private disposeSession(): void {
+    const s = this.session;
+    this.session = null;
+    this.currentTurn = null;
+    s?.dispose();
   }
 }

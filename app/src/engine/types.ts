@@ -41,6 +41,52 @@ export type ToolCallGate = (
 ) => GateDecision | Promise<GateDecision>;
 
 /**
+ * Engine-neutral model descriptor for the runtime model picker (Ph119 T4). Each
+ * adapter projects its engine's model list INTO this shape so the surface speaks
+ * one vocabulary. No engine SDK type crosses the boundary.
+ */
+export interface ModelInfo {
+  providerId: string;
+  modelId: string;
+  /** Human label (e.g. Pi's model.name, falling back to the id). */
+  label: string;
+  /** True for the local $0 provider — the deliberate default (Ph108, KEPT). */
+  isLocal: boolean;
+  /** True when this is the session's active model. */
+  active: boolean;
+}
+
+/**
+ * Engine-neutral thinking/reasoning-level state for the runtime toggle (Ph119 T5).
+ * `level` is the active level; `levels` the ones this model offers; `supported`
+ * is false for a non-reasoning model (e.g. the local $0 default) — the toggle is
+ * shown but inert there.
+ */
+export interface ThinkingInfo {
+  level: string;
+  levels: string[];
+  supported: boolean;
+}
+
+/**
+ * Engine-neutral prompt-template descriptor (Ph119 T7). Surfaced as a palette
+ * slash-command whose run SUBMITS `content` as a gated prompt (through the normal
+ * sendPrompt path — no bypass; every tool the resulting turn calls is gated).
+ */
+export interface TemplateInfo {
+  name: string;
+  description: string;
+  content: string;
+  argumentHint?: string;
+}
+
+/** Engine-neutral loaded-skill descriptor (Ph119 T7). */
+export interface SkillInfo {
+  name: string;
+  description: string;
+}
+
+/**
  * Engine-neutral event emitted while a prompt runs. Shaped to map cleanly onto
  * an AI-SDK-style data stream so the surface (assistant-ui custom runtime, T6)
  * can render any engine identically.
@@ -70,5 +116,17 @@ export type EngineEvent =
   // Additive: adapters that don't stream simply never emit it.
   | { type: 'tool-progress'; id: string; partial: unknown }
   | { type: 'tool-denied'; id: string; reason: string }
+  // Ph119 T2: the context/cost meter feed. `percent`/`tokens` are null in the
+  // post-compaction window (before the next LLM response) — the meter renders
+  // that without NaN%. `costUsd` is the session's cumulative cost ($0 on the
+  // local model, accepted). ADDITIVE + OPTIONAL: adapters that don't surface
+  // usage simply never emit it, so no existing consumer breaks.
+  | {
+      type: 'context-usage';
+      percent: number | null;
+      tokens: number | null;
+      contextWindow: number;
+      costUsd: number;
+    }
   | { type: 'error'; error: string }
   | { type: 'done' };

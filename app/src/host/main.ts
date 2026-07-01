@@ -5,6 +5,10 @@ import { createHostGate } from '../gate/host-gate';
 import { CheckpointStore } from '../gate/checkpoint/checkpoint';
 import { EngineHost, type HostInbound, type HostOutbound } from './engine-host';
 import { assembleContext, type ContextSource } from '../context/assembly';
+import { SpendCeiling } from '../control/spend';
+import { probeLocalEndpoint } from '../engine/pi/pi-adapter';
+import { MemoryMount } from '../memory/mcp-memory';
+import { McpMemoryRetriever } from '../context/memory-context';
 
 // The Node engine-host SIDECAR entry (Phase 109, T6). The Tauri Rust shell spawns
 // this as `node engine-host.mjs`; it reads HostInbound JSON lines from stdin and
@@ -13,12 +17,34 @@ import { assembleContext, type ContextSource } from '../context/assembly';
 // Engine selection (Pi default, Vercel fallback) lives in ./build-adapter so it
 // is importable by tests without main()'s side effects.
 
-function main(): void {
+async function main(): Promise<void> {
   const workspaceRoot = resolve(process.env.NANA_WORKSPACE ?? process.cwd());
   const checkpoint = new CheckpointStore();
   const send = (msg: HostOutbound): void => {
     process.stdout.write(`${JSON.stringify(msg)}\n`);
   };
+
+  // Phase 119 T2: an OPTIONAL enforced spend ceiling, wired only when
+  // NANA_SPEND_CEILING (USD) is set. The engine reports the authoritative
+  // cumulative cost via the meter feed; the host pauses a new turn once the
+  // ceiling is exceeded. Unset (and on the local $0 model) it is absent → no
+  // change. The price table is empty here because the ceiling is reconciled
+  // against Pi's own cost, not re-derived from tokens.
+  const ceilingEnv = Number(process.env.NANA_SPEND_CEILING);
+  const spendCeiling =
+    Number.isFinite(ceilingEnv) && ceilingEnv > 0 ? new SpendCeiling(ceilingEnv, {}) : undefined;
+
+  // Phase 119 T8 (A3 safe default): host-orchestrated memory retrieval. Lazy — the
+  // MemoryMount connects on the first search, so startup is NOT blocked; the
+  // retriever fails open + self-disables if the server is unavailable. Model-facing
+  // memory is NOT wired (no gate carve-out). Opt out with NANA_NO_MEMORY=1.
+  const memory =
+    process.env.NANA_NO_MEMORY === '1'
+      ? undefined
+      : // Cap the first-turn spawn/connect (4s) so a missing/slow memory server
+        // doesn't stall the first prompt; the retriever adds its own 5s retrieval
+        // cap and self-disables after one failure (Ph119 review nit 2).
+        new McpMemoryRetriever(new MemoryMount({ startupTimeoutMs: 4000 }));
 
   const host = new EngineHost({
     adapter: buildAdapter(workspaceRoot),
@@ -27,6 +53,8 @@ function main(): void {
     send,
     snapshot: (p) => checkpoint.snapshot(p),
     revert: (p) => checkpoint.revert(p),
+    spendCeiling,
+    memory,
   });
 
   const rl = createInterface({ input: process.stdin });
@@ -60,7 +88,18 @@ function main(): void {
     /* leave project-blind; per-turn assembly reports the real failure */
   }
 
-  send({ type: 'ready', workspaceRoot, available, sources });
+  // Ph119 T4 — launch-time local-endpoint probe. On the default local backend,
+  // warn the surface if the model is down/unreachable (the #1 "nothing happens"
+  // failure). Fails fast (a refused connection is near-instant; the 2s cap only
+  // bites a slow server) and never throws — a down endpoint is a clean ok:false.
+  let localModel: { ok: boolean; models: string[]; detail?: string } | undefined;
+  const engine = process.env.NANA_ENGINE ?? 'pi';
+  if (engine === 'pi' || engine === 'vercel') {
+    const baseUrl = process.env.NANA_LOCAL_BASE_URL ?? 'http://localhost:8080/v1';
+    localModel = await probeLocalEndpoint(baseUrl);
+  }
+
+  send({ type: 'ready', workspaceRoot, available, sources, localModel });
 }
 
-main();
+void main();

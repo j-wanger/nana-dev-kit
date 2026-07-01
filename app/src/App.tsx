@@ -9,6 +9,8 @@ import { CommandPalette } from './ui/command-palette';
 import { useCommandShortcuts } from './ui/use-command-shortcuts';
 import { WorkspaceIndicator } from './ui/workspace-indicator';
 import { useWorkspace } from './ui/use-workspace';
+import { MeterBar } from './ui/meter';
+import { useSessionControls, ModelChip, ThinkingChip } from './ui/session-controls';
 
 // The composed harness surface (Phase 109, T5). Wires the webview BridgeClient
 // (T6) to the chat (axis 4), the gate-confirm approve-loop (axis 1), a one-action
@@ -49,6 +51,11 @@ export function App() {
         <span className="app__brand">nana</span>
         <span className="app__tagline">dev-harness</span>
         <WorkspaceIndicator info={workspace} />
+        {workspace?.localModel && !workspace.localModel.ok ? (
+          <span className="app__warn" data-testid="local-model-warn" title={workspace.localModel.detail}>
+            ⚠ local model down
+          </span>
+        ) : null}
         <span className={`app__status app__status--${conn}`} data-conn={conn}>
           {conn === 'connected' ? 'engine connected' : conn === 'offline' ? 'engine offline' : 'connecting…'}
         </span>
@@ -62,8 +69,10 @@ export function HarnessSurface({ bridge }: { bridge: BridgeClient }) {
   // The bridge is BOTH the engine adapter and the workspace source (Ph115): it
   // supplies currentWorkspace + onWorkspace, so the conversation persists per
   // workspace and restores on the next ready.
-  const { runtime, artifacts, isRunning, stop, newConversation } = useChatRuntime(bridge, bridge);
+  const { runtime, artifacts, isRunning, stop, newConversation, meter, compact, submitPrompt, restoredNotice } =
+    useChatRuntime(bridge, bridge);
   const { current, approve, deny } = useGatePending(bridge);
+  const { model, cycleModel, thinking, cycleThinking, templates, skills } = useSessionControls(bridge);
   const [reverts, setReverts] = useState<string[]>([]);
   const [paletteOpen, setPaletteOpen] = useState(false);
 
@@ -90,10 +99,15 @@ export function HarnessSurface({ bridge }: { bridge: BridgeClient }) {
       if (last) void bridge.revert(last);
     },
     newConversation: () => {
-      newConversation();
+      newConversation(); // display-side: clear the thread + persisted copy + meter
+      void bridge.newConversation(); // engine-side: reset the persistent session (Ph119 T1) so the model doesn't remember the cleared thread
       setReverts([]);
     },
     focusComposer: () => document.querySelector<HTMLElement>('.composer__input')?.focus(),
+    compact: () => compact(),
+    cycleModel: () => cycleModel(),
+    cycleThinking: () => cycleThinking(),
+    submitPrompt: (text: string) => submitPrompt(text),
     // The native folder picker + sidecar re-spawn run Rust/host-side; the bridge
     // tears down the dead session and reconnects on the fresh `ready` (T4). A new
     // workspace means a fresh gate, so the local revert list no longer applies.
@@ -108,12 +122,20 @@ export function HarnessSurface({ bridge }: { bridge: BridgeClient }) {
       );
     },
   };
-  const commands = buildCommands(ctx);
+  // Ph119 T7: the palette merges the static harness actions with the session's
+  // prompt-template + skill slash-commands (each submits a gated prompt).
+  const commands = buildCommands(ctx, { templates, skills });
   useCommandShortcuts({ commands, onOpenPalette: () => setPaletteOpen(true), paletteOpen });
 
   return (
     <div className={isRunning ? 'surface surface--running' : 'surface'}>
       <main className="surface__chat">
+        {restoredNotice ? (
+          <div className="restore-marker" role="status" data-testid="restore-marker">
+            restored — model context reset (the messages above are shown from a saved thread; the model does
+            not remember them)
+          </div>
+        ) : null}
         <Thread runtime={runtime} />
       </main>
       <aside className="surface__side">
@@ -136,6 +158,13 @@ export function HarnessSurface({ bridge }: { bridge: BridgeClient }) {
           )}
         </section>
       </aside>
+      <footer className="surface__meter">
+        <MeterBar usage={meter} />
+        <div className="surface__chips">
+          <ModelChip model={model} onCycle={cycleModel} />
+          <ThinkingChip thinking={thinking} onCycle={cycleThinking} />
+        </div>
+      </footer>
       {current ? (
         <div className="gate-overlay" role="presentation">
           <GateConfirmView pending={current} onApprove={onApprove} onDeny={deny} />

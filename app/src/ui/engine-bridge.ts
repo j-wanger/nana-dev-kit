@@ -1,5 +1,5 @@
 import type { EngineAdapter, SendPromptOptions } from '../engine/adapter';
-import type { EngineEvent, ToolCallGate } from '../engine/types';
+import type { EngineEvent, ModelInfo, SkillInfo, TemplateInfo, ThinkingInfo, ToolCallGate } from '../engine/types';
 import type { HostOutbound } from '../host/engine-host';
 import { EventQueue } from '../engine/event-queue';
 
@@ -35,6 +35,18 @@ export interface WorkspaceInfo {
   root: string;
   available: boolean;
   sources: { path: string; bytes: number }[];
+  /** Ph119 T4: the launch-time local-endpoint probe (local backend only). When
+   *  `ok` is false the default model is down/unreachable and the header warns. */
+  localModel?: { ok: boolean; models: string[]; detail?: string };
+}
+
+/** Ph119 T4/T5/T7: the runtime model + thinking state + palette command sources. */
+export interface SessionInfo {
+  model: ModelInfo | null;
+  models: ModelInfo[];
+  thinking: ThinkingInfo | null;
+  templates: TemplateInfo[];
+  skills: SkillInfo[];
 }
 
 /** The minimal Tauri surface the bridge needs; injected so it is testable without a window. */
@@ -62,6 +74,9 @@ export class BridgeClient implements EngineAdapter {
   /** Active workspace + project-blind state from the latest `ready` (T5). */
   private workspace?: WorkspaceInfo;
   private readonly workspaceListeners = new Set<(w: WorkspaceInfo) => void>();
+  /** Ph119 T4: the latest model state from the host `session-info`. */
+  private sessionInfo?: SessionInfo;
+  private readonly sessionInfoListeners = new Set<(s: SessionInfo) => void>();
 
   constructor(private readonly tauri: TauriBridge) {}
 
@@ -177,6 +192,67 @@ export class BridgeClient implements EngineAdapter {
     });
   }
 
+  /**
+   * Ph119 T2: manually compact the engine context (a gated session mutation; the
+   * gate survives it). Fire-and-forget — the updated meter arrives on the next
+   * turn end. Satisfies EngineAdapter.compact so useChatRuntime can call it.
+   */
+  compact(): Promise<void> {
+    return this.send({ type: 'compact' });
+  }
+
+  /**
+   * Ph119 T1: reset the ENGINE conversation (dispose+rebuild → the gate
+   * re-attaches). Distinct from the display-only thread clear in useChatRuntime;
+   * this is what actually resets the persistent session so a "new conversation"
+   * does not leave the model remembering the cleared thread. Not a gate bypass —
+   * no prompt, no approval channel.
+   */
+  newConversation(): Promise<void> {
+    return this.send({ type: 'new-conversation' });
+  }
+
+  /** Ph119 T4: the latest known model state, or null before the first session-info. */
+  get currentSessionInfo(): SessionInfo | null {
+    return this.sessionInfo ?? null;
+  }
+
+  /** Ph119 T4: subscribe to model-state changes; fires immediately if known. */
+  onSessionInfo(listener: (s: SessionInfo) => void): () => void {
+    this.sessionInfoListeners.add(listener);
+    if (this.sessionInfo) listener(this.sessionInfo);
+    return () => this.sessionInfoListeners.delete(listener);
+  }
+
+  // NOTE: named request*/ not setModel/cycleModel — these are TRANSPORT senders
+  // (fire-and-forget host inbounds; the result returns async via session-info), so
+  // they deliberately do NOT collide with the EngineAdapter.setModel/cycleModel
+  // API (Promise<boolean>/Promise<ModelInfo>) that the Pi adapter implements.
+  /** Ph119 T4: cycle to the next model (a gate-surviving mutation). */
+  requestCycleModel(): Promise<void> {
+    return this.send({ type: 'cycle-model' });
+  }
+
+  /** Ph119 T4: switch to a specific model. */
+  requestSetModel(providerId: string, modelId: string): Promise<void> {
+    return this.send({ type: 'set-model', providerId, modelId });
+  }
+
+  /** Ph119 T5: cycle to the next thinking level (a gate-surviving mutation). */
+  requestCycleThinking(): Promise<void> {
+    return this.send({ type: 'cycle-thinking' });
+  }
+
+  /** Ph119 T5: set the thinking level. */
+  requestSetThinking(level: string): Promise<void> {
+    return this.send({ type: 'set-thinking', level });
+  }
+
+  /** Ph119 T4: ask the host to (re)emit the current model state for the chip. */
+  requestSessionInfo(): Promise<void> {
+    return this.send({ type: 'request-session-info' });
+  }
+
   private send(msg: Record<string, unknown>): Promise<void> {
     return this.tauri.invoke(SEND_CMD, { line: JSON.stringify(msg) }) as Promise<void>;
   }
@@ -227,12 +303,25 @@ export class BridgeClient implements EngineAdapter {
         }
         break;
       }
+      case 'session-info': {
+        // Ph119 T4/T5/T7: model + thinking state + palette command sources.
+        this.sessionInfo = {
+          model: msg.model,
+          models: msg.models,
+          thinking: msg.thinking,
+          templates: msg.templates,
+          skills: msg.skills,
+        };
+        for (const l of this.sessionInfoListeners) l(this.sessionInfo);
+        break;
+      }
       case 'ready': {
         // Surface the active workspace + project-blind state to the header (T5).
         this.workspace = {
           root: msg.workspaceRoot,
           available: msg.available,
           sources: msg.sources,
+          localModel: msg.localModel, // Ph119 T4: local-endpoint probe (down => header warns)
         };
         for (const l of this.workspaceListeners) l(this.workspace);
         // The first sidecar's ready is otherwise unobserved; a re-spawn (T4) arms
