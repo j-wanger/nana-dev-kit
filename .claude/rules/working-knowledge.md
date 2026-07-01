@@ -9,16 +9,6 @@
   source: [[decision:stochastic-heuristic-interference]] | activated: 2026-05-27
 - [uses: 2] Scenario-type selection criteria: attribution matrix per-dimension (heuristic x scenario x dimension). Selection operates at scenario-type level (risk-dominant, capacity-constraint, domain-nuance). Train on 015/018/020, validate on held-out 012/014.
   source: [[decision:scenario-type-selection-criteria]] | activated: 2026-05-27
-- [uses: 1] Exemplar-based judge anchoring breaks self-grading ceiling: concrete response examples at score levels 3 and 5 per dimension. Same judge prompt for both baselines. Descriptive rubrics alone allow score inflation.
-  source: [[decision:eval-calibration-exemplar-based-judge-anchoring]] | activated: 2026-05-27
-- [uses: 1] IRON RULES reuse heuristic format with status: iron, confidence: absolute. Selection: universal (every decision), unconditional (no exceptions), prevents known failure mode. Discoverable via same wiki-query/indexing.
-  source: [[decision:iron-rules-as-iron-status-heuristics]] | activated: 2026-05-27
-- [uses: 1] Reasoning eval self-grading bias: same LLM writing + evaluating inflates scores. Bias constant across conditions, so relative comparisons valid. Cross-model judging is the next lever if calibration insufficient.
-  source: [[active-knowledge:phase-45]] | activated: 2026-05-27
-- [uses: 1] Reasoning eval protocol: 3 runs, delta >= 0.5 meaningful, variance < 0.5. run-eval.py --compare for delta. Calibration criterion: mean < 4.5 (strict), >=15% below 5 (exit). Judge v2 achieved 19.4% below 5.
-  source: [[active-knowledge:phase-45]] | activated: 2026-05-27
-- [uses: 1] SCHEMA.md status enum: active | deprecated | under-review | iron. Iron status for unconditional universal rules. IRON RULES use IRON-NNN ID prefix (vs HEU-NNN for regular heuristics).
-  source: [[active-knowledge:phase-45]] | activated: 2026-05-27
 - [uses: 1] Heuristic rules can have unintended negative effects: IRON-004 (simpler system) caused regression on scenario 018 (pushed toward incremental cleanup when expert recommends dedicated sprint). Per-rule regression analysis should be standard eval practice.
   source: [[active-knowledge:phase-45]] | activated: 2026-05-27
 - [uses: 1] Harder reasoning scenarios need genuine ambiguity (multi-stakeholder tradeoffs, no single right answer) to differentiate quality. Easy scenarios with clear answers score at ceiling regardless of judge calibration.

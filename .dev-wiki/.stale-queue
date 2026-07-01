@@ -318,3 +318,13 @@ eval/amplifier/skill-screen/runs/ctrl-recoverable/3.py
 [pruned 2026-06-30]   source: [[active-knowledge:phase-46]] | activated: 2026-05-27
 [pruned 2026-06-30] - [uses: 1] Context dilution from expanded injection payload: scenario 012 consistently dropped from 5/5/5 to 5/4/4 across 3 runs when anti-pattern tables added. Detection signal: when injection text grows, check for non-target scenario regressions.
 [pruned 2026-06-30]   source: [[active-knowledge:phase-46]] | activated: 2026-05-27
+[pruned 2026-06-30] - [uses: 1] Exemplar-based judge anchoring breaks self-grading ceiling: concrete response examples at score levels 3 and 5 per dimension. Same judge prompt for both baselines. Descriptive rubrics alone allow score inflation.
+[pruned 2026-06-30]   source: [[decision:eval-calibration-exemplar-based-judge-anchoring]] | activated: 2026-05-27
+[pruned 2026-06-30] - [uses: 1] IRON RULES reuse heuristic format with status: iron, confidence: absolute. Selection: universal (every decision), unconditional (no exceptions), prevents known failure mode. Discoverable via same wiki-query/indexing.
+[pruned 2026-06-30]   source: [[decision:iron-rules-as-iron-status-heuristics]] | activated: 2026-05-27
+[pruned 2026-06-30] - [uses: 1] Reasoning eval self-grading bias: same LLM writing + evaluating inflates scores. Bias constant across conditions, so relative comparisons valid. Cross-model judging is the next lever if calibration insufficient.
+[pruned 2026-06-30]   source: [[active-knowledge:phase-45]] | activated: 2026-05-27
+[pruned 2026-06-30] - [uses: 1] Reasoning eval protocol: 3 runs, delta >= 0.5 meaningful, variance < 0.5. run-eval.py --compare for delta. Calibration criterion: mean < 4.5 (strict), >=15% below 5 (exit). Judge v2 achieved 19.4% below 5.
+[pruned 2026-06-30]   source: [[active-knowledge:phase-45]] | activated: 2026-05-27
+[pruned 2026-06-30] - [uses: 1] SCHEMA.md status enum: active | deprecated | under-review | iron. Iron status for unconditional universal rules. IRON RULES use IRON-NNN ID prefix (vs HEU-NNN for regular heuristics).
+[pruned 2026-06-30]   source: [[active-knowledge:phase-45]] | activated: 2026-05-27
