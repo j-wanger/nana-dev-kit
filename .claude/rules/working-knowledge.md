@@ -13,18 +13,8 @@
   source: [[active-knowledge:phase-44]] | activated: 2026-05-26
 - [uses: 2] PostToolUse canonical field path is .tool_input (verified via live stale-queue.sh production evidence). All 5 PostToolUse Edit/Write hooks normalized to .tool_input.file_path // .input.file_path defensive fallback. PreToolUse uses .input.file_path. 6 eval fixtures updated.
   source: [[decision:posttooluse-normalize-after-verification]] | activated: 2026-05-25
-- [uses: 1] Kit hooks: 17 scripts in templates/.claude/hooks/; 11 installed globally by install.sh (enforce-spec, enforce-loop, enforce-memory, detect-loop, post-commit, pre-compact, context-size-check, dev-wiki-scope-check, post-compact, session-stop, stale-queue); 6 available via --project-local (audit-log, auto-ruff-format, block-dangerous-bash, check-tests-were-run, scan-secrets, session-start).
-  source: [[decision:hook-reconciliation]] | activated: 2026-05-25
-- [uses: 1] Hook fixes require tmpdir testing (mktemp -d) before touching live state — prevents self-lockout via enforce-spec.sh regression. Evidence-pinned: every fix needs quoted error string or lint finding in commit message.
-  source: [[decision:hook-reconciliation-approach]] | activated: 2026-05-25
 - [uses: 2] install.sh 318 lines (refactored Phase 40), zero inline Python. Reads modules.json via jq for skill lists, delegates JSON merges to scripts/register-settings.py. Flags: --all/--core-only/--no-python/--no-typescript/--project-local/--dry-run/--status. --project-local copies 6 per-project hooks.
   source: [[decision:install-sh-extraction-approach]] + [[decision:hook-reconciliation]] | activated: 2026-05-25
-- [uses: 1] store() dedup is a hygiene mechanism with 7 corruption modes. _find_near_duplicate is the core dedup gate — threshold changes must preserve exact semantics (cosine >0.90 reinforce, >0.85 warn; word overlap >0.90 warn). Word-overlap is the production fallback when embeddings unavailable.
-  source: [[decision:store-opt-indexed-lookups]] + [[active-knowledge:phase-34]] | activated: 2026-05-24
-- [uses: 1] server.py:74 auto-embeds when embedding provider available. Word-overlap path is the fallback dedup mechanism when _vec_available=False.
-  source: [[active-knowledge:phase-34]] | activated: 2026-05-24
-- [uses: 1] _find_near_duplicate uses indexed lookups: vec0 KNN LIMIT 50 for cosine path (when _vec_available), FTS5 MATCH LIMIT 50 for word-overlap path. Both apply existing threshold logic (_cosine_similarity >0.90 reinforce, >0.85 warn; word overlap >0.90 warn) on candidates only. Replaces O(n^2) full table scans.
-  source: [[decision:store-opt-indexed-lookups]] | activated: 2026-05-24
 - [uses: 1] _sanitize_fts_query uses re.sub(r'[^\w\s]', ' ', query) + FTS5 keyword stripping (AND/NOT/NEAR). Aligns query preprocessing with index-time tokenization. Known limitation: C++ becomes C. OR-join semantics preserved.
   source: [[decision:char-level-sanitizer-fts5]] | activated: 2026-05-24
 - [uses: 1] search_hybrid() uses RRF fusion (alpha=0.4, k=60); nomic-embed-text-v1.5 produces 768d vectors matching vec0 table. Turn-level hybrid RRF is winning strategy (+27.6% lift on FTS5-failure questions, no degradation). fastembed + sqlite-vec are benchmark-only deps, NOT in install.sh.

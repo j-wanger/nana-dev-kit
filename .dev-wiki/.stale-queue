@@ -348,3 +348,13 @@ eval/amplifier/skill-screen/runs/ctrl-recoverable/3.py
 [pruned 2026-07-01]   source: [[decision:delivery-report-before-commit]] | activated: 2026-05-25
 [pruned 2026-07-01] - [uses: 1] install.sh hook schema uses nested format: {matcher, hooks:[{type:"command", command:"..."}]} per Claude Code /doctor validation. Legacy flat {matcher, command} triggers /doctor errors. Flat-to-nested migration logic in install.sh Python JSON merge block.
 [pruned 2026-07-01]   source: [[decision:hook-error-evidence]] + [[decision:hook-reconciliation]] | activated: 2026-05-25
+[pruned 2026-07-01] - [uses: 1] Kit hooks: 17 scripts in templates/.claude/hooks/; 11 installed globally by install.sh (enforce-spec, enforce-loop, enforce-memory, detect-loop, post-commit, pre-compact, context-size-check, dev-wiki-scope-check, post-compact, session-stop, stale-queue); 6 available via --project-local (audit-log, auto-ruff-format, block-dangerous-bash, check-tests-were-run, scan-secrets, session-start).
+[pruned 2026-07-01]   source: [[decision:hook-reconciliation]] | activated: 2026-05-25
+[pruned 2026-07-01] - [uses: 1] Hook fixes require tmpdir testing (mktemp -d) before touching live state — prevents self-lockout via enforce-spec.sh regression. Evidence-pinned: every fix needs quoted error string or lint finding in commit message.
+[pruned 2026-07-01]   source: [[decision:hook-reconciliation-approach]] | activated: 2026-05-25
+[pruned 2026-07-01] - [uses: 1] store() dedup is a hygiene mechanism with 7 corruption modes. _find_near_duplicate is the core dedup gate — threshold changes must preserve exact semantics (cosine >0.90 reinforce, >0.85 warn; word overlap >0.90 warn). Word-overlap is the production fallback when embeddings unavailable.
+[pruned 2026-07-01]   source: [[decision:store-opt-indexed-lookups]] + [[active-knowledge:phase-34]] | activated: 2026-05-24
+[pruned 2026-07-01] - [uses: 1] server.py:74 auto-embeds when embedding provider available. Word-overlap path is the fallback dedup mechanism when _vec_available=False.
+[pruned 2026-07-01]   source: [[active-knowledge:phase-34]] | activated: 2026-05-24
+[pruned 2026-07-01] - [uses: 1] _find_near_duplicate uses indexed lookups: vec0 KNN LIMIT 50 for cosine path (when _vec_available), FTS5 MATCH LIMIT 50 for word-overlap path. Both apply existing threshold logic (_cosine_similarity >0.90 reinforce, >0.85 warn; word overlap >0.90 warn) on candidates only. Replaces O(n^2) full table scans.
+[pruned 2026-07-01]   source: [[decision:store-opt-indexed-lookups]] | activated: 2026-05-24
